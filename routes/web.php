@@ -23,3 +23,11 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('dashboard', function () {
+        return Inertia::render('Dashboard');
+    });
+});
+
+require __DIR__ . '/auth.php';

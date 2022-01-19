@@ -46,16 +46,6 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
-
-            Route::domain('siakad.stie.test')
-                ->middleware('web')
-                ->namespace($this->namespace)
-                ->group(base_path('routes/siakad.php'));
-
-            Route::domain('krs.stie.test')
-                ->middleware('web')
-                ->namespace($this->namespace)
-                ->group(base_path('routes/krs.php'));
         });
     }
 
