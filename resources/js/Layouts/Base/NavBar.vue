@@ -58,7 +58,7 @@
               <h1
                 class="text-sm text-gray-800 font-semibold m-0 p-0 leading-none"
               >
-                Welson
+              {{$page.props.auth.user.name}}
               </h1>
             </div>
           </button>
@@ -76,7 +76,7 @@
             <h1
               class="md:hidden text-gray-800 font-semibold mb-4 p-0 text-center"
             >
-              Welson
+              {{$page.props.auth.user.name}}
             </h1>
             <!-- item -->
             <a
@@ -121,8 +121,9 @@ import {
   MenuIcon,
   UserIcon,
 } from "@heroicons/vue/solid";
-import { Link } from "@inertiajs/inertia-vue3";
-import { ref } from "vue";
+import { Link, usePage } from "@inertiajs/inertia-vue3";
+import { computed, ref } from "vue";
+// import {}
 
 export default {
   components: {
@@ -135,9 +136,11 @@ export default {
   setup() {
     const isNavbarContentOpen = ref(false);
 
+    const user = computed (() => usePage().props.value.auth.user)
+
     const toggleSidebar = () => eventBus.$emit("sidebar-toggle");
 
-    return { isNavbarContentOpen, toggleSidebar };
+    return { isNavbarContentOpen, toggleSidebar, user };
   },
 };
 </script>
