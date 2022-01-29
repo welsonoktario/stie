@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Staff;
+use App\Models\Mahasiswa;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -21,6 +23,20 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'nik',
+        'nama_panggilan',
+        'jenis_kelamin',
+        'agama',
+        'nomor_hp',
+        'tempat_lahir',
+        'tanggal_lahir',
+        'jalan',
+        'kelurahan',
+        'kecamatan',
+        'kode_pos',
+        'login',
+        'status_aktif',
+        'kewarganegaraan',
     ];
 
     /**
@@ -41,4 +57,20 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Relation to Staff
+     * return $this->hasOne(Staff::class, 'foreign_key', 'local_key')
+     */
+    public function staff() {
+        return $this->hasOne(Staff::class, 'user_id', 'id');
+    }
+
+    /**
+     * Relation to Staff
+     * return $this->hasOne(Staff::class, 'foreign_key', 'local_key')
+     */
+    public function mahasiswa() {
+        return $this->hasOne(Mahasiswa::class, 'user_id', 'id');
+    }
 }

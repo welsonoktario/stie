@@ -54,7 +54,7 @@ class CreateMahasiswasTable extends Migration
             $table->string('penghasilan_ibu', 15)->nullable();
             
             $table->integer('uang_semester')->default(4000000)->nullable();
-            $table->enum('status_mahasiswa', ['Aktif', 'Tidak Aktif', 'Lulus', 'Hilang', 'Cuti']);
+            $table->enum('status_mahasiswa', ['Aktif', 'Tidak Aktif', 'Lulus', 'Hilang', 'Cuti'])->default('Aktif');
 
             $table->timestamps();
         });

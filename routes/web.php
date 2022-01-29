@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
+use App\Models\User;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,16 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('dashboard', function () {
         return Inertia::render('Dashboard');
     });
+    Route::get('dashboard2', function () {
+        return Inertia::render('Dashboard');
+    });
+    
+    Route::get('/testing', function() {
+        return dd(User::all());
+    });
 });
 
+// Route::get('/testing', function() {
+//     return dd(User::all());
+// });
 require __DIR__ . '/auth.php';

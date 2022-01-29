@@ -23,7 +23,7 @@ class CreateStaffsTable extends Migration
             $table->string('jenjang_pendidikan', 20)->nullable();
             $table->string('gelar_depan', 45)->nullable();
             $table->string('gelar_belakang', 45)->nullable();
-            $table->enum('status_pegawai',['Aktif','Keluar'])->default('Aktif')->nullable();
+            $table->enum('status_karyawan',['Aktif','Keluar'])->default('Aktif')->nullable();
             $table->timestamps();
         });
     }
