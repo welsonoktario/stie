@@ -331,7 +331,7 @@
 </style>
 
 <script>
-import { Head, Link } from "@inertiajs/inertia-vue3";
+import { Head, Link } from "@inertiajs/inertia-vue3"
 
 export default {
   components: {
@@ -344,5 +344,5 @@ export default {
     laravelVersion: String,
     phpVersion: String,
   },
-};
+}
 </script>
