@@ -29,13 +29,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('dashboard', function () {
         return Inertia::render('Dashboard');
     });
-    Route::get('dashboard2', function () {
-        return Inertia::render('Dashboard');
-    });
-    
-    Route::get('/testing', function() {
-        return dd(User::all());
-    });
 });
 
 // Route::get('/testing', function() {
