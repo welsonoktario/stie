@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Staff;
+use App\Models\Jurusan;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Dosen extends Model
 {
@@ -14,8 +16,9 @@ class Dosen extends Model
     public $incrementing = false;
 
     protected $keyType = 'string';
-    
 
+    protected $table = 'dosens';
+    
     protected $fillable = [
         'nid',
         'staff_nip',
@@ -24,4 +27,20 @@ class Dosen extends Model
         'tipe_dosen',
         'konsentrasi',
     ];
+    
+
+    public function staff(){
+        return $this->belongsTo(Staff::class);
+    }
+    
+    /**
+     * Homebase/jurusan dosen
+     */
+    public function jurusan(){
+        return $this->belongsTo(Jurusan::class);
+    }
+
+    public function mahasiswas() {
+        return $this->hasMany(Mahasiswa::class);
+    }
 }

@@ -4,6 +4,7 @@ use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
+use App\Http\Controllers\ModelTestingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('dashboard', function () {
         return Inertia::render('Dashboard');
     });
+    Route::get('testing', [ModelTestingController::class, 'index']);
 });
 
 // Route::get('/testing', function() {

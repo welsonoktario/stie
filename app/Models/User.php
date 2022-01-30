@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Dosen;
 use App\Models\Staff;
 use App\Models\Mahasiswa;
+use App\Models\MahasiswaKonversi;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -67,10 +69,23 @@ class User extends Authenticatable
     }
 
     /**
-     * Relation to Staff
-     * return $this->hasOne(Staff::class, 'foreign_key', 'local_key')
+     * Relation to Mahasiswa
+     * return $this->hasOne(Magasiswa::class, 'foreign_key', 'local_key')
      */
     public function mahasiswa() {
         return $this->hasOne(Mahasiswa::class, 'user_id', 'id');
+    }
+
+    
+    /**
+     * Relation to Dosen (has one through staff)
+     * return $this->hasOne(Magasiswa::class, 'foreign_key', 'local_key')
+     */
+    public function dosen() {
+        return $this->hasOneThrough(Dosen::class, Staff::class);
+    }
+
+    public function mahasiswa_konversi(){
+        return $this->hasOneThrough(MahasiswaKonversi::class, Mahasiswa::class);
     }
 }

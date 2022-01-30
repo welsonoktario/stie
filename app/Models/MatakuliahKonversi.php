@@ -2,19 +2,39 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Matakuliah;
+use App\Models\MatakuliahKonversi;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class MatakuliahKonversi extends Model
 {
     use HasFactory;
 
+    protected $table = 'matakuliah_konversis';
+
     protected $fillable = [
         'id',
-        'kurikulum_id',
         'kode_matakuliah',
         'nama_matakuliah',
-        'sks',
-        'tipe',
+        'sks_matakuliah',
+        'nilai_matakuliah',
+        'mahasiswa_konversi_id',
+        'matakuliah_id',
     ];
+
+    /**
+     * Compare past matakuliah with one new matakuliah
+     */
+    public function matakuliah(){
+        return $this->belongsTo(Matakuliah::class);
+    }
+
+    /**
+     * Matakuliah konversi taken by mahasiswa konversi
+     */
+    public function mahasiswa_konversi(){
+        return $this->belongsTo(MatakuliahKonversi::class);
+    }
+
 }

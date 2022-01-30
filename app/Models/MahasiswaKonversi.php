@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Mahasiswa;
+use App\Models\MatakuliahKonversi;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class MahasiswaKonversi extends Model
 {
     use HasFactory;
+
+    protected $table = 'mahasiswa_konversis';
 
     protected $fillable = [
         'id',
@@ -17,4 +21,12 @@ class MahasiswaKonversi extends Model
         'jurusan_asal',
         'jenjang_pendidikan',
     ];
+
+    public function mahasiswa(){
+        return $this->belongsTo(Mahasiswa::class);
+    }
+
+    public function matakuliah_konversis(){
+        return $this->hasMany(MatakuliahKonversi::class);
+    }
 }

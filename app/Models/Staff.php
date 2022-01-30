@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Dosen;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Staff extends Model
 {
@@ -14,6 +15,8 @@ class Staff extends Model
     public $incrementing = false;
 
     protected $keyType = 'string';
+
+    protected $table = 'staffs';
     
     protected $fillable = [
         'nip',
@@ -27,6 +30,11 @@ class Staff extends Model
     ];
 
     public function user(){
-        return belongsTo(User::ckass);
+        return $this->belongsTo(User::class);
+        
+    }
+    
+    public function dosen(){
+        return $this->hasOne(Dosen::class, 'staff_nip', 'nip');
     }
 }

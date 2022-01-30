@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\User;
+use App\Models\Dosen;
+use App\Models\Jurusan;
+use App\Models\MahasiswaKonversi;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Mahasiswa extends Model
 {
@@ -15,6 +19,7 @@ class Mahasiswa extends Model
 
     protected $keyType = 'string';
     
+    protected $table = 'mahasiswas';
 
     protected $fillable = [
         'npm',
@@ -42,4 +47,26 @@ class Mahasiswa extends Model
         'uang_semester',
         'status_mahasiswa',
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
+    public function mahasiswa_konversi(){
+        return $this->hasOne(MahasiswaKonversi::class);
+    }
+
+    /**
+     * Jurusan yang diambil
+     */
+    public function jurusan(){
+        return $this->belongsTo(Jurusan::class);
+    }
+
+    /**
+     * Dosen Wali
+     */
+    public function dosen() {
+        return $this->belongsTo(Dosen::class);
+    }
 }
