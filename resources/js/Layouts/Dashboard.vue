@@ -1,23 +1,23 @@
 <template>
   <div class="flex flex-col h-screen">
     <NavBar />
-    <div class="h-full flex flex-row flex-wrap">
+    <div class="h-full flex flex-row">
       <SideBar />
-      <div class="bg-gray-100 flex-1 p-6">
+      <main class="bg-zinc-100 dark:bg-zinc-900 dark:text-zinc-100 flex-1 p-6">
         <slot />
-      </div>
+      </main>
     </div>
   </div>
 </template>
 
 <script>
-import NavBar from "@layouts/Base/NavBar.vue";
-import SideBar from "@layouts/Base/SideBar.vue";
+import NavBar from "@layouts/Base/NavBar.vue"
+import SideBar from "@layouts/Base/SideBar.vue"
 
 export default {
   components: {
     NavBar,
     SideBar,
   },
-};
+}
 </script>

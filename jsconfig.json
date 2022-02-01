@@ -5,7 +5,7 @@
             "@/*": ["resources/js/*"],
             "@layouts/*": ["resources/js/Layouts/*"],
             "@components/*": ["resources/js/Components/*"],
-            "@pages/*": ["resources/js/Pages/*"],
+            "@pages/*": ["resources/js/Pages/*"]
         }
     },
     "exclude": ["node_modules", "public"]

@@ -3,24 +3,24 @@
 
     <BreezeValidationErrors class="mb-4" />
 
-    <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
+    <div v-if="status" class="mb-4 font-medium text-sm text-teal-600">
         {{ status }}
     </div>
 
     <form @submit.prevent="submit">
         <div>
             <BreezeLabel for="email" value="Email" />
-            <BreezeInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autofocus autocomplete="username" />
+            <BreezeInput id="email" v-model="form.email" type="email" class="mt-1 block w-full" required autofocus autocomplete="username" />
         </div>
 
         <div class="mt-4">
             <BreezeLabel for="password" value="Password" />
-            <BreezeInput id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="current-password" />
+            <BreezeInput id="password" v-model="form.password" type="password" class="mt-1 block w-full" required autocomplete="current-password" />
         </div>
 
         <div class="block mt-4">
             <label class="flex items-center">
-                <BreezeCheckbox name="remember" v-model:checked="form.remember" />
+                <BreezeCheckbox v-model:checked="form.remember" name="remember" />
                 <span class="ml-2 text-sm text-gray-600">Remember me</span>
             </label>
         </div>
@@ -47,7 +47,6 @@ import BreezeValidationErrors from '@/Components/ValidationErrors.vue'
 import { Head, Link } from '@inertiajs/inertia-vue3';
 
 export default {
-    layout: BreezeGuestLayout,
 
     components: {
         BreezeButton,
@@ -58,6 +57,7 @@ export default {
         Head,
         Link,
     },
+    layout: BreezeGuestLayout,
 
     props: {
         canResetPassword: Boolean,

@@ -1,10 +1,10 @@
 <template>
   <!-- start navbar -->
-  <div
-    class="md:w-full md:z-20 flex flex-row justify-between items-center bg-white p-6 border-b border-gray-300"
+  <nav
+    class="md:w-full md:z-20 flex flex-row justify-between items-center bg-white dark:bg-zinc-800 p-6 border-b border-zinc-300 dark:border-zinc-700 text-zinc-800 dark:text-zinc-100"
   >
     <!-- sidebar toggle -->
-    <button @click="toggleSidebar()" id="navbarToggle" class="md:hidden pr-3">
+    <button id="navbarToggle" class="md:hidden pr-3" @click="toggleSidebar()">
       <MenuIcon class="h-5 w-5" />
     </button>
     <!-- end sidebar toggle -->
@@ -18,7 +18,9 @@
         class="w-9 md:w-12 flex-none"
       />
       <div class="flex flex-col ml-2">
-        <strong class="capitalize text-sm md:text-base">sistem informasi akademi</strong>
+        <strong class="capitalize text-sm md:text-base"
+          >sistem informasi akademi</strong
+        >
         <p class="text-xs md:text-sm">STIE Bulungan Tarakan</p>
       </div>
     </div>
@@ -26,9 +28,9 @@
 
     <!-- navbar content toggle -->
     <button
-      @click="isNavbarContentOpen = !isNavbarContentOpen"
       id="navbarToggle"
       class="hidden md:block md:fixed right-0 mr-6"
+      @click="isNavbarContentOpen = !isNavbarContentOpen"
     >
       <ChevronDownIcon class="h-5 w-5" />
     </button>
@@ -37,15 +39,15 @@
     <!-- navbar content -->
     <div
       id="navbar"
-      class="md:bg-white pl-3 md:flex flex-row justify-between items-end md:flex-col md:items-end md:mr-6"
+      class="md:bg-white dark:md:bg-zinc-800 pl-3 md:flex flex-row justify-between items-end md:flex-col md:items-end md:mr-6"
     >
       <!-- right -->
       <div class="flex items-center">
         <!-- user -->
         <div class="dropdown relative md:static">
           <button
-            @click="isNavbarContentOpen = !isNavbarContentOpen"
             class="menu-btn focus:outline-none focus:shadow-outline flex items-center"
+            @click="isNavbarContentOpen = !isNavbarContentOpen"
           >
             <div class="w-8 h-8 overflow-hidden rounded-full">
               <img
@@ -55,51 +57,51 @@
             </div>
 
             <div class="hidden ml-2 capitalize md:flex">
-              <h1
-                class="text-sm text-gray-800 font-semibold m-0 p-0 leading-none"
-              >
-                Welson
+              <h1 class="text-sm font-semibold m-0 p-0 leading-none">
+                {{ $page.props.auth.user.name }}
               </h1>
             </div>
           </button>
 
           <button
-            @click="isNavbarContentOpen = !isNavbarContentOpen"
             :class="{ hidden: !isNavbarContentOpen }"
             class="fixed top-0 left-0 z-10 w-full h-full menu-overflow"
+            @click="isNavbarContentOpen = !isNavbarContentOpen"
           ></button>
 
           <div
-            class="text-gray-500 menu md:mt-4 md:mr-6 rounded bg-white shadow-md absolute z-20 right-0 w-40 mt-5 py-2"
+            class="flex flex-col text-zinc-500 menu md:mt-4 md:mr-6 rounded bg-white dark:bg-zinc-700 dark:text-zinc-100 shadow-md absolute z-20 right-0 w-40 mt-5 py-2"
             :class="{ hidden: !isNavbarContentOpen }"
           >
             <h1
-              class="md:hidden text-gray-800 font-semibold mb-4 p-0 text-center"
+              class="md:hidden dark:text-zinc-200 font-semibold mb-4 p-0 text-center"
             >
-              Welson
+              {{ $page.props.auth.user.name }}
             </h1>
             <!-- item -->
-            <a
-              class="px-4 py-2 flex flex-row content-center capitalize font-medium text-sm tracking-wide bg-white hover:bg-gray-200 hover:text-gray-900 transition-all duration-300 ease-in-out"
+            <Link
+              class="px-4 py-2 inline-flex content-center font-medium text-sm tracking-wide bg-white dark:bg-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-600 hover:text-zinc-800 dark:hover:text-zinc-100 transition-all duration-300 ease-in-out"
               href="#"
+              as="button"
+              type="button"
             >
               <UserIcon class="w-4 h-4 my-auto mr-2" />
-              <span>ubah profil</span>
-            </a>
+              <span class="flex-1 text-left">Ubah Profil</span>
+            </Link>
             <!-- end item -->
 
             <hr />
 
             <!-- item -->
             <Link
-              class="px-4 py-2 flex flex-row content-center capitalize font-medium text-sm tracking-wide bg-white hover:bg-gray-200 hover:text-gray-900 transition-all duration-300 ease-in-out"
+              class="px-4 py-2 inline-flex content-center font-medium text-sm tracking-wide bg-white dark:bg-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-600 hover:text-zinc-800 dark:hover:text-zinc-100 transition-all duration-300 ease-in-out"
               href="/logout"
               method="post"
               as="button"
               type="button"
             >
               <LogoutIcon class="w-4 h-4 my-auto mr-2" />
-              <span>log out</span>
+              <span class="flex-1 text-left">Log Out</span>
             </Link>
             <!-- end item -->
           </div>
@@ -109,20 +111,20 @@
       <!-- end right -->
     </div>
     <!-- end navbar content -->
-  </div>
+  </nav>
   <!-- end navbar -->
 </template>
 
 <script>
-import eventBus from "@/eventBus";
+import eventBus from "@/eventBus"
 import {
   ChevronDownIcon,
   LogoutIcon,
   MenuIcon,
   UserIcon,
-} from "@heroicons/vue/solid";
-import { Link } from "@inertiajs/inertia-vue3";
-import { ref } from "vue";
+} from "@heroicons/vue/solid"
+import { Link } from "@inertiajs/inertia-vue3"
+import { ref } from "vue"
 
 export default {
   components: {
@@ -133,11 +135,11 @@ export default {
     Link,
   },
   setup() {
-    const isNavbarContentOpen = ref(false);
+    const isNavbarContentOpen = ref(false)
 
-    const toggleSidebar = () => eventBus.$emit("sidebar-toggle");
+    const toggleSidebar = () => eventBus.$emit("sidebar-toggle")
 
-    return { isNavbarContentOpen, toggleSidebar };
+    return { isNavbarContentOpen, toggleSidebar }
   },
-};
+}
 </script>
