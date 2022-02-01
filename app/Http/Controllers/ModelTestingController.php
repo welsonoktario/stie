@@ -53,9 +53,10 @@ class ModelTestingController extends Controller
         // user -> mahasiswa
         $mahasiswas = User::has('mahasiswa')
             ->with('mahasiswa.jurusan')
-            ->with('dosen') // gets dosen wali
+            ->with('mahasiswa.dosen.staff.user') // gets dosen wali
             ->get();
 
+            // dd(($mahasiswas[0]));
         foreach ($mahasiswas as $mahasiswa) {
             echo 'Nama: '.$mahasiswa->name
             .', NPM: '.$mahasiswa->mahasiswa->npm
@@ -63,6 +64,8 @@ class ModelTestingController extends Controller
             .', Doswal: '.$mahasiswa->mahasiswa->dosen->staff->user->name
             .'<br>';
         }
+
+        // dd(($mahasiswas));
 
         echo"<br>";
         
@@ -74,13 +77,14 @@ class ModelTestingController extends Controller
         echo "<b>Mahasiswa Konversi</b><br>";
         
         $mahasiswa_konversis = User::has('mahasiswa_konversi')
-            ->with('mahasiswa.mahasiswa_konversi.matakuliah_konversis')->get();
+            ->with('mahasiswa.mahasiswa_konversi.matakuliah_konversis.matakuliah')->get();
         // dd($mahasiswa_konversis);
         
+        // dd($mahasiswa_konversis);
         foreach ($mahasiswa_konversis as $mahasiswa) {
             echo 'Nama: '.$mahasiswa->name.
             ', NPM: '.$mahasiswa->mahasiswa->npm.
-            ', PT Asal: '.$mahasiswa->mahasiswa_konversi->perguruan_tinggi_asal.'<br>';
+            ', PT Asal: '.$mahasiswa->mahasiswa->mahasiswa_konversi->perguruan_tinggi_asal.'<br>';
 
             $matakuliah_konversis = $mahasiswa->mahasiswa->mahasiswa_konversi->matakuliah_konversis;
             if (count($matakuliah_konversis) > 0)
