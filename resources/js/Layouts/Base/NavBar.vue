@@ -97,8 +97,8 @@
               class="px-4 py-2 inline-flex content-center font-medium text-sm tracking-wide bg-white dark:bg-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-600 hover:text-zinc-800 dark:hover:text-zinc-100 transition-all duration-300 ease-in-out"
               href="/logout"
               method="post"
-              as="button"
-              type="button"
+              as="link"
+              type="link"
             >
               <LogoutIcon class="w-4 h-4 my-auto mr-2" />
               <span class="flex-1 text-left">Log Out</span>
