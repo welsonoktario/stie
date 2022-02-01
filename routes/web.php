@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Master\Karyawan\KaryawanController;
 use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +32,12 @@ Route::group(['middleware' => ['auth']], function () {
         return Inertia::render('Dashboard');
     });
     Route::get('testing', [ModelTestingController::class, 'index']);
+
+    // Master route
+    Route::group(['prefix' => 'master'], function(){
+        Route::resource('karyawan', KaryawanController::class);
+    });
+
 });
 
 // Route::get('/testing', function() {

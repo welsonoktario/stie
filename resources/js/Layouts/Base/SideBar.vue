@@ -65,7 +65,7 @@
               <Link
                 v-for="subMenu in menu.subMenus"
                 :key="subMenu.name"
-                href="#"
+                :href="route(subMenu.route)"
                 class="py-2 px-4 text-sm rounded-lg hover:text-teal-400 hover:bg-teal-200/25 transition ease-in-out duration-250"
                 >{{ subMenu.label }}</Link
               >
@@ -129,7 +129,23 @@ export default {
             icon: UserGroupIcon,
             label: "Karyawan",
             name: "master-karyawan",
-            subMenus: [],
+            subMenus: [
+              {
+                name: "karyawan-semua",
+                label: "Semua",
+                route: "login"
+              },
+              {
+                name: "karyawan-karyawan",
+                label: "Karyawan",
+                route: "karyawan.index"
+              },
+              {
+                name: "karyawan-dosen",
+                label: "Dosen",
+                route: "login"
+              },
+            ],
           },
           {
             icon: AcademicCapIcon,
@@ -145,14 +161,17 @@ export default {
               {
                 name: "mahasiswa-semua",
                 label: "Semua",
+                route: "login"
               },
               {
                 name: "mahasiswa-reguler",
                 label: "Reguler",
+                route: "login"
               },
               {
                 name: "mahasiswa-konversi",
                 label: "Konversi",
+                route: "login"
               },
             ],
           },
@@ -188,10 +207,12 @@ export default {
               {
                 name: "ujian-uts",
                 label: "UTS",
+                route: "login"
               },
               {
                 name: "ujian-uas",
                 label: "UAS",
+                route: "login"
               },
             ],
           },
