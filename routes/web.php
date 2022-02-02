@@ -1,11 +1,14 @@
 <?php
 
-use App\Http\Controllers\Master\Karyawan\KaryawanController;
 use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\ModelTestingController;
+use App\Http\Controllers\Master\Akademik\JurusanController;
+use App\Http\Controllers\Master\Akademik\TahunAjaranController;
+use App\Http\Controllers\Master\Karyawan\KaryawanController;
+// use App\Models\TahunAjaran;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +39,8 @@ Route::group(['middleware' => ['auth']], function () {
     // Master route
     Route::group(['prefix' => 'master'], function(){
         Route::resource('karyawan', KaryawanController::class);
+        Route::resource('jurusan', JurusanController::class);
+        Route::resource('tahun_ajaran', TahunAjaranController::class);
     });
 
 });

@@ -14,8 +14,9 @@ class CreateStaffsTable extends Migration
     public function up()
     {
         Schema::create('staffs', function (Blueprint $table) {
-            $table->string('nip', 20);
-            $table->primary('nip');
+            // id karyawan default dari kampus (NI Karyawan)
+            $table->string('id', 45);
+            $table->primary('id');
             $table->enum('divisi', ['BAAK','Keuangan','Dosen','Data'])->nullable();
             $table->enum('level_pengguna',['Administrator','Staff','Super Admin'])->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
@@ -24,6 +25,12 @@ class CreateStaffsTable extends Migration
             $table->string('gelar_depan', 45)->nullable();
             $table->string('gelar_belakang', 45)->nullable();
             $table->enum('status_karyawan',['Aktif','Keluar'])->default('Aktif')->nullable();
+            // tambahan SK
+            $table->string('nomor_sk_awal', 125)->nullable();
+            $table->date('tanggal_sk_awal')->nullable();
+            $table->string('nomor_sk_akhir', 125)->nullable();
+            $table->date('tanggal_sk_akhir')->nullable();
+            
             $table->timestamps();
         });
     }

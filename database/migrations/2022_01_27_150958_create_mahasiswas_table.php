@@ -22,8 +22,8 @@ class CreateMahasiswasTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
 
             // doswal
-            $table->string('dosen_nid', 20)->nullable();
-            $table->foreign('dosen_nid')->references('nid')->on('dosens');
+            $table->string('dosen_id', 20)->nullable();
+            $table->foreign('dosen_id')->references('id')->on('dosens');
 
             // jurusan
             $table->unsignedBigInteger('jurusan_id')->nullable();

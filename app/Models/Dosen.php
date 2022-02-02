@@ -11,7 +11,7 @@ class Dosen extends Model
 {
     use HasFactory;
     
-    protected $primaryKey = 'nid';
+    protected $primaryKey = 'id';
 
     public $incrementing = false;
 
@@ -20,8 +20,8 @@ class Dosen extends Model
     protected $table = 'dosens';
     
     protected $fillable = [
-        'nid',
-        'staff_nip',
+        'id',
+        'staff_id',
         'jurusan_id',
         'jabatan_akademik',
         'tipe_dosen',

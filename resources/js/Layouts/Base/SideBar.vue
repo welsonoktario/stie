@@ -151,7 +151,13 @@ export default {
             icon: AcademicCapIcon,
             label: "Akademik",
             name: "master-akademik",
-            subMenus: [],
+            subMenus: [
+              {
+                name: "akademik-jurusan",
+                label: "Jurusan / Program Studi",
+                route: "jurusan.index"
+              },
+            ],
           },
           {
             icon: UsersIcon,

@@ -33,11 +33,15 @@ class KaryawanController extends Controller
         
         // dd($karyawans);
         
-        $karyawans = Staff::doesntHave('dosen')->with(['user'])->orderBy('created_at','desc')->get();
+        $karyawans = Staff::doesntHave('dosen')->with(['user','tenaga_kependidikan'])->orderBy('created_at','desc')->get()->toArray();
+        
+        
+        // dd($karyawans);
         // dd($karyawans);  
         return Inertia::render('Master/Karyawan/KaryawanKaryawan',[
             'karyawanss' => $karyawans
         ]);
+
     }
 
     /**
@@ -62,7 +66,7 @@ class KaryawanController extends Controller
         $name = $request->name;
         $email = $request->email;
         $nik = $request->nik;
-        $nip = $request->nip;
+        $id = $request->id;
 
         $user = new User();
         $user->name = $name;
@@ -73,7 +77,7 @@ class KaryawanController extends Controller
         
         if($user_completed){
             $karyawan = new Staff;
-            $karyawan->nip = $nip;
+            $karyawan->id = $id;
             $karyawan->user()->associate($user);
             $karyawan_completed = $karyawan->save();
             if ($karyawan_completed){
@@ -94,7 +98,7 @@ class KaryawanController extends Controller
     public function show($id)
     {
         //
-        $staff = Staff::where('nip','=',$id)->with('user')->get()->first();
+        $staff = Staff::where('id','=',$id)->with('user')->get()->first();
         // dd($staff, $id);
         // dd($staff);
         return Inertia::render('Master/Karyawan/KaryawanKaryawanDetail',[
@@ -125,9 +129,9 @@ class KaryawanController extends Controller
         $name = $request->name;
         $email = $request->email;
         $nik = $request->nik;
-        $nip = $request->nip;
+        $id = $request->id;
 
-        $staff = Staff::where('nip','=',$id)->get()->first();
+        $staff = Staff::where('id','=',$id)->get()->first();
         $staff->user->name = $name;
         $staff->user->email = $email;
         $staff->user->nik = $nik;
@@ -140,7 +144,7 @@ class KaryawanController extends Controller
             return redirect()->back();
         }
         if($user){
-            $staff->nip = $nip;
+            $staff->id = $id;
             try {
                 $karyawan_completed = $staff->save();
             } catch (\Throwable $th) {
@@ -165,7 +169,7 @@ class KaryawanController extends Controller
     {
         // dd($id);
         // dd('wow');
-        $staff = Staff::where('nip', '=', $id)->firstOrFail();
+        $staff = Staff::where('id', '=', $id)->firstOrFail();
 
         $staff->delete();
         $staff->user->delete();

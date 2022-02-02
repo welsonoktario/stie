@@ -15,13 +15,13 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('nik', 20)->nullable()->unique();
+            $table->string('nik', 20)->nullable();
             $table->string('name');
             $table->string('nama_panggilan', 45)->nullable();
             $table->enum('jenis_kelamin', ['Laki-laki','Perempuan'])->nullable();
             $table->enum('agama', ['Islam', 'Kristen', 'Katolik', 'Budha', 'Hindu', 'Konghucu'])->nullable();
             $table->string('nomor_hp', 20)->nullable();
-            $table->string('email')->unique();
+            $table->string('email')->nullable();
             $table->string('tempat_lahir', 45)->nullable();
             $table->date('tanggal_lahir')->nullable();
             $table->string('jalan', 50)->nullable();

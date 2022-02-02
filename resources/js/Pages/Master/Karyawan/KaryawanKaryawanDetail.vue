@@ -20,6 +20,14 @@
       </div>
       <form @submit.prevent='submit(route().current())'>
         <div class="mb-3">
+          <label class="block text-gray-500 text-sm font-bold mb-2" for="id"> ID <i> (Nomor Induk Karyawan)</i> </label>
+          <Input v-model='form.id' class="w-full" id="id" type="text" placeholder="ID"></Input>
+        </div>
+        <div class="mb-3">
+          <label class="block text-gray-500 text-sm font-bold mb-2" for="nitk"> NITK <i> (Tenaga Kependidikan - Opsional)</i> </label>
+          <Input v-model='form.id' class="w-full" id="nitk" type="text" placeholder="NITK (Opsional)"></Input>
+        </div>
+        <div class="mb-3">
           <label class="block text-gray-500 text-sm font-bold mb-2" for="nama"> Nama </label>
           <Input v-model='form.name' class="w-full" id="nama" type="text" placeholder="Nama"></Input>
         </div>
@@ -28,17 +36,13 @@
           <Input v-model='form.nik' class="w-full" id="nik" type="text" placeholder="NIK"></Input>
         </div>
         <div class="mb-3">
-          <label class="block text-gray-500 text-sm font-bold mb-2" for="nip"> NIP </label>
-          <Input v-model='form.nip' class="w-full" id="nip" type="text" placeholder="NIP"></Input>
-        </div>
-        <div class="mb-3">
           <label class="block text-gray-500 text-sm font-bold mb-2" for="email"> Email </label>
           <Input v-model='form.email' class="w-full" id="email" type="text" placeholder="Email"></Input>
         </div>
-				<div class="flex justify-between">
+        <div class="flex justify-between">
         	<Button class="px-10">Simpan</Button>
 					<Link @click='remove()' class="text-red-500">Hapus Data Karyawan</Link>
-				</div>
+        </div>
       </form>
 
     </div>
@@ -73,14 +77,10 @@ export default {
   },
   setup(props){
     const form = reactive({
-      // email: props.staff.user.email,
-      // name: props.staff.user.name,
-      // nik: props.staff.user.nik,
-      // nip: props.staff.nip,
       email: props.staff == null ? null : props.staff.user.email,
       name: props.staff == null ? null : props.staff.user.name,
       nik: props.staff == null ? null : props.staff.user.nik,
-      nip: props.staff == null ? null : props.staff.nip,
+      id: props.staff == null ? null : props.staff.id,
     });
 
     function submit(curRoute) {
@@ -89,13 +89,13 @@ export default {
 				// alert(props.staff == null ? 'null bro' : 'ada bro')
       	Inertia.post('/master/karyawan', form)
 			} else {
-				Inertia.put(route('karyawan.update', props.staff.nip), form)
+				Inertia.put(route('karyawan.update', props.staff.id), form)
 			}
     }
 
 		function remove(){
 			// alert(props.staff.nip);
-			Inertia.delete(route('karyawan.destroy', props.staff.nip))
+			Inertia.delete(route('karyawan.destroy', props.staff.id))
 			
 		}
     return {

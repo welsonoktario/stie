@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Dosen;
+use App\Models\TenagaKependidikan;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -10,7 +11,7 @@ class Staff extends Model
 {
     use HasFactory;
     
-    protected $primaryKey = 'nip';
+    protected $primaryKey = 'id';
 
     public $incrementing = false;
 
@@ -19,7 +20,7 @@ class Staff extends Model
     protected $table = 'staffs';
     
     protected $fillable = [
-        'nip',
+        'id',
         'divisi',
         'level_pengguna',
         'user_id',
@@ -35,6 +36,10 @@ class Staff extends Model
     }
     
     public function dosen(){
-        return $this->hasOne(Dosen::class, 'staff_nip', 'nip');
+        return $this->hasOne(Dosen::class, 'staff_id', 'id');
+    }
+
+    public function tenaga_kependidikan() {
+        return $this->hasOne(TenagaKependidikan::class, 'staff_id', 'id');
     }
 }

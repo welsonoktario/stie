@@ -15,8 +15,8 @@ class CreateJadwalDosenTable extends Migration
     {
         Schema::create('jadwal_dosen', function (Blueprint $table) {
             // $table->id();
-            $table->string('dosen_nid');
-            $table->foreign('dosen_nid')->references('nid')->on('dosens');
+            $table->string('dosen_id');
+            $table->foreign('dosen_id')->references('id')->on('dosens');
             $table->unsignedBigInteger('jadwal_id');
             $table->foreign('jadwal_id')->references('id')->on('jadwals');
             $table->timestamps();

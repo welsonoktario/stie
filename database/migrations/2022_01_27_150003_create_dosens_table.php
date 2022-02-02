@@ -14,11 +14,13 @@ class CreateDosensTable extends Migration
     public function up()
     {
         Schema::create('dosens', function (Blueprint $table) {
-            $table->string('nid', 20);
-            $table->primary('nid');
+            $table->string('id', 20);
+            $table->primary('id');
             
-            $table->string('staff_nip', 20);
-            $table->foreign('staff_nip')->references('nip')->on('staffs');
+            $table->string('staff_id', 45);
+            $table->foreign('staff_id')->references('id')->on('staffs');
+
+            $table->enum('tipe_id', ['NIDN', 'NIDK', 'NUPN'])->nullable()->default('NIDN');
 
             $table->unsignedBigInteger('jurusan_id')->nullable();
             $table->foreign('jurusan_id')->references('id')->on('jurusans');
