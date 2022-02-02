@@ -157,6 +157,11 @@ export default {
                 label: "Jurusan / Program Studi",
                 route: "jurusan.index"
               },
+              {
+                name: "akademik-tahun-ajaran",
+                label: "Tahun Ajaran",
+                route: "tahun_ajaran.index"
+              },
             ],
           },
           {
