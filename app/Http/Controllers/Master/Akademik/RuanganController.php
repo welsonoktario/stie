@@ -32,6 +32,7 @@ class RuanganController extends Controller
     public function create()
     {
         //
+        return Inertia::render('Master/Akademik/AkademikRuanganDetail');
     }
 
     /**
@@ -43,6 +44,14 @@ class RuanganController extends Controller
     public function store(Request $request)
     {
         //
+        $nama_ruangan = $request->nama_ruangan;
+
+        $ruangan = new Ruangan();
+        
+        $ruangan->nama_ruangan = $nama_ruangan;
+        $ruangan->save();
+
+        return redirect('master/ruangan');
     }
 
     /**
@@ -54,6 +63,11 @@ class RuanganController extends Controller
     public function show($id)
     {
         //
+        $ruangan = Ruangan::findOrFail($id);
+
+        return Inertia::render('Master/Akademik/AkademikRuanganDetail',[
+            'ruangan' => $ruangan,
+        ]);
     }
 
     /**
@@ -65,6 +79,7 @@ class RuanganController extends Controller
     public function edit($id)
     {
         //
+        
     }
 
     /**
@@ -77,6 +92,14 @@ class RuanganController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $nama_ruangan = $request->nama_ruangan;
+
+        $ruangan = Ruangan::findOrFail($id);
+        
+        $ruangan->nama_ruangan = $nama_ruangan;
+        $ruangan->save();
+
+        return redirect('master/ruangan');
     }
 
     /**

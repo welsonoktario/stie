@@ -1,0 +1,100 @@
+<template>
+  <DashboardLayout>
+    <div
+      class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
+    >
+      <!-- <div class="p-6">Karyawan / Karyawan</div> -->
+      <p class="text-xs md:text-sm text-slate-500">
+        Akademik / Ruangan /
+        <span v-if="route().current('ruangan.create')">Tambah</span>
+        <span v-else>Ubah</span>
+      </p>
+
+      <!-- <p>{{route().current()}}</p> -->
+      <div class="flex justify-between my-3 item-center">
+        <span class="align-middle">
+          <strong
+            class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
+          >
+            <span v-if="route().current('ruangan.create')">Tambah</span>
+            <span v-else>Ubah</span>
+            Ruangan</strong
+          >
+        </span>
+      </div>
+      <form @submit.prevent="submit(route().current())">
+        <div class="mb-3">
+          <label class="block text-gray-500 text-sm font-bold mb-2" for="nama_ruangan">
+            Nama Ruangan
+          </label>
+          <Input
+            v-model="form.nama_ruangan"
+            class="w-full"
+            id="nama_ruangan"
+            type="text"
+            placeholder="Nama Ruangan"
+          ></Input>
+        </div>
+        <div class="flex justify-between">
+          <Button class="px-10">Simpan</Button>
+          <Link v-if="!route().current('ruangan.create')" @click="remove()" class="text-red-500"
+            >Hapus Data Ruangan</Link
+          >
+        </div>
+      </form>
+    </div>
+  </DashboardLayout>
+</template>
+
+<script>
+import DashboardLayout from "@layouts/Dashboard.vue"
+
+import Input from "@components/Input.vue"
+import Button from "@components/Button.vue"
+
+import { Link } from "@inertiajs/inertia-vue3"
+
+import util from "@/util"
+
+import { reactive, ref } from "vue"
+import { Inertia } from "@inertiajs/inertia"
+export default {
+  components: {
+    DashboardLayout,
+    Link,
+    Input,
+    Button,
+  },
+  props: {
+    ruangan: {
+      type: Object,
+      default: null,
+    },
+  },
+  setup(props) {
+    const form = reactive({
+      nama_ruangan: props.ruangan == null ? null : props.ruangan.nama_ruangan,
+    })
+
+    function submit(curRoute) {
+      // alert(curRoute)
+      if (curRoute === "ruangan.create") {
+        // alert('store')
+        Inertia.post(route('ruangan.store', form))
+      } else {
+        // alert('update')
+        Inertia.put(route("ruangan.update", props.ruangan.id), form)
+      }
+    }
+    function remove() {
+      // alert(props.staff.nip);
+      Inertia.delete(route("ruangan.destroy", props.ruangan.id))
+    }
+    return {
+      form,
+      submit,
+      remove,
+    }
+  },
+}
+</script>
