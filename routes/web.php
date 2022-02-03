@@ -45,6 +45,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('jurusan', JurusanController::class);
         Route::resource('tahun_ajaran', TahunAjaranController::class);
         Route::resource('ruangan', RuanganController::class);
+        Route::resource('kurikulum', RuanganController::class);
     });
 
 });

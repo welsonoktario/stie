@@ -167,6 +167,11 @@ export default {
                 label: "Ruangan",
                 route: "ruangan.index"
               },
+              {
+                name: "akademik-kurikulum",
+                label: "Kurikulum",
+                route: "kurikulum.index"
+              },
             ],
           },
           {
