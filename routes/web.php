@@ -8,8 +8,10 @@ use App\Http\Controllers\ModelTestingController;
 
 // Master Menu Controller
 use App\Http\Controllers\Master\Akademik\JurusanController;
+use App\Http\Controllers\Master\Akademik\KurikulumController;
 use App\Http\Controllers\Master\Akademik\RuanganController;
 use App\Http\Controllers\Master\Akademik\TahunAjaranController;
+
 use App\Http\Controllers\Master\Karyawan\KaryawanController;
 // use App\Models\TahunAjaran;
 
@@ -45,7 +47,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('jurusan', JurusanController::class);
         Route::resource('tahun_ajaran', TahunAjaranController::class);
         Route::resource('ruangan', RuanganController::class);
-        Route::resource('kurikulum', RuanganController::class);
+        Route::resource('kurikulum', KurikulumController::class);
     });
 
 });
