@@ -9,9 +9,11 @@ use App\Http\Controllers\ModelTestingController;
 // Master Menu Controller
 use App\Http\Controllers\Master\Akademik\JurusanController;
 use App\Http\Controllers\Master\Akademik\KurikulumController;
+use App\Http\Controllers\Master\Akademik\MatakuliahController;
 use App\Http\Controllers\Master\Akademik\RuanganController;
 use App\Http\Controllers\Master\Akademik\TahunAjaranController;
 
+use App\Http\Controllers\Master\Karyawan\DosenController;
 use App\Http\Controllers\Master\Karyawan\KaryawanController;
 // use App\Models\TahunAjaran;
 
@@ -48,8 +50,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('tahun_ajaran', TahunAjaranController::class);
         Route::resource('ruangan', RuanganController::class);
         Route::resource('kurikulum', KurikulumController::class);
+        Route::resource('dosen', DosenController::class); 
+        Route::resource('matakuliah', MatakuliahController::class); 
     });
-
 });
 
 // Route::get('/testing', function() {
