@@ -143,7 +143,7 @@ export default {
               {
                 name: "karyawan-dosen",
                 label: "Dosen",
-                route: "login"
+                route: "dosen.index"
               },
             ],
           },
@@ -171,6 +171,11 @@ export default {
                 name: "akademik-kurikulum",
                 label: "Kurikulum",
                 route: "kurikulum.index"
+              },
+              {
+                name: "akademik-matakuliah",
+                label: "Matakuliah",
+                route: "matakuliah.index"
               },
             ],
           },
