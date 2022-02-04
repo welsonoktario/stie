@@ -24,6 +24,8 @@ class Matakuliah extends Model
         'tipe',
     ];
 
+    protected $casts = ['sks' => 'integer'];
+
     public function kurikulum(){
         return $this->belongsTo(Kurikulum::class);
     }
@@ -55,5 +57,5 @@ class Matakuliah extends Model
     public function matakuliah_konversi(){
         return $this->hasOne(MatakuliahKonversi::class);
     }
-    
+
 }

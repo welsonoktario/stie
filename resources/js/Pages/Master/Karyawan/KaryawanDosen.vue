@@ -1,19 +1,19 @@
 <template>
-  <DashboardLayout>
+  <AppLayout>
     <div
       class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
     >
       <!-- <div class="p-6">Karyawan / Karyawan</div> -->
       <p class="text-xs md:text-sm">Karyawan / Karyawan</p>
-      
+
       <div class="flex justify-between my-3 item-center">
         <span class="align-middle">
           <strong class="whitespace-nowrap capitalize text-sm md:text-lg content-middle">DAFTAR KARYAWAN</strong>
         </span>
-        <Link 
-          :href="route('karyawan.create')" 
-          method="get" 
-          as="button" 
+        <Link
+          :href="route('karyawan.create')"
+          method="get"
+          as="button"
           type="link"
           class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150"
           >
@@ -84,22 +84,22 @@
           </div>
         </div>
       </div>
-      
+
 
 
 
     </div>
-  </DashboardLayout>
+  </AppLayout>
 </template>
 
 <script>
-import DashboardLayout from "@layouts/Dashboard.vue"
+import AppLayout from "@layouts/App.vue"
 
 import { Link } from "@inertiajs/inertia-vue3"
 
 export default {
   components: {
-    DashboardLayout,
+    AppLayout,
     Link
   },
   props: {

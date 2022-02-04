@@ -1,5 +1,5 @@
 <template>
-  <DashboardLayout>
+  <AppLayout>
     <div
       class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
     >
@@ -39,8 +39,8 @@
           <label class="block text-gray-500 text-sm font-bold mb-2" for="status">
             Status
           </label>
-          <select 
-            class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" 
+          <select
+            class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
             id="status"
             v-model="form.status">
             <option value="1">Aktif</option>
@@ -55,11 +55,11 @@
         </div>
       </form>
     </div>
-  </DashboardLayout>
+  </AppLayout>
 </template>
 
 <script>
-import DashboardLayout from "@layouts/Dashboard.vue"
+import AppLayout from "@layouts/App.vue"
 
 import Input from "@components/Input.vue"
 import Button from "@components/Button.vue"
@@ -72,7 +72,7 @@ import { reactive, ref } from "vue"
 import { Inertia } from "@inertiajs/inertia"
 export default {
   components: {
-    DashboardLayout,
+    AppLayout,
     Link,
     Input,
     Button,

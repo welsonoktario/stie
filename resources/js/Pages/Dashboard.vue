@@ -1,19 +1,19 @@
 <template>
-  <DashboardLayout>
+  <AppLayout>
     <div
       class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg"
     >
       <div class="p-6">You're logged in!</div>
     </div>
-  </DashboardLayout>
+  </AppLayout>
 </template>
 
 <script>
-import DashboardLayout from "@layouts/Dashboard.vue"
+import AppLayout from "@/Layouts/App.vue"
 
 export default {
   components: {
-    DashboardLayout,
+    AppLayout,
   },
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <DashboardLayout>
+  <AppLayout>
     <div
       class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
     >
@@ -43,11 +43,11 @@
         </div>
       </form>
     </div>
-  </DashboardLayout>
+  </AppLayout>
 </template>
 
 <script>
-import DashboardLayout from "@layouts/Dashboard.vue"
+import AppLayout from "@layouts/App.vue"
 
 import Input from "@components/Input.vue"
 import Button from "@components/Button.vue"
@@ -60,7 +60,7 @@ import { reactive, ref } from "vue"
 import { Inertia } from "@inertiajs/inertia"
 export default {
   components: {
-    DashboardLayout,
+    AppLayout,
     Link,
     Input,
     Button,
