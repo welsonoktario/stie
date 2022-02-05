@@ -3,21 +3,23 @@
     <div
       class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
     >
-      <!-- <div class="p-6">Karyawan / Karyawan</div> -->
-      <p class="text-xs md:text-sm">Karyawan / Karyawan</p>
+      <!-- <div class="p-6">Karyawan / Dosen</div> -->
+      <p class="text-xs md:text-sm">Karyawan / Dosen</p>
 
+      <!-- Belum bisa ubah id dosen dan staff -->
+      
       <div class="flex justify-between my-3 item-center">
         <span class="align-middle">
-          <strong class="whitespace-nowrap capitalize text-sm md:text-lg content-middle">DAFTAR KARYAWAN</strong>
+          <strong class="whitespace-nowrap capitalize text-sm md:text-lg content-middle">Daftar Dosen</strong>
         </span>
-        <Link
-          :href="route('karyawan.create')"
-          method="get"
-          as="button"
+        <Link 
+          :href="route('dosen.create')" 
+          method="get" 
+          as="button" 
           type="link"
           class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150"
           >
-          Tambah Karyawan
+          Tambah Dosen
         </Link>
 
       </div>
@@ -30,16 +32,22 @@
                 <thead class="bg-gray-50">
                   <tr>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      ID Dosen
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Nama
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Divisi
+                      Konsentrasi
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Status Karyawan
+                      Tipe ID
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Level Pengguna
+                      Jurusan
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Status
                     </th>
                     <th scope="col" class="relative px-6 py-3">
                       <!-- <span class="sr-only">Edit</span>
@@ -48,34 +56,31 @@
                   </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                  <tr v-for="person in karyawanss" :key="person.email">
+                  <tr v-for="dosen in dosens" :key="dosen.id">
 
                     <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="flex items-center">
-                        <div class="ml-0">
-                          <div class="text-sm font-medium text-gray-900">
-                            {{ person.user.name }}
-                          </div>
-                          <div class="text-sm text-gray-500">
-                            {{ person.user.email }}
-                          </div>
-                        </div>
-                      </div>
+                      <div class="text-sm text-gray-500">{{ dosen.id }}</div>
                     </td>
 
                     <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="text-sm text-gray-500">{{ person.divisi }}</div>
+                      <div class="text-sm text-gray-900">{{ dosen.staff.user.name }}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap  text-sm text-gray-500">
+                      {{ dosen.konsentrasi }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap  text-sm text-gray-500">
+                      {{ dosen.tipe_id }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {{ dosen.jurusan != null ? dosen.jurusan.nama : '-'   }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                       <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                        {{person.status_karyawan}}
+                        {{dosen.staff.status_karyawan}}
                       </span>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {{ person.level_pengguna  }}
-                    </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <Link :href="route('karyawan.show', person.id)" class="text-indigo-600 hover:text-indigo-900">Edit</Link>
+                      <Link :href="route('dosen.show', dosen.id)" class="text-indigo-600 hover:text-indigo-900">Edit</Link>
                     </td>
                   </tr>
                 </tbody>
@@ -106,6 +111,10 @@ export default {
     karyawanss: {
       type: Object
     },
+    dosens: {
+      type: Object,
+      default: null
+    }
   },
   setup(props){
 
