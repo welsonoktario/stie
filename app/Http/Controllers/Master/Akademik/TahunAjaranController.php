@@ -6,7 +6,6 @@ use Inertia\Inertia;
 use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use CreateTahunAjaransTable;
 
 class TahunAjaranController extends Controller
 {
@@ -17,12 +16,12 @@ class TahunAjaranController extends Controller
      */
     public function index()
     {
-        //
-
         $tahun_ajaran = TahunAjaran::all();
-        return Inertia::render('Master/Akademik/AkademikTahunAjaran',[
-            'tahun_ajarans' => $tahun_ajaran
-        ]);
+
+        return Inertia::render(
+            'Master/Akademik/AkademikTahunAjaran',
+            ['tahun_ajarans' => $tahun_ajaran]
+        );
     }
 
     /**
@@ -33,7 +32,7 @@ class TahunAjaranController extends Controller
     public function create()
     {
         //
-        
+
         return Inertia::render('Master/Akademik/AkademikTahunAjaranDetail');
     }
 
@@ -45,17 +44,15 @@ class TahunAjaranController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $tahun = $request->tahun_ajaran;
         $status = $request->status;
 
-        $tahun_ajaran = new TahunAjaran();
-        $tahun_ajaran->tahun_ajaran = $tahun;
-        
-        $tahun_ajaran->status = $status;
-        $tahun_ajaran->save();
-        return redirect('master/tahun_ajaran');
-        // dd($tahun, $status);
+        TahunAjaran::create([
+            'tahun_ajaran' => $tahun,
+            'status' => $status,
+        ]);
+
+        return redirect()->route('master.tahun_ajaran.index');
     }
 
     /**
@@ -66,15 +63,12 @@ class TahunAjaranController extends Controller
      */
     public function show($id)
     {
-        //
-        
         $tahun_ajaran = TahunAjaran::findOrFail($id);
 
-        return Inertia::render('Master/Akademik/AkademikTahunAjaranDetail',[
-            'tahun_ajaran' => $tahun_ajaran,
-        ]);
-        // dd($tahun_ajaran);
-        
+        return Inertia::render(
+            'Master/Akademik/AkademikTahunAjaranDetail',
+            ['tahun_ajaran' => $tahun_ajaran]
+        );
     }
 
     /**
@@ -97,18 +91,16 @@ class TahunAjaranController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
         $tahun = $request->tahun_ajaran;
         $status = $request->status;
 
         $tahun_ajaran = TahunAjaran::findOrFail($id);
-        $tahun_ajaran->tahun_ajaran = $tahun;
-        
-        // belum ada
-        $tahun_ajaran->status = $status;
-        $tahun_ajaran->save();
-        return redirect('master/tahun_ajaran');
-        // dd($tahun, $status);
+        $tahun_ajaran->update([
+            'tahun_ajaran' => $tahun,
+            'status' => $status,
+        ]);
+
+        return redirect()->route('master.tahun_ajaran.index');
     }
 
     /**
@@ -120,8 +112,8 @@ class TahunAjaranController extends Controller
     public function destroy($id)
     {
         $tahun_ajaran = TahunAjaran::findOrFail($id);
-        
         $tahun_ajaran->delete();
-        return redirect('master/tahun_ajaran');
+
+        return redirect()->route('master.tahun_ajaran.index');
     }
 }

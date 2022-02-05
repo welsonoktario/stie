@@ -15,10 +15,12 @@ class CreatePrasyaratTable extends Migration
     {
         Schema::create('prasyarat', function (Blueprint $table) {
             // $table->id();
-            $table->unsignedBigInteger('matakuliah_id');
-            $table->foreign('matakuliah_id')->references('id')->on('matakuliahs');
-            $table->unsignedBigInteger('prasyarat_id');
-            $table->foreign('prasyarat_id')->references('id')->on('matakuliahs');
+            // $table->unsignedBigInteger('matakuliah_id');
+            // $table->foreign('matakuliah_id')->references('id')->on('matakuliahs');
+            $table->foreignId('matakuliah_id')->constrained();
+            // $table->unsignedBigInteger('prasyarat_id');
+            // $table->foreign('prasyarat_id')->references('id')->on('matakuliahs');
+            $table->foreignId('prasyarat_id')->constrained('matakuliahs');
             $table->string('nilai_minimum', 3)->nullable();
             $table->timestamps();
         });

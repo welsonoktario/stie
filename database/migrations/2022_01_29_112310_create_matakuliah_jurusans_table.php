@@ -15,11 +15,13 @@ class CreateMatakuliahJurusansTable extends Migration
     {
         Schema::create('matakuliah_jurusans', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('matakuliah_id');
-            $table->foreign('matakuliah_id')->references('id')->on('matakuliahs');
-            $table->unsignedBigInteger('jurusan_id');
-            $table->foreign('jurusan_id')->references('id')->on('jurusans');
-            
+            // $table->unsignedBigInteger('matakuliah_id');
+            // $table->foreign('matakuliah_id')->references('id')->on('matakuliahs');
+            $table->foreignId('matakuliah_id')->constrained();
+            // $table->unsignedBigInteger('jurusan_id');
+            // $table->foreign('jurusan_id')->references('id')->on('jurusans');
+            $table->foreignId('jurusan_id')->constrained();
+
             $table->timestamps();
         });
     }

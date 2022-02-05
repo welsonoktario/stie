@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Master\Akademik;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\Master\Akademik\StoreMatakuliahRequest;
+use App\Http\Requests\Master\Akademik\UpdateMatakuliahRequest;
+use App\Models\Kurikulum;
+use App\Models\Matakuliah;
+use Inertia\Inertia;
 
 class MatakuliahController extends Controller
 {
@@ -14,7 +18,12 @@ class MatakuliahController extends Controller
      */
     public function index()
     {
-        //
+        $matakuliahs = Matakuliah::all();
+
+        return Inertia::render(
+            'Master/Akademik/Matakuliah/Index',
+            ['matakuliahs' => $matakuliahs]
+        );
     }
 
     /**
@@ -24,62 +33,100 @@ class MatakuliahController extends Controller
      */
     public function create()
     {
-        //
+        $kurikulums = Kurikulum::all();
+
+        return Inertia::render(
+            'Master/Akademik/Matakuliah/Create',
+            ['kurikulums' => $kurikulums]
+        );
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Master\Akademik\StoreMatakuliahRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreMatakuliahRequest $request)
     {
-        //
-    }
+        $matakuliah = Matakuliah::create($request->validated());
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        return redirect()
+            ->route('master.matakuliah.index')
+            ->with(
+                [
+                    'status' => 'OK',
+                    'msg' => "Matakuliah {$matakuliah->nama_matakuliah} berhasil ditambahkan"
+                ]
+            );
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Matakuliah  $matakuliah
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Matakuliah $matakuliah)
     {
-        //
+        $kurikulums = Kurikulum::all();
+
+        return Inertia::render(
+            'Master/Akademik/Matakuliah/Detail',
+            [
+                'matakuliah' => $matakuliah,
+                'kurikulums' => $kurikulums
+            ]
+        );
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Http\Requests\Master\Akademik\UpdateMatakuliahRequest  $request
+     * @param  \App\Models\Matakuliah  $matakuliah
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateMatakuliahRequest $request, Matakuliah $matakuliah)
     {
-        //
+        $matakuliah = Matakuliah::create($request->validated());
+
+        return redirect()
+            ->route('master.matakuliah.index')
+            ->with(
+                [
+                    'status' => 'OK',
+                    'msg' => "Matakuliah {$matakuliah->nama_matakuliah} berhasil ditambahkan"
+                ]
+            );
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Matakuliah  $matakuliah
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Matakuliah $matakuliah)
     {
-        //
+        if (!$matakuliah->delete()) {
+            return redirect()
+                ->route('master.matakuliah.index')
+                ->with(
+                    [
+                        'status' => 'FAIL',
+                        'msg' => "Terjadi kesalahan menghapus matakuliah {$matakuliah->nama_matakuliah}"
+                    ]
+                );
+        }
+
+        return redirect()
+            ->route('master.matakuliah.index')
+            ->with(
+                [
+                    'status' => 'OK',
+                    'msg' => "Matakuliah {$matakuliah->nama_matakuliah} berhasil ditambahkan"
+                ]
+            );
     }
 }

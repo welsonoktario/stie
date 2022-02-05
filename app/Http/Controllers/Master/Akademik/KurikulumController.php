@@ -16,14 +16,12 @@ class KurikulumController extends Controller
      */
     public function index()
     {
-        //
-        // dd('yu');
-
         $kurikulums = Kurikulum::all();
 
-        return Inertia::render('Master/Akademik/AkademikKurikulum.vue',[
-            'kurikulums' => $kurikulums,
-        ]);
+        return Inertia::render(
+            'Master/Akademik/AkademikKurikulum.vue',
+            ['kurikulums' => $kurikulums]
+        );
     }
 
     /**
@@ -33,7 +31,6 @@ class KurikulumController extends Controller
      */
     public function create()
     {
-        //
         return Inertia::render('Master/Akademik/AkademikKurikulumDetail.vue');
     }
 
@@ -48,14 +45,14 @@ class KurikulumController extends Controller
         $nama = $request->nama;
         $aktif = $request->status;
 
-        $kurikulum = new Kurikulum();
+        Kurikulum::create(
+            [
+                'nama' => $nama,
+                'aktif' => $aktif
+            ]
+        ); // return model
 
-        $kurikulum->nama = $nama;
-        $kurikulum->aktif = $aktif;
-
-        $kurikulum->save();
-
-        return redirect('master/kurikulum');
+        return redirect()->route('master.kurikulum.index');
     }
 
     /**
@@ -66,13 +63,12 @@ class KurikulumController extends Controller
      */
     public function show($id)
     {
-        //
-        
         $kurikulum = Kurikulum::findOrFail($id);
 
-        return Inertia::render('Master/Akademik/AkademikKurikulumDetail.vue',[
-            'kurikulum' => $kurikulum,
-        ]);
+        return Inertia::render(
+            'Master/Akademik/AkademikKurikulumDetail.vue',
+            ['kurikulum' => $kurikulum]
+        );
     }
 
     /**
@@ -100,12 +96,14 @@ class KurikulumController extends Controller
 
         $kurikulum = Kurikulum::findOrFail($id);
 
-        $kurikulum->nama = $nama;
-        $kurikulum->aktif = $aktif;
+        $kurikulum->update(
+            [
+                'nama' => $nama,
+                'aktif' => $aktif
+            ]
+        ); // return boolean
 
-        $kurikulum->save();
-
-        return redirect('master/kurikulum');
+        return redirect()->route('master.kurikulum.index');
     }
 
     /**
@@ -119,6 +117,6 @@ class KurikulumController extends Controller
         $kurikulum = Kurikulum::findOrFail($id);
         $kurikulum->delete();
 
-        return redirect('master/kurikulum');
+        return redirect()->route('master.kurikulum.index');
     }
 }

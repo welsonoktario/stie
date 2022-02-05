@@ -18,23 +18,25 @@ class CreateMahasiswasTable extends Migration
             $table->primary('npm');
             // foreign key
             // user id
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            // $table->unsignedBigInteger('user_id');
+            // $table->foreign('user_id')->references('id')->on('users');
+            $table->foreignId('user_id')->constrained();
 
             // doswal
             $table->string('dosen_id', 20)->nullable();
             $table->foreign('dosen_id')->references('id')->on('dosens');
 
             // jurusan
-            $table->unsignedBigInteger('jurusan_id')->nullable();
-            $table->foreign('jurusan_id')->references('id')->on('jurusans');
+            // $table->unsignedBigInteger('jurusan_id')->nullable();
+            // $table->foreign('jurusan_id')->references('id')->on('jurusans');
+            $table->foreignId('jurusan_id')->nullable()->constrained();
 
             // data pribadi
             $table->string('jenis_tinggal', 45)->nullable();
             $table->string('alat_transportasi', 45)->nullable();
             $table->string('nisn', 20)->nullable();
             $table->string('npwp', 15)->nullable();
-            
+
             // data ayah
             $table->string('nik_ayah', 20)->nullable();
             $table->string('nama_ayah', 100)->nullable();
@@ -52,7 +54,7 @@ class CreateMahasiswasTable extends Migration
             $table->string('pendidikan_ibu', 20)->nullable();
             $table->string('pekerjaan_ibu', 45)->nullable();
             $table->string('penghasilan_ibu', 15)->nullable();
-            
+
             $table->integer('uang_semester')->default(4000000)->nullable();
             $table->enum('status_mahasiswa', ['Aktif', 'Tidak Aktif', 'Lulus', 'Hilang', 'Cuti'])->default('Aktif');
 

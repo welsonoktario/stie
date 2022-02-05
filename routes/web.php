@@ -44,18 +44,17 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('testing', [ModelTestingController::class, 'index']);
 
     // Master route
-    Route::group(['prefix' => 'master'], function(){
-        Route::resource('karyawan', KaryawanController::class);
-        Route::resource('jurusan', JurusanController::class);
-        Route::resource('tahun_ajaran', TahunAjaranController::class);
-        Route::resource('ruangan', RuanganController::class);
-        Route::resource('kurikulum', KurikulumController::class);
-        Route::resource('dosen', DosenController::class); 
-        Route::resource('matakuliah', MatakuliahController::class); 
+    Route::group(['prefix' => 'master', 'as' => 'master.'], function () {
+        Route::resources([
+            'karyawan' => KaryawanController::class,
+            'jurusan' => JurusanController::class,
+            'tahun_ajaran' => TahunAjaranController::class,
+            'ruangan' => RuanganController::class,
+            'kurikulum' => KurikulumController::class,
+            'dosen' => DosenController::class,
+            'matakuliah' => MatakuliahController::class,
+        ]);
     });
 });
 
-// Route::get('/testing', function() {
-//     return dd(User::all());
-// });
 require __DIR__ . '/auth.php';

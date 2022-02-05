@@ -15,8 +15,9 @@ class CreateStatusCicilanTable extends Migration
     {
         Schema::create('status_cicilan', function (Blueprint $table) {
             // $table->id();
-            $table->unsignedBigInteger('tahun_ajaran');
-            $table->foreign('tahun_ajaran')->references('id')->on('tahun_ajarans');
+            // $table->unsignedBigInteger('tahun_ajaran');
+            // $table->foreign('tahun_ajaran')->references('id')->on('tahun_ajarans');
+            $table->foreignId('tahun_ajaran')->constrained();
 
             $table->string('mahasiswa_npm', 25);
             $table->foreign('mahasiswa_npm')->references('npm')->on('mahasiswas');

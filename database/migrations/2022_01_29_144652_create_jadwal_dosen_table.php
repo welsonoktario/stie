@@ -17,8 +17,10 @@ class CreateJadwalDosenTable extends Migration
             // $table->id();
             $table->string('dosen_id');
             $table->foreign('dosen_id')->references('id')->on('dosens');
-            $table->unsignedBigInteger('jadwal_id');
-            $table->foreign('jadwal_id')->references('id')->on('jadwals');
+
+            // $table->unsignedBigInteger('jadwal_id');
+            // $table->foreign('jadwal_id')->references('id')->on('jadwals');
+            $table->foreignId('jadwal_id')->constrained();
             $table->timestamps();
 
         });

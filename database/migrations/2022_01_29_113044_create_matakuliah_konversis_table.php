@@ -19,13 +19,15 @@ class CreateMatakuliahKonversisTable extends Migration
             $table->string('nama_matakuliah')->nullable();
             $table->string('sks_matakuliah')->nullable();
             $table->string('nilai_matakuliah')->nullable();
-            
-            $table->unsignedBigInteger('mahasiswa_konversi_id');
-            $table->foreign('mahasiswa_konversi_id')->references('id')->on('mahasiswa_konversis');
-            
-            $table->unsignedBigInteger('matakuliah_id');
-            $table->foreign('matakuliah_id')->references('id')->on('matakuliahs');
-            
+
+            // $table->unsignedBigInteger('mahasiswa_konversi_id');
+            // $table->foreign('mahasiswa_konversi_id')->references('id')->on('mahasiswa_konversis');
+            $table->foreignId('mahasiswa_konversi_id')->constrained();
+
+            // $table->unsignedBigInteger('matakuliah_id');
+            // $table->foreign('matakuliah_id')->references('id')->on('matakuliahs');
+            $table->foreignId('matakuliah_id')->constrained();
+
             $table->timestamps();
         });
     }

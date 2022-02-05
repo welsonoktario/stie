@@ -6,7 +6,6 @@ use App\Models\Dosen;
 use App\Models\Staff;
 use App\Models\Mahasiswa;
 use App\Models\MahasiswaKonversi;
-use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,7 +13,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -64,7 +63,8 @@ class User extends Authenticatable
      * Relation to Staff
      * return $this->hasOne(Staff::class, 'foreign_key', 'local_key')
      */
-    public function staff() {
+    public function staff()
+    {
         return $this->hasOne(Staff::class, 'user_id', 'id');
     }
 
@@ -72,20 +72,23 @@ class User extends Authenticatable
      * Relation to Mahasiswa
      * return $this->hasOne(Magasiswa::class, 'foreign_key', 'local_key')
      */
-    public function mahasiswa() {
+    public function mahasiswa()
+    {
         return $this->hasOne(Mahasiswa::class, 'user_id', 'id');
     }
 
-    
+
     /**
      * Relation to Dosen (has one through staff)
      * return $this->hasOne(Magasiswa::class, 'foreign_key', 'local_key')
      */
-    public function dosen() {
+    public function dosen()
+    {
         return $this->hasOneThrough(Dosen::class, Staff::class);
     }
 
-    public function mahasiswa_konversi(){
+    public function mahasiswa_konversi()
+    {
         return $this->hasOneThrough(MahasiswaKonversi::class, Mahasiswa::class);
     }
 }

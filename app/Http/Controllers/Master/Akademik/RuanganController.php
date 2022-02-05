@@ -17,11 +17,11 @@ class RuanganController extends Controller
     public function index()
     {
         $ruangans = Ruangan::all();
-        
-        //
-        return Inertia::render('Master/Akademik/AkademikRuangan',[
-            'ruangans' => $ruangans,
-        ]);
+
+        return Inertia::render(
+            'Master/Akademik/AkademikRuangan',
+            ['ruangans' => $ruangans]
+        );
     }
 
     /**
@@ -31,7 +31,6 @@ class RuanganController extends Controller
      */
     public function create()
     {
-        //
         return Inertia::render('Master/Akademik/AkademikRuanganDetail');
     }
 
@@ -43,15 +42,13 @@ class RuanganController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $nama_ruangan = $request->nama_ruangan;
 
-        $ruangan = new Ruangan();
-        
-        $ruangan->nama_ruangan = $nama_ruangan;
-        $ruangan->save();
+        Ruangan::create([
+            'nama_ruangan' => $nama_ruangan
+        ]);
 
-        return redirect('master/ruangan');
+        return redirect()->route('master.ruangan.index');
     }
 
     /**
@@ -62,12 +59,12 @@ class RuanganController extends Controller
      */
     public function show($id)
     {
-        //
         $ruangan = Ruangan::findOrFail($id);
 
-        return Inertia::render('Master/Akademik/AkademikRuanganDetail',[
-            'ruangan' => $ruangan,
-        ]);
+        return Inertia::render(
+            'Master/Akademik/AkademikRuanganDetail',
+            ['ruangan' => $ruangan]
+        );
     }
 
     /**
@@ -79,7 +76,7 @@ class RuanganController extends Controller
     public function edit($id)
     {
         //
-        
+
     }
 
     /**
@@ -91,15 +88,14 @@ class RuanganController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
         $nama_ruangan = $request->nama_ruangan;
 
         $ruangan = Ruangan::findOrFail($id);
-        
-        $ruangan->nama_ruangan = $nama_ruangan;
-        $ruangan->save();
+        $ruangan::update([
+            'nama_ruangan' => $nama_ruangan
+        ]);
 
-        return redirect('master/ruangan');
+        return redirect()->route('master.ruangan.index');
     }
 
     /**
@@ -113,6 +109,6 @@ class RuanganController extends Controller
         $ruangan = Ruangan::findOrFail($id);
         $ruangan->delete();
 
-        return redirect('master/ruangan');
+        return redirect()->route('master.ruangan.index');
     }
 }

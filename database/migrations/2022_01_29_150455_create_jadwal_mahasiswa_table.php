@@ -15,9 +15,10 @@ class CreateJadwalMahasiswaTable extends Migration
     {
         Schema::create('jadwal_mahasiswa', function (Blueprint $table) {
             // $table->id();
-            
-            $table->unsignedBigInteger('jadwal_id');
-            $table->foreign('jadwal_id')->references('id')->on('jadwals');
+
+            // $table->unsignedBigInteger('jadwal_id');
+            // $table->foreign('jadwal_id')->references('id')->on('jadwals');
+            $table->foreignId('jadwal_id')->constrained();
 
             $table->string('mahasiswa_npm', 25);
             $table->foreign('mahasiswa_npm')->references('npm')->on('mahasiswas');

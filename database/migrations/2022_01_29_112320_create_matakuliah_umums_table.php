@@ -15,9 +15,10 @@ class CreateMatakuliahUmumsTable extends Migration
     {
         Schema::create('matakuliah_umums', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('matakuliah_id');
-            $table->foreign('matakuliah_id')->references('id')->on('matakuliahs');
-            
+            // $table->unsignedBigInteger('matakuliah_id');
+            // $table->foreign('matakuliah_id')->references('id')->on('matakuliahs');
+            $table->foreignId('matakuliah_id')->constrained();
+
             $table->timestamps();
         });
     }

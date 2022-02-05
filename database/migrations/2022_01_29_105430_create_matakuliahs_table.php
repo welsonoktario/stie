@@ -15,13 +15,14 @@ class CreateMatakuliahsTable extends Migration
     {
         Schema::create('matakuliahs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('kurikulum_id');
-            $table->foreign('kurikulum_id')->references('id')->on('kurikulums');
+            // $table->unsignedBigInteger('kurikulum_id');
+            // $table->foreign('kurikulum_id')->references('id')->on('kurikulums');
+            $table->foreignId('kurikulum_id')->constrained();
 
             $table->string('kode_matakuliah', 10)->nullable();
             $table->string('nama_matakuliah', 45)->nullable();
             $table->tinyInteger('sks')->nullable();
-            $table->enum('tipe',['wajib', 'pilihan','pilihan wajib'])->nullable();
+            $table->enum('tipe', ['wajib', 'pilihan', 'pilihan wajib'])->nullable();
             $table->timestamps();
         });
     }

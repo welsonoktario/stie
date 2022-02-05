@@ -16,11 +16,12 @@ class JurusanController extends Controller
      */
     public function index()
     {
-        //
         $jurusans = Jurusan::all();
-        return Inertia::render('Master/Akademik/AkademikJurusan', [
-            'jurusans' => $jurusans,
-        ]);
+
+        return Inertia::render(
+            'Master/Akademik/AkademikJurusan',
+            ['jurusans' => $jurusans]
+        );
     }
 
     /**
@@ -30,7 +31,6 @@ class JurusanController extends Controller
      */
     public function create()
     {
-        //
         return Inertia::render('Master/Akademik/AkademikJurusanDetail');
     }
 
@@ -42,18 +42,17 @@ class JurusanController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $kode_jurusan = $request->kode_jurusan;
         $nama = $request->nama;
-        
-        $jurusan = new Jurusan();
-        $jurusan->nama = $nama;
-        $jurusan->kode_jurusan = $kode_jurusan;
-        $jurusan->save();
 
-        return redirect('master/jurusan');
+        Jurusan::create(
+            [
+                'nama' => $nama,
+                'kode_jurusan' => $kode_jurusan
+            ]
+        );
 
-        // dd($request->kode_jurusan, $request->nama);
+        return redirect()->route('master.jurusan.index');
     }
 
     /**
@@ -64,13 +63,12 @@ class JurusanController extends Controller
      */
     public function show($id)
     {
-        // dd($id);
-        //
-        $jurusan = Jurusan::where('id','=',$id)->get()->first();
+        $jurusan = Jurusan::find($id);
 
-        return Inertia::render('Master/Akademik/AkademikJurusanDetail',[
-            'jurusan' => $jurusan,
-        ]);
+        return Inertia::render(
+            'Master/Akademik/AkademikJurusanDetail',
+            ['jurusan' => $jurusan]
+        );
     }
 
     /**
@@ -93,18 +91,18 @@ class JurusanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
         $kode_jurusan = $request->kode_jurusan;
         $nama = $request->nama;
-        
-        $jurusan = Jurusan::where('id','=',$id)->get()->first();
-        $jurusan->kode_jurusan = $kode_jurusan;
-        $jurusan->nama = $nama;
 
-        $jurusan->save();
+        $jurusan = Jurusan::find($id);
+        $jurusan->update(
+            [
+                'nama' => $nama,
+                'kode_jurusan' => $kode_jurusan
+            ]
+        );
 
-        return redirect('master/jurusan');
-
+        return redirect()->route('master.jurusan.index');
     }
 
     /**
@@ -115,11 +113,9 @@ class JurusanController extends Controller
      */
     public function destroy($id)
     {
-        //
-        $jurusan = Jurusan::where('id','=',$id)->get()->first();
-
+        $jurusan = Jurusan::find($id);
         $jurusan->delete();
 
-        return redirect('master/jurusan');
+        return redirect()->route('master.jurusan.index');
     }
 }
