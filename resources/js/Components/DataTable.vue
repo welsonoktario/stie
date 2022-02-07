@@ -23,7 +23,7 @@
             {{ row[column.key] }}
           </td>
           <td>
-            <Link as="button" :href="route('master.matakuliah.edit', row.id)">Edit</Link>
+            <slot name="actions" :data="row" :index="index"></slot>
           </td>
         </tr>
       </tbody>
@@ -33,7 +33,10 @@
         Menampilkan <span class="font-semibold">{{ data.per_page }}</span> data
         dari total <span class="font-semibold">{{ data.total }}</span> data
       </p>
-      <select name="per_page" class="form-select rounded-md py-1 bg-zinc-50 border-none focus:ring-teal-500 focus:ring-2">
+      <select
+        name="per_page"
+        class="form-select rounded-md py-1 bg-zinc-50 border-none focus:ring-teal-500 focus:ring-2"
+      >
         <option value="10">10</option>
         <option value="25">25</option>
         <option value="50">50</option>

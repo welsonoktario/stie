@@ -1,7 +1,13 @@
 <template>
   <AppLayout>
     <div class="container mx-auto px-4 py-6 rounded-md bg-white">
-      <DataTable :columns="columns" :data="matakuliahs" />
+      <DataTable :columns="columns" :data="matakuliahs">
+        <template #actions="row">
+          <Link as="button" :href="route('master.matakuliah.edit', row.data.id)"
+            >Edit</Link
+          >
+        </template>
+      </DataTable>
     </div>
   </AppLayout>
 </template>
@@ -9,6 +15,7 @@
 <script setup>
 import AppLayout from "@layouts/App"
 import DataTable from "@components/DataTable"
+import { Link } from "@inertiajs/inertia-vue3"
 
 defineProps({
   matakuliahs: Object,
