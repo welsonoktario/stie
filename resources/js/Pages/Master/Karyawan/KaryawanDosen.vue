@@ -13,7 +13,7 @@
           <strong class="whitespace-nowrap capitalize text-sm md:text-lg content-middle">Daftar Dosen</strong>
         </span>
         <Link 
-          :href="route('dosen.create')" 
+          :href="route('master.dosen.create')" 
           method="get" 
           as="button" 
           type="link"
@@ -80,7 +80,7 @@
                       </span>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <Link :href="route('dosen.show', dosen.id)" class="text-indigo-600 hover:text-indigo-900">Edit</Link>
+                      <Link :href="route('master.dosen.show', dosen.id)" class="text-indigo-600 hover:text-indigo-900">Edit</Link>
                     </td>
                   </tr>
                 </tbody>

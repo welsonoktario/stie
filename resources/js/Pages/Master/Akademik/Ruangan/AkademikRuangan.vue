@@ -12,7 +12,7 @@
 
 
         <Link
-          :href="route('ruangan.create')"
+          :href="route('master.ruangan.create')"
           method="get"
           as="button"
           type="link"
@@ -63,7 +63,7 @@
                       <div class="text-sm text-gray-500">{{ruangan.nama_ruangan}}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <Link :href="route('ruangan.show', ruangan.id)" class="text-indigo-600 hover:text-indigo-900">Edit</Link>
+                      <Link :href="route('master.ruangan.show', ruangan.id)" class="text-indigo-600 hover:text-indigo-900">Edit</Link>
                     </td>
                   </tr>
                 </tbody>

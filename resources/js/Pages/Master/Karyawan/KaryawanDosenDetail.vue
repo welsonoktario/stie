@@ -6,7 +6,7 @@
       <!-- <div class="p-6">Karyawan / Karyawan</div> -->
       <p class="text-xs md:text-sm text-slate-500">
         Karyawan / Dosen /
-        <span v-if="route().current('dosen.create')">Tambah</span>
+        <span v-if="route().current('master.dosen.create')">Tambah</span>
         <span v-else>Ubah</span>
       </p>
 
@@ -16,7 +16,7 @@
           <strong
             class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
           >
-            <span v-if="route().current('dosen.create')">Tambah</span>
+            <span v-if="route().current('master.dosen.create')">Tambah</span>
             <span v-else>Ubah</span>
             Dosen</strong
           >
@@ -148,7 +148,7 @@
         <div class="flex justify-between">
           <Button class="px-10">Simpan</Button>
           <Link
-            v-if="!route().current('dosen.create')"
+            v-if="!route().current('master.dosen.create')"
             @click="remove()"
             class="text-red-500"
             >Hapus Data Dosen</Link
@@ -216,18 +216,18 @@ export default {
     })
 
     function submit(curRoute) {
-      if (curRoute === "dosen.create") {
+      if (curRoute === "master.dosen.create") {
         // alert(util.isEmptyObject(props.staff))
         // alert(props.staff == null ? 'null bro' : 'ada bro')
         Inertia.post("/master/dosen", form)
       } else {
-        Inertia.put(route("dosen.update", props.dosen.id), form)
+        Inertia.put(route("master.dosen.update", props.dosen.id), form)
       }
     }
 
     function remove() {
       // alert(props.staff.nip);
-      Inertia.delete(route("dosen.destroy", props.dosen.id))
+      Inertia.delete(route("master.dosen.destroy", props.dosen.id))
     }
     return {
       form,

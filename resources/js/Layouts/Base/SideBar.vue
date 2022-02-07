@@ -138,12 +138,12 @@ export default {
               {
                 name: "karyawan-karyawan",
                 label: "Karyawan",
-                route: "karyawan.index"
+                route: "master.karyawan.index"
               },
               {
                 name: "karyawan-dosen",
                 label: "Dosen",
-                route: "dosen.index"
+                route: "master.dosen.index"
               },
             ],
           },
@@ -155,27 +155,27 @@ export default {
               {
                 name: "akademik-jurusan",
                 label: "Jurusan / Program Studi",
-                route: "jurusan.index"
+                route: "master.jurusan.index"
               },
               {
                 name: "akademik-tahun-ajaran",
                 label: "Tahun Ajaran",
-                route: "tahun_ajaran.index"
+                route: "master.tahun_ajaran.index"
               },
               {
                 name: "akademik-ruangan",
                 label: "Ruangan",
-                route: "ruangan.index"
+                route: "master.ruangan.index"
               },
               {
                 name: "akademik-kurikulum",
                 label: "Kurikulum",
-                route: "kurikulum.index"
+                route: "master.kurikulum.index"
               },
               {
                 name: "akademik-matakuliah",
                 label: "Matakuliah",
-                route: "matakuliah.index"
+                route: "master.matakuliah.index"
               },
             ],
           },

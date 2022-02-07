@@ -41,7 +41,7 @@
         </div>
         <div class="flex justify-between">
         	<Button class="px-10">Simpan</Button>
-					<Link @click='remove()' class="text-red-500">Hapus Data Karyawan</Link>
+					<Link v-if="!route().current('master.karyawan.create')" @click='remove()' class="text-red-500">Hapus Data Karyawan</Link>
         </div>
       </form>
 
@@ -84,18 +84,18 @@ export default {
     });
 
     function submit(curRoute) {
-      if(curRoute === 'karyawan.create'){
+      if(curRoute === 'master.karyawan.create'){
 				// alert(util.isEmptyObject(props.staff))
 				// alert(props.staff == null ? 'null bro' : 'ada bro')
       	Inertia.post('/master/karyawan', form)
 			} else {
-				Inertia.put(route('karyawan.update', props.staff.id), form)
+				Inertia.put(route('master.karyawan.update', props.staff.id), form)
 			}
     }
 
 		function remove(){
 			// alert(props.staff.nip);
-			Inertia.delete(route('karyawan.destroy', props.staff.id))
+			Inertia.delete(route('master.karyawan.destroy', props.staff.id))
 
 		}
     return {

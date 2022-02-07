@@ -19,7 +19,7 @@ class TahunAjaranController extends Controller
         $tahun_ajaran = TahunAjaran::all();
 
         return Inertia::render(
-            'Master/Akademik/AkademikTahunAjaran',
+            'Master/Akademik/TahunAjaran/AkademikTahunAjaran',
             ['tahun_ajarans' => $tahun_ajaran]
         );
     }
@@ -33,7 +33,7 @@ class TahunAjaranController extends Controller
     {
         //
 
-        return Inertia::render('Master/Akademik/AkademikTahunAjaranDetail');
+        return Inertia::render('Master/Akademik/TahunAjaran/AkademikTahunAjaranDetail');
     }
 
     /**
@@ -66,7 +66,7 @@ class TahunAjaranController extends Controller
         $tahun_ajaran = TahunAjaran::findOrFail($id);
 
         return Inertia::render(
-            'Master/Akademik/AkademikTahunAjaranDetail',
+            'Master/Akademik/TahunAjaran/AkademikTahunAjaranDetail',
             ['tahun_ajaran' => $tahun_ajaran]
         );
     }

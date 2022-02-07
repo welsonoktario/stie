@@ -19,7 +19,7 @@ class KurikulumController extends Controller
         $kurikulums = Kurikulum::all();
 
         return Inertia::render(
-            'Master/Akademik/AkademikKurikulum.vue',
+            'Master/Akademik/Kurikulum/AkademikKurikulum.vue',
             ['kurikulums' => $kurikulums]
         );
     }
@@ -31,7 +31,7 @@ class KurikulumController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Master/Akademik/AkademikKurikulumDetail.vue');
+        return Inertia::render('Master/Akademik/Kurikulum/AkademikKurikulumDetail.vue');
     }
 
     /**
@@ -66,7 +66,7 @@ class KurikulumController extends Controller
         $kurikulum = Kurikulum::findOrFail($id);
 
         return Inertia::render(
-            'Master/Akademik/AkademikKurikulumDetail.vue',
+            'Master/Akademik/Kurikulum/AkademikKurikulumDetail.vue',
             ['kurikulum' => $kurikulum]
         );
     }

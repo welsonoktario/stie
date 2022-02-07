@@ -19,7 +19,7 @@ class JurusanController extends Controller
         $jurusans = Jurusan::all();
 
         return Inertia::render(
-            'Master/Akademik/AkademikJurusan',
+            'Master/Akademik/Jurusan/AkademikJurusan',
             ['jurusans' => $jurusans]
         );
     }
@@ -31,7 +31,7 @@ class JurusanController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Master/Akademik/AkademikJurusanDetail');
+        return Inertia::render('Master/Akademik/Jurusan/AkademikJurusanDetail');
     }
 
     /**
@@ -66,7 +66,7 @@ class JurusanController extends Controller
         $jurusan = Jurusan::find($id);
 
         return Inertia::render(
-            'Master/Akademik/AkademikJurusanDetail',
+            'Master/Akademik/Jurusan/AkademikJurusanDetail',
             ['jurusan' => $jurusan]
         );
     }
