@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Master\Akademik;
+namespace App\Http\Requests\Master\Akademik\Matakuliah;
 
 use Illuminate\Foundation\Http\FormRequest;
 

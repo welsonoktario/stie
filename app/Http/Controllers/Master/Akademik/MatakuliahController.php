@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Master\Akademik;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Master\Akademik\StoreMatakuliahRequest;
-use App\Http\Requests\Master\Akademik\UpdateMatakuliahRequest;
+use App\Http\Requests\Master\Akademik\Matakuliah\StoreMatakuliahRequest;
+use App\Http\Requests\Master\Akademik\Matakuliah\UpdateMatakuliahRequest;
 use App\Models\Kurikulum;
 use App\Models\Matakuliah;
 use Inertia\Inertia;
@@ -18,10 +18,10 @@ class MatakuliahController extends Controller
      */
     public function index()
     {
-        $matakuliahs = Matakuliah::all();
+        $matakuliahs = Matakuliah::paginate(1);
 
         return Inertia::render(
-            'Master/Akademik/Matakuliah/Index',
+            'Master/Akademik/Matakuliah/AkademikMatakuliah',
             ['matakuliahs' => $matakuliahs]
         );
     }
@@ -36,7 +36,7 @@ class MatakuliahController extends Controller
         $kurikulums = Kurikulum::all();
 
         return Inertia::render(
-            'Master/Akademik/Matakuliah/Create',
+            'Master/Akademik/Matakuliah/AkademikMatakuliahDetail',
             ['kurikulums' => $kurikulums]
         );
     }
@@ -44,7 +44,7 @@ class MatakuliahController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\Master\Akademik\StoreMatakuliahRequest  $request
+     * @param  \App\Http\Requests\Master\Akademik\Matakuliah\StoreMatakuliahRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreMatakuliahRequest $request)
@@ -72,7 +72,7 @@ class MatakuliahController extends Controller
         $kurikulums = Kurikulum::all();
 
         return Inertia::render(
-            'Master/Akademik/Matakuliah/Detail',
+            'Master/Akademik/Matakuliah/AkademikMatakuliahDetail',
             [
                 'matakuliah' => $matakuliah,
                 'kurikulums' => $kurikulums
@@ -83,7 +83,7 @@ class MatakuliahController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\Master\Akademik\UpdateMatakuliahRequest  $request
+     * @param  \App\Http\Requests\Master\Akademik\Matakuliah\UpdateMatakuliahRequest  $request
      * @param  \App\Models\Matakuliah  $matakuliah
      * @return \Illuminate\Http\Response
      */
