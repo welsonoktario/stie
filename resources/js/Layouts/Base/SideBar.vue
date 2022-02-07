@@ -192,7 +192,7 @@ export default {
               {
                 name: "mahasiswa-reguler",
                 label: "Reguler",
-                route: "mahasiswa-reguler.index"
+                route: "master.mahasiswa-reguler.index"
               },
               {
                 name: "mahasiswa-konversi",

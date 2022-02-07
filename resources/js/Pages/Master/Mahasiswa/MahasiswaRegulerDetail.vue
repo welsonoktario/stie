@@ -6,7 +6,7 @@
       <!-- <div class="p-6">Karyawan / Karyawan</div> -->
       <p class="text-xs md:text-sm text-slate-500">
         Mahasiswa / Mahasiswa Reguler /
-        <span v-if="route().current('mahasiswa-reguler.create')">Tambah</span>
+        <span v-if="route().current('master.mahasiswa-reguler.create')">Tambah</span>
         <span v-else>Ubah</span>
       </p>
 
@@ -16,7 +16,7 @@
           <strong
             class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
           >
-            <span v-if="route().current('mahasiswa-reguler.create')">Tambah</span>
+            <span v-if="route().current('master.mahasiswa-reguler.create')">Tambah</span>
             <span v-else>Ubah</span>
             Mahasiswa Reguler</strong
           >
@@ -107,7 +107,7 @@
         <div class="flex justify-between">
           <Button class="px-10">Simpan</Button>
           <Link
-            v-if="!route().current('mahasiswa-reguler.create')"
+            v-if="!route().current('master.mahasiswa-reguler.create')"
             @click="remove()"
             class="text-red-500"
             >Hapus Data Mahasiswa Reguler</Link
@@ -171,18 +171,18 @@ export default {
     })
 
     function submit(curRoute) {
-      if (curRoute === "mahasiswa-reguler.create") {
+      if (curRoute === "master.mahasiswa-reguler.create") {
         // alert(util.isEmptyObject(props.staff))
         // alert(props.staff == null ? 'null bro' : 'ada bro')
-        Inertia.post("/master/mahasiswa-reguler", form)
+        Inertia.post(route("master.mahasiswa-reguler.store"), form)
       } else {
-        Inertia.put(route("mahasiswa-reguler.update", props.mahasiswa.npm), form)
+        Inertia.put(route("master.mahasiswa-reguler.update", props.mahasiswa.npm), form)
       }
     }
 
     function remove() {
       // alert(props.staff.nip);
-      Inertia.delete(route("mahasiswa-reguler.destroy", props.mahasiswa.npm))
+      Inertia.delete(route("master.mahasiswa-reguler.destroy", props.mahasiswa.npm))
     }
     return {
       form,
