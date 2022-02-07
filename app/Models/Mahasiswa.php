@@ -48,6 +48,11 @@ class Mahasiswa extends Model
         'status_mahasiswa',
     ];
 
+    public function getRouteKeyName()
+    {
+        return 'npm';
+    }
+
     public function user(){
         return $this->belongsTo(User::class);
     }

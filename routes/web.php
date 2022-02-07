@@ -18,6 +18,7 @@ use App\Http\Controllers\Master\Karyawan\KaryawanController;
 
 use App\Http\Controllers\Master\Mahasiswa\MahasiswaReguler;
 use App\Http\Controllers\Master\Mahasiswa\MahasiswaRegulerController;
+use App\Http\Controllers\Master\Mahasiswa\MahasiswaKonversiController;
 
 // use App\Models\TahunAjaran;
 
@@ -58,6 +59,7 @@ Route::group(['middleware' => ['auth']], function () {
             'dosen' => DosenController::class,
             'matakuliah' => MatakuliahController::class,
             'mahasiswa-reguler' => MahasiswaRegulerController::class,
+            'mahasiswa-konversi' => MahasiswaKonversiController::class,
         ]);
     });
 });
