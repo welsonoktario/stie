@@ -4,16 +4,16 @@
       class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
     >
       <!-- <div class="p-6">Mahasiswa / Mahasiswa Reguler</div> -->
-      <p class="text-xs md:text-sm">Mahasiswa / Mahasiswa Reguler</p>
+      <p class="text-xs md:text-sm">Mahasiswa / Mahasiswa Konversi</p>
 
       <!-- Belum bisa ubah id dosen dan staff -->
       
       <div class="flex justify-between my-3 item-center">
         <span class="align-middle">
-          <strong class="whitespace-nowrap capitalize text-sm md:text-lg content-middle">Daftar Mahasiswa</strong>
+          <strong class="whitespace-nowrap capitalize text-sm md:text-lg content-middle">Daftar Mahasiswa Konversi</strong>
         </span>
         <Link 
-          :href="route('masttammahasiswa-reguler.create')" 
+          :href="route('master.mahasiswa-konversi.create')" 
           method="get" 
           as="button" 
           type="link"
@@ -72,7 +72,7 @@
                       </span>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <Link :href="route('masttammahasiswa-reguler.show', mahasiswa.npm)" class="text-indigo-600 hover:text-indigo-900">Edit</Link>
+                      <Link :href="route('master.mahasiswa-konversi.show', mahasiswa.npm)" class="text-indigo-600 hover:text-indigo-900">Edit</Link>
                     </td>
                   </tr>
                 </tbody>

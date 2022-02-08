@@ -197,7 +197,7 @@ export default {
               {
                 name: "mahasiswa-konversi",
                 label: "Konversi",
-                route: "login"
+                route: "master.mahasiswa-konversi.index"
               },
             ],
           },

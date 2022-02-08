@@ -23,7 +23,7 @@ class MahasiswaRegulerController extends Controller
         //
         $mahasiswas = Mahasiswa::doesntHave('mahasiswa_konversi')->with(['user','jurusan'])->get();
         // dd($mahasiswas);
-        return Inertia::render('Master/Mahasiswa/MahasiswaReguler',[
+        return Inertia::render('Master/Mahasiswa/Reguler/MahasiswaReguler',[
             'mahasiswas' => $mahasiswas,
         ]);
     }
@@ -38,7 +38,7 @@ class MahasiswaRegulerController extends Controller
         //
         $dosens = Dosen::with('staff.user')->get();
         $jurusans = Jurusan::all();
-        return Inertia::render('Master/Mahasiswa/MahasiswaRegulerDetail',[
+        return Inertia::render('Master/Mahasiswa/Reguler/MahasiswaRegulerDetail',[
             'dosens' => $dosens,
             'jurusans' => $jurusans,
         ]);
@@ -96,7 +96,7 @@ class MahasiswaRegulerController extends Controller
         $dosens = Dosen::with('staff.user')->get();
         $jurusans = Jurusan::all();
         // dd($mahasiswa);
-        return Inertia::render('Master/Mahasiswa/MahasiswaRegulerDetail',[
+        return Inertia::render('Master/Mahasiswa/Reguler/MahasiswaRegulerDetail',[
             'dosens' => $dosens,
             'jurusans' => $jurusans,
             'mahasiswa' => $mahasiswa,
