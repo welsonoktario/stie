@@ -22,11 +22,11 @@ class CreateMatakuliahKonversisTable extends Migration
 
             // $table->unsignedBigInteger('mahasiswa_konversi_id');
             // $table->foreign('mahasiswa_konversi_id')->references('id')->on('mahasiswa_konversis');
-            $table->foreignId('mahasiswa_konversi_id')->constrained();
+            $table->foreignId('mahasiswa_konversi_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
 
             // $table->unsignedBigInteger('matakuliah_id');
             // $table->foreign('matakuliah_id')->references('id')->on('matakuliahs');
-            $table->foreignId('matakuliah_id')->constrained();
+            $table->foreignId('matakuliah_id')->constrained()->nullable();
 
             $table->timestamps();
         });

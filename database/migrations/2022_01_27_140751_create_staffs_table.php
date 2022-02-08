@@ -20,7 +20,7 @@ class CreateStaffsTable extends Migration
             $table->enum('divisi', ['BAAK','Keuangan','Dosen','Data'])->nullable();
             $table->enum('level_pengguna',['Administrator','Staff','Super Admin'])->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->string('jenjang_pendidikan', 20)->nullable();
             $table->string('gelar_depan', 45)->nullable();
             $table->string('gelar_belakang', 45)->nullable();

@@ -19,7 +19,7 @@ class CreateTenagaKependidikansTable extends Migration
 
             // foreign
             $table->string('staff_id', 45);
-            $table->foreign('staff_id')->references('id')->on('staffs');
+            $table->foreign('staff_id')->references('id')->on('staffs')->onDelete('cascade')->onUpdate('cascade');
 
             $table->timestamps();
         });

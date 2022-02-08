@@ -16,7 +16,7 @@ class CreateMahasiswaKonversisTable extends Migration
         Schema::create('mahasiswa_konversis', function (Blueprint $table) {
             $table->id();
             $table->string('mahasiswa_npm', 25)->nullable();
-            $table->foreign('mahasiswa_npm')->references('npm')->on('mahasiswas');
+            $table->foreign('mahasiswa_npm')->references('npm')->on('mahasiswas')->onDelete('cascade')->onUpdate('cascade');
             $table->string("npm_asal", 45)->nullable();
             $table->string('perguruan_tinggi_asal', 125)->nullable();
             $table->string('jurusan_asal', 125)->nullable();

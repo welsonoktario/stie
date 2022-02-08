@@ -20,7 +20,7 @@ class CreateMahasiswasTable extends Migration
             // user id
             // $table->unsignedBigInteger('user_id');
             // $table->foreign('user_id')->references('id')->on('users');
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
 
             // doswal
             $table->string('dosen_id', 20)->nullable();
