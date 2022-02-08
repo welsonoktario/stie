@@ -18,7 +18,7 @@ class MatakuliahController extends Controller
      */
     public function index()
     {
-        $matakuliahs = Matakuliah::paginate(1);
+        $matakuliahs = Matakuliah::paginate();
 
         return Inertia::render(
             'Master/Akademik/Matakuliah/AkademikMatakuliah',
