@@ -4,7 +4,15 @@
       <label for="per_page">Data per halaman</label>
       <select
         name="per_page"
-        class="form-select rounded-md ml-2 text-sm bg-zinc-100 border-none focus:ring-teal-500 focus:ring-2"
+        class="
+          form-select
+          rounded-md
+          ml-2
+          text-sm
+          bg-zinc-100
+          border-none
+          focus:ring-teal-500 focus:ring-2
+        "
         v-model="filter.perPage"
         @change="search"
       >
@@ -16,15 +24,42 @@
     </div>
 
     <label
-      class="relative rounded-md text-sm bg-zinc-100 border-none focus:ring-teal-500 focus:ring-2 block"
+      class="
+        relative
+        rounded-md
+        text-sm
+        bg-zinc-100
+        border-none
+        focus:ring-teal-500 focus:ring-2
+        block
+      "
     >
       <SearchIcon
-        class="w-4 h-4 absolute top-1/2 transform -translate-y-1/2 left-3 text-zinc-500 focus-within:text-zinc-900 pointer-events-none"
+        class="
+          w-4
+          h-4
+          absolute
+          top-1/2
+          transform
+          -translate-y-1/2
+          left-3
+          text-zinc-500
+          focus-within:text-zinc-900
+          pointer-events-none
+        "
       />
       <input
         type="text"
         name="query"
-        class="form-input border-none ml-5 text-sm bg-zinc-100 focus:ring-0 placeholder:text-zinc-500"
+        class="
+          form-input
+          border-none
+          ml-5
+          text-sm
+          bg-zinc-100
+          focus:ring-0
+          placeholder:text-zinc-500
+        "
         placeholder="Cari data"
         autocomplete="off"
         v-model="filter.query"
@@ -79,7 +114,7 @@
             class="px-4 py-2"
           >
             <slot :name="`row(${column.key})`" :data="row" :index="index">{{
-              row[column.key]
+              get(row, column.key)
             }}</slot>
           </td>
           <td v-if="this.$slots.actions">
@@ -106,6 +141,7 @@
             as="button"
             :disabled="link.active"
             preserve-state
+            preserve-scroll
           >
             <span v-html="link.label"></span>
           </Link>
@@ -115,7 +151,7 @@
   </div>
 </template>
 
-<script setup>
+<script>
 import {
   SearchIcon,
   SortAscendingIcon,
@@ -124,51 +160,68 @@ import {
 import { Inertia } from "@inertiajs/inertia"
 import { Link } from "@inertiajs/inertia-vue3"
 import { reactive } from "vue"
-import { debounce } from "@/util"
+import { debounce, get } from "@/util"
 
-defineProps({
-  columns: Array,
-  data: Object,
-})
+export default {
+  props: {
+    columns: Array,
+    data: Object,
+  },
+  components: {
+    Link,
+    SearchIcon,
+    SortAscendingIcon,
+    SortDescendingIcon,
+  },
+  setup(props) {
+    const filter = reactive({
+      query: "",
+      orderBy: "",
+      orderType: "",
+      perPage: 10,
+    })
 
-const filter = reactive({
-  query: "",
-  orderBy: "",
-  orderType: "",
-  perPage: 10,
-})
+    const rowKey = (col, index) => `${col}-${index}`
 
-const rowKey = (col, index) => `${col}-${index}`
+    const sortCol = (col) => {
+      if (filter.orderBy != col) {
+        filter.orderType = ""
+        filter.orderBy = col
+      }
 
-const sortCol = (col) => {
-  if (filter.orderBy != col) {
-    filter.orderType = ""
-    filter.orderBy = col
-  }
+      switch (filter.orderType) {
+        case "":
+          filter.orderType = "ASC"
+          break
+        case "ASC":
+          filter.orderType = "DESC"
+          break
+        case "DESC":
+          filter.orderBy = ""
+          filter.orderType = ""
+          break
+        default:
+          break
+      }
 
-  switch (filter.orderType) {
-    case "":
-      filter.orderType = "ASC"
-      break
-    case "ASC":
-      filter.orderType = "DESC"
-      break
-    case "DESC":
-      filter.orderBy = ""
-      filter.orderType = ""
-      break
-    default:
-      break
-  }
+      search()
+    }
 
-  search()
+    const search = debounce(() => {
+      const current = route().current()
+      Inertia.get(route(current), filter, {
+        preserveScroll: true,
+        preserveState: true,
+      })
+    }, 250)
+
+    return {
+      filter,
+      get,
+      rowKey,
+      search,
+      sortCol,
+    }
+  },
 }
-
-const search = debounce(() => {
-  const current = route().current()
-  Inertia.get(route(current), filter, {
-    preserveScroll: true,
-    preserveState: true,
-  })
-}, 250)
 </script>

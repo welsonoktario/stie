@@ -20,6 +20,7 @@ class MatakuliahController extends Controller
     public function index()
     {
         $matakuliahs = Matakuliah::filter(Request::only(['query', 'orderBy', 'orderType']))
+            ->with('kurikulum')
             ->paginate(Request::get('perPage') ?: 10)
             ->withQueryString();
 
