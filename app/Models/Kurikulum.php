@@ -20,11 +20,24 @@ class Kurikulum extends Model
         'aktif',
     ];
 
-    public function matakuliahs(){
+    public function matakuliahs()
+    {
         return $this->hasMany(Matakuliah::class);
     }
 
-    public function matakuliah_jurusan(){
+    public function matakuliah_jurusan()
+    {
         return $this->hasOne(MatakuliahJurusan::class);
+    }
+
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['query'] ?? null, function ($query, $search) {
+            $query->where(function ($query) use ($search) {
+                $query->where('nama', 'LIKE', "%$search%");
+            });
+        })->when($filters['orderBy'] ?? null, function ($query, $orderBy) use (&$filters) {
+            $query->orderBy($orderBy, $filters['orderType']);
+        });
     }
 }

@@ -16,7 +16,9 @@ class KurikulumController extends Controller
      */
     public function index()
     {
-        $kurikulums = Kurikulum::all();
+        $kurikulums = Kurikulum::filter(request()->only(['query', 'orderBy', 'orderType']))
+            ->paginate(request()->get('perPage') ?: 10)
+            ->withQueryString();
 
         return Inertia::render(
             'Master/Akademik/Kurikulum/AkademikKurikulum.vue',

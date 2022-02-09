@@ -164,12 +164,11 @@ const sortCol = (col) => {
   search()
 }
 
-const search = debounce(
-  () =>
-    Inertia.get(route("master.matakuliah.index"), filter, {
-      preserveScroll: true,
-      preserveState: true,
-    }),
-  250
-)
+const search = debounce(() => {
+  const current = route().current()
+  Inertia.get(route(current), filter, {
+    preserveScroll: true,
+    preserveState: true,
+  })
+}, 250)
 </script>
