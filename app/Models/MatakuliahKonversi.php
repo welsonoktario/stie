@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Models\Matakuliah;
-use App\Models\MatakuliahKonversi;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 

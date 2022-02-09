@@ -45,7 +45,7 @@ class TahunAjaranController extends Controller
     public function store(Request $request)
     {
         $tahun = $request->tahun_ajaran;
-        $status = $request->status;
+        $status = (int)$request->status;
 
         TahunAjaran::create([
             'tahun_ajaran' => $tahun,
@@ -92,8 +92,8 @@ class TahunAjaranController extends Controller
     public function update(Request $request, $id)
     {
         $tahun = $request->tahun_ajaran;
-        $status = $request->status;
-
+        $status = (int)$request->status;
+        // dd($status);
         $tahun_ajaran = TahunAjaran::findOrFail($id);
         $tahun_ajaran->update([
             'tahun_ajaran' => $tahun,

@@ -60,8 +60,8 @@ class MahasiswaRegulerController extends Controller
 
         // mahasiswa data
         $npm = $request->npm;
-        $dosen_id = $request->dosen;
-        $jurusan_id = $request->jurusan;
+        $dosen_id = $request->dosen == '-' ? null : $request->dosen;
+        $jurusan_id = $request->jurusan == '-' ? null : $request->jurusan;
 
         // Save user
         $user = new User();
@@ -129,8 +129,8 @@ class MahasiswaRegulerController extends Controller
         $nik = $request->nik;
 
         // mahasiswa data
-        $dosen_id = $request->dosen;
-        $jurusan_id = $request->jurusan;
+        $dosen_id = $request->dosen == '-' ? null : $request->dosen;
+        $jurusan_id = $request->jurusan == '-' ? null : $request->jurusan;
 
         $mahasiswa = Mahasiswa::where('npm','=',$id)->first();
         // Save user

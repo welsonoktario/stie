@@ -20,8 +20,9 @@ class MahasiswaKonversiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        // dd($request->mahasiswa_konversi_id);
         //
         $mahasiswas = Mahasiswa::has('mahasiswa_konversi')->with(['user','jurusan','dosen'])->get();
         return Inertia::render('Master/Mahasiswa/Konversi/MahasiswaKonversi',[
