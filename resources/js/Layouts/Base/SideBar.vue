@@ -31,44 +31,49 @@
           >
             <button
               v-if="menu.subMenus.length"
-              class="font-medium text-sm hover:text-teal-400 hover:dark:text-teal-400 transition ease-in-out duration-250 inline-flex items-center mb-2"
+              class="inline-flex items-center px-1 pt-1 text-base font-medium leading-5 dark:text-zinc-100 focus:outline-none transition duration-150 ease-in-out"
               :class="{
                 'text-teal-500 dark:text-teal-400': activeMenu(menu.name),
               }"
               @click="toggleSubMenu(menu.name)"
             >
               <component :is="menu.icon" class="w-5 h-5" />
-              <p class="ml-4 flex-1 text-base text-left">{{ menu.label }}</p>
+              <p class="ml-4 flex-1 text-left">{{ menu.label }}</p>
               <ChevronRightIcon
                 v-if="!isSubMenuOpen(menu.name)"
                 class="w-5 h-5"
               />
               <ChevronDownIcon v-else class="w-5 h-5" />
             </button>
-            <Link
+            <NavLink
               v-else
-              href="#"
+              :active="activeMenu(menu.name)"
+              :href="'#'"
+              class="text-base"
               as="button"
-              class="font-medium text-sm hover:text-teal-400 hover:dark:text-teal-400 transition ease-in-out duration-250 inline-flex items-center mb-2"
-              :class="{
-                'text-teal-500 dark:text-teal-400': activeMenu(menu.name),
-              }"
             >
               <component :is="menu.icon" class="w-5 h-5" />
-              <p class="ml-4 flex-1 text-base text-left">{{ menu.label }}</p>
-            </Link>
+              <p class="ml-4 flex-1 text-left">{{ menu.label }}</p>
+            </NavLink>
             <div
               v-if="menu.subMenus.length"
               v-show="isSubMenuOpen(menu.name)"
-              class="flex flex-col rounded-lg bg-zinc-100 dark:bg-zinc-700"
+              class="flex flex-col rounded-lg bg-zinc-100 dark:bg-zinc-700 mt-2"
             >
-              <Link
+              <div
+                class="px-3 py-1 rounded-md hover:bg-opacity-30 hover:bg-teal-100"
+                :class="{'bg-teal-100 bg-opacity-30': route().current(subMenu.route)}"
                 v-for="subMenu in menu.subMenus"
                 :key="subMenu.name"
-                :href="route(subMenu.route)"
-                class="py-2 px-4 text-sm rounded-lg hover:text-teal-400 hover:bg-teal-200/25 transition ease-in-out duration-250"
-                >{{ subMenu.label }}</Link
               >
+                <NavLink
+                  as="button"
+                  :href="route(subMenu.route)"
+                  :active="route().current(subMenu.route)"
+                  class="w-full h-full"
+                  >{{ subMenu.label }}</NavLink
+                >
+              </div>
             </div>
           </div>
           <!-- end link -->
@@ -85,7 +90,6 @@
 <script>
 import eventBus from "@/eventBus"
 import { onMounted, reactive, ref } from "vue"
-import { Link } from "@inertiajs/inertia-vue3"
 import {
   AcademicCapIcon,
   BookOpenIcon,
@@ -98,6 +102,7 @@ import {
   UserGroupIcon,
   UsersIcon,
 } from "@heroicons/vue/outline"
+import NavLink from "@components/NavLink"
 
 export default {
   components: {
@@ -111,7 +116,7 @@ export default {
     CreditCardIcon,
     UserGroupIcon,
     UsersIcon,
-    Link,
+    NavLink,
   },
   setup() {
     const isSidebarOpen = ref(false)
@@ -133,17 +138,17 @@ export default {
               {
                 name: "karyawan-semua",
                 label: "Semua",
-                route: "login"
+                route: "login",
               },
               {
                 name: "karyawan-karyawan",
                 label: "Karyawan",
-                route: "master.karyawan.index"
+                route: "master.karyawan.index",
               },
               {
                 name: "karyawan-dosen",
                 label: "Dosen",
-                route: "master.dosen.index"
+                route: "master.dosen.index",
               },
             ],
           },
@@ -155,27 +160,27 @@ export default {
               {
                 name: "akademik-jurusan",
                 label: "Jurusan / Program Studi",
-                route: "master.jurusan.index"
+                route: "master.jurusan.index",
               },
               {
                 name: "akademik-tahun-ajaran",
                 label: "Tahun Ajaran",
-                route: "master.tahun_ajaran.index"
+                route: "master.tahun_ajaran.index",
               },
               {
                 name: "akademik-ruangan",
                 label: "Ruangan",
-                route: "master.ruangan.index"
+                route: "master.ruangan.index",
               },
               {
                 name: "akademik-kurikulum",
                 label: "Kurikulum",
-                route: "master.kurikulum.index"
+                route: "master.kurikulum.index",
               },
               {
                 name: "akademik-matakuliah",
                 label: "Matakuliah",
-                route: "master.matakuliah.index"
+                route: "master.matakuliah.index",
               },
             ],
           },
@@ -187,17 +192,17 @@ export default {
               {
                 name: "mahasiswa-semua",
                 label: "Semua",
-                route: "login"
+                route: "login",
               },
               {
                 name: "mahasiswa-reguler",
                 label: "Reguler",
-                route: "master.mahasiswa-reguler.index"
+                route: "master.mahasiswa-reguler.index",
               },
               {
                 name: "mahasiswa-konversi",
                 label: "Konversi",
-                route: "master.mahasiswa-konversi.index"
+                route: "master.mahasiswa-konversi.index",
               },
             ],
           },
@@ -233,12 +238,12 @@ export default {
               {
                 name: "ujian-uts",
                 label: "UTS",
-                route: "login"
+                route: "login",
               },
               {
                 name: "ujian-uas",
                 label: "UAS",
-                route: "login"
+                route: "login",
               },
             ],
           },

@@ -25,7 +25,7 @@ class StoreMatakuliahRequest extends FormRequest
     {
         return [
             'kurikulum_id' => ['required', 'numeric'],
-            'kode_matakuliah' => ['required', 'unique:matakuliahs,kode', 'string', 'max:10'],
+            'kode_matakuliah' => ['required', 'unique:matakuliahs,kode_matakuliah', 'string', 'max:10'],
             'nama_matakuliah' => ['required', 'string', 'max:45'],
             'sks' => ['required', 'digits_between:1,10'],
             'tipe' => ['required', 'in:wajib,pilihan,pilihan wajib', 'string'],

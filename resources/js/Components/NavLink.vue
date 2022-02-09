@@ -1,25 +1,24 @@
 <template>
-    <Link :href="href" :class="classes">
-        <slot />
-    </Link>
+  <Link :href="href" :class="classes" preserve-state>
+    <slot />
+  </Link>
 </template>
 
-<script>
-import { Link } from '@inertiajs/inertia-vue3';
+<script setup>
+import { Link } from "@inertiajs/inertia-vue3"
+import { computed } from "vue"
 
-export default {
-    components: {
-        Link,
-    },
+const props = defineProps({
+  href: String,
+  active: {
+    type: Boolean,
+    default: false,
+  },
+})
 
-    props: ['href', 'active'],
-
-    computed: {
-        classes() {
-            return this.active
-                ? 'inline-flex items-center px-1 pt-1 border-b-2 border-indigo-400 text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition  duration-150 ease-in-out'
-                : 'inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out'
-        }
-    }
-}
+const classes = computed(() =>
+  props.active
+    ? "inline-flex items-center px-1 pt-1 text-sm font-medium text-teal-600 dark:text-zinc-100 transition duration-150 ease-in-out"
+    : "inline-flex items-center px-1 pt-1 text-sm font-medium dark:text-teal-500 dark:text-zinc-100 hover:text-teal-600 dark:hover-teal-500 transition duration-150 ease-in-out"
+)
 </script>

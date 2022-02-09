@@ -26,36 +26,55 @@ class Matakuliah extends Model
 
     protected $casts = ['sks' => 'integer'];
 
-    public function kurikulum(){
+    public function kurikulum()
+    {
         return $this->belongsTo(Kurikulum::class);
     }
 
     /**
      * Inheritance to matakuliah_jurusan (matakuliah's origin)
      */
-    public function matakuliah_jurusan(){
+    public function matakuliah_jurusan()
+    {
         return $this->hasOne(MatakuliahJurusan::class);
     }
 
     /**
      * Matakuliah's prasyarat
      */
-    public function prasyarats(){
+    public function prasyarats()
+    {
         return $this->belongsToMany($this, 'prasyarat', 'matakuliah_id', 'prasyarat_id');
     }
 
     /**
      * Matakuliah is in many Jadwal in certain semester
      */
-    public function jadwals(){
+    public function jadwals()
+    {
         return $this->hasMany(Jadwal::class);
     }
 
     /**
      * Matakuliah has only one matakuliah konversi to be compared
      */
-    public function matakuliah_konversi(){
+    public function matakuliah_konversi()
+    {
         return $this->hasOne(MatakuliahKonversi::class);
     }
 
+    /**
+     * Filter hasil pencarian berdasarkan $query dan $filters
+     */
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['query'] ?? null, function ($query, $search) {
+            $query->where(function ($query) use ($search) {
+                $query->where('kode_matakuliah', 'LIKE', "%$search%")
+                    ->orWhere('nama_matakuliah', 'LIKE', "%$search%");
+            });
+        })->when($filters['orderBy'] ?? null, function ($query, $orderBy) use (&$filters) {
+            $query->orderBy($orderBy, $filters['orderType']);
+        });
+    }
 }

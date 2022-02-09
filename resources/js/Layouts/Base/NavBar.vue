@@ -70,7 +70,7 @@
           ></button>
 
           <div
-            class="flex flex-col text-zinc-500 menu md:mt-4 md:mr-6 rounded bg-white dark:bg-zinc-700 dark:text-zinc-100 shadow-md absolute z-20 right-0 w-40 mt-5 py-2"
+            class="flex flex-col text-zinc-1000 menu md:mt-4 md:mr-6 rounded bg-white dark:bg-zinc-700 dark:text-zinc-100 shadow-md absolute z-20 right-0 w-40 mt-5 py-2"
             :class="{ hidden: !isNavbarContentOpen }"
           >
             <h1

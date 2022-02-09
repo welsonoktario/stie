@@ -7,6 +7,7 @@ use App\Http\Requests\Master\Akademik\Matakuliah\StoreMatakuliahRequest;
 use App\Http\Requests\Master\Akademik\Matakuliah\UpdateMatakuliahRequest;
 use App\Models\Kurikulum;
 use App\Models\Matakuliah;
+use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 
 class MatakuliahController extends Controller
@@ -18,7 +19,9 @@ class MatakuliahController extends Controller
      */
     public function index()
     {
-        $matakuliahs = Matakuliah::paginate(1);
+        $matakuliahs = Matakuliah::filter(Request::only(['query', 'orderBy', 'orderType']))
+            ->paginate(Request::get('perPage') ?: 10)
+            ->withQueryString();
 
         return Inertia::render(
             'Master/Akademik/Matakuliah/AkademikMatakuliah',

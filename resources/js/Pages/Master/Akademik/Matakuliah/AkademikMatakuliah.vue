@@ -1,10 +1,35 @@
 <template>
   <AppLayout>
-    <div class="container mx-auto px-4 py-6 rounded-md bg-white">
+    <div class="container mx-auto p-6 rounded-md bg-white overflow-auto">
+      <p class="text-xs md:text-sm">Akademik / Matakuliah</p>
+      <div class="flex justify-between my-3 item-center">
+        <span class="align-middle">
+          <strong
+            class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
+            >Daftar Matakuliah</strong
+          >
+        </span>
+
+        <Button
+          type="button"
+          class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150"
+        >
+          <Link :href="route('master.matakuliah.create')" preserve-state
+            >Tambah Matakuliah</Link
+          >
+        </Button>
+      </div>
+
       <DataTable :columns="columns" :data="matakuliahs">
+        <template #row(tipe)="row">
+          <span class="capitalize">{{ row.data.tipe }}</span>
+        </template>
+
         <template #actions="row">
-          <Link as="button" :href="route('master.matakuliah.edit', row.data.id)"
-            >Edit</Link
+          <NavLink
+            as="button"
+            :href="route('master.matakuliah.edit', row.data.id)"
+            >Edit</NavLink
           >
         </template>
       </DataTable>
@@ -14,7 +39,9 @@
 
 <script setup>
 import AppLayout from "@layouts/App"
+import Button from "@components/Button"
 import DataTable from "@components/DataTable"
+import NavLink from "@components/NavLink"
 import { Link } from "@inertiajs/inertia-vue3"
 
 defineProps({
@@ -29,18 +56,22 @@ const columns = [
   {
     key: "kode_matakuliah",
     label: "Kode",
+    sortable: true,
   },
   {
     key: "nama_matakuliah",
     label: "Nama",
+    sortable: true,
   },
   {
     key: "sks",
     label: "SKS",
+    sortable: true,
   },
   {
     key: "tipe",
     label: "Tipe",
+    sortable: true,
   },
 ]
 </script>
