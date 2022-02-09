@@ -24,25 +24,18 @@
           </p>
 
           <!-- link -->
-          <div
-            v-for="menu in master.menus"
-            :key="menu.name"
-            class="flex flex-col mb-4"
-          >
+          <div v-for="menu in master.menus" :key="menu.name" class="flex flex-col mb-4">
             <button
               v-if="menu.subMenus.length"
               class="inline-flex items-center px-1 pt-1 text-base font-medium leading-5 dark:text-zinc-100 focus:outline-none transition duration-150 ease-in-out"
               :class="{
-                'text-teal-500 dark:text-teal-400': activeMenu(menu.name),
+                'text-teal-600 dark:text-teal-500': activeMenu(menu.name),
               }"
               @click="toggleSubMenu(menu.name)"
             >
               <component :is="menu.icon" class="w-5 h-5" />
               <p class="ml-4 flex-1 text-left">{{ menu.label }}</p>
-              <ChevronRightIcon
-                v-if="!isSubMenuOpen(menu.name)"
-                class="w-5 h-5"
-              />
+              <ChevronRightIcon v-if="!isSubMenuOpen(menu.name)" class="w-5 h-5" />
               <ChevronDownIcon v-else class="w-5 h-5" />
             </button>
             <NavLink
@@ -61,8 +54,12 @@
               class="flex flex-col rounded-lg bg-zinc-100 dark:bg-zinc-700 mt-2"
             >
               <div
-                class="px-3 py-1 rounded-md hover:bg-opacity-30 hover:bg-teal-100"
-                :class="{'bg-teal-100 bg-opacity-30': route().current(subMenu.route)}"
+                class="px-3 py-1 rounded-md hover:bg-opacity-30 hover:bg-teal-100 dark:hover:bg-opacity-10"
+                :class="{
+                  'bg-teal-100 bg-opacity-30 dark:bg-opacity-10': route().current(
+                    subMenu.route
+                  ),
+                }"
                 v-for="subMenu in menu.subMenus"
                 :key="subMenu.name"
               >
@@ -88,8 +85,8 @@
 </template>
 
 <script>
-import eventBus from "@/eventBus"
-import { onMounted, reactive, ref } from "vue"
+import eventBus from "@/eventBus";
+import { onMounted, reactive, ref } from "vue";
 import {
   AcademicCapIcon,
   BookOpenIcon,
@@ -101,8 +98,8 @@ import {
   CreditCardIcon,
   UserGroupIcon,
   UsersIcon,
-} from "@heroicons/vue/outline"
-import NavLink from "@components/NavLink"
+} from "@heroicons/vue/outline";
+import NavLink from "@components/NavLink";
 
 export default {
   components: {
@@ -119,11 +116,11 @@ export default {
     NavLink,
   },
   setup() {
-    const isSidebarOpen = ref(false)
+    const isSidebarOpen = ref(false);
     const activeSubMenu = reactive({
       current: "",
       menus: [],
-    })
+    });
 
     const masterMenu = [
       {
@@ -255,37 +252,32 @@ export default {
           },
         ],
       },
-    ]
+    ];
 
     onMounted(() =>
-      eventBus.$on(
-        "sidebar-toggle",
-        () => (isSidebarOpen.value = !isSidebarOpen.value)
-      )
-    )
+      eventBus.$on("sidebar-toggle", () => (isSidebarOpen.value = !isSidebarOpen.value))
+    );
 
-    const activeMenu = (menu) => activeSubMenu.current == menu
+    const activeMenu = (menu) => activeSubMenu.current == menu;
 
     const isSubMenuOpen = (menu) =>
-      activeSubMenu.menus.some(
-        (subMenu) => subMenu.menu == menu && subMenu.isOpen
-      )
+      activeSubMenu.menus.some((subMenu) => subMenu.menu == menu && subMenu.isOpen);
 
     const toggleSubMenu = (menu) => {
-      activeSubMenu.current = menu
+      activeSubMenu.current = menu;
       const index = activeSubMenu.menus.findIndex(
         (subMenu) => subMenu.menu == activeSubMenu.current
-      )
+      );
 
       if (index > -1) {
-        activeSubMenu.menus[index].isOpen = !activeSubMenu.menus[index].isOpen
+        activeSubMenu.menus[index].isOpen = !activeSubMenu.menus[index].isOpen;
       } else {
         activeSubMenu.menus.push({
           menu,
           isOpen: true,
-        })
+        });
       }
-    }
+    };
 
     return {
       isSidebarOpen,
@@ -294,7 +286,7 @@ export default {
       activeMenu,
       isSubMenuOpen,
       toggleSubMenu,
-    }
+    };
   },
-}
+};
 </script>

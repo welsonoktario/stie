@@ -14,8 +14,8 @@ class MKSeeder extends Seeder
      */
     public function run()
     {
-        $kurikulum = Kurikulum::find(1);
-        for ($i = 1; $i <= 88; $i++) {
+        for ($i = 1; $i <= rand(20, 50); $i++) {
+            $kurikulum = Kurikulum::find(rand(1, 2));
             $tipe = ['wajib', 'pilihan', 'pilihan wajib'];
             $kurikulum->matakuliahs()->create([
                 'kode_matakuliah' => "MK$i",

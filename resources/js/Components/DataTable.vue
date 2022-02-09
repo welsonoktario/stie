@@ -10,6 +10,7 @@
           ml-2
           text-sm
           bg-zinc-100
+          dark:bg-zinc-700
           border-none
           focus:ring-teal-500 focus:ring-2
         "
@@ -29,9 +30,9 @@
         rounded-md
         text-sm
         bg-zinc-100
+        dark:bg-zinc-700
         border-none
-        focus:ring-teal-500 focus:ring-2
-        block
+        focus-within:ring-teal-500 focus:ring-2
       "
     >
       <SearchIcon
@@ -54,9 +55,11 @@
         class="
           form-input
           border-none
+          mr-1
           ml-5
           text-sm
           bg-zinc-100
+          dark:bg-zinc-700
           focus:ring-0
           placeholder:text-zinc-500
         "
@@ -67,7 +70,9 @@
       />
     </label>
   </div>
-  <div class="w-full rounded-md shadow-md mt-2">
+  <div
+    class="w-full rounded-md shadow-md mt-2 dark:bg-zinc-700 dark:text-zinc-100"
+  >
     <table class="table-auto w-full">
       <thead>
         <tr>
@@ -77,16 +82,19 @@
             class="font-semibold text-left py-2 px-4"
           >
             <div
-              class="inline-flex justify-between items-center w-full"
+              class="
+                inline-flex
+                justify-between
+                items-center
+                w-full
+                tracking-wider
+              "
               :class="{ 'cursor-pointer': column.sortable }"
               @click="sortCol(column.key)"
             >
-              <slot
-                :name="`col(${column.key})`"
-                :data="column"
-                :index="index"
-                >{{ column.label }}</slot
-              >
+              <slot :name="`col(${column.key})`" :data="column" :index="index">
+                {{ column.label }}
+              </slot>
               <template v-if="column.sortable && filter.orderBy == column.key">
                 <SortAscendingIcon
                   v-if="filter.orderType == 'ASC'"
@@ -106,7 +114,7 @@
         <tr
           v-for="(row, index) in data.data"
           :key="index"
-          class="border-y text-sm"
+          class="border-y dark:border-zinc-600 text-sm dark:text-zinc-200 font-normal"
         >
           <td
             v-for="column in columns"
