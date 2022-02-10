@@ -2,7 +2,7 @@
   <!-- sidebar -->
   <aside
     id="sideBar"
-    class="md:flex md:flex-none h-full md:top-0 md:z-30 z-11 dark:text-zinc-100"
+    class="md:flex md:flex-none h-full md:top-0 md:z-30 z-30 dark:text-zinc-100"
     :class="{
       hidden: !isSidebarOpen,
       fixed: isSidebarOpen,

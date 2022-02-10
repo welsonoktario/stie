@@ -63,6 +63,14 @@ class Matakuliah extends Model
         return $this->hasOne(MatakuliahKonversi::class);
     }
 
+    public function scopeIndex($query)
+    {
+        $query->select(['matakuliahs.*', 'kurikulums.nama as kurikulum_nama', 'jurusans.nama as jurusan_nama'])
+            ->join('kurikulums', 'kurikulums.id', '=', 'matakuliahs.kurikulum_id')
+            ->leftJoin('matakuliah_jurusans', 'matakuliah_jurusans.matakuliah_id', '=', 'matakuliahs.id')
+            ->leftJoin('jurusans', 'jurusans.id', '=', 'matakuliah_jurusans.jurusan_id');
+    }
+
     /**
      * Filter hasil pencarian berdasarkan $query dan $filters
      */
