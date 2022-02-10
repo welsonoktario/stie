@@ -1,10 +1,13 @@
 <template>
   <AppLayout>
-    <div class="container mx-auto p-6 rounded-md bg-white dark:bg-zinc-800 overflow-auto">
+    <div
+      class="container mx-auto p-6 rounded-md bg-white dark:bg-zinc-800 overflow-auto"
+    >
       <p class="text-xs md:text-sm">Akademik / Matakuliah</p>
       <div class="flex justify-between my-3 item-center">
         <span class="align-middle">
-          <strong class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
+          <strong
+            class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
             >Daftar Matakuliah</strong
           >
         </span>
@@ -24,8 +27,14 @@
           <span class="capitalize">{{ row.data.tipe }}</span>
         </template>
 
+        <template #row(jurusan_nama)="row">
+          <span class="capitalize">{{ row.data.jurusan_nama ?? '-' }}</span>
+        </template>
+
         <template #actions="row">
-          <NavLink as="button" :href="route('master.matakuliah.edit', row.data.id)"
+          <NavLink
+            as="button"
+            :href="route('master.matakuliah.edit', row.data.id)"
             >Edit</NavLink
           >
         </template>
@@ -69,9 +78,14 @@ export default {
         sortable: true,
       },
       {
-        key: "kurikulum.nama",
+        key: "kurikulum_nama",
         label: "Kurikulum",
-        sortable: false,
+        sortable: true,
+      },
+      {
+        key: 'jurusan_nama',
+        label: 'Jurusan',
+        sortable: true
       },
       {
         key: "sks",

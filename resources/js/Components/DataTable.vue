@@ -4,16 +4,7 @@
       <label for="per_page">Data per halaman</label>
       <select
         name="per_page"
-        class="
-          form-select
-          rounded-md
-          ml-2
-          text-sm
-          bg-zinc-100
-          dark:bg-zinc-700
-          border-none
-          focus:ring-teal-500 focus:ring-2
-        "
+        class="form-select rounded-md ml-2 text-sm bg-zinc-100 dark:bg-zinc-700 border-none focus:ring-teal-500 focus:ring-2"
         v-model="filter.perPage"
         @change="search"
       >
@@ -25,44 +16,15 @@
     </div>
 
     <label
-      class="
-        relative
-        rounded-md
-        text-sm
-        bg-zinc-100
-        dark:bg-zinc-700
-        border-none
-        focus-within:ring-teal-500 focus:ring-2
-      "
+      class="relative rounded-md text-sm bg-zinc-100 dark:bg-zinc-700 border-none focus-within:ring-teal-500 focus:ring-2"
     >
       <SearchIcon
-        class="
-          w-4
-          h-4
-          absolute
-          top-1/2
-          transform
-          -translate-y-1/2
-          left-3
-          text-zinc-500
-          focus-within:text-zinc-900
-          pointer-events-none
-        "
+        class="w-4 h-4 absolute top-1/2 transform -translate-y-1/2 left-3 text-zinc-500 focus-within:text-zinc-900 pointer-events-none"
       />
       <input
         type="text"
         name="query"
-        class="
-          form-input
-          border-none
-          mr-1
-          ml-5
-          text-sm
-          bg-zinc-100
-          dark:bg-zinc-700
-          focus:ring-0
-          placeholder:text-zinc-500
-        "
+        class="form-input border-none mr-1 ml-5 text-sm bg-zinc-100 dark:bg-zinc-700 focus:ring-0 placeholder:text-zinc-500"
         placeholder="Cari data"
         autocomplete="off"
         v-model="filter.query"
@@ -82,15 +44,9 @@
             class="font-semibold text-left py-2 px-4"
           >
             <div
-              class="
-                inline-flex
-                justify-between
-                items-center
-                w-full
-                tracking-wider
-              "
+              class="inline-flex justify-between items-center w-full tracking-wider"
               :class="{ 'cursor-pointer': column.sortable }"
-              @click="sortCol(column.key)"
+              @click="sortCol(column.key, index)"
             >
               <slot :name="`col(${column.key})`" :data="column" :index="index">
                 {{ column.label }}
@@ -122,7 +78,7 @@
             class="px-4 py-2"
           >
             <slot :name="`row(${column.key})`" :data="row" :index="index">{{
-              get(row, column.key)
+              row[column.key]
             }}</slot>
           </td>
           <td v-if="this.$slots.actions">
@@ -191,7 +147,9 @@ export default {
 
     const rowKey = (col, index) => `${col}-${index}`
 
-    const sortCol = (col) => {
+    const sortCol = (col, index) => {
+      // if (!columns[index][col].sortable) return
+
       if (filter.orderBy != col) {
         filter.orderType = ""
         filter.orderBy = col
