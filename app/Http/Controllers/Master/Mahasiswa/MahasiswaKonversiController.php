@@ -24,9 +24,24 @@ class MahasiswaKonversiController extends Controller
     {
         // dd($request->mahasiswa_konversi_id);
         //
-        $mahasiswas = Mahasiswa::has('mahasiswa_konversi')->with(['user','jurusan','dosen'])->get();
+        // $mahasiswas = Mahasiswa::has('mahasiswa_konversi')->with(['user','jurusan','dosen'])->get();
+        // return Inertia::render('Master/Mahasiswa/Konversi/MahasiswaKonversi',[
+        //     'mahasiswas' => $mahasiswas
+        // ]);
+        
+        $mahasiswas = Mahasiswa::select(['mahasiswas.npm','mahasiswas.status_mahasiswa','users.name as nama','jurusans.nama as jurusan'])
+            ->has('mahasiswa_konversi')
+            ->join('users','users.id','=','mahasiswas.user_id')
+            ->leftJoin('jurusans','jurusans.id','=','mahasiswas.jurusan_id')
+            ->filter($request->only(['query', 'orderBy', 'orderType']))
+            ->paginate($request->get('perPage') ?: 10)
+            ->withQueryString();
+            // ->withQueryString();
+        // ->with(['user','jurusan'])->get();
+
+        // dd($mahasiswas);
         return Inertia::render('Master/Mahasiswa/Konversi/MahasiswaKonversi',[
-            'mahasiswas' => $mahasiswas
+            'mahasiswas' => $mahasiswas,
         ]);
     }
 

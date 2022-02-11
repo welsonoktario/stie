@@ -18,10 +18,19 @@ class MahasiswaRegulerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        $mahasiswas = Mahasiswa::doesntHave('mahasiswa_konversi')->with(['user','jurusan'])->get();
+        $mahasiswas = Mahasiswa::select(['mahasiswas.npm','mahasiswas.status_mahasiswa','users.name as nama','jurusans.nama as jurusan'])
+            ->doesntHave('mahasiswa_konversi')
+            ->join('users','users.id','=','mahasiswas.user_id')
+            ->leftJoin('jurusans','jurusans.id','=','mahasiswas.jurusan_id')
+            ->filter($request->only(['query', 'orderBy', 'orderType']))
+            ->paginate($request->get('perPage') ?: 10)
+            ->withQueryString();
+            // ->withQueryString();
+        // ->with(['user','jurusan'])->get();
+
         // dd($mahasiswas);
         return Inertia::render('Master/Mahasiswa/Reguler/MahasiswaReguler',[
             'mahasiswas' => $mahasiswas,
@@ -52,35 +61,34 @@ class MahasiswaRegulerController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        // user data
-        $name = $request->name;
-        $email = $request->email;
-        $nik = $request->nik;
-
-        // mahasiswa data
-        $npm = $request->npm;
-        $dosen_id = $request->dosen == '-' ? null : $request->dosen;
-        $jurusan_id = $request->jurusan == '-' ? null : $request->jurusan;
-
-        // Save user
-        $user = new User();
-        $user->name = $name;
-        $user->email = $email;
-        $user->nik = $nik;
-        $user->password = Hash::make('12345678');
-        $user->save();
-
-        // save mahasiswa
-        $mahasiswa = new Mahasiswa();
-        $mahasiswa->npm = $npm;
-        $mahasiswa->dosen_id = $dosen_id;
-        $mahasiswa->jurusan_id = $jurusan_id;
-        $mahasiswa->user_id = $user->id;
-        $mahasiswa->save();
-
-        // dd($name, $email, $npm, $dosen_id, $jurusan_id);
-        return redirect('master/mahasiswa-reguler');
+        $request['password'] = Hash::make('12345678');
+        $request['jurusan_id'] = $request['jurusan_id'] != '-' ? $request['jurusan_id']: null;
+        $request['dosen_id'] = $request['dosen_id'] != '-' ? $request['dosen_id']: null;
+        $msg = 'Berhasil menambahkan data';
+        $status = 'OK';
+        
+        try {
+            $user = User::create($request->all());
+            try {
+                $user->mahasiswa()->create($request->all());
+            } catch (\Throwable $th) {
+                $user->delete();
+                $msg = 'Gagal menambahkan data. Error: '. $th->getMessage();
+                $status = 'FAIL';
+                dd($msg, $status, $request->all());
+            }
+        } catch (\Throwable $th) {
+            $msg = 'Gagal menambahkan data. Error: '. $th->getMessage();
+            $status = 'FAIL';
+            dd($msg, $status);
+        }
+        
+        $header = ['status' => $status, 'msg' => $msg];
+        if ($status != 'FAIL'){
+            return redirect('master/mahasiswa-reguler')->with($header);
+        }
+        return redirect()->back()->with($header);
+        
     }
 
     /**
@@ -123,32 +131,35 @@ class MahasiswaRegulerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // user data
-        $name = $request->name;
-        $email = $request->email;
-        $nik = $request->nik;
-
-        // mahasiswa data
-        $dosen_id = $request->dosen == '-' ? null : $request->dosen;
-        $jurusan_id = $request->jurusan == '-' ? null : $request->jurusan;
-
-        $mahasiswa = Mahasiswa::where('npm','=',$id)->first();
-        // Save user
-        $user = $mahasiswa->user;
-        $user->name = $name;
-        $user->nik = $nik;
-        $user->email = $email;
-        $user->password = Hash::make('gatumgatum');
-        $user->save();
-
-        // save mahasiswa
-        $mahasiswa->dosen_id = $dosen_id;
-        $mahasiswa->jurusan_id = $jurusan_id;
-        $mahasiswa->save();
-
-
-        // dd($name, $email, $npm, $dosen_id, $jurusan_id);
-        return redirect('master/mahasiswa-reguler');
+        $request['password'] = Hash::make('12345678');
+        $msg = 'Berhasil menambahkan data';
+        $status = 'OK';
+        $key = '';
+        try {
+            $user = User::findOrFail($request->id);
+            $user_old = $user->getOriginal();
+            $user->update($request->all());
+            try {
+                $request['jurusan_id'] = $request['jurusan_id'] != '-' ? $request['jurusan_id']: null;
+                $request['dosen_id'] = $request['dosen_id'] != '-' ? $request['dosen_id']: null;
+                $key = array_keys($user->mahasiswa->toArray());
+                $user->mahasiswa()->update($request->only($key));
+            } catch (\Throwable $th) {
+                $user->update($user_old);
+                $msg = 'Gagal menambahkan data mahasiswa. Error: '. $th->getMessage();
+                $status = 'FAIL';
+            }
+        } catch (\Throwable $th) {
+            $msg = 'Gagal menambahkan data user. Error: '. $th->getMessage();
+            $status = 'FAIL';
+            dd($msg, $status);
+        }
+        
+        $header = ['status' => $status, 'msg' => $msg];
+        if ($status != 'FAIL'){
+            return redirect('master/mahasiswa-reguler')->with($header);
+        }
+        return redirect()->back()->with($header);
     }
 
     /**
@@ -160,10 +171,21 @@ class MahasiswaRegulerController extends Controller
     public function destroy($id)
     {
         $mahasiswa = Mahasiswa::where('npm','=',$id)->first();
+        $nama = $mahasiswa->user->nama;
+        $npm = $mahasiswa->npm;
+        $msg = "Berhasil menghapus mahasiswa. Data: $nama $npm";
+        $status = 'OK';
+        try {
+            $delete = $mahasiswa->user()->delete();
+        } catch (\Throwable $th) {
+            $status = 'FAIL';
+            $msg = `Gagal menghapus mahasiswa. Data: $nama $npm. Error: $th->getMessage()`;
+        }
 
-        $mahasiswa->delete();
-
-        // dd($name, $email, $npm, $dosen_id, $jurusan_id);
-        return redirect('master/mahasiswa-reguler');
+        $header = ['status' => $status, 'msg' => $msg];
+        if ($status != 'FAIL'){
+            return redirect('master/mahasiswa-reguler')->with($header);
+        }
+        return redirect()->back()->with($header);
     }
 }

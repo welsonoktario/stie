@@ -19,11 +19,6 @@ class MatakuliahController extends Controller
      */
     public function index()
     {
-        // $matakuliahs = Matakuliah::filter(Request::only(['query', 'orderBy', 'orderType']))
-        //     ->with('kurikulum')
-        //     ->paginate(Request::get('perPage') ?: 10)
-        //     ->withQueryString();
-
         $matakuliahs = Matakuliah::select(['matakuliahs.*', 'kurikulums.nama as kurikulum_nama', 'jurusans.nama as jurusan_nama'])
             ->join('kurikulums', 'kurikulums.id', '=', 'matakuliahs.kurikulum_id')
             ->leftJoin('matakuliah_jurusans', 'matakuliah_jurusans.matakuliah_id', '=', 'matakuliahs.id')
