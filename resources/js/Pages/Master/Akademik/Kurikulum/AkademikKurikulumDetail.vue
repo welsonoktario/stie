@@ -5,7 +5,7 @@
     >
       <p class="text-xs md:text-sm text-slate-500">
         Akademik / Kurikulum /
-        <span>{{ currentRouteName }}</span>
+        <span class="font-semibold text-teal-500 dark:text-teal-600">{{ currentRouteName }}</span>
       </p>
 
       <div class="flex justify-between my-3 item-center">
@@ -57,7 +57,7 @@
             v-if="currentRouteName != 'Tambah'"
             @click="isOpen = !isOpen"
             class="text-red-500 bg-transparent hover:bg-transparent focus:bg-transparent"
-            >Hapus Kurikulum</Button
+            >Hapus Data Kurikulum</Button
           >
         </div>
       </form>
@@ -65,7 +65,7 @@
 
     <Dialog
       :isOpen="isOpen"
-      classes="text-red-900 bg-red-100 hover:bg-red-200 focus-visible:ring-red-500"
+      classes="text-red-900 bg-red-100 dark:bg-red-300 hover:bg-red-200 dark:hover:bg-red-400 focus-visible:ring-red-500"
       title="Hapus kurikulum"
       confirmText="Hapus"
       @confirm="remove"

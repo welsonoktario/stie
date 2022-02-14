@@ -45,7 +45,7 @@
                 <slot name="footer">
                   <button
                     type="button"
-                    class="inline-flex justify-center px-4 py-2 mr-4 text-sm font-medium border border-transparent rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                    class="inline-flex justify-center px-4 py-2 mr-4 text-sm font-medium border border-transparent rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 transition-all ease-out duration-150 dark:bg-opacity-85"
                     :class="classes"
                     @click="confirm"
                   >
@@ -53,7 +53,7 @@
                   </button>
                   <button
                     type="button"
-                    class="inline-flex justify-center px-4 py-2 text-sm font-medium text-zinc-900 dark:text-zinc-50 bg-zinc-100 dark:bg-zinc-600 border border-transparent rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-zinc-500 dark:focus-visible:ring-zinc-600"
+                    class="inline-flex justify-center px-4 py-2 text-sm font-medium text-zinc-900 dark:text-zinc-50 bg-zinc-100 dark:bg-zinc-600 border border-transparent rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-zinc-500 dark:focus-visible:ring-zinc-600 dark:bg-opacity-85 transition-all ease-out duration-150"
                     @click="cancel"
                   >
                     Batal

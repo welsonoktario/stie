@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Master\Akademik;
 
 use App\Http\Controllers\Controller;
 use App\Models\Jurusan;
+use App\Http\Requests\Master\Akademik\Jurusan\StoreJurusanRequest;
+use App\Http\Requests\Master\Akademik\Jurusan\UpdateJurusanRequest;
+use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
-use Illuminate\Http\Request;
 
 class JurusanController extends Controller
 {
@@ -16,7 +18,9 @@ class JurusanController extends Controller
      */
     public function index()
     {
-        $jurusans = Jurusan::all();
+        $jurusans = Jurusan::filter(Request::only(['query', 'orderBy', 'orderType']))
+            ->paginate(Request::get('perPage') ?: 10)
+            ->withQueryString();
 
         return Inertia::render(
             'Master/Akademik/Jurusan/AkademikJurusan',
@@ -37,34 +41,31 @@ class JurusanController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Master\Akademik\Jurusan\StoreJurusanRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreJurusanRequest $request)
     {
-        $kode_jurusan = $request->kode_jurusan;
-        $nama = $request->nama;
+        $jurusan = Jurusan::create($request->validated());
 
-        Jurusan::create(
-            [
-                'nama' => $nama,
-                'kode_jurusan' => $kode_jurusan
-            ]
-        );
-
-        return redirect()->route('master.jurusan.index');
+        return redirect()
+            ->route('master.jurusan.index')
+            ->with(
+                [
+                    'status' => 'OK',
+                    'msg' => "Jurusan {$jurusan->nama} berhasil ditambahkan"
+                ]
+            );
     }
 
     /**
-     * Display the specified resource.
+     * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Jurusan  $jurusan
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function edit(Jurusan $jurusan)
     {
-        $jurusan = Jurusan::find($id);
-
         return Inertia::render(
             'Master/Akademik/Jurusan/AkademikJurusanDetail',
             ['jurusan' => $jurusan]
@@ -72,50 +73,52 @@ class JurusanController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Http\Requests\Master\Akademik\Jurusan\UpdateJurusanRequest  $request
+     * @param  \App\Models\Jurusan  $jurusan
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateJurusanRequest $request, Jurusan $jurusan)
     {
-        $kode_jurusan = $request->kode_jurusan;
-        $nama = $request->nama;
+        $jurusan->update($request->validated());
 
-        $jurusan = Jurusan::find($id);
-        $jurusan->update(
-            [
-                'nama' => $nama,
-                'kode_jurusan' => $kode_jurusan
-            ]
-        );
-
-        return redirect()->route('master.jurusan.index');
+        return redirect()
+            ->route('master.jurusan.index')
+            ->with(
+                [
+                    'status' => 'OK',
+                    'msg' => "Jurusan {$jurusan->nama} berhasil diperbarui"
+                ]
+            );
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Jurusan  $jurusan
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Jurusan $jurusan)
     {
-        $jurusan = Jurusan::find($id);
-        $jurusan->delete();
+        if (!$jurusan->delete()) {
+            return redirect()
+                ->route('master.jurusan.index')
+                ->with(
+                    [
+                        'status' => 'FAIL',
+                        'msg' => "Terjadi kesalahan menghapus jurusan {$jurusan->nama}"
+                    ]
+                );
+        }
 
-        return redirect()->route('master.jurusan.index');
+        return redirect()
+            ->route('master.jurusan.index')
+            ->with(
+                [
+                    'status' => 'OK',
+                    'msg' => "Jurusan {$jurusan->nama} berhasil dihapus"
+                ]
+            );
     }
 }

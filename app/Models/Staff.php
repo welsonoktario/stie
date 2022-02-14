@@ -5,20 +5,13 @@ namespace App\Models;
 use App\Models\Dosen;
 use App\Models\TenagaKependidikan;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Staff extends Model
 {
-    use HasFactory;
-    
-    protected $primaryKey = 'id';
-
     public $incrementing = false;
 
     protected $keyType = 'string';
 
-    protected $table = 'staffs';
-    
     protected $fillable = [
         'id',
         'divisi',
@@ -30,16 +23,29 @@ class Staff extends Model
         'status_karyawan',
     ];
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
-        
     }
-    
-    public function dosen(){
+
+    public function dosen()
+    {
         return $this->hasOne(Dosen::class, 'staff_id', 'id');
     }
 
-    public function tenaga_kependidikan() {
+    public function tenaga_kependidikan()
+    {
         return $this->hasOne(TenagaKependidikan::class, 'staff_id', 'id');
+    }
+
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['query'] ?? null, function ($query, $search) {
+            $query->where(function ($query) use ($search) {
+                $query->where('nama', 'LIKE', "%$search%");
+            });
+        })->when($filters['orderBy'] ?? null, function ($query, $orderBy) use (&$filters) {
+            $query->orderBy($orderBy, $filters['orderType']);
+        });
     }
 }

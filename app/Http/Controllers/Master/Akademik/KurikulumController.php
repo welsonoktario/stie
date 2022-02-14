@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Master\Akademik\Kurikulum\StoreKurikulumRequest;
 use App\Http\Requests\Master\Akademik\Kurikulum\UpdateKurikulumRequest;
 use App\Models\Kurikulum;
+use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 
 class KurikulumController extends Controller
@@ -17,8 +18,8 @@ class KurikulumController extends Controller
      */
     public function index()
     {
-        $kurikulums = Kurikulum::filter(request()->only(['query', 'orderBy', 'orderType']))
-            ->paginate(request()->get('perPage') ?: 10)
+        $kurikulums = Kurikulum::filter(Request::only(['query', 'orderBy', 'orderType']))
+            ->paginate(Request::get('perPage') ?: 10)
             ->withQueryString();
 
         return Inertia::render(
@@ -55,20 +56,6 @@ class KurikulumController extends Controller
                     'msg' => "Kurikulum {$kurikulum->nama} berhasil ditambahkan"
                 ]
             );
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Kurikulum  $kurikulum
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Kurikulum $kurikulum)
-    {
-        return Inertia::render(
-            'Master/Akademik/Kurikulum/AkademikKurikulumDetail.vue',
-            ['kurikulum' => $kurikulum]
-        );
     }
 
     /**

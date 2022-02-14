@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Master\Akademik;
 
-use Inertia\Inertia;
-use App\Models\Ruangan;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Ruangan;
+use App\Http\Requests\Master\Akademik\Ruangan\StoreRuanganRequest;
+use App\Http\Requests\Master\Akademik\Ruangan\UpdateRuanganRequest;
+use Illuminate\Support\Facades\Request;
+use Inertia\Inertia;
 
 class RuanganController extends Controller
 {
@@ -16,7 +18,9 @@ class RuanganController extends Controller
      */
     public function index()
     {
-        $ruangans = Ruangan::all();
+        $ruangans = Ruangan::filter(Request::only(['query', 'orderBy', 'orderType']))
+            ->paginate(Request::get('perPage') ?: 10)
+            ->withQueryString();
 
         return Inertia::render(
             'Master/Akademik/Ruangan/AkademikRuangan',
@@ -37,30 +41,31 @@ class RuanganController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Master\Akademik\Ruangan\StoreRuanganRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRuanganRequest $request)
     {
-        $nama_ruangan = $request->nama_ruangan;
+        $ruangan = Ruangan::create($request->validated());
 
-        Ruangan::create([
-            'nama_ruangan' => $nama_ruangan
-        ]);
-
-        return redirect()->route('master.ruangan.index');
+        return redirect()
+            ->route('master.ruangan.index')
+            ->with(
+                [
+                    'status' => 'OK',
+                    'msg' => "Ruangan {$ruangan->nama} berhasil ditambahkan"
+                ]
+            );
     }
 
     /**
-     * Display the specified resource.
+     * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Ruangan  $ruangan
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function edit(Ruangan $ruangan)
     {
-        $ruangan = Ruangan::findOrFail($id);
-
         return Inertia::render(
             'Master/Akademik/Ruangan/AkademikRuanganDetail',
             ['ruangan' => $ruangan]
@@ -68,47 +73,52 @@ class RuanganController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-
-    }
-
-    /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Http\Requests\Master\Akademik\Ruangan\UpdateRuanganRequest  $request
+     * @param  \App\Models\Ruangan  $ruangan
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRuanganRequest $request, Ruangan $ruangan)
     {
-        $nama_ruangan = $request->nama_ruangan;
+        $ruangan->update($request->validated());
 
-        $ruangan = Ruangan::findOrFail($id);
-        $ruangan->update([
-            'nama_ruangan' => $nama_ruangan
-        ]);
-
-        return redirect()->route('master.ruangan.index');
+        return redirect()
+            ->route('master.ruangan.index')
+            ->with(
+                [
+                    'status' => 'OK',
+                    'msg' => "Ruangan {$ruangan->nama} berhasil diperbarui"
+                ]
+            );
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Ruangan  $ruangan
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Ruangan $ruangan)
     {
-        $ruangan = Ruangan::findOrFail($id);
-        $ruangan->delete();
+        if (!$ruangan->delete()) {
+            return redirect()
+                ->route('master.ruangan.index')
+                ->with(
+                    [
+                        'status' => 'FAIL',
+                        'msg' => "Terjadi kesalahan menghapus ruangan {$ruangan->nama}"
+                    ]
+                );
+        }
 
-        return redirect()->route('master.ruangan.index');
+        return redirect()
+            ->route('master.ruangan.index')
+            ->with(
+                [
+                    'status' => 'OK',
+                    'msg' => "Ruangan {$ruangan->nama} berhasil dihapus"
+                ]
+            );
     }
 }

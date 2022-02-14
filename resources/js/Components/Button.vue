@@ -13,7 +13,6 @@
       font-semibold
       text-sm text-white
       dark:text-teal-100
-      tracking-wide
       hover:bg-teal-700 hover:dark:bg-teal-600
       focus:outline-none
       transition

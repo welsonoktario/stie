@@ -12,7 +12,7 @@
           >
         </span>
 
-        <Button as="button">
+        <Button type="button">
           <Link :href="route('master.kurikulum.create')">Tambah Kurikulum</Link>
         </Button>
       </div>

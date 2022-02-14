@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Master\Akademik;
 
-use Inertia\Inertia;
-use App\Models\TahunAjaran;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\TahunAjaran;
+use App\Http\Requests\Master\Akademik\TahunAjaran\StoreTahunAjaranRequest;
+use App\Http\Requests\Master\Akademik\TahunAjaran\UpdateTahunAjaranRequest;
+use Illuminate\Support\Facades\Request;
+use Inertia\Inertia;
 
 class TahunAjaranController extends Controller
 {
@@ -16,11 +18,13 @@ class TahunAjaranController extends Controller
      */
     public function index()
     {
-        $tahun_ajaran = TahunAjaran::all();
+        $tahunAjarans = TahunAjaran::filter(Request::only(['query', 'orderBy', 'orderType']))
+            ->paginate(Request::get('perPage') ?: 10)
+            ->withQueryString();
 
         return Inertia::render(
             'Master/Akademik/TahunAjaran/AkademikTahunAjaran',
-            ['tahun_ajarans' => $tahun_ajaran]
+            ['tahunAjarans' => $tahunAjarans]
         );
     }
 
@@ -31,89 +35,90 @@ class TahunAjaranController extends Controller
      */
     public function create()
     {
-        //
-
         return Inertia::render('Master/Akademik/TahunAjaran/AkademikTahunAjaranDetail');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Master\Akademik\TahunAjaran\StoreTahunAjaranRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreTahunAjaranRequest $request)
     {
-        $tahun = $request->tahun_ajaran;
-        $status = (int)$request->status;
+        $tahunAjaran = TahunAjaran::create($request->validated());
 
-        TahunAjaran::create([
-            'tahun_ajaran' => $tahun,
-            'status' => $status,
-        ]);
-
-        return redirect()->route('master.tahun_ajaran.index');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $tahun_ajaran = TahunAjaran::findOrFail($id);
-
-        return Inertia::render(
-            'Master/Akademik/TahunAjaran/AkademikTahunAjaranDetail',
-            ['tahun_ajaran' => $tahun_ajaran]
-        );
+        return redirect()
+            ->route('master.tahun_ajaran.index')
+            ->with(
+                [
+                    'status' => 'OK',
+                    'msg' => "Tahun ajaran {$tahunAjaran->tahun_ajaran} berhasil ditambahkan"
+                ]
+            );
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\TahunAjaran  $tahunAjaran
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(TahunAjaran $tahunAjaran)
     {
-        //
+        return Inertia::render(
+            'Master/Akademik/TahunAjaran/AkademikTahunAjaranDetail',
+            ['tahunAjaran' => $tahunAjaran]
+        );
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Http\Requests\Master\Akademik\TahunAjaran\UpdateTahunAjaranRequest  $request
+     * @param  \App\Models\TahunAjaran  $tahunAjaran
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateTahunAjaranRequest $request, TahunAjaran $tahunAjaran)
     {
-        $tahun = $request->tahun_ajaran;
-        $status = (int)$request->status;
-        // dd($status);
-        $tahun_ajaran = TahunAjaran::findOrFail($id);
-        $tahun_ajaran->update([
-            'tahun_ajaran' => $tahun,
-            'status' => $status,
-        ]);
+        $tahunAjaran->update($request->validated());
 
-        return redirect()->route('master.tahun_ajaran.index');
+        return redirect()
+            ->route('master.tahun_ajaran.index')
+            ->with(
+                [
+                    'status' => 'OK',
+                    'msg' => "Tahun ajaran {$tahunAjaran->tahun_ajaran} berhasil diperbarui"
+                ]
+            );
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\TahunAjaran  $tahunAjaran
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(TahunAjaran $tahunAjaran)
     {
-        $tahun_ajaran = TahunAjaran::findOrFail($id);
-        $tahun_ajaran->delete();
+        if (!$tahunAjaran->delete()) {
+            return redirect()
+                ->route('master.tahun_ajaran.index')
+                ->with(
+                    [
+                        'status' => 'FAIL',
+                        'msg' => "Terjadi kesalahan menghapus tahun ajaran {$tahunAjaran->tahun_ajaran}"
+                    ]
+                );
+        }
 
-        return redirect()->route('master.tahun_ajaran.index');
+        return redirect()
+            ->route('master.tahun_ajaran.index')
+            ->with(
+                [
+                    'status' => 'OK',
+                    'msg' => "Tahun ajaran {$tahunAjaran->tahun_ajaran} berhasil dihapus"
+                ]
+            );
     }
 }

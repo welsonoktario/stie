@@ -6,92 +6,108 @@
       <!-- <div class="p-6">Karyawan / Karyawan</div> -->
       <p class="text-xs md:text-sm text-slate-500">
         Akademik / Ruangan /
-        <span v-if="route().current('master.ruangan.create')">Tambah</span>
-        <span v-else>Ubah</span>
+        <span class="font-semibold text-teal-500 dark:text-teal-600">{{
+          currentRouteName
+        }}</span>
       </p>
 
-      <!-- <p>{{route().current()}}</p> -->
       <div class="flex justify-between my-3 item-center">
         <span class="align-middle">
           <strong
             class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
           >
-            <span v-if="route().current('master.ruangan.create')">Tambah</span>
-            <span v-else>Ubah</span>
+            <span>{{ currentRouteName }}</span>
             Ruangan</strong
           >
         </span>
       </div>
       <form @submit.prevent="submit(route().current())">
-        <div class="mb-3">
-          <label class="block text-gray-500 text-sm font-bold mb-2" for="nama_ruangan">
-            Nama Ruangan
-          </label>
+        <div class="mb-4">
+          <Label for="nama_ruangan"> Nama Ruangan </Label>
           <Input
             v-model="form.nama_ruangan"
-            class="w-full"
-            id="nama_ruangan"
+            name="nama_ruangan"
+            class="mt-1 block w-full"
             type="text"
             placeholder="Nama Ruangan"
+            autocomplete="off"
           ></Input>
         </div>
         <div class="flex justify-between">
           <Button class="px-10">Simpan</Button>
-          <Link v-if="!route().current('master.ruangan.create')" @click="remove()" class="text-red-500"
-            >Hapus Data Ruangan</Link
+          <button
+            type="button"
+            v-if="currentRouteName != 'Tambah'"
+            @click="isOpen = !isOpen"
+            class="text-red-500 bg-transparent hover:bg-transparent focus:bg-transparent"
           >
+            Hapus Data Ruangan
+          </button>
         </div>
       </form>
     </div>
+
+    <Dialog
+      :isOpen="isOpen"
+      classes="text-red-900 bg-red-100 dark:bg-red-300 hover:bg-red-200 dark:hover:bg-red-400 focus-visible:ring-red-500"
+      title="Hapus ruangan"
+      confirmText="Hapus"
+      @confirm="remove"
+      @cancel="isOpen = !isOpen"
+    >
+      <template #content>
+        <p class="text-sm">Apakah anda yakin ingin menghapus ruangan ini?</p>
+      </template>
+    </Dialog>
   </AppLayout>
 </template>
 
 <script>
-import AppLayout from "@layouts/App.vue"
+import { computed, ref } from "vue"
+import { Link, useForm } from "@inertiajs/inertia-vue3"
+import AppLayout from "@layouts/App"
+import Button from "@components/Button"
+import Dialog from "@components/Dialog"
+import Input from "@components/Input"
+import InputError from "@components/InputError"
+import Label from "@/Components/Label"
 
-import Input from "@components/Input.vue"
-import Button from "@components/Button.vue"
-
-import { Link } from "@inertiajs/inertia-vue3"
-
-import util from "@/util"
-
-import { reactive, ref } from "vue"
-import { Inertia } from "@inertiajs/inertia"
 export default {
   components: {
     AppLayout,
-    Link,
-    Input,
     Button,
+    Dialog,
+    Input,
+    InputError,
+    Label,
+    Link,
   },
   props: {
-    ruangan: {
-      type: Object,
-      default: null,
-    },
+    ruangan: Object,
   },
   setup(props) {
-    const form = reactive({
-      nama_ruangan: props.ruangan == null ? null : props.ruangan.nama_ruangan,
+    const form = useForm({
+      nama_ruangan: props.ruangan?.nama_ruangan || null,
     })
 
-    function submit(curRoute) {
-      // alert(curRoute)
-      if (curRoute === "master.ruangan.create") {
-        // alert('store')
-        Inertia.post(route('master.ruangan.store', form))
-      } else {
-        // alert('update')
-        Inertia.put(route("master.ruangan.update", props.ruangan.id), form)
-      }
-    }
-    function remove() {
-      // alert(props.staff.nip);
-      Inertia.delete(route("master.ruangan.destroy", props.ruangan.id))
-    }
+    const isOpen = ref(false)
+
+    const currentRouteName = computed(() =>
+      route().current("master.ruangan.create") ? "Tambah" : "Edit"
+    )
+
+    const submit = () =>
+      currentRouteName.value == "Tambah"
+        ? form.post(route("master.ruangan.store"))
+        : form.put(route("master.ruangan.update", props.ruangan.id))
+
+    const remove = () =>
+      form.delete(route("master.ruangan.destroy", props.ruangan.id))
+
     return {
+      currentRouteName,
       form,
+      isOpen,
       submit,
       remove,
     }

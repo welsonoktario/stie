@@ -1,110 +1,119 @@
 <template>
-  <AppLayout>
-    <div
-      class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
-    >
-      <!-- <div class="p-6">Karyawan / Karyawan</div> -->
-      <p class="text-xs md:text-sm text-slate-500">
+  <AppLayout title="Tambah Jurusan">
+    <div class="bg-white dark:bg-zinc-800 shadow-lg rounded-lg p-6">
+      <p class="text-xs md:text-sm dark:text-zinc-300">
         Akademik / Jurusan /
-        <span v-if="route().current('master.jurusan.create')">Tambah</span>
-        <span v-else>Ubah</span>
+        <span class="font-semibold text-teal-500 dark:text-teal-600">{{
+          currentRouteName
+        }}</span>
       </p>
 
-      <!-- <p>{{route().current()}}</p> -->
       <div class="flex justify-between my-3 item-center">
         <span class="align-middle">
           <strong
             class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
           >
-            <span v-if="route().current('master.jurusan.create')">Tambah</span>
-            <span v-else>Ubah</span>
-            Jurusan</strong
-          >
+            <span>{{ currentRouteName }}</span>
+            Jurusan
+          </strong>
         </span>
       </div>
-      <form @submit.prevent="submit(route().current())">
-        <div class="mb-3">
-          <label class="block text-gray-500 text-sm font-bold mb-2" for="kode">
-            Kode Jurusan
-          </label>
+      <form @submit.prevent="submit">
+        <div class="mb-4">
+          <Label for="kode">Kode Jurusan</Label>
           <Input
             v-model="form.kode_jurusan"
-            class="w-full"
-            id="kode"
+            name="kode"
+            class="mt-1 block w-full"
             type="text"
             placeholder="Kode Jurusan"
+            autocomplete="off"
           ></Input>
         </div>
-        <div class="mb-3">
-          <label class="block text-gray-500 text-sm font-bold mb-2" for="nama">
-            Nama Jurusan
-          </label>
+        <div class="mb-4">
+          <Label for="nama">Nama Jurusan</Label>
           <Input
             v-model="form.nama"
-            class="w-full"
-            id="nama"
+            name="nama"
+            class="mt-1 block w-full"
             type="text"
-            placeholder="Nama Jurusan"
+            placeholder="Nama jurusan"
+            autocomplete="off"
           ></Input>
         </div>
-        <div class="flex justify-between">
-          <Button class="px-10">Simpan</Button>
-          <Link v-if="!route().current('master.jurusan.create')" @click="remove()" class="text-red-500"
-            >Hapus Data Jurusan</Link
+        <div class="flex justify-between items-center w-full">
+          <Button class="px-10" :disabled="form.processing">Simpan</Button>
+          <button
+            v-if="currentRouteName != 'Tambah'"
+            @click="isOpen = !isOpen"
+            type="button"
+            class="text-red-500"
+            >Hapus Data Jurusan</button
           >
         </div>
       </form>
     </div>
+
+    <Dialog
+      :isOpen="isOpen"
+      title="Hapus jurusan"
+      confirmText="Hapus"
+      classes="text-red-900 bg-red-100 dark:bg-red-300 hover:bg-red-200 dark:hover:bg-red-400 focus-visible:ring-red-500"
+      @confirm="remove"
+      @cancel="isOpen = !isOpen"
+    >
+      <template #content>
+        <p class="text-sm">Apakah anda yakin ingin menghapus data jurusan?</p>
+      </template>
+    </Dialog>
   </AppLayout>
 </template>
 
 <script>
-import AppLayout from "@layouts/App.vue"
+import { computed, ref } from "vue"
+import { Link, useForm } from "@inertiajs/inertia-vue3"
+import AppLayout from "@layouts/App"
+import Button from "@components/Button"
+import Dialog from "@/Components/Dialog"
+import Input from "@components/Input"
+import Label from "@/Components/Label"
 
-import Input from "@components/Input.vue"
-import Button from "@components/Button.vue"
-
-import { Link } from "@inertiajs/inertia-vue3"
-
-import util from "@/util"
-
-import { reactive, ref } from "vue"
-import { Inertia } from "@inertiajs/inertia"
 export default {
   components: {
     AppLayout,
+    Button,
+    Dialog,
+    Label,
     Link,
     Input,
-    Button,
   },
   props: {
-    jurusan: {
-      type: Object,
-      default: null,
-    },
+    jurusan: Object,
   },
   setup(props) {
-    const form = reactive({
-      nama: props.jurusan == null ? null : props.jurusan.nama,
-      kode_jurusan: props.jurusan == null ? null : props.jurusan.kode_jurusan,
+    const form = useForm({
+      nama: props.jurusan?.nama || null,
+      kode_jurusan: props.jurusan?.kode_jurusan || null,
     })
 
-    function submit(curRoute) {
-      // alert(curRoute)
-      if (curRoute === "master.jurusan.create") {
-        // alert('store')
-        Inertia.post(route('master.jurusan.store', form))
-      } else {
-        // alert('update')
-        Inertia.put(route("master.jurusan.update", props.jurusan.id), form)
-      }
-    }
-    function remove() {
-      // alert(props.staff.nip);
-      Inertia.delete(route("master.jurusan.destroy", props.jurusan.id))
-    }
+    const currentRouteName = computed(() =>
+      route().current("master.jurusan.create") ? "Tambah" : "Edit"
+    )
+
+    const isOpen = ref(false)
+
+    const submit = () =>
+      currentRouteName.value == "Tambah"
+        ? form.post(route("master.jurusan.store"))
+        : form.put(route("master.jurusan.update", props.jurusan.id))
+
+    const remove = () =>
+      form.delete(route("master.jurusan.destroy", props.jurusan.id))
+
     return {
+      currentRouteName,
       form,
+      isOpen,
       submit,
       remove,
     }

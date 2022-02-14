@@ -1,13 +1,10 @@
 <template>
-  <AppLayout>
-    <div
-      class="container mx-auto p-6 rounded-md bg-white dark:bg-zinc-800 overflow-auto"
-    >
+  <AppLayout title="Matakuliah">
+    <div class="container mx-auto p-6 rounded-md bg-white dark:bg-zinc-800 overflow-auto">
       <p class="text-xs md:text-sm">Akademik / Matakuliah</p>
       <div class="flex justify-between my-3 item-center">
         <span class="align-middle">
-          <strong
-            class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
+          <strong class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
             >Daftar Matakuliah</strong
           >
         </span>
@@ -29,9 +26,7 @@
         </template>
 
         <template #actions="row">
-          <NavLink
-            as="button"
-            :href="route('master.matakuliah.edit', row.data.id)"
+          <NavLink as="button" :href="route('master.matakuliah.edit', row.data.id)"
             >Edit</NavLink
           >
         </template>
@@ -41,11 +36,11 @@
 </template>
 
 <script>
-import AppLayout from "@layouts/App"
-import Button from "@components/Button"
-import DataTable from "@components/DataTable"
-import NavLink from "@components/NavLink"
-import { Link } from "@inertiajs/inertia-vue3"
+import AppLayout from "@layouts/App";
+import Button from "@components/Button";
+import DataTable from "@components/DataTable";
+import NavLink from "@components/NavLink";
+import { Link } from "@inertiajs/inertia-vue3";
 
 export default {
   components: {
@@ -95,9 +90,9 @@ export default {
         label: "Tipe",
         sortable: true,
       },
-    ]
+    ];
 
-    return { columns }
+    return { columns };
   },
-}
+};
 </script>

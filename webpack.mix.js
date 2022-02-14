@@ -22,7 +22,8 @@ mix
     require("autoprefixer"),
   ])
   .webpackConfig(require("./webpack.config"))
-  .extract();
+  .extract()
+  .disableSuccessNotifications();
 
 if (mix.inProduction()) {
   mix.version();

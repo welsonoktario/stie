@@ -5,7 +5,7 @@
     >
       <p class="text-xs md:text-sm text-zinc-500 dark:text-zinc-400">
         Akademik / Matakuliah /
-        <span class="text-teal-500 dark:text-teal-600">{{
+        <span class="font-semibold text-teal-500 dark:text-teal-600">{{
           currentRouteName
         }}</span>
       </p>
