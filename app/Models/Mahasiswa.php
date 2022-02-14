@@ -74,4 +74,16 @@ class Mahasiswa extends Model
     public function dosen() {
         return $this->belongsTo(Dosen::class);
     }
+
+    public function scopeFilter($query, array $filters){
+        $query->when($filters['query'] ?? null, function($query, $search) {
+            $query->where(function ($query) use ($search) {
+                $query->where('npm', 'LIKE', "%$search%")
+                    ->orWhere('nama', 'LIKE', "%$search%")
+                    ->orWhere('jurusan', 'LIKE', "%$search%");
+            });
+        })->when($filters['orderBy'] ?? null, function ($query, $orderBy) use (&$filters) {
+            $query->orderBy($orderBy, $filters['orderType']);
+        });
+    }
 }

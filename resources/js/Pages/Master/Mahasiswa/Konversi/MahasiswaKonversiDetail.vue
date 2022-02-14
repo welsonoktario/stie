@@ -25,7 +25,7 @@
 
 
       <form @submit.prevent="submit(route().current())">
-        <div class="flex sm:space-x-3 sm:flex-row flex-col">
+        <div class="flex sm:space-x-2 sm:flex-row flex-col">
 
           <div class="mb-3 w-full">
             <label class="block text-gray-500 text-sm font-bold mb-2" for="npm">
@@ -41,7 +41,7 @@
             ></Input>
           </div>
 
-          <div class="mb-3 w-full">
+          <div class="mb-2 w-full">
             <label class="block text-gray-500 text-sm font-bold mb-2" for="nik">
               NIK
             </label>
@@ -84,6 +84,66 @@
           </div>
         </div>
 
+        
+        <!-- Data konversi -->
+        <!-- NPM ASAL, PT ASAL-->
+        <div class="flex sm:space-x-3 sm:flex-row flex-col">
+          <div class="mb-3 w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="npm_asal">
+              NPM Asal 
+            </label>
+            <Input
+              v-model="form.npm_asal"
+              class="w-full"
+              id="npm_asal"
+              type="text"
+              placeholder="NPM Asal"
+            ></Input>
+          </div>
+
+          <div class="mb-3 w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="perguruan_tinggi_asal">
+              Perguruan Tinggi Asal
+            </label>
+            <Input
+              v-model="form.perguruan_tinggi_asal"
+              class="w-full"
+              id="perguruan_tinggi_asal"
+              type="text"
+              placeholder="Perguruan Tinggi ssal"
+            ></Input>
+          </div>
+        </div>
+
+        <!-- NPM ASAL, KAMPUS ASAL-->
+        <div class="flex sm:space-x-3 sm:flex-row flex-col">
+          <div class="mb-3 w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="jurusan_asal">
+              Jurusan Asal
+            </label>
+            <Input
+              v-model="form.jurusan_asal"
+              class="w-full"
+              id="jurusan_asal"
+              type="text"
+              placeholder="Jurusan Asal"
+            ></Input>
+          </div>
+
+          <div class="mb-3 w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="jenjang_pendidikan">
+              Jenjang Pendidikan
+            </label>
+            <Input
+              v-model="form.jenjang_pendidikan"
+              class="w-full"
+              id="jenjang_pendidikan"
+              type="text"
+              placeholder="Jenjang Pendidikan"
+            ></Input>
+          </div>
+        </div>
+
         <div class="mb-3">
           <label class="block text-gray-500 text-sm font-bold mb-2" for="jurusan">
             Jurusan
@@ -91,7 +151,7 @@
           <select 
             class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" 
             id="jurusan"
-            v-model="form.jurusan">
+            v-model="form.jurusan_id">
             <option value="-">-</option>
             <option v-for="jurusan in jurusans" :key="jurusan.id" :value="jurusan.id.toString()">{{jurusan.nama}} - {{jurusan.kode_jurusan}}</option>
           </select>
@@ -103,11 +163,389 @@
           <select 
             class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" 
             id="dosen"
-            v-model="form.dosen">
+            v-model="form.dosen_id">
             <option value="-">-</option>
             <option v-for="dosen in dosens" :key="dosen.id" :value="dosen.id.toString()">{{dosen.staff.user.name}}</option>
           </select>
         </div>
+
+
+        
+        <!-- TTL, Jenis Kelamin -->
+        <div class="mb-3">
+          <div class="flex space-x-2">
+            <div>
+              <label class="block text-gray-500 text-sm font-bold mb-2" for="tempat_lahir">
+                Tempat Lahir
+              </label>
+              <Input
+                v-model="form.tempat_lahir"
+                class="w-full"
+                id="tempat_lahir"
+                type="text"
+                placeholder="Tempat Lahir"
+              ></Input>
+            </div>
+            <div>
+              <label class="block text-gray-500 text-sm font-bold mb-2" for="tanggal_lahir">
+                Tanggal Lahir
+              </label>
+              <Input
+                v-model="form.tanggal_lahir"
+                class="w-full"
+                id="tanggal_lahir"
+                type="date"
+                placeholder="tanggal Lahir"
+              ></Input>
+            </div>
+            <div class="w-full">
+              <label class="block text-gray-500 text-sm font-bold mb-2" for="jenis_kelamin">Jenis Kelamin</label>
+              <select name="jenis_kelamin" class="w-full w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" 
+                v-model="form.jenis_kelamin">
+                <option value="Laki-laki" selected>Laki-laki</option>
+                <option value="Perempuan">Perempuan</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- NISN, NPWP -->
+        <div class="mb-3 flex space-x-2">
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="npwp">
+              NPWP 
+            </label>
+            <Input
+              v-model="form.npwp"
+              class="w-full"
+              id="npwp"
+              type="text"
+              placeholder="npwp"
+            ></Input>
+          </div>
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="nisn">
+              NISN 
+            </label>
+            <Input
+              v-model="form.nisn"
+              class="w-full"
+              id="nisn"
+              type="text"
+              placeholder="nisn"
+            ></Input>
+          </div>
+        </div>
+
+        <!-- alamat jalan -->
+        <div class="mb-3">
+          <label class="block text-gray-500 text-sm font-bold mb-2" for="jalan">
+            Jalan 
+          </label>
+          <Input
+            v-model="form.jalan"
+            class="w-full"
+            id="jalan"
+            type="text"
+            placeholder="jalan"
+          ></Input>
+        </div>
+
+        <!-- kelurahan, kecamatan, kode pos -->
+        <div class="mb-3 flex space-x-2">
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="kelurahan">
+              Kelurahan 
+            </label>
+            <Input
+              v-model="form.kelurahan"
+              class="w-full"
+              id="kelurahan"
+              type="text"
+              placeholder="Kelurahan"
+            ></Input>
+          </div>
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="kecamatan">
+              Kecamatan 
+            </label>
+            <Input
+              v-model="form.kecamatan"
+              class="w-full"
+              id="kecamatan"
+              type="text"
+              placeholder="Kecamatan"
+            ></Input>
+          </div>
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="kode_pos">
+              Kode Pos 
+            </label>
+            <Input
+              v-model="form.kode_pos"
+              class="w-full"
+              id="kode_pos"
+              type="text"
+              placeholder="Kode Pos"
+            ></Input>
+          </div>
+        </div>
+
+        <!-- nomor hp -->
+        <div class="mb-3">
+          <label class="block text-gray-500 text-sm font-bold mb-2" for="nomor_hp">
+            Nomor HP 
+          </label>
+          <Input
+            v-model="form.nomor_hp"
+            class="w-full"
+            id="nomor_hp"
+            type="text"
+            placeholder="Nomor HP"
+          ></Input>
+        </div>
+
+        <!-- jenis tinggal, alat transportasi -->
+        <div class="mb-3 flex space-x-2">
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="jenis_tinggal">
+              Jenis Tinggal 
+            </label>
+            <Input
+              v-model="form.jenis_tinggal"
+              class="w-full"
+              id="jenis_tinggal"
+              type="text"
+              placeholder="jenis_tinggal"
+            ></Input>
+          </div>
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="alat_transportasi">
+              Alat Transportasi 
+            </label>
+            <Input
+              v-model="form.alat_transportasi"
+              class="w-full"
+              id="alat_transportasi"
+              type="text"
+              placeholder="Alat Transportasi"
+            ></Input>
+          </div>
+        </div>
+
+
+        
+        <!-- DATA ORANG TUA -->
+
+        <p class="mb-3 text-sm md:text-lg">
+          <strong>Data Orang Tua</strong>
+        </p>
+        
+        <!-- Ayah -->
+        <p class="mb-3 text-xs md:text-sm">
+          <strong>Ayah</strong>
+        </p>
+        
+        <!-- NIK, NAMA -->
+        <div class="mb-3 flex space-x-2">
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="nik_ayah">
+              nik_ayah 
+            </label>
+            <Input
+              v-model="form.nik_ayah"
+              class="w-full"
+              id="nik_ayah"
+              type="text"
+              placeholder="nik_ayah"
+            ></Input>
+          </div>
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="nama_ayah">
+              nama_ayah 
+            </label>
+            <Input
+              v-model="form.nama_ayah"
+              class="w-full"
+              id="nama_ayah"
+              type="text"
+              placeholder="nama_ayah"
+            ></Input>
+          </div>
+        </div>
+
+        <!-- TTL, pendidikan ayah -->
+        <div class="mb-3 flex space-x-2">
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="tempat_lahir_ayah">
+              tempat_lahir_ayah
+            </label>
+            <Input
+              v-model="form.tempat_lahir_ayah"
+              class="w-full"
+              id="tempat_lahir_ayah"
+              type="text"
+              placeholder="tempat_lahir_ayah"
+            ></Input>
+          </div>
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="tanggal_lahir_ayah">
+              tanggal_lahir_ayah
+            </label>
+            <Input
+              v-model="form.tanggal_lahir_ayah"
+              class="w-full"
+              id="tanggal_lahir_ayah"
+              type="date"
+              placeholder="tanggal_lahir_ayah"
+            ></Input>
+          </div>
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="pendidikan_ayah">
+              pendidikan_ayah
+            </label>
+            <Input
+              v-model="form.pendidikan_ayah"
+              class="w-full"
+              id="pendidikan_ayah"
+              type="text"
+              placeholder="pendidikan_ayah"
+            ></Input>
+          </div>
+        </div>
+
+        <!-- pekerjaan penghasilan ayah -->
+        <div class="mb-3 flex space-x-2">
+          
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="pekerjaan_ayah">
+              pekerjaan_ayah
+            </label>
+            <Input
+              v-model="form.pekerjaan_ayah"
+              class="w-full"
+              id="pekerjaan_ayah"
+              type="number"
+              placeholder="pekerjaan_ayah"
+            ></Input>
+          </div>
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="penghasilan_ayah">
+              penghasilan_ayah
+            </label>
+            <Input
+              v-model="form.penghasilan_ayah"
+              class="w-full"
+              id="penghasilan_ayah"
+              type="number"
+              placeholder="penghasilan_ayah"
+            ></Input>
+          </div>
+        </div>
+
+        
+        <!-- Ibu -->
+        <p class="mb-3 text-xs md:text-sm">
+          <strong>Ibu</strong>
+        </p>
+        
+        <!-- NIK, NAMA -->
+        <div class="mb-3 flex space-x-2">
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="nik_ibu">
+              nik_ibu 
+            </label>
+            <Input
+              v-model="form.nik_ibu"
+              class="w-full"
+              id="nik_ibu"
+              type="text"
+              placeholder="nik_ibu"
+            ></Input>
+          </div>
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="nama_ibu">
+              nama_ibu 
+            </label>
+            <Input
+              v-model="form.nama_ibu"
+              class="w-full"
+              id="nama_ibu"
+              type="text"
+              placeholder="nama_ibu"
+            ></Input>
+          </div>
+        </div>
+
+        <!-- TTL, pendidikan ibu -->
+        <div class="mb-3 flex space-x-2">
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="tempat_lahir_ibu">
+              tempat_lahir_ibu
+            </label>
+            <Input
+              v-model="form.tempat_lahir_ibu"
+              class="w-full"
+              id="tempat_lahir_ibu"
+              type="text"
+              placeholder="tempat_lahir_ibu"
+            ></Input>
+          </div>
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="tanggal_lahir_ibu">
+              tanggal_lahir_ibu
+            </label>
+            <Input
+              v-model="form.tanggal_lahir_ibu"
+              class="w-full"
+              id="tanggal_lahir_ibu"
+              type="date"
+              placeholder="tanggal_lahir_ibu"
+            ></Input>
+          </div>
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="pendidikan_ibu">
+              pendidikan_ibu
+            </label>
+            <Input
+              v-model="form.pendidikan_ibu"
+              class="w-full"
+              id="pendidikan_ibu"
+              type="text"
+              placeholder="pendidikan_ibu"
+            ></Input>
+          </div>
+        </div>
+
+        <!-- pekerjaan penghasilan ayah -->
+        <div class="mb-3 flex space-x-2">
+          
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="pekerjaan_ibu">
+              pekerjaan_ibu
+            </label>
+            <Input
+              v-model="form.pekerjaan_ibu"
+              class="w-full"
+              id="pekerjaan_ibu"
+              type="number"
+              placeholder="pekerjaan_ibu"
+            ></Input>
+          </div>
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="penghasilan_ibu">
+              penghasilan_ibu
+            </label>
+            <Input
+              v-model="form.penghasilan_ibu"
+              class="w-full"
+              id="penghasilan_ibu"
+              type="number"
+              placeholder="penghasilan_ibu"
+            ></Input>
+          </div>
+        </div>
+
 
         <div class="flex justify-between">
           <div>
@@ -132,101 +570,6 @@
           >
         </div>
       </form>
-
-      
-
-      
-      <!-- list matakuliah konversi -->
-
-      <!-- <div class="w-full bg-slate-100 my-3 flex justify-center p-2 hover:bg-slate-200 rounded-md" @click="showMatakuliah = !showMatakuliah">
-        <ChevronDoubleDownIcon v-if="!showMatakuliah" class="h-5 w-5 text-slate-500"></ChevronDoubleDownIcon>
-        <ChevronDoubleUpIcon v-if="showMatakuliah" class="h-5 w-5 text-slate-500"></ChevronDoubleUpIcon>
-      </div>
-      <div v-show="showMatakuliah">
-        <div class="flex justify-between my-3 item-center">
-          <span class="align-middle">
-            <strong class="whitespace-nowrap capitalize text-sm md:text-lg content-middle">Matakuliah Konversi</strong>
-          </span>
-          <Button
-            @click="showModalMatakuliah = !showModalMatakuliah"
-            >
-            Tambah Matakuliah Konversi
-          </Button>
-
-        </div>
-        <div class="flex flex-col mt-6">
-          <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-              <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                <table class="min-w-full divide-y divide-gray-200">
-                  <thead class="bg-gray-50">
-                    <tr>
-                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Kode MK Lama
-                      </th>
-                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Nama MK Lama
-                      </th>
-                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        SKS
-                      </th>
-                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Kode MK Baru
-                      </th>
-                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Nama MK Baru
-                      </th>
-                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        SKS
-                      </th>
-                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Nilai
-                      </th>
-                      <th scope="col" class="relative px-6 py-3">
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody class="bg-white divide-y divide-gray-200">
-                    <tr v-for="matakuliah in matakuliahs" :key="matakuliah.id">
-
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-500">
-                          {{matakuliah.kode_matakuliah}}
-                        </div>
-                      </td>
-                        
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">
-                          {{matakuliah.nama_matakuliah}}
-                        </div>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap  text-sm text-gray-500">
-                        {{matakuliah.sks_matakuliah}}
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap  text-sm text-gray-500">
-                        {{matakuliah.matakuliah.kode_matakuliah}}
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap  text-sm text-gray-500">
-                        {{matakuliah.matakuliah.nama_matakuliah}}
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap  text-sm text-gray-500">
-                        {{matakuliah.matakuliah.sks}}
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap  text-sm text-gray-500">
-                        {{matakuliah.nilai_matakuliah}}
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <Link href="#" class="text-indigo-600 hover:text-indigo-900">Edit</Link>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
-
     </div>
   </AppLayout>
 </template>
@@ -286,11 +629,51 @@ export default {
       email: props.mahasiswa == null ? null : props.mahasiswa.user.email,
       name: props.mahasiswa == null ? null : props.mahasiswa.user.name,
       nik: props.mahasiswa == null ? null : props.mahasiswa.user.nik,
+      jenis_kelamin: props.mahasiswa?.user.jenis_kelamin || "Laki-laki",
+      agama: props.mahasiswa?.user.agama || null,
+      nomor_hp: props.mahasiswa?.user.nomor_hp || null,
+      tempat_lahir: props.mahasiswa?.user.tempat_lahir || null,
+      tanggal_lahir: props.mahasiswa?.user.tanggal_lahir || null,
+      jalan: props.mahasiswa?.user.jalan || null,
+      kelurahan: props.mahasiswa?.user.kelurahan || null,
+      kode_pos: props.mahasiswa?.user.kode_pos || null,
+      kewarganegaraan: props.mahasiswa?.user.kewarganegaraan || 'WNI',
 
       // mahasiswa data
       npm: props.mahasiswa == null ? null : props.mahasiswa.npm,
-      dosen: props.mahasiswa == null ? '-' : (props.mahasiswa.dosen == null ? '-' : props.mahasiswa.dosen.id),
-      jurusan: props.mahasiswa == null ? '-' : (props.mahasiswa.jurusan == null ? '-' : props.mahasiswa .jurusan.id),
+      dosen_id: props.mahasiswa == null ? '-' : (props.mahasiswa.dosen == null ? '-' : props.mahasiswa.dosen.id),
+      jurusan_id: props.mahasiswa == null ? '-' : (props.mahasiswa.jurusan == null ? '-' : props.mahasiswa .jurusan.id),
+      nisn: props.mahasiswa?.nisn || null,
+      jenis_tinggal: props.mahasiswa?.jenis_tinggal || null,
+      alat_transportasi: props.mahasiswa?.alat_transportasi || null,
+      npwp: props.mahasiswa?.npwp || null,
+
+      // data ortu
+      // ayah
+      nik_ayah: props.mahasiswa?.nik_ayah || null,
+      nama_ayah: props.mahasiswa?.nama_ayah || null,
+      tempat_lahir_ayah: props.mahasiswa?.tempat_lahir_ayah || null,
+      tanggal_lahir_ayah: props.mahasiswa?.tanggal_lahir_ayah || null,
+      pendidikan_ayah: props.mahasiswa?.pendidikan_ayah || null,
+      pekerjaan_ayah: props.mahasiswa?.pekerjaan_ayah || null,
+      penghasilan_ayah: props.mahasiswa?.penghasilan_ayah || null,
+      // ibu
+      nik_ibu: props.mahasiswa?.nik_ibu || null,
+      nama_ibu: props.mahasiswa?.nama_ibu || null,
+      tempat_lahir_ibu: props.mahasiswa?.tempat_lahir_ibu || null,
+      tanggal_lahir_ibu: props.mahasiswa?.tanggal_lahir_ibu || null,
+      pendidikan_ibu: props.mahasiswa?.pendidikan_ibu || null,
+      pekerjaan_ibu: props.mahasiswa?.pekerjaan_ibu || null,
+      penghasilan_ibu: props.mahasiswa?.penghasilan_ibu || null,
+
+      uang_semester: props.mahasiswa?.uang_semester || null,
+      status_mahasiswa: props.mahasiswa?.status_mahasiswa || 'Aktif',
+
+      // data konversi
+      npm_asal: props.mahasiswa?.mahasiswa_konversi.npm_asal || null,
+      perguruan_tinggi_asal: props.mahasiswa?.mahasiswa_konversi.perguruan_tinggi_asal || null,
+      jurusan_asal: props.mahasiswa?.mahasiswa_konversi.jurusan_asal || null,
+      jenjang_pendidikan: props.mahasiswa?.mahasiswa_konversi.jenjang_pendidikan || null,
       
     })
 
@@ -302,6 +685,7 @@ export default {
         // alert(props.staff == null ? 'null bro' : 'ada bro')
         Inertia.post(route("master.mahasiswa-konversi.store"), form)
       } else {
+        form.id = props.mahasiswa.user.id
         Inertia.put(route("master.mahasiswa-konversi.update", props.mahasiswa.npm), form)
       }
     }
