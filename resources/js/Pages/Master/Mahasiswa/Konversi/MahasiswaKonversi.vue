@@ -4,7 +4,7 @@
       class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
     >
       <!-- <div class="p-6">Mahasiswa / Mahasiswa Reguler</div> -->
-      <p class="text-xs md:text-sm">Mahasiswa / Mahasiswa Reguler</p>
+      <p class="text-xs md:text-sm">Mahasiswa / Mahasiswa Konversi</p>
 
       <!-- Belum bisa ubah id dosen dan staff -->
 
@@ -16,7 +16,7 @@
           >
         </span>
         <Link
-          :href="route('master.mahasiswa-reguler.create')"
+          :href="route('master.mahasiswa-konversi.create')"
           method="get"
           as="button"
           type="link"

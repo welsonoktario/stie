@@ -546,16 +546,48 @@ export default {
   setup(props) {
     const form = reactive({
       // id: props.mahasiswa?.user.id || null,
-      // user data
       email: props.mahasiswa == null ? null : props.mahasiswa.user.email,
       name: props.mahasiswa == null ? null : props.mahasiswa.user.name,
       nik: props.mahasiswa == null ? null : props.mahasiswa.user.nik,
+      jenis_kelamin: props.mahasiswa?.user.jenis_kelamin || "Laki-laki",
+      agama: props.mahasiswa?.user.agama || null,
+      nomor_hp: props.mahasiswa?.user.nomor_hp || null,
+      tempat_lahir: props.mahasiswa?.user.tempat_lahir || null,
+      tanggal_lahir: props.mahasiswa?.user.tanggal_lahir || null,
+      jalan: props.mahasiswa?.user.jalan || null,
+      kelurahan: props.mahasiswa?.user.kelurahan || null,
+      kode_pos: props.mahasiswa?.user.kode_pos || null,
+      kewarganegaraan: props.mahasiswa?.user.kewarganegaraan || 'WNI',
 
       // mahasiswa data
       npm: props.mahasiswa == null ? null : props.mahasiswa.npm,
       dosen_id: props.mahasiswa == null ? '-' : (props.mahasiswa.dosen == null ? '-' : props.mahasiswa.dosen.id),
       jurusan_id: props.mahasiswa == null ? '-' : (props.mahasiswa.jurusan == null ? '-' : props.mahasiswa .jurusan.id),
-      
+      nisn: props.mahasiswa?.nisn || null,
+      jenis_tinggal: props.mahasiswa?.jenis_tinggal || null,
+      alat_transportasi: props.mahasiswa?.alat_transportasi || null,
+      npwp: props.mahasiswa?.npwp || null,
+
+      // data ortu
+      // ayah
+      nik_ayah: props.mahasiswa?.nik_ayah || null,
+      nama_ayah: props.mahasiswa?.nama_ayah || null,
+      tempat_lahir_ayah: props.mahasiswa?.tempat_lahir_ayah || null,
+      tanggal_lahir_ayah: props.mahasiswa?.tanggal_lahir_ayah || null,
+      pendidikan_ayah: props.mahasiswa?.pendidikan_ayah || null,
+      pekerjaan_ayah: props.mahasiswa?.pekerjaan_ayah || null,
+      penghasilan_ayah: props.mahasiswa?.penghasilan_ayah || null,
+      // ibu
+      nik_ibu: props.mahasiswa?.nik_ibu || null,
+      nama_ibu: props.mahasiswa?.nama_ibu || null,
+      tempat_lahir_ibu: props.mahasiswa?.tempat_lahir_ibu || null,
+      tanggal_lahir_ibu: props.mahasiswa?.tanggal_lahir_ibu || null,
+      pendidikan_ibu: props.mahasiswa?.pendidikan_ibu || null,
+      pekerjaan_ibu: props.mahasiswa?.pekerjaan_ibu || null,
+      penghasilan_ibu: props.mahasiswa?.penghasilan_ibu || null,
+
+      uang_semester: props.mahasiswa?.uang_semester || null,
+      status_mahasiswa: props.mahasiswa?.status_mahasiswa || 'Aktif',
     })
 
     function submit(curRoute) {
