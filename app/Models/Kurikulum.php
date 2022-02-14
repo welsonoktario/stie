@@ -20,6 +20,10 @@ class Kurikulum extends Model
         'aktif',
     ];
 
+    protected $casts = [
+        'aktif' => 'boolean'
+    ];
+
     public function matakuliahs()
     {
         return $this->hasMany(Matakuliah::class);

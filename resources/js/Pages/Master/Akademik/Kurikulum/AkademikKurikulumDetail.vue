@@ -1,110 +1,136 @@
 <template>
-  <AppLayout>
+  <AppLayout title="Tambah Kurikulum">
     <div
       class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
     >
-      <!-- <div class="p-6">Karyawan / Karyawan</div> -->
       <p class="text-xs md:text-sm text-slate-500">
         Akademik / Kurikulum /
-        <span v-if="route().current('master.kurikulum.create')">Tambah</span>
-        <span v-else>Ubah</span>
+        <span>{{ currentRouteName }}</span>
       </p>
 
-      <!-- <p>{{route().current()}}</p> -->
       <div class="flex justify-between my-3 item-center">
         <span class="align-middle">
           <strong
             class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
           >
-            <span v-if="route().current('master.kurikulum.create')">Tambah</span>
-            <span v-else>Ubah</span>
+            <span>{{ currentRouteName }}</span>
             Kurikulum</strong
           >
         </span>
       </div>
       <form @submit.prevent="submit(route().current())">
-        <div class="mb-3">
-          <label class="block text-gray-500 text-sm font-bold mb-2" for="nama">
+        <InputError :message="form.errors.nama" class="mb-3" />
+        <div class="mb-4">
+          <label class="text-gray-500 text-sm font-bold" for="nama">
             Nama Kurikulum
           </label>
           <Input
+            class="w-full mt-2"
             v-model="form.nama"
-            class="w-full"
             id="nama"
             type="text"
             placeholder="Nama Kurikulum"
+            autocomplete="off"
           ></Input>
         </div>
-        <div class="mb-3">
-          <label class="block text-gray-500 text-sm font-bold mb-2" for="status">
-            Status
-          </label>
-          <select
-            class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
-            id="status"
-            v-model="form.status">
-            <option value="1">Aktif</option>
-            <option value="0">Tidak Aktif</option>
-          </select>
+        <div class="mb-4">
+          <SwitchGroup>
+            <SwitchLabel class="block text-gray-500 text-sm font-bold mb-2"
+              >Aktif</SwitchLabel
+            >
+            <Switch
+              v-model="form.aktif"
+              :class="form.aktif ? 'bg-teal-600' : 'bg-gray-200'"
+              class="relative inline-flex items-center h-6 transition-colors rounded-full w-11 ring-0"
+            >
+              <span
+                :class="form.aktif ? 'translate-x-6' : 'translate-x-1'"
+                class="inline-block w-4 h-4 transition-transform transform bg-white rounded-full"
+              />
+            </Switch>
+          </SwitchGroup>
         </div>
         <div class="flex justify-between">
           <Button class="px-10">Simpan</Button>
-          <Link v-if="!route().current('master.kurikulum.create')" @click="remove()" class="text-red-500"
-            >Hapus Kurikulum</Link
+          <Button
+            type="button"
+            v-if="currentRouteName != 'Tambah'"
+            @click="isOpen = !isOpen"
+            class="text-red-500 bg-transparent hover:bg-transparent focus:bg-transparent"
+            >Hapus Kurikulum</Button
           >
         </div>
       </form>
     </div>
+
+    <Dialog
+      :isOpen="isOpen"
+      classes="text-red-900 bg-red-100 hover:bg-red-200 focus-visible:ring-red-500"
+      title="Hapus kurikulum"
+      confirmText="Hapus"
+      @confirm="remove"
+      @cancel="isOpen = !isOpen"
+    >
+      <p class="text-sm">Apakah anda yakin ingin menghapus kurikulum ini?</p>
+    </Dialog>
   </AppLayout>
 </template>
 
 <script>
-import AppLayout from "@layouts/App.vue"
-
-import Input from "@components/Input.vue"
-import Button from "@components/Button.vue"
-
-import { Link } from "@inertiajs/inertia-vue3"
-
-import util from "@/util"
-
-import { reactive, ref } from "vue"
+import AppLayout from "@layouts/App"
+import Input from "@components/Input"
+import InputError from "@components/InputError"
+import Dialog from "@components/Dialog"
+import Button from "@components/Button"
+import { Link, useForm } from "@inertiajs/inertia-vue3"
+import { computed, ref } from "vue"
 import { Inertia } from "@inertiajs/inertia"
+import { Switch, SwitchGroup, SwitchLabel } from "@headlessui/vue"
+
 export default {
   components: {
     AppLayout,
-    Link,
-    Input,
     Button,
+    Dialog,
+    Input,
+    InputError,
+    Link,
+    Switch,
+    SwitchGroup,
+    SwitchLabel,
   },
   props: {
-    kurikulum: {
-      type: Object,
-      default: null,
-    },
+    kurikulum: Object,
   },
   setup(props) {
-    const form = reactive({
-      nama: props.kurikulum == null ? null : props.kurikulum.nama,
-      status: props.kurikulum == null ? "1" : props.kurikulum.aktif,
+    const isOpen = ref(false)
+
+    const form = useForm({
+      nama: props?.kurikulum ? props.kurikulum.nama : null,
+      aktif: props?.kurikulum ? props.kurikulum.aktif : false,
     })
 
-    function submit(curRoute) {
-      // alert(curRoute)
-      if (curRoute === "master.kurikulum.create") {
-        // alert('store')
-        Inertia.post(route('master.kurikulum.store', form))
+    const currentRouteName = computed(() =>
+      route().current("master.kurikulum.create") ? "Tambah" : "Ubah"
+    )
+
+    const submit = () => {
+      if (currentRouteName.value == "Tambah") {
+        form.post(route("master.kurikulum.store"))
       } else {
-        // alert('update')
-        Inertia.put(route("master.kurikulum.update", props.kurikulum.id), form)
+        form.put(route("master.kurikulum.update", props.kurikulum.id))
       }
     }
-    function remove() {
-      // alert(props.staff.nip);kurikulum
+
+    const remove = () => {
+      isOpen.value = !isOpen.value
       Inertia.delete(route("master.kurikulum.destroy", props.kurikulum.id))
     }
+
     return {
+      currentRouteName,
       form,
+      isOpen,
       submit,
       remove,
     }

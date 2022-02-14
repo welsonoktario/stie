@@ -40,7 +40,7 @@ class StoreMatakuliahRequest extends FormRequest
     public function messages()
     {
         return [
-            'kurikulum_id.required' => 'Kurikulum matakuliah tidak boleh kosong',
+            'kurikulum_id.required' => 'Kurikulum matakuliah harus dipilih',
             'kode_matakuliah.required' => 'Kode matakuliah tidak boleh kosong',
             'kode_matakuliah.unique' => 'Kode matakuliah telah terpakai',
             'kode_matakuliah.max' => 'Panjang kode matakuliah tidak boleh lebih dari 10 huruf',
@@ -48,7 +48,7 @@ class StoreMatakuliahRequest extends FormRequest
             'nama_matakuliah.max' => 'Panjang nama matakuliah tidak boleh lebih dari 45',
             'sks.required' => 'SKS matakuliah tidak boleh kosong',
             'sks.digits_between' => 'SKS matakuliah minimal 1 dan maksimal 10',
-            'tipe.required' => 'Tipe matakuliah tidak boleh kosong',
+            'tipe.required' => 'Tipe matakuliah harus dipilih',
             'tipe.in' => 'Tipe matakuliah harus berupa Wajib, Pilihan, atau Wajib Pilihan'
         ];
     }

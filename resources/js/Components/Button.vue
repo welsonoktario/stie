@@ -11,10 +11,9 @@
       border border-transparent
       rounded-md
       font-semibold
-      text-xs text-white
+      text-sm text-white
       dark:text-teal-100
-      uppercase
-      tracking-widest
+      tracking-wide
       hover:bg-teal-700 hover:dark:bg-teal-600
       focus:outline-none
       transition

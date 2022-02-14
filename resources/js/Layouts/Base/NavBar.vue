@@ -18,8 +18,8 @@
         class="w-9 md:w-12 flex-none"
       />
       <div class="flex flex-col ml-2">
-        <strong class="capitalize text-sm md:text-base"
-          >sistem informasi akademi</strong
+        <strong class="capitalize text-sm md:text-sm"
+          >sistem informasi akademik</strong
         >
         <p class="text-xs md:text-sm">STIE Bulungan Tarakan</p>
       </div>

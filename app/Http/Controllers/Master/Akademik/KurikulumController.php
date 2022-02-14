@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Master\Akademik;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Master\Akademik\Kurikulum\StoreKurikulumRequest;
+use App\Http\Requests\Master\Akademik\Kurikulum\UpdateKurikulumRequest;
 use App\Models\Kurikulum;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class KurikulumController extends Controller
@@ -39,34 +40,31 @@ class KurikulumController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Master\Akademik\Kurikulum\StoreKurikulumRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreKurikulumRequest $request)
     {
-        $nama = $request->nama;
-        $aktif = $request->status;
+        $kurikulum = Kurikulum::create($request->validated());
 
-        Kurikulum::create(
-            [
-                'nama' => $nama,
-                'aktif' => $aktif
-            ]
-        ); // return model
-
-        return redirect()->route('master.kurikulum.index');
+        return redirect()
+            ->route('master.kurikulum.index')
+            ->with(
+                [
+                    'status' => 'OK',
+                    'msg' => "Kurikulum {$kurikulum->nama} berhasil ditambahkan"
+                ]
+            );
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Kurikulum  $kurikulum
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Kurikulum $kurikulum)
     {
-        $kurikulum = Kurikulum::findOrFail($id);
-
         return Inertia::render(
             'Master/Akademik/Kurikulum/AkademikKurikulumDetail.vue',
             ['kurikulum' => $kurikulum]
@@ -76,49 +74,64 @@ class KurikulumController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Kurikulum  $kurikulum
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Kurikulum $kurikulum)
     {
-        //
+        return Inertia::render(
+            'Master/Akademik/Kurikulum/AkademikKurikulumDetail.vue',
+            ['kurikulum' => $kurikulum]
+        );
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Http\Requests\Master\Akademik\Kurikulum\UpdateKurikulumRequest  $request
+     * @param  \App\Models\Kurikulum  $kurikulum
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateKurikulumRequest $request, Kurikulum $kurikulum)
     {
-        $nama = $request->nama;
-        $aktif = $request->status;
+        $kurikulum->update($request->validated());
 
-        $kurikulum = Kurikulum::findOrFail($id);
-
-        $kurikulum->update(
-            [
-                'nama' => $nama,
-                'aktif' => $aktif
-            ]
-        ); // return boolean
-
-        return redirect()->route('master.kurikulum.index');
+        return redirect()
+            ->route('master.kurikulum.index')
+            ->with(
+                [
+                    'status' => 'OK',
+                    'msg' => "Kurikulum {$kurikulum->nama} berhasil diperbarui"
+                ]
+            );
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Kurikulum  $kurikulum
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Kurikulum $kurikulum)
     {
-        $kurikulum = Kurikulum::findOrFail($id);
-        $kurikulum->delete();
+        if (!$kurikulum->delete()) {
+            return redirect()
+                ->route('master.kurikulum.index')
+                ->with(
+                    [
+                        'status' => 'FAIL',
+                        'msg' => "Terjadi kesalahan menghapus Kurikulum {$kurikulum->nama}"
+                    ]
+                );
+        }
 
-        return redirect()->route('master.kurikulum.index');
+        return redirect()
+            ->route('master.kurikulum.index')
+            ->with(
+                [
+                    'status' => 'OK',
+                    'msg' => "Kurikulum {$kurikulum->nama} berhasil dihapus"
+                ]
+            );
     }
 }

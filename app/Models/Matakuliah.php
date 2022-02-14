@@ -44,7 +44,7 @@ class Matakuliah extends Model
      */
     public function prasyarats()
     {
-        return $this->belongsToMany($this, 'prasyarat', 'matakuliah_id', 'prasyarat_id');
+        return $this->belongsToMany($this, 'prasyarat', 'matakuliah_id', 'prasyarat_id')->withPivot('nilai_minimum');
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Master\Akademik;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Master\Akademik\Matakuliah\StoreMatakuliahRequest;
 use App\Http\Requests\Master\Akademik\Matakuliah\UpdateMatakuliahRequest;
+use App\Models\Jurusan;
 use App\Models\Kurikulum;
 use App\Models\Matakuliah;
 use Illuminate\Support\Facades\Request;
@@ -42,11 +43,15 @@ class MatakuliahController extends Controller
      */
     public function create()
     {
-        $kurikulums = Kurikulum::all();
+        $jurusans = Jurusan::all();
+        $kurikulums = Kurikulum::with(['matakuliahs'])->get();
 
         return Inertia::render(
             'Master/Akademik/Matakuliah/AkademikMatakuliahDetail',
-            ['kurikulums' => $kurikulums]
+            [
+                'jurusans' => $jurusans,
+                'kurikulums' => $kurikulums
+            ]
         );
     }
 
@@ -58,7 +63,16 @@ class MatakuliahController extends Controller
      */
     public function store(StoreMatakuliahRequest $request)
     {
+        $jurusan = $request->matakuliah_jurusan;
+        $prasyarat = collect($request->prasyarats)->mapWithKeys(fn ($item, $key) => [
+            $item['id'] => ['nilai_minimum' => $item['nilai_minimum']]
+        ]);
+
         $matakuliah = Matakuliah::create($request->validated());
+        $matakuliah->prasyarats()->sync($prasyarat);
+        $matakuliah->matakuliah_jurusan()->create([
+            'jurusan_id' => $jurusan['jurusan_id']
+        ]);
 
         return redirect()
             ->route('master.matakuliah.index')
@@ -78,11 +92,14 @@ class MatakuliahController extends Controller
      */
     public function edit(Matakuliah $matakuliah)
     {
-        $kurikulums = Kurikulum::all();
+        $jurusans = Jurusan::all();
+        $kurikulums = Kurikulum::with(['matakuliahs'])->get();
+        $matakuliah->load(['matakuliah_jurusan', 'prasyarats']);
 
         return Inertia::render(
             'Master/Akademik/Matakuliah/AkademikMatakuliahDetail',
             [
+                'jurusans' => $jurusans,
                 'matakuliah' => $matakuliah,
                 'kurikulums' => $kurikulums
             ]
@@ -98,14 +115,23 @@ class MatakuliahController extends Controller
      */
     public function update(UpdateMatakuliahRequest $request, Matakuliah $matakuliah)
     {
-        $matakuliah = Matakuliah::create($request->validated());
+        $jurusan = $request->matakuliah_jurusan;
+        $prasyarat = collect($request->prasyarats)->mapWithKeys(fn ($item, $key) => [
+            $item['id'] => ['nilai_minimum' => $item['pivot']['nilai_minimum']]
+        ]);
+
+        $matakuliah->update($request->validated());
+        $matakuliah->prasyarats()->sync($prasyarat);
+        $matakuliah->matakuliah_jurusan()->update([
+            'jurusan_id' => $jurusan['jurusan_id']
+        ]);
 
         return redirect()
             ->route('master.matakuliah.index')
             ->with(
                 [
                     'status' => 'OK',
-                    'msg' => "Matakuliah {$matakuliah->nama_matakuliah} berhasil ditambahkan"
+                    'msg' => "Matakuliah {$matakuliah->nama_matakuliah} berhasil diperbarui"
                 ]
             );
     }
@@ -134,7 +160,7 @@ class MatakuliahController extends Controller
             ->with(
                 [
                     'status' => 'OK',
-                    'msg' => "Matakuliah {$matakuliah->nama_matakuliah} berhasil ditambahkan"
+                    'msg' => "Matakuliah {$matakuliah->nama_matakuliah} berhasil dihapus"
                 ]
             );
     }

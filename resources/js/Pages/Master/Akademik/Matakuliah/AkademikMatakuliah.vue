@@ -12,10 +12,7 @@
           >
         </span>
 
-        <Button
-          type="button"
-          class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150"
-        >
+        <Button type="button">
           <Link :href="route('master.matakuliah.create')" preserve-state
             >Tambah Matakuliah</Link
           >
@@ -28,7 +25,7 @@
         </template>
 
         <template #row(jurusan_nama)="row">
-          <span class="capitalize">{{ row.data.jurusan_nama ?? '-' }}</span>
+          <span class="capitalize">{{ row.data.jurusan_nama ?? "-" }}</span>
         </template>
 
         <template #actions="row">
@@ -44,11 +41,11 @@
 </template>
 
 <script>
-import AppLayout from "@layouts/App";
-import Button from "@components/Button";
-import DataTable from "@components/DataTable";
-import NavLink from "@components/NavLink";
-import { Link } from "@inertiajs/inertia-vue3";
+import AppLayout from "@layouts/App"
+import Button from "@components/Button"
+import DataTable from "@components/DataTable"
+import NavLink from "@components/NavLink"
+import { Link } from "@inertiajs/inertia-vue3"
 
 export default {
   components: {
@@ -66,6 +63,7 @@ export default {
       {
         key: "id",
         label: "ID",
+        sortable: true,
       },
       {
         key: "kode_matakuliah",
@@ -83,9 +81,9 @@ export default {
         sortable: true,
       },
       {
-        key: 'jurusan_nama',
-        label: 'Jurusan',
-        sortable: true
+        key: "jurusan_nama",
+        label: "Jurusan",
+        sortable: true,
       },
       {
         key: "sks",
@@ -97,9 +95,9 @@ export default {
         label: "Tipe",
         sortable: true,
       },
-    ];
+    ]
 
-    return { columns };
+    return { columns }
   },
-};
+}
 </script>

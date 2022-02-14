@@ -25,7 +25,7 @@ class UpdateMatakuliahRequest extends FormRequest
     {
         return [
             'kurikulum_id' => ['required', 'numeric'],
-            'kode_matakuliah' => ['required', 'unique:matakuliahs,kode', 'string', 'max:10'],
+            'kode_matakuliah' => ['required', 'string', 'max:10'],
             'nama_matakuliah' => ['required', 'string', 'max:45'],
             'sks' => ['required', 'digits_between:1,10'],
             'tipe' => ['required', 'in:wajib,pilihan,pilihan wajib', 'string'],
@@ -42,7 +42,6 @@ class UpdateMatakuliahRequest extends FormRequest
         return [
             'kurikulum_id.required' => 'Kurikulum matakuliah tidak boleh kosong',
             'kode_matakuliah.required' => 'Kode matakuliah tidak boleh kosong',
-            'kode_matakuliah.unique' => 'Kode matakuliah telah terpakai',
             'kode_matakuliah.max' => 'Panjang kode matakuliah tidak boleh lebih dari 10 huruf',
             'nama_matakuliah.required' => 'Nama matakuliah tidak boleh kosong',
             'nama_matakuliah.max' => 'Panjang nama matakuliah tidak boleh lebih dari 45',

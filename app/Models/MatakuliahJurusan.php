@@ -19,11 +19,13 @@ class MatakuliahJurusan extends Model
 
     protected $table = 'matakuliah_jurusans';
 
-    public function jurusan(){
+    public function jurusan()
+    {
         return $this->belongsTo(Jurusan::class);
     }
 
-    public function matakuliah(){
+    public function matakuliah()
+    {
         return $this->belongsTo(Matakuliah::class);
     }
 }
