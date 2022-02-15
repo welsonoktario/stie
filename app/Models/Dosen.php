@@ -10,6 +10,8 @@ class Dosen extends Model
 {
     public $incrementing = false;
 
+    protected $table = 'dosens';
+
     protected $keyType = 'string';
 
     protected $fillable = [
@@ -40,11 +42,19 @@ class Dosen extends Model
         return $this->hasMany(Mahasiswa::class);
     }
 
+    public function scopeIndex($query)
+    {
+        $query->select(['dosens.*', 'users.name as user_name', 'jurusans.nama as jurusan_nama', 'staffs.status_karyawan as staff_status'])
+            ->join('jurusans', 'jurusans.id', '=', 'dosens.jurusan_id')
+            ->join('staffs', 'staffs.id', '=', 'dosens.staff_id')
+            ->join('users', 'users.id', '=', 'staffs.user_id');
+    }
+
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['query'] ?? null, function ($query, $search) {
             $query->where(function ($query) use ($search) {
-                $query->where('tahun_ajaran', 'LIKE', "%$search%");
+                $query->where('users.name', 'LIKE', "%$search%");
             });
         })->when($filters['orderBy'] ?? null, function ($query, $orderBy) use (&$filters) {
             $query->orderBy($orderBy, $filters['orderType']);

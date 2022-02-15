@@ -20,10 +20,13 @@ class DosenController extends Controller
      */
     public function index()
     {
-        //
-        $dosens = Dosen::with(['staff.user', 'jurusan'])->get();
+        $dosens = Dosen::index()
+            ->with(['staff.user', 'jurusan'])
+            ->filter(request()->only(['query', 'orderBy', 'orderType']))
+            ->paginate(request()->get('perPage') ?: 10)
+            ->withQueryString();
 
-        return Inertia::render('Master/Karyawan/KaryawanDosen',[
+        return Inertia::render('Master/Karyawan/Dosen/KaryawanDosen', [
             'dosens' => $dosens
         ]);
     }
@@ -36,7 +39,7 @@ class DosenController extends Controller
     public function create()
     {
         $jurusans = Jurusan::all();
-        return Inertia::render('Master/Karyawan/KaryawanDosenDetail',[
+        return Inertia::render('Master/Karyawan/Dosen/KaryawanDosenDetail', [
             'jurusans' => $jurusans,
         ]);
     }
@@ -48,31 +51,10 @@ class DosenController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
+    {
         $this->saveDosenHandler($request, 'store');
 
-        return redirect('master/dosen');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-        
-        $dosen = Dosen::where('id','=',$id)->with(['staff.user', 'jurusan'])->get()->first();
-        $jurusans = Jurusan::all();
-
-        // dd($dosen);
-
-        return Inertia::render('Master/Karyawan/KaryawanDosenDetail',[
-            'dosen' => $dosen,
-            'jurusans' => $jurusans
-        ]);
+        return redirect()->route('master.dosen.index');
     }
 
     /**
@@ -83,7 +65,13 @@ class DosenController extends Controller
      */
     public function edit($id)
     {
-        //
+        $dosen = Dosen::where('id', '=', $id)->with(['staff.user', 'jurusan'])->get()->first();
+        $jurusans = Jurusan::all();
+
+        return Inertia::render('Master/Karyawan/Dosen/KaryawanDosenDetail', [
+            'dosen' => $dosen,
+            'jurusans' => $jurusans
+        ]);
     }
 
     /**
@@ -96,10 +84,10 @@ class DosenController extends Controller
     public function update(Request $request, $id)
     {
         //
-        
+
         $this->saveDosenHandler($request, 'update', $id);
 
-        return redirect('master/dosen');
+        return redirect()->route('master.dosen.index');
     }
 
     /**
@@ -112,17 +100,18 @@ class DosenController extends Controller
     {
         //
         $dosen = Dosen::findOrFail($id);
-        
+
         $dosen->delete();
 
         $dosen->staff->delete();
 
         $dosen->staff->user->delete();
 
-        return redirect('master/dosen');
+        return redirect()->route('master.dosen.index');
     }
 
-    public function saveDosenHandler(Request $request, $mode = 'store', $id=null){
+    public function saveDosenHandler(Request $request, $mode = 'store', $id = null)
+    {
 
         // Data User
         $email = $request->email;
@@ -157,7 +146,7 @@ class DosenController extends Controller
         $user->nik = $nik;
         $user->password = Hash::make('12345678');
         $user_save = $user->save();
-        if(!$user_save){
+        if (!$user_save) {
             return dd('Gagal menyimpan user');
         }
 
@@ -185,11 +174,11 @@ class DosenController extends Controller
         $dosen->jabatan_akademik = $jabatan_akademik;
         $dosen->konsentrasi = $konsentrasi;
         $dosen->staff()->associate($staff);
-        if($jurusan != null)
+        if ($jurusan != null)
             $dosen->jurusan()->associate($jurusan);
         $dosen_save = $dosen->save();
-        
-        if(!$dosen_save){
+
+        if (!$dosen_save) {
             $staff->delete();
             $user->delete();
             return dd('gagal menyimpan dosen');

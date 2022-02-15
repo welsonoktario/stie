@@ -31,15 +31,16 @@ class KaryawanController extends Controller
         // ->toArray();
         // dd($karyawans);
 
-        $karyawans = Staff::doesntHave('dosen')
-            ->with(['user', 'tenaga_kependidikan'])
+        $karyawans = Staff::index()
+            ->doesntHave('dosen')
+            ->with(['user'])
             ->filter(request()->only(['query', 'orderBy', 'orderType']))
             ->orderBy('created_at', 'DESC')
             ->paginate(request()->get('perPage') ?: 10)
             ->withQueryString();
 
-        return Inertia::render('Master/Karyawan/KaryawanKaryawan', [
-            'karyawanss' => $karyawans
+        return Inertia::render('Master/Karyawan/Karyawan/KaryawanKaryawan', [
+            'karyawans' => $karyawans
         ]);
     }
 
@@ -51,7 +52,7 @@ class KaryawanController extends Controller
     public function create()
     {
         //
-        return Inertia::render('Master/Karyawan/KaryawanKaryawanDetail');
+        return Inertia::render('Master/Karyawan/Karyawan/KaryawanKaryawanDetail');
     }
 
     /**
@@ -80,29 +81,12 @@ class KaryawanController extends Controller
             $karyawan->user()->associate($user);
             $karyawan_completed = $karyawan->save();
             if ($karyawan_completed) {
-                return redirect('/master/karyawan');
+                return redirect()->route('master.karyawan.index');
             }
         }
         $user->delete();
         // dd($name,$email,$nik,$status);
 
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-        $staff = Staff::where('id', '=', $id)->with('user')->get()->first();
-        // dd($staff, $id);
-        // dd($staff);
-        return Inertia::render('Master/Karyawan/KaryawanKaryawanDetail', [
-            'staff' => $staff
-        ]);
     }
 
     /**
@@ -113,7 +97,12 @@ class KaryawanController extends Controller
      */
     public function edit($id)
     {
-        //
+        $staff = Staff::where('id', '=', $id)->with('user')->get()->first();
+        // dd($staff, $id);
+        // dd($staff);
+        return Inertia::render('Master/Karyawan/Karyawan/KaryawanKaryawanDetail', [
+            'staff' => $staff
+        ]);
     }
 
     /**
@@ -153,7 +142,7 @@ class KaryawanController extends Controller
                 ]);
             }
         }
-        return redirect('/master/karyawan');
+        return redirect()->route('master.karyawan.index');
     }
 
     /**
@@ -171,7 +160,7 @@ class KaryawanController extends Controller
         $staff->delete();
         $staff->user->delete();
 
-        return redirect('/master/karyawan');
+        return redirect()->route('master.karyawan.index');
         // dd($staff);
     }
 }

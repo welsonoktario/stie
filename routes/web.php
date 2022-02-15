@@ -63,6 +63,8 @@ Route::group(['middleware' => ['auth']], function () {
             'matakuliah' => MatakuliahController::class,
             'mahasiswa-reguler' => MahasiswaRegulerController::class,
             'mahasiswa-konversi' => MahasiswaKonversiController::class,
+        ], [
+            'except' => ['show']
         ]);
 
         Route::get('/mahasiswa-konversi/{mahasiswa_konversi_id}/matakuliah-konversi/create', [MatakuliahKonversiController::class, 'create'])->name('mahasiswa-konversi.matakuliah.create');
