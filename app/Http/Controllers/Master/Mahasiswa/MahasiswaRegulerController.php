@@ -100,15 +100,6 @@ class MahasiswaRegulerController extends Controller
     public function show($id)
     {
         //
-        $mahasiswa = Mahasiswa::where('npm','=',$id)->with(['dosen','jurusan','user'])->first();
-        $dosens = Dosen::with('staff.user')->get();
-        $jurusans = Jurusan::all();
-        // dd($mahasiswa);
-        return Inertia::render('Master/Mahasiswa/Reguler/MahasiswaRegulerDetail',[
-            'dosens' => $dosens,
-            'jurusans' => $jurusans,
-            'mahasiswa' => $mahasiswa,
-        ]);
     }
 
     /**
@@ -120,6 +111,15 @@ class MahasiswaRegulerController extends Controller
     public function edit($id)
     {
         //
+        $mahasiswa = Mahasiswa::where('npm','=',$id)->with(['dosen','jurusan','user'])->first();
+        $dosens = Dosen::with('staff.user')->get();
+        $jurusans = Jurusan::all();
+        // dd($mahasiswa);
+        return Inertia::render('Master/Mahasiswa/Reguler/MahasiswaRegulerDetail',[
+            'dosens' => $dosens,
+            'jurusans' => $jurusans,
+            'mahasiswa' => $mahasiswa,
+        ]);
     }
 
     /**

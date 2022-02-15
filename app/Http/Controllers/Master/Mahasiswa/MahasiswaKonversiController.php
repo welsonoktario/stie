@@ -104,6 +104,16 @@ class MahasiswaKonversiController extends Controller
      */
     public function show($id)
     {
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
         //
         $mahasiswa = Mahasiswa::has('mahasiswa_konversi')
         ->where('npm','=',$id)
@@ -120,17 +130,6 @@ class MahasiswaKonversiController extends Controller
             'mahasiswa' => $mahasiswa,
             'matakuliahs' => $matakuliahs,
         ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**

@@ -45,9 +45,11 @@ class Dosen extends Model
     public function scopeIndex($query)
     {
         $query->select(['dosens.*', 'users.name as user_name', 'jurusans.nama as jurusan_nama', 'staffs.status_karyawan as staff_status'])
-            ->join('jurusans', 'jurusans.id', '=', 'dosens.jurusan_id')
+            ->leftJoin('jurusans', 'jurusans.id', '=', 'dosens.jurusan_id')
             ->join('staffs', 'staffs.id', '=', 'dosens.staff_id')
             ->join('users', 'users.id', '=', 'staffs.user_id');
+        // $query->select(['dosens.*'])
+        //     ->join('jurusans','jurusan.id','=','dosens.jurusan_id');
     }
 
     public function scopeFilter($query, array $filters)

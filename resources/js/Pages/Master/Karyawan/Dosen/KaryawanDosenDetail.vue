@@ -225,13 +225,14 @@ export default {
     const isOpen = ref(false)
 
     const currentRouteName = computed(() =>
-      route().current("master.karyawan.create") ? "Tambah" : "Ubah"
+      route().current("master.dosen.create") ? "Tambah" : "Ubah"
     )
 
     const submit = () =>
-      currentRouteName == "Tambah"
-        ? form.post(route("master.dose.store"))
-        : form.put(route("master.dosen.update", props.dosen.id))
+      // console.log(currentRouteName)
+      currentRouteName.value == "Tambah"
+        ? form.post(route("master.dosen.store"))
+        : alert(currentRouteName);//form.put(route("master.dosen.update", props.dosen.id))
 
     const remove = () =>
       form.delete(route("master.dosen.destroy", props.dosen.id))

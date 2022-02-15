@@ -35,7 +35,7 @@
         <template #actions="row">
           <Link
             as="button"
-            :href="route('master.mahasiswa-reguler.show', row.data.npm)"
+            :href="route('master.mahasiswa-reguler.edit', row.data.npm)"
             >Edit</Link>
         </template>
       </DataTable>

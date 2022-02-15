@@ -63,28 +63,63 @@ class KaryawanController extends Controller
      */
     public function store(Request $request)
     {
-        $name = $request->name;
-        $email = $request->email;
-        $nik = $request->nik;
-        $id = $request->id;
-
-        $user = new User();
-        $user->name = $name;
-        $user->email = $email;
-        $user->nik = $nik;
-        $user->password = Hash::make('12345678');
-        $user_completed = $user->save();
-
-        if ($user_completed) {
-            $karyawan = new Staff;
-            $karyawan->id = $id;
-            $karyawan->user()->associate($user);
-            $karyawan_completed = $karyawan->save();
-            if ($karyawan_completed) {
-                return redirect()->route('master.karyawan.index');
+        $request['password'] = Hash::make('12345678');
+        $msg = 'Berhasil menambahkan data';
+        $status = 'OK';
+        try {
+            $user = User::create($request->except(['id']));
+            try {
+                $user->staff()->create($request->all());
+                if (!in_array($request->get('nitk'), [null, ""])) {
+                    $user->staff->tenaga_kependidikan()->create([
+                        'id' => $request->get('nitk')
+                    ]);
+                }
+            } catch (\Throwable $th) {
+                $msg = 'Gagal menambahkan data karyawan. Error: '.$th->getMessage();
+                $user->delete();
+                $status = 'FAIL';
+                dd($msg, $th);
             }
+        } catch (\Throwable $th) {
+            $user->delete();
+            $status = 'FAIL';
+            $msg = 'Gagal menambahkan data user. Error '.$th->getMessage();
+            dd($msg, $th);
+            
         }
-        $user->delete();
+
+        
+        $header = ['status' => $status, 'msg' => $msg];
+        if ($status != 'FAIL'){
+            return redirect('master/karyawan')->with($header);
+        }
+        return redirect()->back()->with($header);
+
+        
+        // $name = $request->name;
+        // $email = $request->email;
+        // $nik = $request->nik;
+        // $id = $request->id;
+        
+
+        // $user = new User();
+        // $user->name = $name;
+        // $user->email = $email;
+        // $user->nik = $nik;
+        // $user->password = Hash::make('12345678');
+        // $user_completed = $user->save();
+
+        // if ($user_completed) {
+        //     $karyawan = new Staff;
+        //     $karyawan->id = $id;
+        //     $karyawan->user()->associate($user);
+        //     $karyawan_completed = $karyawan->save();
+        //     if ($karyawan_completed) {
+        //         return redirect()->route('master.karyawan.index');
+        //     }
+        // }
+        // $user->delete();
         // dd($name,$email,$nik,$status);
 
     }

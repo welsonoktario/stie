@@ -26,6 +26,9 @@ class DosenController extends Controller
             ->paginate(request()->get('perPage') ?: 10)
             ->withQueryString();
 
+        // dd($dosens);
+
+        // dd(Dosen::index()->get());
         return Inertia::render('Master/Karyawan/Dosen/KaryawanDosen', [
             'dosens' => $dosens
         ]);

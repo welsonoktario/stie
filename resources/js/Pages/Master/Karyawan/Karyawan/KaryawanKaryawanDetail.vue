@@ -37,7 +37,7 @@
             NITK <i> (Tenaga Kependidikan - Opsional)</i>
           </Label>
           <Input
-            v-model="form.id"
+            v-model="form.nitk"
             id="nitk"
             class="mt-1 block w-full"
             type="text"
@@ -132,10 +132,16 @@ export default {
   },
   setup(props) {
     const form = useForm({
+      // data user
       email: props.staff?.user?.email,
       name: props.staff?.user?.name,
       nik: props.staff?.user?.nik,
+
+      // data staff
       id: props.staff?.id,
+
+      // data tenaga kependidikan
+      nitk: props.staff?.tenaga_kependidikan?.id
     })
 
     const isOpen = ref(false)
@@ -145,7 +151,7 @@ export default {
     )
 
     const submit = () =>
-      currentRouteName == "Tambah"
+      currentRouteName.value == "Tambah"
         ? form.post(route("master.karyawan.store"))
         : form.put(route("master.karyawan.update", props.staff.id))
 
