@@ -51,6 +51,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Master route
     Route::group(['prefix' => 'master', 'as' => 'master.'], function () {
+        Route::get('kurikulum/{kurikulum}/prasyarat', [KurikulumController::class, 'loadPrasyarats'])->name('kurikulum.prasyarat');
+
         Route::resources([
             'karyawan' => KaryawanController::class,
             'jurusan' => JurusanController::class,
@@ -62,13 +64,13 @@ Route::group(['middleware' => ['auth']], function () {
             'mahasiswa-reguler' => MahasiswaRegulerController::class,
             'mahasiswa-konversi' => MahasiswaKonversiController::class,
         ]);
-        
-        Route::get('/mahasiswa-konversi/{mahasiswa_konversi_id}/matakuliah-konversi/create', [MatakuliahKonversiController::class,'create'])->name('mahasiswa-konversi.matakuliah.create');
-        Route::get('/mahasiswa-konversi/{mahasiswa_konversi_id}/matakuliah-konversi', [MatakuliahKonversiController::class,'index'])->name('mahasiswa-konversi.matakuliah.index');
-        Route::post('/mahasiswa-konversi/{mahasiswa_konversi_id}/matakuliah-konversi/store', [MatakuliahKonversiController::class,'store'])->name('mahasiswa-konversi.matakuliah.store');
-        Route::get('/mahasiswa-konversi/{mahasiswa_konversi_id}/matakuliah-konversi/{matakuliah_konversi_id}', [MatakuliahKonversiController::class,'show'])->name('mahasiswa-konversi.matakuliah.show');
-        Route::put('/mahasiswa-konversi/{mahasiswa_konversi_id}/matakuliah-konversi/{matakuliah_konversi_id}', [MatakuliahKonversiController::class,'update'])->name('mahasiswa-konversi.matakuliah.update');
-        Route::delete('/mahasiswa-konversi/{mahasiswa_konversi_id}/matakuliah-konversi/{matakuliah_konversi_id}', [MatakuliahKonversiController::class,'destroy'])->name('mahasiswa-konversi.matakuliah.destroy');
+
+        Route::get('/mahasiswa-konversi/{mahasiswa_konversi_id}/matakuliah-konversi/create', [MatakuliahKonversiController::class, 'create'])->name('mahasiswa-konversi.matakuliah.create');
+        Route::get('/mahasiswa-konversi/{mahasiswa_konversi_id}/matakuliah-konversi', [MatakuliahKonversiController::class, 'index'])->name('mahasiswa-konversi.matakuliah.index');
+        Route::post('/mahasiswa-konversi/{mahasiswa_konversi_id}/matakuliah-konversi/store', [MatakuliahKonversiController::class, 'store'])->name('mahasiswa-konversi.matakuliah.store');
+        Route::get('/mahasiswa-konversi/{mahasiswa_konversi_id}/matakuliah-konversi/{matakuliah_konversi_id}', [MatakuliahKonversiController::class, 'show'])->name('mahasiswa-konversi.matakuliah.show');
+        Route::put('/mahasiswa-konversi/{mahasiswa_konversi_id}/matakuliah-konversi/{matakuliah_konversi_id}', [MatakuliahKonversiController::class, 'update'])->name('mahasiswa-konversi.matakuliah.update');
+        Route::delete('/mahasiswa-konversi/{mahasiswa_konversi_id}/matakuliah-konversi/{matakuliah_konversi_id}', [MatakuliahKonversiController::class, 'destroy'])->name('mahasiswa-konversi.matakuliah.destroy');
     });
 });
 

@@ -23,6 +23,7 @@ class UpdateTahunAjaranRequest extends FormRequest
             'tahun_mulai' => ['required', 'numeric'],
             'tahun_selesai' => ['required', 'numeric'],
             'periode' => ['required', 'numeric'],
+            'aktif' => ['required', 'boolean']
         ];
     }
 
@@ -40,6 +41,7 @@ class UpdateTahunAjaranRequest extends FormRequest
             'tahun_selesai.required' => 'Tahun selesai ajaran tidak boleh kosong',
             'tahun_selesai.numeric' => 'Tahun selesai harus berupa angka tahun',
             'periode.required' => 'Periode tahun ajaran harus diisi',
+            'aktif.required' => 'Status tahun ajaran harus diisi'
         ];
     }
 }

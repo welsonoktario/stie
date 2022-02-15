@@ -121,4 +121,11 @@ class KurikulumController extends Controller
                 ]
             );
     }
+
+    public function loadPrasyarats(Kurikulum $kurikulum)
+    {
+        $kurikulum->load('matakuliahs');
+
+        return response()->json(['matakuliahs' => $kurikulum->matakuliahs]);
+    }
 }

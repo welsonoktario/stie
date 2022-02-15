@@ -81,7 +81,7 @@
           >
           <select
             name="tipe"
-            class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none"
+            class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
             v-model="form.tipe"
           >
             <option value="null" selected disabled>
@@ -105,8 +105,9 @@
           >
           <select
             name="kurikulum"
-            class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none"
+            class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
             v-model="form.kurikulum_id"
+            @change="loadPrasyarats"
           >
             <option value="null" selected disabled>Pilih kurikulum</option>
             <option
@@ -127,7 +128,7 @@
           >
           <select
             name="kurikulum"
-            class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none"
+            class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
             v-model="form.matakuliah_jurusan.jurusan_id"
           >
             <option value="null" selected disabled>Pilih jurusan</option>
@@ -151,7 +152,7 @@
             >Prasyarat</label
           >
           <div
-            class="w-full bg-zinc-100 dark:bg-zinc-700 dark:text-zinc-500 rounded-md mb-4 py-2 px-3 flex flex-row items-center focus:ring-teal-500 cursor-pointer"
+            class="w-full bg-zinc-100 dark:bg-zinc-700 dark:text-zinc-500 rounded-md mb-4 py-2 px-3 flex flex-row items-center cursor-pointer"
           >
             <div class="flex-1">
               <div
@@ -180,7 +181,7 @@
             class="bg-zinc-100 dark:bg-zinc-700 w-full rounded-md shadow-inner p-2"
           >
             <li
-              v-for="matakuliah in kurikulums[0].matakuliahs"
+              v-for="matakuliah in prasyarats"
               @click="openDialogPrasyarat(matakuliah)"
               class="w-full focus:bg-teal-400 focus:text-white cursor-pointer"
             >
@@ -227,6 +228,7 @@
             class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none"
             v-model="prasyaratNilai"
           >
+            <option value="" selected disabled>Pilih nilai minimum</option>
             <option value="A">A</option>
             <option value="AB">AB</option>
             <option value="B">B</option>
@@ -262,8 +264,8 @@ import Button from "@components/Button"
 import Input from "@components/Input"
 import InputError from "@components/InputError"
 import Dialog from "@components/Dialog"
-import { Link, useForm } from "@inertiajs/inertia-vue3"
-import { computed, ref } from "vue"
+import { useForm } from "@inertiajs/inertia-vue3"
+import { computed, reactive, ref } from "vue"
 import { ChevronDownIcon, XIcon } from "@heroicons/vue/solid"
 
 const props = defineProps({
@@ -285,11 +287,12 @@ const form = useForm({
   prasyarats: props.matakuliah?.prasyarats || [],
 })
 
+const prasyarats = reactive([])
 const selectedPrasyarat = ref(null)
 const isDialogPrasyaratOpen = ref(false)
 const isDialogHapusOpen = ref(false)
 const isPrasyaratOpen = ref(false)
-const prasyaratNilai = ref("A")
+const prasyaratNilai = ref("")
 
 const currentRouteName = computed(() =>
   route().current("master.matakuliah.create") ? "Tambah" : "Ubah"
@@ -304,9 +307,20 @@ const openDialogPrasyarat = (mk) => {
   }
 }
 
+const loadPrasyarats = () => {
+  const selected = props.kurikulums.find((k) => k.id == form.kurikulum_id)
+  fetch(route("master.kurikulum.prasyarat", selected))
+    .then((res) => res.json())
+    .then((data) => {
+      prasyarats.length = 0
+      prasyarats.push.apply(prasyarats, data.matakuliahs)
+    })
+}
+
 const addPrasyarat = () => {
   isDialogPrasyaratOpen.value = !isDialogPrasyaratOpen.value
   selectedPrasyarat.value.nilai_minimum = prasyaratNilai.value
+  prasyaratNilai.value = ""
   form.prasyarats.push(selectedPrasyarat.value)
 }
 

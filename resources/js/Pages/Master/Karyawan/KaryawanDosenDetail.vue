@@ -23,11 +23,14 @@
         </span>
       </div>
 
-
       <form @submit.prevent="submit(route().current())">
         <div class="mb-3">
-          <label class="block text-gray-500 text-sm font-bold mb-2" for="id_karyawan">
-            ID Karyawan <i> (Nomor Induk Karyawan)</i> <span class="text-red-500">*</span>
+          <label
+            class="block text-gray-500 text-sm font-bold mb-2"
+            for="id_karyawan"
+          >
+            ID Karyawan <i> (Nomor Induk Karyawan)</i>
+            <span class="text-red-500">*</span>
           </label>
           <Input
             v-model="form.id_karyawan"
@@ -39,7 +42,10 @@
         </div>
 
         <div class="mb-3">
-          <label class="block text-gray-500 text-sm font-bold mb-2" for="id_dosen"> 
+          <label
+            class="block text-gray-500 text-sm font-bold mb-2"
+            for="id_dosen"
+          >
             ID Dosen <span class="text-red-500">*</span>
           </label>
           <Input
@@ -52,13 +58,17 @@
         </div>
 
         <div class="mb-3">
-          <label class="block text-gray-500 text-sm font-bold mb-2" for="tipe_id">
+          <label
+            class="block text-gray-500 text-sm font-bold mb-2"
+            for="tipe_id"
+          >
             Tipe ID Dosen <span class="text-red-500">*</span>
           </label>
-          <select 
-            class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" 
+          <select
+            class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
             id="tipe_id"
-            v-model="form.tipe_id">
+            v-model="form.tipe_id"
+          >
             <option value="NIDN">NIDN</option>
             <option value="NIDK">NIDK</option>
             <option value="NUPN">NUPN</option>
@@ -66,13 +76,17 @@
         </div>
 
         <div class="mb-3">
-          <label class="block text-gray-500 text-sm font-bold mb-2" for="jabatan_akademik">
+          <label
+            class="block text-gray-500 text-sm font-bold mb-2"
+            for="jabatan_akademik"
+          >
             Jabatan Akademik <span class="text-red-500">*</span>
           </label>
-          <select 
-            class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" 
+          <select
+            class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
             id="jabatan_akademik"
-            v-model="form.jabatan_akademik">
+            v-model="form.jabatan_akademik"
+          >
             <option value="Lektor">Lektor</option>
             <option value="Asisten Ahli">Asisten Ahli</option>
             <option value="Tenaga Pengajar">Tenaga Pengajar</option>
@@ -119,21 +133,33 @@
         </div>
 
         <div class="mb-3">
-          <label class="block text-gray-500 text-sm font-bold mb-2" for="jurusan">
+          <label
+            class="block text-gray-500 text-sm font-bold mb-2"
+            for="jurusan"
+          >
             Jurusan / Homebase
           </label>
-          <select 
-            class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" 
+          <select
+            class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
             id="jurusan"
-            v-model="form.jurusan">
+            v-model="form.jurusan"
+          >
             <option value="-">-</option>
-            <option v-for="jurusan in jurusans" :key="jurusan.id" :value="jurusan.id.toString()">{{jurusan.nama}} - {{jurusan.kode_jurusan}}</option>
+            <option
+              v-for="jurusan in jurusans"
+              :key="jurusan.id"
+              :value="jurusan.id.toString()"
+            >
+              {{ jurusan.nama }} - {{ jurusan.kode_jurusan }}
+            </option>
           </select>
         </div>
 
-        
         <div class="mb-3">
-          <label class="block text-gray-500 text-sm font-bold mb-2" for="konsentrasi">
+          <label
+            class="block text-gray-500 text-sm font-bold mb-2"
+            for="konsentrasi"
+          >
             Konsentrasi
           </label>
           <Input
@@ -154,11 +180,7 @@
             >Hapus Data Dosen</Link
           >
         </div>
-
-
       </form>
-
-
     </div>
   </AppLayout>
 </template>
@@ -208,11 +230,16 @@ export default {
 
       // dosen primary data (mandatory)
       id_dosen: props.dosen == null ? null : props.dosen.id,
-      tipe_id: props.dosen == null ? 'NIDN' : props.dosen.tipe_id,
-      jabatan_akademik: props.dosen == null ? 'Tenaga Pengajar' : props.dosen.jabatan_akademik,
-      jurusan: props.dosen == null ? '-' : (props.dosen.jurusan == null ? '-' : props.dosen.jurusan.id),
-      konsentrasi: props.dosen == null ? '-' : props.dosen.konsentrasi,
-      
+      tipe_id: props.dosen == null ? "NIDN" : props.dosen.tipe_id,
+      jabatan_akademik:
+        props.dosen == null ? "Tenaga Pengajar" : props.dosen.jabatan_akademik,
+      jurusan:
+        props.dosen == null
+          ? "-"
+          : props.dosen.jurusan == null
+          ? "-"
+          : props.dosen.jurusan.id,
+      konsentrasi: props.dosen == null ? "-" : props.dosen.konsentrasi,
     })
 
     function submit(curRoute) {

@@ -4,7 +4,7 @@
       <label for="per_page">Data per halaman</label>
       <select
         name="per_page"
-        class="form-select rounded-md ml-2 text-sm bg-zinc-100 dark:bg-zinc-700 border-none focus:ring-teal-500 focus:ring-2"
+        class="bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
         v-model="filter.perPage"
         @change="search"
       >

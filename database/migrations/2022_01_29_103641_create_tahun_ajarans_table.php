@@ -19,6 +19,7 @@ class CreateTahunAjaransTable extends Migration
             $table->year('tahun_mulai');
             $table->year('tahun_selesai');
             $table->enum('periode', [1, 2])->default(1);
+            $table->boolean('aktif')->default(true);
             $table->timestamps();
         });
     }

@@ -6,7 +6,9 @@
       <!-- <div class="p-6">Karyawan / Karyawan</div> -->
       <p class="text-xs md:text-sm text-slate-500">
         Akademik / Tahun Ajaran /
-        <span class="font-semibold text-teal-500 dark:text-teal-600">{{ currentRouteName }}</span>
+        <span class="font-semibold text-teal-500 dark:text-teal-600">{{
+          currentRouteName
+        }}</span>
       </p>
 
       <!-- <p>{{route().current()}}</p> -->
@@ -62,7 +64,7 @@
         <div class="mb-4">
           <Label for="periode"> Periode </Label>
           <select
-            class="mt-1 block w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none"
+            class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
             name="periode"
             v-model="form.periode"
           >
@@ -72,6 +74,23 @@
           </select>
           <InputError class="mt-2" :message="form.errors.periode" />
         </div>
+        <div class="mb-4">
+          <SwitchGroup>
+            <SwitchLabel class="block text-gray-500 text-sm font-bold mb-2"
+              >Aktif</SwitchLabel
+            >
+            <Switch
+              v-model="form.aktif"
+              :class="form.aktif ? 'bg-teal-600' : 'bg-gray-200'"
+              class="relative inline-flex items-center h-6 transition-colors rounded-full w-11 ring-0"
+            >
+              <span
+                :class="form.aktif ? 'translate-x-6' : 'translate-x-1'"
+                class="inline-block w-4 h-4 transition-transform transform bg-white rounded-full"
+              />
+            </Switch>
+          </SwitchGroup>
+        </div>
         <div class="flex justify-between">
           <Button class="px-10" :disabled="form.processing">Simpan</Button>
           <button
@@ -79,8 +98,9 @@
             v-if="currentRouteName != 'Tambah'"
             @click="isOpen = !isOpen"
             class="text-red-500 bg-transparent hover:bg-transparent focus:bg-transparent"
-            >Hapus Data Tahun Ajaran</button
           >
+            Hapus Data Tahun Ajaran
+          </button>
         </div>
       </form>
     </div>
@@ -94,7 +114,9 @@
       @cancel="isOpen = !isOpen"
     >
       <template #content>
-        <p class="text-sm">Apakah anda yakin ingin menghapus tahun ajaran ini?</p>
+        <p class="text-sm">
+          Apakah anda yakin ingin menghapus tahun ajaran ini?
+        </p>
       </template>
     </Dialog>
   </AppLayout>
@@ -103,6 +125,7 @@
 <script>
 import { computed, ref } from "vue"
 import { Link, useForm } from "@inertiajs/inertia-vue3"
+import { Switch, SwitchGroup, SwitchLabel } from "@headlessui/vue"
 import AppLayout from "@layouts/App"
 import Button from "@components/Button"
 import Dialog from "@components/Dialog"
@@ -119,6 +142,9 @@ export default {
     InputError,
     Label,
     Link,
+    Switch,
+    SwitchGroup,
+    SwitchLabel,
   },
   props: {
     tahunAjaran: Object,
@@ -129,6 +155,7 @@ export default {
       tahun_mulai: props.tahunAjaran?.tahun_mulai || null,
       tahun_selesai: props.tahunAjaran?.tahun_selesai || null,
       periode: props.tahunAjaran?.periode || null,
+      aktif: props.tahunAjaran?.aktif || true,
     })
 
     const isOpen = ref(false)

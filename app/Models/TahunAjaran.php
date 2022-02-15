@@ -12,13 +12,15 @@ class TahunAjaran extends Model
         'tahun_ajaran',
         'tahun_mulai',
         'tahun_selesai',
-        'periode'
+        'periode',
+        'aktif'
     ];
 
     protected $casts = [
         'tahun_mulai' => 'integer',
         'tahun_selesai' => 'integer',
         'periode' => 'integer',
+        'aktif' => 'boolean'
     ];
 
     public function jadwals()
