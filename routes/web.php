@@ -1,8 +1,27 @@
 <?php
 
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
+use App\Models\User;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
+use App\Http\Controllers\ModelTestingController;
+
+// Master Menu Controller
+use App\Http\Controllers\Master\Akademik\JurusanController;
+use App\Http\Controllers\Master\Akademik\KurikulumController;
+use App\Http\Controllers\Master\Akademik\MatakuliahController;
+use App\Http\Controllers\Master\Akademik\RuanganController;
+use App\Http\Controllers\Master\Akademik\TahunAjaranController;
+
+use App\Http\Controllers\Master\Karyawan\DosenController;
+use App\Http\Controllers\Master\Karyawan\KaryawanController;
+
+use App\Http\Controllers\Master\Mahasiswa\MahasiswaReguler;
+use App\Http\Controllers\Master\Mahasiswa\MahasiswaRegulerController;
+use App\Http\Controllers\Master\Mahasiswa\MahasiswaKonversiController;
+use App\Http\Controllers\Master\Mahasiswa\MatakuliahKonversiController;
+
+// use App\Models\TahunAjaran;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +46,33 @@ Route::get('/', function () {
 Route::group(['middleware' => ['auth']], function () {
     Route::get('dashboard', function () {
         return Inertia::render('Dashboard');
+    });
+    Route::get('testing', [ModelTestingController::class, 'index']);
+
+    // Master route
+    Route::group(['prefix' => 'master', 'as' => 'master.'], function () {
+        Route::get('kurikulum/{kurikulum}/prasyarat', [KurikulumController::class, 'loadPrasyarats'])->name('kurikulum.prasyarat');
+
+        Route::resources([
+            'karyawan' => KaryawanController::class,
+            'jurusan' => JurusanController::class,
+            'tahun_ajaran' => TahunAjaranController::class,
+            'ruangan' => RuanganController::class,
+            'kurikulum' => KurikulumController::class,
+            'dosen' => DosenController::class,
+            'matakuliah' => MatakuliahController::class,
+            'mahasiswa-reguler' => MahasiswaRegulerController::class,
+            'mahasiswa-konversi' => MahasiswaKonversiController::class,
+        ], [
+            'except' => ['show']
+        ]);
+
+        Route::get('/mahasiswa-konversi/{mahasiswa_konversi_id}/matakuliah-konversi/create', [MatakuliahKonversiController::class, 'create'])->name('mahasiswa-konversi.matakuliah.create');
+        Route::get('/mahasiswa-konversi/{mahasiswa_konversi_id}/matakuliah-konversi', [MatakuliahKonversiController::class, 'index'])->name('mahasiswa-konversi.matakuliah.index');
+        Route::post('/mahasiswa-konversi/{mahasiswa_konversi_id}/matakuliah-konversi/store', [MatakuliahKonversiController::class, 'store'])->name('mahasiswa-konversi.matakuliah.store');
+        Route::get('/mahasiswa-konversi/{mahasiswa_konversi_id}/matakuliah-konversi/{matakuliah_konversi_id}', [MatakuliahKonversiController::class, 'show'])->name('mahasiswa-konversi.matakuliah.show');
+        Route::put('/mahasiswa-konversi/{mahasiswa_konversi_id}/matakuliah-konversi/{matakuliah_konversi_id}', [MatakuliahKonversiController::class, 'update'])->name('mahasiswa-konversi.matakuliah.update');
+        Route::delete('/mahasiswa-konversi/{mahasiswa_konversi_id}/matakuliah-konversi/{matakuliah_konversi_id}', [MatakuliahKonversiController::class, 'destroy'])->name('mahasiswa-konversi.matakuliah.destroy');
     });
 });
 

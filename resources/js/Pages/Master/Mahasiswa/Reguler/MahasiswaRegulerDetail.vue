@@ -1,0 +1,615 @@
+<template>
+  <AppLayout>
+    <div
+      class="container mx-auto p-6 rounded-md bg-white dark:bg-zinc-800 overflow-auto"
+    >
+      <!-- <div class="p-6">Karyawan / Karyawan</div> -->
+      <p class="text-xs md:text-sm text-slate-500">
+        Mahasiswa / Mahasiswa Reguler /
+        <span v-if="route().current('master.mahasiswa-reguler.create')">Tambah</span>
+        <span v-else>Ubah</span>
+      </p>
+
+      <!-- <p>{{route().current()}}</p> -->
+      <div class="flex justify-between my-3 item-center">
+        <span class="align-middle">
+          <strong
+            class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
+          >
+            <span v-if="route().current('master.mahasiswa-reguler.create')">Tambah</span>
+            <span v-else>Ubah</span>
+            Mahasiswa Reguler</strong
+          >
+        </span>
+      </div>
+
+
+      <form @submit.prevent="submit(route().current())">
+        
+        
+        <div class="mb-3 flex space-x-2">
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="npm">
+              NPM / NIM <span class="text-red-500">*</span>
+            </label>
+            <Input
+              v-model="form.npm"
+              class="w-full"
+              id="npm"
+              type="text"
+              placeholder="NIM / NPM"
+              required
+            ></Input>
+          </div>
+
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="nik">
+              NIK
+            </label>
+            <Input
+              v-model="form.nik"
+              class="w-full"
+              id="nik"
+              type="text"
+              placeholder="NIK"
+            ></Input>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="block text-gray-500 text-sm font-bold mb-2" for="nama">
+            Nama <span class="text-red-500">*</span>
+          </label>
+          <Input
+            v-model="form.name"
+            class="w-full"
+            id="nama"
+            type="text"
+            placeholder="Nama"
+            required
+          ></Input>
+        </div>
+
+        <div class="mb-3">
+          <label class="block text-gray-500 text-sm font-bold mb-2" for="email">
+            Email
+          </label>
+          <Input
+            v-model="form.email"
+            class="w-full"
+            id="email"
+            type="text"
+            placeholder="Email"
+          ></Input>
+        </div>
+
+        <div class="mb-3">
+          <label class="block text-gray-500 text-sm font-bold mb-2" for="jurusan">
+            Jurusan
+          </label>
+          <select 
+            class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" 
+            id="jurusan"
+            v-model="form.jurusan_id">
+            <option value="-">-</option>
+            <option v-for="jurusan in jurusans" :key="jurusan.id" :value="jurusan.id.toString()">{{jurusan.nama}} - {{jurusan.kode_jurusan}}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="block text-gray-500 text-sm font-bold mb-2" for="dosen">
+            Dosen Wali
+          </label>
+          <select 
+            class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" 
+            id="dosen"
+            v-model="form.dosen_id">
+            <option value="-">-</option>
+            <option v-for="dosen in dosens" :key="dosen.id" :value="dosen.id.toString()">{{dosen.staff.user.name}}</option>
+          </select>
+        </div>
+
+        <!-- TTL, Jenis Kelamin -->
+        <div class="mb-3">
+          <div class="flex space-x-2">
+            <div>
+              <label class="block text-gray-500 text-sm font-bold mb-2" for="tempat_lahir">
+                Tempat Lahir
+              </label>
+              <Input
+                v-model="form.tempat_lahir"
+                class="w-full"
+                id="tempat_lahir"
+                type="text"
+                placeholder="Tempat Lahir"
+              ></Input>
+            </div>
+            <div>
+              <label class="block text-gray-500 text-sm font-bold mb-2" for="tanggal_lahir">
+                Tanggal Lahir
+              </label>
+              <Input
+                v-model="form.tanggal_lahir"
+                class="w-full"
+                id="tanggal_lahir"
+                type="date"
+                placeholder="tanggal Lahir"
+              ></Input>
+            </div>
+            <div class="w-full">
+              <label class="block text-gray-500 text-sm font-bold mb-2" for="jenis_kelamin">Jenis Kelamin</label>
+              <select name="jenis_kelamin" class="w-full w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" 
+                v-model="form.jenis_kelamin">
+                <option value="Laki-laki" selected>Laki-laki</option>
+                <option value="Perempuan">Perempuan</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- NISN, NPWP -->
+        <div class="mb-3 flex space-x-2">
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="npwp">
+              NPWP 
+            </label>
+            <Input
+              v-model="form.npwp"
+              class="w-full"
+              id="npwp"
+              type="text"
+              placeholder="npwp"
+            ></Input>
+          </div>
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="nisn">
+              NISN 
+            </label>
+            <Input
+              v-model="form.nisn"
+              class="w-full"
+              id="nisn"
+              type="text"
+              placeholder="nisn"
+            ></Input>
+          </div>
+        </div>
+
+        <!-- alamat jalan -->
+        <div class="mb-3">
+          <label class="block text-gray-500 text-sm font-bold mb-2" for="jalan">
+            Jalan 
+          </label>
+          <Input
+            v-model="form.jalan"
+            class="w-full"
+            id="jalan"
+            type="text"
+            placeholder="jalan"
+          ></Input>
+        </div>
+
+        <!-- kelurahan, kecamatan, kode pos -->
+        <div class="mb-3 flex space-x-2">
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="kelurahan">
+              Kelurahan 
+            </label>
+            <Input
+              v-model="form.kelurahan"
+              class="w-full"
+              id="kelurahan"
+              type="text"
+              placeholder="Kelurahan"
+            ></Input>
+          </div>
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="kecamatan">
+              Kecamatan 
+            </label>
+            <Input
+              v-model="form.kecamatan"
+              class="w-full"
+              id="kecamatan"
+              type="text"
+              placeholder="Kecamatan"
+            ></Input>
+          </div>
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="kode_pos">
+              Kode Pos 
+            </label>
+            <Input
+              v-model="form.kode_pos"
+              class="w-full"
+              id="kode_pos"
+              type="text"
+              placeholder="Kode Pos"
+            ></Input>
+          </div>
+        </div>
+
+        <!-- nomor hp -->
+        <div class="mb-3">
+          <label class="block text-gray-500 text-sm font-bold mb-2" for="nomor_hp">
+            Nomor HP 
+          </label>
+          <Input
+            v-model="form.nomor_hp"
+            class="w-full"
+            id="nomor_hp"
+            type="text"
+            placeholder="Nomor HP"
+          ></Input>
+        </div>
+
+        <!-- jenis tinggal, alat transportasi -->
+        <div class="mb-3 flex space-x-2">
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="jenis_tinggal">
+              Jenis Tinggal 
+            </label>
+            <Input
+              v-model="form.jenis_tinggal"
+              class="w-full"
+              id="jenis_tinggal"
+              type="text"
+              placeholder="jenis_tinggal"
+            ></Input>
+          </div>
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="alat_transportasi">
+              Alat Transportasi 
+            </label>
+            <Input
+              v-model="form.alat_transportasi"
+              class="w-full"
+              id="alat_transportasi"
+              type="text"
+              placeholder="Alat Transportasi"
+            ></Input>
+          </div>
+        </div>
+
+
+        
+        <!-- DATA ORANG TUA -->
+
+        <p class="mb-3 text-sm md:text-lg">
+          <strong>Data Orang Tua</strong>
+        </p>
+        
+        <!-- Ayah -->
+        <p class="mb-3 text-xs md:text-sm">
+          <strong>Ayah</strong>
+        </p>
+        
+        <!-- NIK, NAMA -->
+        <div class="mb-3 flex space-x-2">
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="nik_ayah">
+              nik_ayah 
+            </label>
+            <Input
+              v-model="form.nik_ayah"
+              class="w-full"
+              id="nik_ayah"
+              type="text"
+              placeholder="nik_ayah"
+            ></Input>
+          </div>
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="nama_ayah">
+              nama_ayah 
+            </label>
+            <Input
+              v-model="form.nama_ayah"
+              class="w-full"
+              id="nama_ayah"
+              type="text"
+              placeholder="nama_ayah"
+            ></Input>
+          </div>
+        </div>
+
+        <!-- TTL, pendidikan ayah -->
+        <div class="mb-3 flex space-x-2">
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="tempat_lahir_ayah">
+              tempat_lahir_ayah
+            </label>
+            <Input
+              v-model="form.tempat_lahir_ayah"
+              class="w-full"
+              id="tempat_lahir_ayah"
+              type="text"
+              placeholder="tempat_lahir_ayah"
+            ></Input>
+          </div>
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="tanggal_lahir_ayah">
+              tanggal_lahir_ayah
+            </label>
+            <Input
+              v-model="form.tanggal_lahir_ayah"
+              class="w-full"
+              id="tanggal_lahir_ayah"
+              type="date"
+              placeholder="tanggal_lahir_ayah"
+            ></Input>
+          </div>
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="pendidikan_ayah">
+              pendidikan_ayah
+            </label>
+            <Input
+              v-model="form.pendidikan_ayah"
+              class="w-full"
+              id="pendidikan_ayah"
+              type="text"
+              placeholder="pendidikan_ayah"
+            ></Input>
+          </div>
+        </div>
+
+        <!-- pekerjaan penghasilan ayah -->
+        <div class="mb-3 flex space-x-2">
+          
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="pekerjaan_ayah">
+              pekerjaan_ayah
+            </label>
+            <Input
+              v-model="form.pekerjaan_ayah"
+              class="w-full"
+              id="pekerjaan_ayah"
+              type="number"
+              placeholder="pekerjaan_ayah"
+            ></Input>
+          </div>
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="penghasilan_ayah">
+              penghasilan_ayah
+            </label>
+            <Input
+              v-model="form.penghasilan_ayah"
+              class="w-full"
+              id="penghasilan_ayah"
+              type="number"
+              placeholder="penghasilan_ayah"
+            ></Input>
+          </div>
+        </div>
+
+        
+        <!-- Ibu -->
+        <p class="mb-3 text-xs md:text-sm">
+          <strong>Ibu</strong>
+        </p>
+        
+        <!-- NIK, NAMA -->
+        <div class="mb-3 flex space-x-2">
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="nik_ibu">
+              nik_ibu 
+            </label>
+            <Input
+              v-model="form.nik_ibu"
+              class="w-full"
+              id="nik_ibu"
+              type="text"
+              placeholder="nik_ibu"
+            ></Input>
+          </div>
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="nama_ibu">
+              nama_ibu 
+            </label>
+            <Input
+              v-model="form.nama_ibu"
+              class="w-full"
+              id="nama_ibu"
+              type="text"
+              placeholder="nama_ibu"
+            ></Input>
+          </div>
+        </div>
+
+        <!-- TTL, pendidikan ibu -->
+        <div class="mb-3 flex space-x-2">
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="tempat_lahir_ibu">
+              tempat_lahir_ibu
+            </label>
+            <Input
+              v-model="form.tempat_lahir_ibu"
+              class="w-full"
+              id="tempat_lahir_ibu"
+              type="text"
+              placeholder="tempat_lahir_ibu"
+            ></Input>
+          </div>
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="tanggal_lahir_ibu">
+              tanggal_lahir_ibu
+            </label>
+            <Input
+              v-model="form.tanggal_lahir_ibu"
+              class="w-full"
+              id="tanggal_lahir_ibu"
+              type="date"
+              placeholder="tanggal_lahir_ibu"
+            ></Input>
+          </div>
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="pendidikan_ibu">
+              pendidikan_ibu
+            </label>
+            <Input
+              v-model="form.pendidikan_ibu"
+              class="w-full"
+              id="pendidikan_ibu"
+              type="text"
+              placeholder="pendidikan_ibu"
+            ></Input>
+          </div>
+        </div>
+
+        <!-- pekerjaan penghasilan ayah -->
+        <div class="mb-3 flex space-x-2">
+          
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="pekerjaan_ibu">
+              pekerjaan_ibu
+            </label>
+            <Input
+              v-model="form.pekerjaan_ibu"
+              class="w-full"
+              id="pekerjaan_ibu"
+              type="number"
+              placeholder="pekerjaan_ibu"
+            ></Input>
+          </div>
+          <div class="w-full">
+            <label class="block text-gray-500 text-sm font-bold mb-2" for="penghasilan_ibu">
+              penghasilan_ibu
+            </label>
+            <Input
+              v-model="form.penghasilan_ibu"
+              class="w-full"
+              id="penghasilan_ibu"
+              type="number"
+              placeholder="penghasilan_ibu"
+            ></Input>
+          </div>
+        </div>
+
+
+
+
+        <div class="flex justify-between">
+          <Button class="px-10">Simpan</Button>
+          <Link
+            v-if="!route().current('master.mahasiswa-reguler.create')"
+            @click="remove()"
+            class="text-red-500"
+            >Hapus Data Mahasiswa Reguler</Link
+          >
+        </div>
+
+        
+
+        
+
+
+      </form>
+
+
+    </div>
+  </AppLayout>
+</template>
+
+<script>
+import AppLayout from "@layouts/App.vue"
+
+import Input from "@components/Input.vue"
+import Button from "@components/Button.vue"
+
+import { Link } from "@inertiajs/inertia-vue3"
+
+import util from "@/util"
+
+import { reactive, ref } from "vue"
+import { Inertia } from "@inertiajs/inertia"
+export default {
+  components: {
+    AppLayout,
+    Link,
+    Input,
+    Button,
+  },
+  props: {
+    dosens: {
+      type: Object,
+      default: null,
+    },
+    jurusans: {
+      type: Object,
+      default: null,
+    },
+    mahasiswa: {
+      type: Object,
+      default: null,
+    },
+
+  },
+  setup(props) {
+    const form = reactive({
+      // id: props.mahasiswa?.user.id || null,
+      email: props.mahasiswa == null ? null : props.mahasiswa.user.email,
+      name: props.mahasiswa == null ? null : props.mahasiswa.user.name,
+      nik: props.mahasiswa == null ? null : props.mahasiswa.user.nik,
+      jenis_kelamin: props.mahasiswa?.user.jenis_kelamin || "Laki-laki",
+      agama: props.mahasiswa?.user.agama || null,
+      nomor_hp: props.mahasiswa?.user.nomor_hp || null,
+      tempat_lahir: props.mahasiswa?.user.tempat_lahir || null,
+      tanggal_lahir: props.mahasiswa?.user.tanggal_lahir || null,
+      jalan: props.mahasiswa?.user.jalan || null,
+      kelurahan: props.mahasiswa?.user.kelurahan || null,
+      kode_pos: props.mahasiswa?.user.kode_pos || null,
+      kewarganegaraan: props.mahasiswa?.user.kewarganegaraan || 'WNI',
+
+      // mahasiswa data
+      npm: props.mahasiswa == null ? null : props.mahasiswa.npm,
+      dosen_id: props.mahasiswa == null ? '-' : (props.mahasiswa.dosen == null ? '-' : props.mahasiswa.dosen.id),
+      jurusan_id: props.mahasiswa == null ? '-' : (props.mahasiswa.jurusan == null ? '-' : props.mahasiswa .jurusan.id),
+      nisn: props.mahasiswa?.nisn || null,
+      jenis_tinggal: props.mahasiswa?.jenis_tinggal || null,
+      alat_transportasi: props.mahasiswa?.alat_transportasi || null,
+      npwp: props.mahasiswa?.npwp || null,
+
+      // data ortu
+      // ayah
+      nik_ayah: props.mahasiswa?.nik_ayah || null,
+      nama_ayah: props.mahasiswa?.nama_ayah || null,
+      tempat_lahir_ayah: props.mahasiswa?.tempat_lahir_ayah || null,
+      tanggal_lahir_ayah: props.mahasiswa?.tanggal_lahir_ayah || null,
+      pendidikan_ayah: props.mahasiswa?.pendidikan_ayah || null,
+      pekerjaan_ayah: props.mahasiswa?.pekerjaan_ayah || null,
+      penghasilan_ayah: props.mahasiswa?.penghasilan_ayah || null,
+      // ibu
+      nik_ibu: props.mahasiswa?.nik_ibu || null,
+      nama_ibu: props.mahasiswa?.nama_ibu || null,
+      tempat_lahir_ibu: props.mahasiswa?.tempat_lahir_ibu || null,
+      tanggal_lahir_ibu: props.mahasiswa?.tanggal_lahir_ibu || null,
+      pendidikan_ibu: props.mahasiswa?.pendidikan_ibu || null,
+      pekerjaan_ibu: props.mahasiswa?.pekerjaan_ibu || null,
+      penghasilan_ibu: props.mahasiswa?.penghasilan_ibu || null,
+
+      uang_semester: props.mahasiswa?.uang_semester || null,
+      status_mahasiswa: props.mahasiswa?.status_mahasiswa || 'Aktif',
+    })
+
+    function submit(curRoute) {
+      if (curRoute === "master.mahasiswa-reguler.create") {
+        // alert(util.isEmptyObject(props.staff))
+        // alert(props.staff == null ? 'null bro' : 'ada bro')
+        Inertia.post(route("master.mahasiswa-reguler.store"), form)
+      } else {
+        form.id = props.mahasiswa?.user.id || null
+        Inertia.put(route("master.mahasiswa-reguler.update", props.mahasiswa.npm), form)
+      }
+    }
+
+    function remove() {
+      // alert(props.staff.nip);
+      Inertia.delete(route("master.mahasiswa-reguler.destroy", props.mahasiswa.npm))
+    }
+    return {
+      form,
+      submit,
+      remove,
+    }
+  },
+}
+</script>

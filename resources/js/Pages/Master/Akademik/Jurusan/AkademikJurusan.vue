@@ -1,0 +1,63 @@
+<template>
+  <AppLayout title="Jurusan">
+    <div class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
+      <p class="text-xs md:text-sm">Akademik / Jurusan</p>
+      <div class="flex justify-between my-3 item-center">
+        <span class="align-middle">
+          <strong class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
+            >Daftar Jurusan</strong
+          >
+        </span>
+
+        <Button type="button">
+          <Link :href="route('master.jurusan.create')"> Tambah Jurusan </Link>
+        </Button>
+      </div>
+
+      <DataTable :columns="columns" :data="jurusans">
+        <template #actions="row">
+          <NavLink :href="route('master.jurusan.edit', row.data.id)">Edit</NavLink>
+        </template>
+      </DataTable>
+    </div>
+  </AppLayout>
+</template>
+
+<script>
+import AppLayout from "@layouts/App";
+import Button from "@components/Button";
+import DataTable from "@/Components/DataTable";
+import NavLink from "@/Components/NavLink";
+import { Link } from "@inertiajs/inertia-vue3";
+
+export default {
+  components: {
+    AppLayout,
+    Button,
+    DataTable,
+    Link,
+    NavLink,
+  },
+  props: {
+    jurusans: Object,
+  },
+  setup(props) {
+    const columns = [
+      {
+        key: "kode_jurusan",
+        label: "Kode Jurusan",
+        sortable: true,
+      },
+      {
+        key: "nama",
+        label: "Nama",
+        sortable: true,
+      },
+    ];
+
+    return {
+      columns,
+    };
+  },
+};
+</script>
