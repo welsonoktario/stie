@@ -17,10 +17,10 @@ class CreatePrasyaratTable extends Migration
             // $table->id();
             // $table->unsignedBigInteger('matakuliah_id');
             // $table->foreign('matakuliah_id')->references('id')->on('matakuliahs');
-            $table->foreignId('matakuliah_id')->constrained();
+            $table->foreignId('matakuliah_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             // $table->unsignedBigInteger('prasyarat_id');
             // $table->foreign('prasyarat_id')->references('id')->on('matakuliahs');
-            $table->foreignId('prasyarat_id')->constrained('matakuliahs');
+            $table->foreignId('prasyarat_id')->constrained('matakuliahs')->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('nilai_minimum', 3)->nullable();
             $table->timestamps();
         });

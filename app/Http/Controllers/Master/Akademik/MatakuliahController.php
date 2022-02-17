@@ -65,9 +65,12 @@ class MatakuliahController extends Controller
 
         $matakuliah = Matakuliah::create($request->validated());
         $matakuliah->prasyarats()->sync($prasyarat);
-        $matakuliah->matakuliah_jurusan()->create([
-            'jurusan_id' => $jurusan['jurusan_id']
-        ]);
+
+        if ($jurusan['jurusan_id']) {
+            $matakuliah->matakuliah_jurusan()->create([
+                'jurusan_id' => $jurusan['jurusan_id']
+            ]);
+        }
 
         return redirect()
             ->route('master.matakuliah.index')
@@ -111,15 +114,29 @@ class MatakuliahController extends Controller
     public function update(UpdateMatakuliahRequest $request, Matakuliah $matakuliah)
     {
         $jurusan = $request->matakuliah_jurusan;
+        $jurusan['jurusan_id'] = $jurusan['jurusan_id'] != '-' ? $jurusan['jurusan_id'] : null;
         $prasyarat = collect($request->prasyarats)->mapWithKeys(fn ($item, $key) => [
             $item['id'] => ['nilai_minimum' => $item['pivot']['nilai_minimum']]
         ]);
 
         $matakuliah->update($request->validated());
         $matakuliah->prasyarats()->sync($prasyarat);
-        $matakuliah->matakuliah_jurusan()->update([
-            'jurusan_id' => $jurusan['jurusan_id']
-        ]);
+
+        if ($jurusan['jurusan_id']) {
+            if ($matakuliah->matakuliah_jurusan) {
+                $matakuliah->matakuliah_jurusan()->update([
+                    'jurusan_id' => $jurusan['jurusan_id']
+                ]);
+            } else {
+                $matakuliah->matakuliah_jurusan()->create([
+                    'jurusan_id' => $jurusan['jurusan_id']
+                ]);
+            }
+        } else {
+            if ($matakuliah->matakuliah_jurusan) {
+                $matakuliah->matakuliah_jurusan()->delete();
+            }
+        }
 
         return redirect()
             ->route('master.matakuliah.index')

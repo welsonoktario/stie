@@ -7,7 +7,7 @@
       <p class="text-xs md:text-sm text-slate-500">
         Karyawan / Dosen /
         <span class="font-semibold text-teal-500 dark:text-teal-600">{{
-          currentRouteName
+          currentRouteName.route
         }}</span>
       </p>
 
@@ -16,14 +16,13 @@
           <strong
             class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
           >
-            <span>{{ currentRouteName }}</span>
+            <span>{{ currentRouteName.route }}</span>
             Dosen</strong
           >
         </span>
       </div>
 
       <form @submit.prevent="submit">
-
         <!-- ID KARYAWAN -->
         <div class="w-full mb-4">
           <Label for="id_karyawan">
@@ -106,7 +105,6 @@
 
         <!-- EMAIL, JENIS KELAMIN -->
         <div class="mb-4 flex space-x-2">
-
           <div class="w-full">
             <Label for="email"> Email </Label>
             <Input
@@ -120,13 +118,17 @@
             ></Input>
           </div>
           <div class="w-full">
-            <label class="block text-gray-500 text-sm font-bold mb-2" for="jenis_kelamin">
+            <label
+              class="block text-gray-500 text-sm font-bold mb-2"
+              for="jenis_kelamin"
+            >
               Jenis Kelamin
             </label>
-            <select 
-              class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" 
+            <select
+              class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
               id="jenis_kelamin"
-              v-model="form.jenis_kelamin">
+              v-model="form.jenis_kelamin"
+            >
               <option value="Laki-laki">Laki-laki</option>
               <option value="Perempuan">Perempuan</option>
             </select>
@@ -135,9 +137,7 @@
 
         <!-- JABATAN AKADEMIK -->
         <div class="mb-4">
-          <Label for="jabatan_akademik">
-            Jabatan Akademik
-          </Label>
+          <Label for="jabatan_akademik"> Jabatan Akademik </Label>
           <select
             class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
             name="jabatan_akademik"
@@ -188,7 +188,6 @@
           </div>
         </div>
 
-        
         <!-- TTL -->
         <div class="mb-3">
           <div class="flex space-x-2">
@@ -215,11 +214,13 @@
           </div>
         </div>
 
-        
         <!-- NOMOR HP -->
         <div class="mb-3">
-          <label class="block text-gray-500 text-sm font-bold mb-2" for="nomor_hp">
-            Nomor HP 
+          <label
+            class="block text-gray-500 text-sm font-bold mb-2"
+            for="nomor_hp"
+          >
+            Nomor HP
           </label>
           <Input
             v-model="form.nomor_hp"
@@ -229,11 +230,11 @@
             placeholder="Nomor HP"
           ></Input>
         </div>
-        
+
         <!-- alamat jalan -->
         <div class="mb-3">
           <label class="block text-gray-500 text-sm font-bold mb-2" for="jalan">
-            Jalan 
+            Jalan
           </label>
           <Input
             v-model="form.jalan"
@@ -247,8 +248,11 @@
         <!-- kelurahan, kecamatan, kode pos -->
         <div class="mb-3 flex space-x-2">
           <div class="w-full">
-            <label class="block text-gray-500 text-sm font-bold mb-2" for="kelurahan">
-              Kelurahan 
+            <label
+              class="block text-gray-500 text-sm font-bold mb-2"
+              for="kelurahan"
+            >
+              Kelurahan
             </label>
             <Input
               v-model="form.kelurahan"
@@ -259,8 +263,11 @@
             ></Input>
           </div>
           <div class="w-full">
-            <label class="block text-gray-500 text-sm font-bold mb-2" for="kecamatan">
-              Kecamatan 
+            <label
+              class="block text-gray-500 text-sm font-bold mb-2"
+              for="kecamatan"
+            >
+              Kecamatan
             </label>
             <Input
               v-model="form.kecamatan"
@@ -271,8 +278,11 @@
             ></Input>
           </div>
           <div class="w-full">
-            <label class="block text-gray-500 text-sm font-bold mb-2" for="kode_pos">
-              Kode Pos 
+            <label
+              class="block text-gray-500 text-sm font-bold mb-2"
+              for="kode_pos"
+            >
+              Kode Pos
             </label>
             <Input
               v-model="form.kode_pos"
@@ -284,7 +294,6 @@
           </div>
         </div>
 
-        
         <!-- SK AWAL -->
         <div class="mb-3">
           <div class="flex space-x-2">
@@ -371,21 +380,20 @@
           </div>
         </div>
 
-        
         <!-- LEVEL PENGGUNA -->
         <div class="mb-4 flex space-x-2">
           <div class="w-full">
             <Label for="level_pengguna">Level Pengguna</Label>
-            <select 
-              class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" 
+            <select
+              class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
               id="level_pengguna"
-              v-model="form.level_pengguna">
+              v-model="form.level_pengguna"
+            >
               <option value="Staff">Staff</option>
               <option value="Administrator">Administrator</option>
             </select>
           </div>
         </div>
-
 
         <!--  -->
 
@@ -393,7 +401,7 @@
           <Button class="px-10">Simpan</Button>
           <button
             type="button"
-            v-if="currentRouteName != 'Tambah'"
+            v-if="currentRouteName.route != 'Tambah'"
             @click="isOpen = !isOpen"
             class="text-red-500 bg-transparent hover:bg-transparent focus:bg-transparent"
           >
@@ -419,7 +427,7 @@
 </template>
 
 <script>
-import { computed, ref } from "vue"
+import { computed, reactive, ref } from "vue"
 import { Link, useForm } from "@inertiajs/inertia-vue3"
 import AppLayout from "@layouts/App"
 import Button from "@components/Button"
@@ -457,21 +465,21 @@ export default {
       jalan: props.dosen?.staff?.user.jalan || null,
       kelurahan: props.dosen?.staff?.user.kelurahan || null,
       kode_pos: props.dosen?.staff?.user.kode_pos || null,
-      kewarganegaraan: props.dosen?.staff?.user.kewarganegaraan || 'WNI',
+      kewarganegaraan: props.dosen?.staff?.user.kewarganegaraan || "WNI",
 
       // karyawan data (mandatory)
       id_karyawan: props.dosen?.staff?.id || null,
-      divisi: "Dosen" ,
-      level_pengguna: props.dosen?.staff?.level_pengguna || "Staff" ,
-      jenjang_pendidikan: props.dosen?.staff?.jenjang_pendidikan || null ,
-      gelar_depan: props.dosen?.staff?.gelar_depan || null ,
-      gelar_belakang: props.dosen?.staff?.gelar_belakang || null ,
-      status_karyawan: props.dosen?.staff?.status_karyawan || null ,
-      nomor_sk_awal: props.dosen?.staff?.nomor_sk_awal || null ,
-      tanggal_sk_awal: props.dosen?.staff?.tanggal_sk_awal || null ,
-      nomor_sk_akhir: props.dosen?.staff?.nomor_sk_akhir || null ,
-      tanggal_sk_akhir: props.dosen?.staff?.tanggal_sk_akhir || null ,
-      status_karyawan: props.dosen?.staff?.status_karyawan || 'Aktif' ,
+      divisi: "Dosen",
+      level_pengguna: props.dosen?.staff?.level_pengguna || "Staff",
+      jenjang_pendidikan: props.dosen?.staff?.jenjang_pendidikan || null,
+      gelar_depan: props.dosen?.staff?.gelar_depan || null,
+      gelar_belakang: props.dosen?.staff?.gelar_belakang || null,
+      status_karyawan: props.dosen?.staff?.status_karyawan || null,
+      nomor_sk_awal: props.dosen?.staff?.nomor_sk_awal || null,
+      tanggal_sk_awal: props.dosen?.staff?.tanggal_sk_awal || null,
+      nomor_sk_akhir: props.dosen?.staff?.nomor_sk_akhir || null,
+      tanggal_sk_akhir: props.dosen?.staff?.tanggal_sk_akhir || null,
+      status_karyawan: props.dosen?.staff?.status_karyawan || "Aktif",
 
       // dosen primary data (mandatory)
       id_dosen: props.dosen?.id || null,
@@ -483,13 +491,14 @@ export default {
 
     const isOpen = ref(false)
 
-    const currentRouteName = computed(() =>
-      route().current("master.dosen.create") ? "Tambah" : "Ubah"
-    )
+    const currentRouteName = reactive({
+      route: computed(() =>
+        route().current("master.dosen.create") ? "Tambah" : "Ubah"
+      ),
+    })
 
     const submit = () =>
-      // console.log(currentRouteName)
-      currentRouteName.value == "Tambah"
+      currentRouteName.route == "Tambah"
         ? form.post(route("master.dosen.store"))
         : form.put(route("master.dosen.update", props.dosen.id))
 

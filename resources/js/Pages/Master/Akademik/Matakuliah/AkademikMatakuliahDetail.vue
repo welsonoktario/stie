@@ -132,6 +132,7 @@
             v-model="form.matakuliah_jurusan.jurusan_id"
           >
             <option value="null" selected disabled>Pilih jurusan</option>
+            <option value="-">-</option>
             <option
               v-for="jurusan in jurusans"
               :value="jurusan.id"

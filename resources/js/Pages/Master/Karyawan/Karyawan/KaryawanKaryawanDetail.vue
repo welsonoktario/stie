@@ -6,7 +6,7 @@
       <p class="text-xs md:text-sm text-slate-500">
         Karyawan / Karyawan /
         <span class="font-semibold text-teal-500 dark:text-teal-600">{{
-          currentRouteName
+          currentRouteName.route
         }}</span>
       </p>
 
@@ -15,7 +15,7 @@
           <strong
             class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
           >
-            <span>{{ currentRouteName }}</span>
+            <span>{{ currentRouteName.route }}</span>
             Karyawan</strong
           >
         </span>
@@ -335,7 +335,7 @@
           <Button class="px-10">Simpan</Button>
           <button
             type="button"
-            v-if="currentRouteName != 'Tambah'"
+            v-if="currentRouteName.route != 'Tambah'"
             @click="isOpen = !isOpen"
             class="text-red-500 bg-transparent hover:bg-transparent focus:bg-transparent"
           >
@@ -361,7 +361,7 @@
 </template>
 
 <script>
-import { computed, ref } from "vue"
+import { computed, reactive, ref } from "vue"
 import { Link, useForm } from "@inertiajs/inertia-vue3"
 import AppLayout from "@layouts/App"
 import Button from "@components/Button"
@@ -419,12 +419,14 @@ export default {
 
     const isOpen = ref(false)
 
-    const currentRouteName = computed(() =>
-      route().current("master.karyawan.create") ? "Tambah" : "Ubah"
-    )
+    const currentRouteName = reactive({
+      route: computed(() =>
+        route().current("master.karyawan.create") ? "Tambah" : "Ubah"
+      ),
+    })
 
     const submit = () =>
-      currentRouteName.value == "Tambah"
+      currentRouteName.route == "Tambah"
         ? form.post(route("master.karyawan.store"))
         : form.put(route("master.karyawan.update", props.staff.id))
 
