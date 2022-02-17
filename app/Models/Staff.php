@@ -23,6 +23,10 @@ class Staff extends Model
         'gelar_depan',
         'gelar_belakang',
         'status_karyawan',
+        'nomor_sk_awal',
+        'tanggal_sk_awal',
+        'nomor_sk_akhir',
+        'tanggal_sk_akhir',
     ];
 
     public function user()

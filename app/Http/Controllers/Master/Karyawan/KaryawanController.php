@@ -82,7 +82,7 @@ class KaryawanController extends Controller
                 dd($msg, $th);
             }
         } catch (\Throwable $th) {
-            $user->delete();
+            // $user->delete();
             $status = 'FAIL';
             $msg = 'Gagal menambahkan data user. Error '.$th->getMessage();
             dd($msg, $th);
@@ -132,9 +132,9 @@ class KaryawanController extends Controller
      */
     public function edit($id)
     {
-        $staff = Staff::where('id', '=', $id)->with('user')->get()->first();
+        $staff = Staff::where('id', '=', $id)->with(['user','tenaga_kependidikan'])->get()->first();
         // dd($staff, $id);
-        // dd($staff);
+        // dd($staff->tenaga_kependidikan->id);
         return Inertia::render('Master/Karyawan/Karyawan/KaryawanKaryawanDetail', [
             'staff' => $staff
         ]);
@@ -149,35 +149,58 @@ class KaryawanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $name = $request->name;
-        $email = $request->email;
-        $nik = $request->nik;
-        $id = $request->id;
-
-        $staff = Staff::where('id', '=', $id)->get()->first();
-        $staff->user->name = $name;
-        $staff->user->email = $email;
-        $staff->user->nik = $nik;
-        $u = $staff->user->getOriginal();
-
+        // $request['password'] = Hash::make('12345678');
+        $msg = 'Berhasil menambahkan data';
+        $status = 'OK';
+        $nitk = $request->get('nitk');
         try {
-            $user = $staff->user->save();
-        } catch (Throwable $e) {
-            return redirect()->back();
-        }
-        if ($user) {
-            $staff->id = $id;
+            $staff = Staff::findOrFail($id);
+            $user = User::findOrFail($staff->user_id);
+            $user_old = $user->getOriginal();
+            $user->update($request->all());
             try {
-                $karyawan_completed = $staff->save();
+                $key = array_keys($user->staff->toArray());
+                $staff_old = $user->staff->toArray();
+                $user->staff()->update($request->only(($key)));
+                
+                if($staff_old['id'] != $request['id'])
+                    $user = User::findOrFail($staff_old['user_id']);
+
+                if(!in_array($nitk, [null, ""])){
+                    try {
+                        if($user->staff->tenaga_kependidikan == null){
+                            $user->staff->tenaga_kependidikan()->create(
+                                ['id' => $nitk]
+                            );
+                        }
+                        $user->staff->tenaga_kependidikan()->update(
+                            ['id' => $nitk]
+                        );
+                    } catch (\Throwable $th) {
+                        $msg = 'Gagal menambahkan id tenaga kependidikan. Error: '.$th->getMessage();
+                        $status = 'FAIL';
+                        
+                        // dd('disini', $msg);
+                        $user->update($user_old);
+                        $user->staff()->update($staff_old);
+                    }
+                } else {
+                    $user->staff->tenaga_kependidikan()->delete();
+                }
             } catch (\Throwable $th) {
-                $back = $staff->user->update($u);
-                $staff->user->update([$u]);
-                return redirect('master/karyawan/' . $id, [
-                    'error' => $e
-                ]);
+                $msg = 'Gagal menambahkan staff. Error: '.$th->getMessage();
+                $status = 'FAIL';
+                $user->update($user_old);
             }
+        } catch (\Throwable $th) {
+            $msg = 'Gagal menambahkan user. Error: '.$th->getMessage();
+            $status = 'FAIL';
         }
-        return redirect()->route('master.karyawan.index');
+        $header = ['status' => $status, 'msg' => $msg];
+        // if ($status != 'FAIL'){
+        //     return redirect('master/karyawan')->with($header);
+        // }
+        return redirect()->route('master.karyawan.edit',$request->id)->with($header);
     }
 
     /**
