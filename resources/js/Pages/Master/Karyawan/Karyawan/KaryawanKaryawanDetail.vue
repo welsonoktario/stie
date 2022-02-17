@@ -24,7 +24,9 @@
         <!-- ID, NITK -->
         <div class="mb-4 flex space-x-2">
           <div class="w-full">
-            <Label for="id"> ID Karyawan <em> (Nomor Induk Karyawan)</em> </Label>
+            <Label for="id">
+              ID Karyawan <em> (Nomor Induk Karyawan)</em>
+            </Label>
             <Input
               v-model="form.id"
               id="id"
@@ -51,7 +53,7 @@
           </div>
         </div>
         <!-- NAMA, NIK-->
-        <div class="mb-4 flex space-x-2"> 
+        <div class="mb-4 flex space-x-2">
           <div class="w-full">
             <Label for="nama"> Nama </Label>
             <Input
@@ -61,7 +63,8 @@
               class="mt-1 block w-full"
               type="text"
               placeholder="Nama"
-              autocomplete="off" required
+              autocomplete="off"
+              required
             ></Input>
           </div>
           <div class="w-full">
@@ -74,14 +77,12 @@
               type="text"
               placeholder="NIK"
               autocomplete="off"
-              >
-              
+            >
             </Input>
           </div>
         </div>
         <!-- EMAIL, JENIS KELAMIN -->
         <div class="mb-4 flex space-x-2">
-
           <div class="w-full">
             <Label for="email"> Email </Label>
             <Input
@@ -95,13 +96,17 @@
             ></Input>
           </div>
           <div class="w-full">
-            <label class="block text-gray-500 text-sm font-bold mb-2" for="jenis_kelamin">
+            <label
+              class="block text-gray-500 text-sm font-bold mb-2"
+              for="jenis_kelamin"
+            >
               Jenis Kelamin
             </label>
-            <select 
-              class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" 
+            <select
+              class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
               id="jenis_kelamin"
-              v-model="form.jenis_kelamin">
+              v-model="form.jenis_kelamin"
+            >
               <option value="Laki-laki">Laki-laki</option>
               <option value="Perempuan">Perempuan</option>
             </select>
@@ -132,11 +137,14 @@
             </div>
           </div>
         </div>
-        
+
         <!-- NOMOR HP -->
         <div class="mb-3">
-          <label class="block text-gray-500 text-sm font-bold mb-2" for="nomor_hp">
-            Nomor HP 
+          <label
+            class="block text-gray-500 text-sm font-bold mb-2"
+            for="nomor_hp"
+          >
+            Nomor HP
           </label>
           <Input
             v-model="form.nomor_hp"
@@ -146,11 +154,11 @@
             placeholder="Nomor HP"
           ></Input>
         </div>
-        
+
         <!-- alamat jalan -->
         <div class="mb-3">
           <label class="block text-gray-500 text-sm font-bold mb-2" for="jalan">
-            Jalan 
+            Jalan
           </label>
           <Input
             v-model="form.jalan"
@@ -164,8 +172,11 @@
         <!-- kelurahan, kecamatan, kode pos -->
         <div class="mb-3 flex space-x-2">
           <div class="w-full">
-            <label class="block text-gray-500 text-sm font-bold mb-2" for="kelurahan">
-              Kelurahan 
+            <label
+              class="block text-gray-500 text-sm font-bold mb-2"
+              for="kelurahan"
+            >
+              Kelurahan
             </label>
             <Input
               v-model="form.kelurahan"
@@ -176,8 +187,11 @@
             ></Input>
           </div>
           <div class="w-full">
-            <label class="block text-gray-500 text-sm font-bold mb-2" for="kecamatan">
-              Kecamatan 
+            <label
+              class="block text-gray-500 text-sm font-bold mb-2"
+              for="kecamatan"
+            >
+              Kecamatan
             </label>
             <Input
               v-model="form.kecamatan"
@@ -188,8 +202,11 @@
             ></Input>
           </div>
           <div class="w-full">
-            <label class="block text-gray-500 text-sm font-bold mb-2" for="kode_pos">
-              Kode Pos 
+            <label
+              class="block text-gray-500 text-sm font-bold mb-2"
+              for="kode_pos"
+            >
+              Kode Pos
             </label>
             <Input
               v-model="form.kode_pos"
@@ -201,7 +218,6 @@
           </div>
         </div>
 
-        
         <!-- SK AWAL -->
         <div class="mb-3">
           <div class="flex space-x-2">
@@ -254,16 +270,15 @@
           </div>
         </div>
 
-        
         <!-- DIVISI, LEVEL PENGGUNA -->
         <div class="mb-4 flex space-x-2">
-
           <div class="w-full">
             <Label for="divisi"> Divisi </Label>
-            <select 
-              class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" 
+            <select
+              class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
               id="divisi"
-              v-model="form.divisi">
+              v-model="form.divisi"
+            >
               <option value="BAAK">BAAK</option>
               <option value="Data">Data</option>
               <option value="Dosen">Dosen</option>
@@ -271,17 +286,17 @@
           </div>
           <div class="w-full">
             <Label for="level_pengguna">Level Pengguna</Label>
-            <select 
-              class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" 
+            <select
+              class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
               id="level_pengguna"
-              v-model="form.level_pengguna">
+              v-model="form.level_pengguna"
+            >
               <option value="Staff">Staff</option>
               <option value="Administrator">Administrator</option>
             </select>
           </div>
         </div>
 
-        
         <!-- kelurahan, kecamatan, kode pos -->
         <div class="mb-3 flex space-x-2">
           <div class="w-full">
@@ -315,7 +330,6 @@
             ></Input>
           </div>
         </div>
-
 
         <div class="flex justify-between">
           <Button class="px-10">Simpan</Button>
@@ -383,25 +397,24 @@ export default {
       jalan: props.staff?.user.jalan || null,
       kelurahan: props.staff?.user.kelurahan || null,
       kode_pos: props.staff?.user.kode_pos || null,
-      kewarganegaraan: props.staff?.user.kewarganegaraan || 'WNI',
+      kewarganegaraan: props.staff?.user.kewarganegaraan || "WNI",
 
       // data staff
       id: props.staff?.id,
-      divisi: props.staff?.divisi || "BAAK" ,
-      level_pengguna: props.staff?.level_pengguna || "Staff" ,
-      jenjang_pendidikan: props.staff?.jenjang_pendidikan || null ,
-      gelar_depan: props.staff?.gelar_depan || null ,
-      gelar_belakang: props.staff?.gelar_belakang || null ,
-      status_karyawan: props.staff?.status_karyawan || null ,
-      nomor_sk_awal: props.staff?.nomor_sk_awal || null ,
-      tanggal_sk_awal: props.staff?.tanggal_sk_awal || null ,
-      nomor_sk_akhir: props.staff?.nomor_sk_akhir || null ,
-      tanggal_sk_akhir: props.staff?.tanggal_sk_akhir || null ,
-      status_karyawan: props.staff?.status_karyawan || 'Aktif' ,
-
+      divisi: props.staff?.divisi || "BAAK",
+      level_pengguna: props.staff?.level_pengguna || "Staff",
+      jenjang_pendidikan: props.staff?.jenjang_pendidikan || null,
+      gelar_depan: props.staff?.gelar_depan || null,
+      gelar_belakang: props.staff?.gelar_belakang || null,
+      status_karyawan: props.staff?.status_karyawan || null,
+      nomor_sk_awal: props.staff?.nomor_sk_awal || null,
+      tanggal_sk_awal: props.staff?.tanggal_sk_awal || null,
+      nomor_sk_akhir: props.staff?.nomor_sk_akhir || null,
+      tanggal_sk_akhir: props.staff?.tanggal_sk_akhir || null,
+      status_karyawan: props.staff?.status_karyawan || "Aktif",
 
       // data tenaga kependidikan
-      nitk: props.staff?.tenaga_kependidikan?.id
+      nitk: props.staff?.tenaga_kependidikan?.id,
     })
 
     const isOpen = ref(false)
@@ -416,7 +429,7 @@ export default {
         : form.put(route("master.karyawan.update", props.staff.id))
 
     const remove = () =>
-      from.delete(route("master.karyawan.destroy", props.staff.id))
+      form.delete(route("master.karyawan.destroy", props.staff.id))
 
     return {
       currentRouteName,
