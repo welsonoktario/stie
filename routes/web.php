@@ -56,7 +56,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resources([
             'karyawan' => KaryawanController::class,
             'jurusan' => JurusanController::class,
-            'tahun_ajaran' => TahunAjaranController::class,
+            'tahun-ajaran' => TahunAjaranController::class,
             'ruangan' => RuanganController::class,
             'kurikulum' => KurikulumController::class,
             'dosen' => DosenController::class,

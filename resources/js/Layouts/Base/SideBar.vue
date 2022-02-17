@@ -162,7 +162,7 @@ export default {
               {
                 name: "akademik-tahun-ajaran",
                 label: "Tahun Ajaran",
-                route: "master.tahun_ajaran.index",
+                route: "master.tahun-ajaran.index",
               },
               {
                 name: "akademik-ruangan",
