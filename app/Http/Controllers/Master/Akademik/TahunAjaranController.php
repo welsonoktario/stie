@@ -49,7 +49,7 @@ class TahunAjaranController extends Controller
         $tahunAjaran = TahunAjaran::create($request->validated());
 
         return redirect()
-            ->route('master.tahun_ajaran.index')
+            ->route('master.tahun-ajaran.index')
             ->with(
                 [
                     'status' => 'OK',
@@ -84,7 +84,7 @@ class TahunAjaranController extends Controller
         $tahunAjaran->update($request->validated());
 
         return redirect()
-            ->route('master.tahun_ajaran.index')
+            ->route('master.tahun-ajaran.index')
             ->with(
                 [
                     'status' => 'OK',
@@ -103,7 +103,7 @@ class TahunAjaranController extends Controller
     {
         if (!$tahunAjaran->delete()) {
             return redirect()
-                ->route('master.tahun_ajaran.index')
+                ->route('master.tahun-ajaran.index')
                 ->with(
                     [
                         'status' => 'FAIL',
@@ -113,7 +113,7 @@ class TahunAjaranController extends Controller
         }
 
         return redirect()
-            ->route('master.tahun_ajaran.index')
+            ->route('master.tahun-ajaran.index')
             ->with(
                 [
                     'status' => 'OK',
