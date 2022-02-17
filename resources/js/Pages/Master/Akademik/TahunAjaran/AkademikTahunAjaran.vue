@@ -13,7 +13,7 @@
         </span>
 
         <Button type="button">
-          <Link :href="route('master.tahun_ajaran.create')">
+          <Link :href="route('master.tahun-ajaran.create')">
             Tambah Tahun Ajaran
           </Link>
         </Button>
@@ -21,7 +21,7 @@
 
       <DataTable :columns="columns" :data="tahunAjarans">
         <template #actions="row">
-          <NavLink :href="route('master.tahun_ajaran.edit', row.data.id)"
+          <NavLink :href="route('master.tahun-ajaran.edit', row.data.id)"
             >Edit</NavLink
           >
         </template>

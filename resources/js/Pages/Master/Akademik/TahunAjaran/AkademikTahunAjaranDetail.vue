@@ -161,16 +161,16 @@ export default {
     const isOpen = ref(false)
 
     const currentRouteName = computed(() =>
-      route().current("master.tahun_ajaran.create") ? "Tambah" : "Edit"
+      route().current("master.tahun-ajaran.create") ? "Tambah" : "Edit"
     )
 
     const submit = () =>
       currentRouteName.value == "Tambah"
-        ? form.post(route("master.tahun_ajaran.store"))
-        : form.put(route("master.tahun_ajaran.update", props.tahunAjaran.id))
+        ? form.post(route("master.tahun-ajaran.store"))
+        : form.put(route("master.tahun-ajaran.update", props.tahunAjaran.id))
 
     const remove = () =>
-      form.delete(route("master.tahun_ajaran.destroy", props.tahunAjaran.id))
+      form.delete(route("master.tahun-ajaran.destroy", props.tahunAjaran.id))
 
     return {
       currentRouteName,

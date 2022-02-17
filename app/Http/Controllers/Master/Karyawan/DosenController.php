@@ -59,7 +59,7 @@ class DosenController extends Controller
         // $this->saveDosenHandler($request, 'store');
 
         $request['password'] = Hash::make('12345678');
-        $request['jurusan_id']  = $request['jurusan_id'] == '-' ? null : $request['jurusan_id'];
+        $request['jurusan']  = $request['jurusan'] == '-' ? null : $request['jurusan'];
         // $dosen = Dosen::findOrFail($request);\
         // $user = new User();
         // dd($request->all());
@@ -135,7 +135,7 @@ class DosenController extends Controller
 
         $dosen = Dosen::findOrFail($id);
         $user = User::findOrFail($dosen->staff->user->id);
-        $request['jurusan_id']  = $request['jurusan_id'] == '-' ? null : $request['jurusan_id'];
+        $request['jurusan']  = $request['jurusan'] == '-' ? null : $request['jurusan'];
         // dd($user->update());
 
         $msg = 'Berhasil menambahkan data';
