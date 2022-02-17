@@ -2,7 +2,7 @@ const path = require("path");
 
 module.exports = {
   output: {
-    chunkFilename: "js/[name].js?id=[chunkhash]",
+    chunkFilename: "js/[name].js",
   },
   resolve: {
     extensions: ['.vue'],

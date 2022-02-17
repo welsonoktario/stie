@@ -1,4 +1,4 @@
-const mix = require("laravel-mix");
+const mix = require("laravel-mix")
 
 /*
  |--------------------------------------------------------------------------
@@ -15,7 +15,7 @@ mix
   .js("resources/js/app.js", "public/js")
   .vue()
   .sourceMaps()
-  .webpackConfig({ devtool: "source-map" })
+  .webpackConfig({ devtool: "inline-source-map" })
   .postCss("resources/css/app.css", "public/css", [
     require("postcss-import"),
     require("tailwindcss"),
@@ -23,8 +23,8 @@ mix
   ])
   .webpackConfig(require("./webpack.config"))
   .extract()
-  .disableSuccessNotifications();
+  .disableSuccessNotifications()
 
 if (mix.inProduction()) {
-  mix.version();
+  mix.version()
 }
