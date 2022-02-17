@@ -103,7 +103,7 @@
               Jenis Kelamin
             </label>
             <select
-              class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
+              class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
               id="jenis_kelamin"
               v-model="form.jenis_kelamin"
             >
@@ -275,7 +275,7 @@
           <div class="w-full">
             <Label for="divisi"> Divisi </Label>
             <select
-              class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
+              class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
               id="divisi"
               v-model="form.divisi"
             >
@@ -287,7 +287,7 @@
           <div class="w-full">
             <Label for="level_pengguna">Level Pengguna</Label>
             <select
-              class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
+              class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
               id="level_pengguna"
               v-model="form.level_pengguna"
             >

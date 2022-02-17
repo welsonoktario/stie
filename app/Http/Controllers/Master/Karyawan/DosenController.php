@@ -59,6 +59,7 @@ class DosenController extends Controller
         // $this->saveDosenHandler($request, 'store');
 
         $request['password'] = Hash::make('12345678');
+        $request['jurusan_id']  = $request['jurusan_id'] == '-' ? null : $request['jurusan_id'];
         // $dosen = Dosen::findOrFail($request);\
         // $user = new User();
         // dd($request->all());
@@ -74,19 +75,19 @@ class DosenController extends Controller
                     $request['jurusan_id'] = $request['jurusan'];
                     $user->staff->dosen()->create($request->all());
                 } catch (\Throwable $th) {
-                    $msg = 'Gagal menambahkan data dosen. Error: '.$th->getMessage();
+                    $msg = 'Gagal menambahkan data dosen. Error: ' . $th->getMessage();
                     $status = 'FAIL';
                     // $user->delete();
                     dd($msg, $status);
                 }
             } catch (\Throwable $th) {
-                $msg = 'Gagal menambahkan data karyawan. Error: '.$th->getMessage();
+                $msg = 'Gagal menambahkan data karyawan. Error: ' . $th->getMessage();
                 $status = 'FAIL';
                 $user->delete();
                 dd($msg, $status);
             }
         } catch (\Throwable $th) {
-            $msg = 'Gagal menambahkan data user. Error: '.$th->getMessage();
+            $msg = 'Gagal menambahkan data user. Error: ' . $th->getMessage();
             $status = 'FAIL';
             dd($msg, $status);
         }
@@ -97,7 +98,7 @@ class DosenController extends Controller
         // if ($status != 'FAIL'){
         //     return redirect('master/karyawan')->with($header);
         // }
-        return redirect()->route('master.dosen.edit',$request->id_dosen)->with($header);
+        return redirect()->route('master.dosen.edit', $request->id_dosen)->with($header);
     }
 
     /**
@@ -109,7 +110,7 @@ class DosenController extends Controller
     public function edit($id)
     {
         $dosen = Dosen::where('id', '=', $id)->with(['staff.user', 'jurusan'])->get()->first();
-        if (!$dosen){
+        if (!$dosen) {
             abort(404);
         }
         $jurusans = Jurusan::all();
@@ -134,11 +135,12 @@ class DosenController extends Controller
 
         $dosen = Dosen::findOrFail($id);
         $user = User::findOrFail($dosen->staff->user->id);
+        $request['jurusan_id']  = $request['jurusan_id'] == '-' ? null : $request['jurusan_id'];
         // dd($user->update());
 
         $msg = 'Berhasil menambahkan data';
         $status = 'OK';
-        
+
         try {
             // $key = array_keys($user->toArray());
             $user_old = $user->getOriginal();
@@ -151,7 +153,7 @@ class DosenController extends Controller
                 $user->staff->update($request->only($key));
                 try {
                     // dd($request['id'], $staff_old['id']);
-                    if ($request['id'] != $staff_old['id']){
+                    if ($request['id'] != $staff_old['id']) {
                         // dd($request['user_id']);
                         $user = User::findOrFail($user->id);
                         // dd('disini');
@@ -162,17 +164,17 @@ class DosenController extends Controller
                     $key = array_keys($dosen_old);
                     $user->staff->dosen->update($request->only($key));
                 } catch (\Throwable $th) {
-                    $msg = 'Gagal mengubah data dosen. Error: '.$th->getMessage();
+                    $msg = 'Gagal mengubah data dosen. Error: ' . $th->getMessage();
                     $status = 'OK';
                     dd($msg, $status);
                 }
             } catch (\Throwable $th) {
-                $msg = 'Gagal mengubah data karyawan. Error: '.$th->getMessage();
+                $msg = 'Gagal mengubah data karyawan. Error: ' . $th->getMessage();
                 $status = 'OK';
                 dd($msg, $status);
             }
         } catch (\Throwable $th) {
-            $msg = 'Gagal mengubah data user. Error: '.$th->getMessage();
+            $msg = 'Gagal mengubah data user. Error: ' . $th->getMessage();
             $status = 'OK';
             dd($msg, $status);
         }
@@ -191,7 +193,7 @@ class DosenController extends Controller
         //
         $dosen = Dosen::findOrFail($id);
 
-        if(!$dosen){
+        if (!$dosen) {
             abort(404);
         }
 
