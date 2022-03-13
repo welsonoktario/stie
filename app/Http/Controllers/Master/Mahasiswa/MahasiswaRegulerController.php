@@ -71,6 +71,10 @@ class MahasiswaRegulerController extends Controller
             $user = User::create($request->all());
             try {
                 $user->mahasiswa()->create($request->all());
+
+                
+                // assign ke tahun akademik (dari tanggal masuk sampai thn terakhir)
+                // $mahasiswa
             } catch (\Throwable $th) {
                 $user->delete();
                 $msg = 'Gagal menambahkan data. Error: '. $th->getMessage();
@@ -82,6 +86,7 @@ class MahasiswaRegulerController extends Controller
             $status = 'FAIL';
             dd($msg, $status);
         }
+
         
         $header = ['status' => $status, 'msg' => $msg];
         if ($status != 'FAIL'){

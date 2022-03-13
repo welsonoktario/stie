@@ -70,6 +70,22 @@
           ></Input>
         </div>
 
+        <!--  tahun masuk -->
+        <div class="mb-3">
+          <label class="block text-gray-500 text-sm font-bold mb-2" for="tanggal_masuk">
+            tanggal Masuk <span class="text-red-500">*</span>
+          </label>
+          <Input
+            v-model="form.tanggal_masuk"
+            class="w-full"
+            id="tanggal_masuk"
+            type="date"
+            placeholder="tanggal_masuk"
+            required
+            :readonly="!route().current('master.mahasiswa-reguler.create')"
+          ></Input>
+        </div>
+
         <div class="mb-3">
           <label class="block text-gray-500 text-sm font-bold mb-2" for="email">
             Email
@@ -561,6 +577,7 @@ export default {
 
       // mahasiswa data
       npm: props.mahasiswa == null ? null : props.mahasiswa.npm,
+      tanggal_masuk: props.mahasiswa?.tanggal_masuk,
       dosen_id: props.mahasiswa == null ? '-' : (props.mahasiswa.dosen == null ? '-' : props.mahasiswa.dosen.id),
       jurusan_id: props.mahasiswa == null ? '-' : (props.mahasiswa.jurusan == null ? '-' : props.mahasiswa .jurusan.id),
       nisn: props.mahasiswa?.nisn || null,

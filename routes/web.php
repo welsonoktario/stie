@@ -4,19 +4,20 @@ use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
-use App\Http\Controllers\ModelTestingController;
+use App\Http\Controllers\TestingController;
 
 // Master Menu Controller
-use App\Http\Controllers\Master\Akademik\JurusanController;
-use App\Http\Controllers\Master\Akademik\KurikulumController;
-use App\Http\Controllers\Master\Akademik\MatakuliahController;
-use App\Http\Controllers\Master\Akademik\RuanganController;
-use App\Http\Controllers\Master\Akademik\TahunAjaranController;
-
+use App\Http\Controllers\ModelTestingController;
 use App\Http\Controllers\Master\Karyawan\DosenController;
-use App\Http\Controllers\Master\Karyawan\KaryawanController;
-
+use App\Http\Controllers\Master\Akademik\JurusanController;
+use App\Http\Controllers\Master\Akademik\RuanganController;
 use App\Http\Controllers\Master\Mahasiswa\MahasiswaReguler;
+
+use App\Http\Controllers\Master\Karyawan\KaryawanController;
+use App\Http\Controllers\Master\Akademik\KurikulumController;
+
+use App\Http\Controllers\Master\Akademik\MatakuliahController;
+use App\Http\Controllers\Master\Akademik\TahunAjaranController;
 use App\Http\Controllers\Master\Mahasiswa\MahasiswaRegulerController;
 use App\Http\Controllers\Master\Mahasiswa\MahasiswaKonversiController;
 use App\Http\Controllers\Master\Mahasiswa\MatakuliahKonversiController;
@@ -74,6 +75,14 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/mahasiswa-konversi/{mahasiswa_konversi_id}/matakuliah-konversi/{matakuliah_konversi_id}', [MatakuliahKonversiController::class, 'show'])->name('mahasiswa-konversi.matakuliah.show');
         Route::put('/mahasiswa-konversi/{mahasiswa_konversi_id}/matakuliah-konversi/{matakuliah_konversi_id}', [MatakuliahKonversiController::class, 'update'])->name('mahasiswa-konversi.matakuliah.update');
         Route::delete('/mahasiswa-konversi/{mahasiswa_konversi_id}/matakuliah-konversi/{matakuliah_konversi_id}', [MatakuliahKonversiController::class, 'destroy'])->name('mahasiswa-konversi.matakuliah.destroy');
+    });
+
+
+    // Transaksi route
+    Route::group(['prefix' => 'transaksi', 'as' => 'transaksi.'], function () {
+        Route::get('kurikulum/{kurikulum}/prasyarat', [KurikulumController::class, 'loadPrasyarats'])->name('kurikulum.prasyarat');
+
+        Route::get('testing', [TestingController::class, 'index'])->name('testing');
     });
 });
 

@@ -56,13 +56,13 @@ export default {
         sortable: true,
       },
       {
-        key: "tahun_mulai",
-        label: "Tahun Mulai",
+        key: "tanggal_mulai",
+        label: "Tanggal Mulai",
         sortable: true,
       },
       {
-        key: "tahun_selesai",
-        label: "Tahun Selesai",
+        key: "tanggal_selesai",
+        label: "Tanggal Selesai",
         sortable: true,
       },
       {

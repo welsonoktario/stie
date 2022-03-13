@@ -1,11 +1,11 @@
 <template>
-  <AppLayout :title="`${currentRouteName} Tahun Ajaran`">
+  <AppLayout :title="`${currentRouteName} Tahun Akademik`">
     <div
       class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
     >
       <!-- <div class="p-6">Karyawan / Karyawan</div> -->
       <p class="text-xs md:text-sm text-slate-500">
-        Akademik / Tahun Ajaran /
+        Akademik / Tahun Akademik /
         <span class="font-semibold text-teal-500 dark:text-teal-600">{{
           currentRouteName
         }}</span>
@@ -18,13 +18,13 @@
             class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
           >
             <span>{{ currentRouteName }}</span>
-            Tahun Ajaran</strong
+            Tahun Akademik</strong
           >
         </span>
       </div>
       <form @submit.prevent="submit">
         <div class="mb-4">
-          <Label for="tahun_ajaran"> Tahun Ajaran </Label>
+          <Label for="tahun_ajaran"> Tahun Akademik </Label>
           <Input
             v-model="form.tahun_ajaran"
             name="tahun_ajaran"
@@ -35,31 +35,37 @@
           ></Input>
           <InputError class="mt-2" :message="form.errors.tahun_ajaran" />
         </div>
-        <div class="mb-4">
-          <Label for="tahun_mulai"> Tahun Mulai </Label>
-          <Input
-            v-model="form.tahun_mulai"
-            name="tahun_mulai"
-            class="mt-1 block w-full"
-            type="number"
-            min="2000"
-            max="3000"
-            placeholder="Tahun mulai"
-          ></Input>
-          <InputError class="mt-2" :message="form.errors.tahun_mulai" />
+        <div class="mb-4 flex space-x-2">
+          <div class="w-full">
+            <Label for="tanggal_mulai"> Tanggal Mulai </Label>
+            <Input
+              v-model="form.tanggal_mulai"
+              name="tanggal_mulai"
+              class="mt-1 block w-full"
+              type="date"
+              min="2000"
+              max="3000"
+              id="tanggal_mulai"
+              placeholder="Tahun mulai"
+            ></Input>
+            <InputError class="mt-2" :message="form.errors.tanggal_mulai" />
+          </div>
+          <div class="w-full">
+            <Label for="tanggal_selesai"> Tanggal Selesai </Label>
+            <Input
+              v-model="form.tanggal_selesai"
+              name="tanggal_selesai"
+              class="mt-1 block w-full"
+              type="date"
+              min="2000"
+              max="3000"
+              id="tanggal_selesai"
+              placeholder="tanggal selesai"
+            ></Input>
+            <InputError class="mt-2" :message="form.errors.tanggal_selesai" />
+          </div>
         </div>
         <div class="mb-4">
-          <Label for="tahun_selesai"> Tahun Selesai </Label>
-          <Input
-            v-model="form.tahun_selesai"
-            name="tahun_selesai"
-            class="mt-1 block w-full"
-            type="number"
-            min="2000"
-            max="3000"
-            placeholder="Tahun selesai"
-          ></Input>
-          <InputError class="mt-2" :message="form.errors.tahun_selesai" />
         </div>
         <div class="mb-4">
           <Label for="periode"> Periode </Label>
@@ -69,8 +75,8 @@
             v-model="form.periode"
           >
             <option value="null" selected disabled>Pilih periode</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
+            <option value="1">1 - Gasal</option>
+            <option value="2">2 - Genap</option>
           </select>
           <InputError class="mt-2" :message="form.errors.periode" />
         </div>
@@ -152,10 +158,10 @@ export default {
   setup(props) {
     const form = useForm({
       tahun_ajaran: props.tahunAjaran?.tahun_ajaran || null,
-      tahun_mulai: props.tahunAjaran?.tahun_mulai || null,
-      tahun_selesai: props.tahunAjaran?.tahun_selesai || null,
+      tanggal_mulai: props.tahunAjaran?.tanggal_mulai || null,
+      tanggal_selesai: props.tahunAjaran?.tanggal_selesai || null,
       periode: props.tahunAjaran?.periode || null,
-      aktif: props.tahunAjaran?.aktif || true,
+      aktif: props.tahunAjaran?.aktif,
     })
 
     const isOpen = ref(false)

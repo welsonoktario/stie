@@ -25,8 +25,10 @@ class StoreTahunAjaranRequest extends FormRequest
     {
         return [
             'tahun_ajaran' => ['required', 'string'],
-            'tahun_mulai' => ['required', 'numeric'],
-            'tahun_selesai' => ['required', 'numeric'],
+            // 'tahun_mulai' => ['required', 'date'],
+            // 'tahun_selesai' => ['required', 'date'],
+            'tanggal_mulai' => ['required', 'date'],
+            'tanggal_selesai' => ['required', 'date'],
             'periode' => ['required', 'numeric'],
             'aktif' => ['required', 'boolean']
         ];
@@ -41,10 +43,15 @@ class StoreTahunAjaranRequest extends FormRequest
     {
         return [
             'tahun_ajaran.required' => 'Tahun ajaran tidak boleh kosong',
-            'tahun_mulai.required' => 'Tahun mulai ajaran tidak boleh kosong',
-            'tahun_mulai.numeric' => 'Tahun mulai harus berupa angka tahun',
-            'tahun_selesai.required' => 'Tahun selesai ajaran tidak boleh kosong',
-            'tahun_selesai.numeric' => 'Tahun selesai harus berupa angka tahun',
+            // 'tahun_mulai.required' => 'Tahun mulai ajaran tidak boleh kosong',
+            // 'tahun_mulai.date' => 'Tahun mulai harus berupa tanggal',
+            // 'tahun_selesai.required' => 'Tahun selesai ajaran tidak boleh kosong',
+            // 'tahun_selesai.date' => 'Tahun selesai harus berupa tanggal',
+            
+            'tanggal_mulai.required' => 'Tanggal mulai ajaran tidak boleh kosong',
+            'tanggal_mulai.date' => 'Tanggal mulai harus berupa tanggal',
+            'tanggal_selesai.required' => 'Tanggal selesai ajaran tidak boleh kosong',
+            'tanggal_selesai.date' => 'Tanggal selesai harus berupa tanggal',
             'periode.required' => 'Periode tahun ajaran harus diisi',
             'aktif.required' => 'Status tahun ajaran harus diisi'
         ];

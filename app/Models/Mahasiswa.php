@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\User;
 use App\Models\Dosen;
 use App\Models\Jurusan;
+use App\Models\TahunAjaran;
 use App\Models\MahasiswaKonversi;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -46,6 +47,7 @@ class Mahasiswa extends Model
         'penghasilan_ibu',
         'uang_semester',
         'status_mahasiswa',
+        'tanggal_masuk'
     ];
 
     public function getRouteKeyName()
@@ -88,7 +90,7 @@ class Mahasiswa extends Model
      * Status Mahasiswa per semester
      * status_mahasiswa
      */
-    public function status_mahasiswa()
+    public function tahun_ajaran()
     {
         return $this->belongsToMany(TahunAjaran::class, 'status_mahasiswa', 'mahasiswa_npm', 'tahun_ajaran')->withPivot('status');
     }

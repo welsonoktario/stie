@@ -45,7 +45,9 @@ class TahunAjaranController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(StoreTahunAjaranRequest $request)
-    {
+    {   
+        // dd('disini');
+        // dd($request->toArray());
         $tahunAjaran = TahunAjaran::create($request->validated());
 
         return redirect()
@@ -81,8 +83,9 @@ class TahunAjaranController extends Controller
      */
     public function update(UpdateTahunAjaranRequest $request, TahunAjaran $tahunAjaran)
     {
+        // dd($request->toArray());
         $tahunAjaran->update($request->validated());
-
+        // dd($tahunAjaran);
         return redirect()
             ->route('master.tahun-ajaran.index')
             ->with(
