@@ -75,6 +75,24 @@ class Mahasiswa extends Model
         return $this->belongsTo(Dosen::class);
     }
 
+    /**
+     * Status Cicilan per semester
+     * status_cicilan
+     */
+    public function status_cicilan(){
+        return $this->belongsToMany(TahunAjaran::class, 'status_cicilan', 'mahasiswa_npm', 'tahun_ajaran')
+            ->withPivot('jumlah_cicilan_1', 'jumlah_cicilan_2','jumlah_cicilan_3', 'total_cicilan', 'uang_semester');
+    }
+
+    /**
+     * Status Mahasiswa per semester
+     * status_mahasiswa
+     */
+    public function status_mahasiswa()
+    {
+        return $this->belongsToMany(TahunAjaran::class, 'status_mahasiswa', 'mahasiswa_npm', 'tahun_ajaran')->withPivot('status');
+    }
+
     public function scopeFilter($query, array $filters){
         $query->when($filters['query'] ?? null, function($query, $search) {
             $query->where(function ($query) use ($search) {

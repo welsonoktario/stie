@@ -156,7 +156,6 @@ class MahasiswaKonversiController extends Controller
                 $mahasiswa_old = $user->mahasiswa->getOriginal();
                 $key = array_keys($user->mahasiswa->toArray());
                 $user->mahasiswa()->update($request->only($key));
-
                 try {
                     if($mahasiswa_old['npm'] != $request['npm'])
                         // refresh model, karena npm berubah tidak terbaca
