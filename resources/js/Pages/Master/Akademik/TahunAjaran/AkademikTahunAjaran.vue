@@ -22,8 +22,14 @@
       <DataTable :columns="columns" :data="tahunAjarans">
         <template #actions="row">
           <NavLink :href="route('master.tahun-ajaran.edit', row.data.id)"
-            >Edit</NavLink
+            >Edit</NavLink 
           >
+        </template>
+        <template #row(aktif)="row">
+          <span 
+          :class="[row.data.aktif ? 'text-green-100 bg-green-600 ' : 'text-red-100 bg-red-600 ']"
+          class="inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none rounded-full">
+            {{row.data.aktif ? 'Aktif' : 'Nonaktif'}}</span>
         </template>
       </DataTable>
     </div>
@@ -70,6 +76,11 @@ export default {
         label: "Periode",
         sortable: true,
       },
+      {
+        key: "aktif",
+        label: "Aktif",
+        sortable: true,
+      }
     ]
 
     return {

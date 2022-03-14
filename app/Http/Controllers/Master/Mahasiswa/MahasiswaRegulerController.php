@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Master\Mahasiswa;
 
+use App\Models\User;
 use Inertia\Inertia;
-use App\Models\Mahasiswa;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\Dosen;
 use App\Models\Jurusan;
-use App\Models\User;
+use App\Models\Mahasiswa;
+use App\Models\TahunAjaran;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 
 class MahasiswaRegulerController extends Controller
@@ -61,6 +62,7 @@ class MahasiswaRegulerController extends Controller
      */
     public function store(Request $request)
     {
+        // dd('g dl');
         $request['password'] = Hash::make('12345678');
         $request['jurusan_id'] = $request['jurusan_id'] != '-' ? $request['jurusan_id']: null;
         $request['dosen_id'] = $request['dosen_id'] != '-' ? $request['dosen_id']: null;
@@ -71,10 +73,14 @@ class MahasiswaRegulerController extends Controller
             $user = User::create($request->all());
             try {
                 $user->mahasiswa()->create($request->all());
-
                 
                 // assign ke tahun akademik (dari tanggal masuk sampai thn terakhir)
-                // $mahasiswa
+                $tm = $request['tanggal_masuk'];
+                $tas = TahunAjaran::where('tanggal_selesai', '>', $tm)->get();
+                $user->mahasiswa->tahun_ajaran()->detach();
+                foreach ($tas as $ta) {
+                    $user->mahasiswa->tahun_ajaran()->attach($ta->id, ['status' => 'Aktif']);
+                }
             } catch (\Throwable $th) {
                 $user->delete();
                 $msg = 'Gagal menambahkan data. Error: '. $th->getMessage();
@@ -87,7 +93,7 @@ class MahasiswaRegulerController extends Controller
             dd($msg, $status);
         }
 
-        
+        // dd($user->mahasiswa->tahun_ajaran(), $msg);
         $header = ['status' => $status, 'msg' => $msg];
         if ($status != 'FAIL'){
             return redirect('master/mahasiswa-reguler')->with($header);
