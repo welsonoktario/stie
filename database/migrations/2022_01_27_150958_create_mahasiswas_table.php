@@ -45,7 +45,7 @@ class CreateMahasiswasTable extends Migration
             $table->date('tanggal_lahir_ayah')->nullable();
             $table->string('pendidikan_ayah', 20)->nullable();
             $table->string('pekerjaan_ayah', 45)->nullable();
-            $table->string('penghasilan_ayah', 15)->nullable();
+            $table->string('penghasilan_ayah', 30)->nullable();
 
             // data ibu
             $table->string('nik_ibu', 20)->nullable();
@@ -54,7 +54,7 @@ class CreateMahasiswasTable extends Migration
             $table->date('tanggal_lahir_ibu')->nullable();
             $table->string('pendidikan_ibu', 20)->nullable();
             $table->string('pekerjaan_ibu', 45)->nullable();
-            $table->string('penghasilan_ibu', 15)->nullable();
+            $table->string('penghasilan_ibu', 30)->nullable();
 
             $table->integer('uang_semester')->default(4000000)->nullable();
             $table->enum('status_mahasiswa', ['Aktif', 'Tidak Aktif', 'Lulus', 'Hilang', 'Cuti'])->default('Aktif');

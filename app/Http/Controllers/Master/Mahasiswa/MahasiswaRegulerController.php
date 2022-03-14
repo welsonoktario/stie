@@ -68,12 +68,12 @@ class MahasiswaRegulerController extends Controller
         $request['dosen_id'] = $request['dosen_id'] != '-' ? $request['dosen_id']: null;
         $msg = 'Berhasil menambahkan data';
         $status = 'OK';
-        
+
         try {
             $user = User::create($request->all());
             try {
                 $user->mahasiswa()->create($request->all());
-                
+
                 // assign ke tahun akademik (dari tanggal masuk sampai thn terakhir)
                 $tm = $request['tanggal_masuk'];
                 $tas = TahunAjaran::where('tanggal_selesai', '>', $tm)->get();
@@ -99,7 +99,7 @@ class MahasiswaRegulerController extends Controller
             return redirect('master/mahasiswa-reguler')->with($header);
         }
         return redirect()->back()->with($header);
-        
+
     }
 
     /**
@@ -122,8 +122,13 @@ class MahasiswaRegulerController extends Controller
     public function edit($id)
     {
         //
-        $mahasiswa = Mahasiswa::where('npm','=',$id)->with(['dosen','jurusan','user'])->first();
-        $dosens = Dosen::with('staff.user')->get();
+        $mahasiswa = Mahasiswa::with(['dosen','jurusan','user'])->firstWhere('npm','=',$id);
+        $dosens = Dosen::whereHas('staff.user', function ($q) {
+            return $q->where([
+                ['level_pengguna', 'Staff'],
+                ['divisi', 'Dosen']
+            ]);
+        })->with(['staff.user'])->get();
         $jurusans = Jurusan::all();
         // dd($mahasiswa);
         return Inertia::render('Master/Mahasiswa/Reguler/MahasiswaRegulerDetail',[
@@ -165,7 +170,7 @@ class MahasiswaRegulerController extends Controller
             $status = 'FAIL';
             dd($msg, $status);
         }
-        
+
         $header = ['status' => $status, 'msg' => $msg];
         if ($status != 'FAIL'){
             return redirect('master/mahasiswa-reguler')->with($header);

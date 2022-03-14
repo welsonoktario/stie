@@ -417,12 +417,20 @@
               <option selected disabled value="-">
                 Pilih penghasilan ayah
               </option>
-              <option value="<500">&lt; Rp 500.000</option>
-              <option value="500-999">Rp 500.000 - Rp 999.999</option>
-              <option value="1000-1999">Rp 1.000.000 - Rp 1.999.999</option>
-              <option value="2000-4999">Rp 2.000.000 - Rp 4.999.999</option>
-              <option value="5000-20k">Rp 5.000.000 - Rp 20.000.000</option>
-              <option value=">20k">&gt; Rp 20.000.000</option>
+              <option value="< Rp 500.000">&lt; Rp 500.000</option>
+              <option value="Rp 500.000 - Rp 999.999">
+                Rp 500.000 - Rp 999.999
+              </option>
+              <option value="Rp 1.000.000 - Rp 1.999.999">
+                Rp 1.000.000 - Rp 1.999.999
+              </option>
+              <option value="Rp 2.000.000 - Rp 4.999.999">
+                Rp 2.000.000 - Rp 4.999.999
+              </option>
+              <option value="Rp 5.000.000 - Rp 20.000.000">
+                Rp 5.000.000 - Rp 20.000.000
+              </option>
+              <option value="> Rp 20.000.000">&gt; Rp 20.000.000</option>
             </select>
           </div>
         </div>
@@ -510,12 +518,20 @@
               name="penghasilan_ibu"
             >
               <option selected disabled value="-">Pilih penghasilan ibu</option>
-              <option value="<500">&lt; Rp 500.000</option>
-              <option value="500-999">Rp 500.000 - Rp 999.999</option>
-              <option value="1000-1999">Rp 1.000.000 - Rp 1.999.999</option>
-              <option value="2000-4999">Rp 2.000.000 - Rp 4.999.999</option>
-              <option value="5000-20k">Rp 5.000.000 - Rp 20.000.000</option>
-              <option value=">20k">&gt; Rp 20.000.000</option>
+              <option value="< Rp 500.000">&lt; Rp 500.000</option>
+              <option value="Rp 500.000 - Rp 999.999">
+                Rp 500.000 - Rp 999.999
+              </option>
+              <option value="Rp 1.000.000 - Rp 1.999.999">
+                Rp 1.000.000 - Rp 1.999.999
+              </option>
+              <option value="Rp 2.000.000 - Rp 4.999.999">
+                Rp 2.000.000 - Rp 4.999.999
+              </option>
+              <option value="Rp 5.000.000 - Rp 20.000.000">
+                Rp 5.000.000 - Rp 20.000.000
+              </option>
+              <option value="> Rp 20.000.000">&gt; Rp 20.000.000</option>
             </select>
           </div>
         </div>
@@ -570,8 +586,9 @@ export default {
   setup(props) {
     const form = reactive({
       // name: props.mahasiswa?.user.name || null,
-      email: props.mahasiswa == null ? null : props.mahasiswa.user.email,
-      name: props.mahasiswa == null ? null : props.mahasiswa.user.name,
+      id: props.mahasiswa?.user?.id || null,
+      email: props.mahasiswa?.user?.email || null,
+      name: props.mahasiswa?.user?.name || null,
       nik: props.mahasiswa == null ? null : props.mahasiswa.user.nik,
       jenis_kelamin: props.mahasiswa?.user.jenis_kelamin || "Laki-laki",
       agama: props.mahasiswa?.user.agama || null,
