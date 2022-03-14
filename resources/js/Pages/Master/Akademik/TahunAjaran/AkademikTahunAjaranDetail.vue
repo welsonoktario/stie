@@ -80,23 +80,45 @@
           </select>
           <InputError class="mt-2" :message="form.errors.periode" />
         </div>
-        <div class="mb-4">
-          <SwitchGroup>
-            <SwitchLabel class="block text-gray-500 text-sm font-bold mb-2"
-              >Aktif</SwitchLabel
-            >
-            <Switch
-              v-model="form.aktif"
-              :class="form.aktif ? 'bg-teal-600' : 'bg-gray-200'"
-              class="relative inline-flex items-center h-6 transition-colors rounded-full w-11 ring-0"
-            >
-              <span
-                :class="form.aktif ? 'translate-x-6' : 'translate-x-1'"
-                class="inline-block w-4 h-4 transition-transform transform bg-white rounded-full"
-              />
-            </Switch>
-          </SwitchGroup>
+
+        <div class="mb-4 flex space-x-5">
+          <div class="">
+            <SwitchGroup>
+              <SwitchLabel class="block text-gray-500 text-sm font-bold mb-2"
+                >Aktif</SwitchLabel
+              >
+              <Switch
+                v-model="form.aktif"
+                :class="form.aktif ? 'bg-teal-600' : 'bg-gray-200'"
+                class="relative inline-flex items-center h-6 transition-colors rounded-full w-11 ring-0"
+              >
+                <span
+                  :class="form.aktif ? 'translate-x-6' : 'translate-x-1'"
+                  class="inline-block w-4 h-4 transition-transform transform bg-white rounded-full"
+                />
+              </Switch>
+            </SwitchGroup>
+          </div>
+
+          <div class="" v-if="currentRouteName == 'Tambah'">
+            <SwitchGroup>
+              <SwitchLabel class="block text-gray-500 text-sm font-bold mb-2"
+                >Tambah Mahasiswa</SwitchLabel
+              >
+              <Switch
+                v-model="form.tambahMahasiswa"
+                :class="form.tambahMahasiswa ? 'bg-teal-600' : 'bg-gray-200'"
+                class="relative inline-flex items-center h-6 transition-colors rounded-full w-11 ring-0"
+              >
+                <span
+                  :class="form.tambahMahasiswa ? 'translate-x-6' : 'translate-x-1'"
+                  class="inline-block w-4 h-4 transition-transform transform bg-white rounded-full"
+                />
+              </Switch>
+            </SwitchGroup>
+          </div>
         </div>
+
         <div class="flex justify-between">
           <Button class="px-10" :disabled="form.processing">Simpan</Button>
           <button
@@ -161,8 +183,11 @@ export default {
       tanggal_mulai: props.tahunAjaran?.tanggal_mulai || null,
       tanggal_selesai: props.tahunAjaran?.tanggal_selesai || null,
       periode: props.tahunAjaran?.periode || null,
-      aktif: props.tahunAjaran?.aktif,
+      aktif: props.tahunAjaran == null ? false : props.tahunAjaran.aktif,
+      tambahMahasiswa: false
     })
+
+    // const tambahMahasiswa = ref(false)
 
     const isOpen = ref(false)
 
@@ -182,6 +207,7 @@ export default {
       currentRouteName,
       form,
       isOpen,
+      // tambahMahasiswa,
       submit,
       remove,
     }
