@@ -13,13 +13,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Mahasiswa extends Model
 {
     use HasFactory;
-    
+
     protected $primaryKey = 'npm';
 
     public $incrementing = false;
 
     protected $keyType = 'string';
-    
+
     protected $table = 'mahasiswas';
 
     protected $fillable = [
@@ -31,6 +31,7 @@ class Mahasiswa extends Model
         'alat_transportasi',
         'nisn',
         'npwp',
+        'kps',
         'nik_ayah',
         'nama_ayah',
         'tempat_lahir_ayah',
@@ -55,25 +56,29 @@ class Mahasiswa extends Model
         return 'npm';
     }
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function mahasiswa_konversi(){
+    public function mahasiswa_konversi()
+    {
         return $this->hasOne(MahasiswaKonversi::class);
     }
 
     /**
      * Jurusan yang diambil
      */
-    public function jurusan(){
+    public function jurusan()
+    {
         return $this->belongsTo(Jurusan::class);
     }
 
     /**
      * Dosen Wali
      */
-    public function dosen() {
+    public function dosen()
+    {
         return $this->belongsTo(Dosen::class);
     }
 
@@ -81,9 +86,10 @@ class Mahasiswa extends Model
      * Status Cicilan per semester
      * status_cicilan
      */
-    public function status_cicilan(){
+    public function status_cicilan()
+    {
         return $this->belongsToMany(TahunAjaran::class, 'status_cicilan', 'mahasiswa_npm', 'tahun_ajaran')
-            ->withPivot('jumlah_cicilan_1', 'jumlah_cicilan_2','jumlah_cicilan_3', 'total_cicilan', 'uang_semester');
+            ->withPivot('jumlah_cicilan_1', 'jumlah_cicilan_2', 'jumlah_cicilan_3', 'total_cicilan', 'uang_semester');
     }
 
     /**
@@ -95,8 +101,9 @@ class Mahasiswa extends Model
         return $this->belongsToMany(TahunAjaran::class, 'status_mahasiswa', 'mahasiswa_npm', 'tahun_ajaran')->withPivot('status');
     }
 
-    public function scopeFilter($query, array $filters){
-        $query->when($filters['query'] ?? null, function($query, $search) {
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['query'] ?? null, function ($query, $search) {
             $query->where(function ($query) use ($search) {
                 $query->where('npm', 'LIKE', "%$search%")
                     ->orWhere('nama', 'LIKE', "%$search%")

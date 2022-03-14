@@ -36,6 +36,7 @@ class CreateMahasiswasTable extends Migration
             $table->string('alat_transportasi', 45)->nullable();
             $table->string('nisn', 20)->nullable();
             $table->string('npwp', 15)->nullable();
+            $table->boolean('kps')->nullable()->default(false);
 
             // data ayah
             $table->string('nik_ayah', 20)->nullable();

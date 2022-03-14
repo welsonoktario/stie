@@ -543,7 +543,7 @@ import Label from "@components/Label"
 
 import { Link } from "@inertiajs/inertia-vue3"
 
-import { reactive, ref } from "vue"
+import { reactive } from "vue"
 import { Inertia } from "@inertiajs/inertia"
 export default {
   components: {
