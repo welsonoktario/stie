@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Master\Akademik\Kurikulum\StoreKurikulumRequest;
 use App\Http\Requests\Master\Akademik\Kurikulum\UpdateKurikulumRequest;
 use App\Models\Kurikulum;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 
@@ -124,6 +125,7 @@ class KurikulumController extends Controller
 
     public function loadPrasyarats(Kurikulum $kurikulum)
     {
+        Log::debug(json_encode($kurikulum));
         $kurikulum->load('matakuliahs');
 
         return response()->json(['matakuliahs' => $kurikulum->matakuliahs]);

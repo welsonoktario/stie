@@ -15,38 +15,34 @@
             >Daftar Mahasiswa</strong
           >
         </span>
-        <Link
-          :href="route('master.mahasiswa-reguler.create')"
-          method="get"
-          as="button"
-          type="link"
-          class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150"
-        >
-          Tambah Mahasiswa
-        </Link>
+        <Button type="button">
+          <Link :href="route('master.mahasiswa-reguler.create')" type="link">
+            Tambah Mahasiswa
+          </Link>
+        </Button>
       </div>
 
-      <DataTable :data="mahasiswas" :columns="columns"> 
-        
+      <DataTable :data="mahasiswas" :columns="columns">
         <template #row(jurusan)="row">
-          <span class="capitalize">{{ row.data.jurusan ?? '-' }}</span>
+          <span class="capitalize">{{ row.data.jurusan ?? "-" }}</span>
         </template>
 
         <template #actions="row">
           <Link
             as="button"
             :href="route('master.mahasiswa-reguler.edit', row.data.npm)"
-            >Edit</Link>
+            >Edit</Link
+          >
         </template>
       </DataTable>
-      
     </div>
   </AppLayout>
 </template>
 
 <script>
-import AppLayout from "@layouts/App.vue"
-import DataTable from "@components/DataTable.vue"
+import AppLayout from "@layouts/App"
+import DataTable from "@components/DataTable"
+import Button from "@components/Button"
 
 import { Link } from "@inertiajs/inertia-vue3"
 
@@ -55,6 +51,7 @@ export default {
     AppLayout,
     Link,
     DataTable,
+    Button,
   },
   props: {
     mahasiswas: {

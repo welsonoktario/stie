@@ -107,7 +107,7 @@
             name="kurikulum"
             class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
             v-model="form.kurikulum_id"
-            @change="loadPrasyarats"
+            @change="loadPrasyarats($event.target.selectedIndex)"
           >
             <option value="null" selected disabled>Pilih kurikulum</option>
             <option
@@ -153,7 +153,7 @@
             >Prasyarat</label
           >
           <div
-            class="w-full bg-zinc-100 dark:bg-zinc-700 dark:text-zinc-500 rounded-md mb-4 py-2 px-3 flex flex-row items-center cursor-pointer"
+            class="w-full bg-zinc-100 dark:bg-zinc-700 dark:text-zinc-500 rounded-md mb-4 py-2 px-3 flex flex-row items-center"
           >
             <div class="flex-1">
               <div
@@ -173,7 +173,7 @@
             </div>
             <ChevronDownIcon
               @click="isPrasyaratOpen = !isPrasyaratOpen"
-              class="w-5 h-5 cursor-pointer"
+              class="w-5 h-5 cursor-pointer text-zinc-500"
             />
           </div>
 
@@ -266,7 +266,7 @@ import Input from "@components/Input"
 import InputError from "@components/InputError"
 import Dialog from "@components/Dialog"
 import { useForm } from "@inertiajs/inertia-vue3"
-import { computed, reactive, ref } from "vue"
+import { computed, onMounted, reactive, ref } from "vue"
 import { ChevronDownIcon, XIcon } from "@heroicons/vue/solid"
 
 const props = defineProps({
@@ -288,6 +288,7 @@ const form = useForm({
   prasyarats: props.matakuliah?.prasyarats || [],
 })
 
+const tipes = ["wajib", "pilihan", "pilihan wajib"]
 const prasyarats = reactive([])
 const selectedPrasyarat = ref(null)
 const isDialogPrasyaratOpen = ref(false)
@@ -295,11 +296,17 @@ const isDialogHapusOpen = ref(false)
 const isPrasyaratOpen = ref(false)
 const prasyaratNilai = ref("")
 
+onMounted(() => {
+  if (form.kurikulum_id) {
+    const selected = props.kurikulums.find((k) => k.id == form.kurikulum_id)
+    prasyarats.length = 0
+    prasyarats.push.apply(prasyarats, selected.matakuliahs)
+  }
+})
+
 const currentRouteName = computed(() =>
   route().current("master.matakuliah.create") ? "Tambah" : "Ubah"
 )
-
-const tipes = ["wajib", "pilihan", "pilihan wajib"]
 
 const openDialogPrasyarat = (mk) => {
   if (!form.prasyarats.some((m) => m.id == mk.id)) {
@@ -308,14 +315,9 @@ const openDialogPrasyarat = (mk) => {
   }
 }
 
-const loadPrasyarats = () => {
-  const selected = props.kurikulums.find((k) => k.id == form.kurikulum_id)
-  fetch(route("master.kurikulum.prasyarat", selected))
-    .then((res) => res.json())
-    .then((data) => {
-      prasyarats.length = 0
-      prasyarats.push.apply(prasyarats, data.matakuliahs)
-    })
+const loadPrasyarats = (index) => {
+  prasyarats.length = 0
+  prasyarats.push.apply(prasyarats, props.kurikulums[index - 1].matakuliahs)
 }
 
 const addPrasyarat = () => {
