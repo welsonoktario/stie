@@ -174,8 +174,19 @@ export default {
     }
 
     const search = debounce(() => {
+      const params = route().params
+      const filterProps = Object.getOwnPropertyNames(filter)
+      // foreach {
+      //   alert(p) 
+      //   break
+      // }
+
+      filterProps.forEach(p => {
+        params[p] = filter[p]
+      })
+      
       const current = route().current()
-      Inertia.get(route(current), filter, {
+      Inertia.get(route(current), params, {
         preserveScroll: true,
         preserveState: true,
       })

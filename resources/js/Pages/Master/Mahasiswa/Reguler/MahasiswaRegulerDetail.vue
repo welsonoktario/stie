@@ -140,13 +140,13 @@
           <select
             class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
             name="jurusan"
-            v-model="form.jurusan_name"
+            v-model="form.jurusan_id"
           >
             <option value="-">-</option>
             <option
               v-for="jurusan in jurusans"
-              :key="jurusan.name"
-              :value="jurusan.name"
+              :key="jurusan.id"
+              :value="jurusan.id"
             >
               {{ jurusan.nama }} - {{ jurusan.kode_jurusan }}
             </option>
@@ -609,12 +609,12 @@ export default {
           : props.mahasiswa.dosen == null
           ? "-"
           : props.mahasiswa.dosen.name,
-      jurusan_name:
+      jurusan_id:
         props.mahasiswa == null
           ? "-"
           : props.mahasiswa.jurusan == null
           ? "-"
-          : props.mahasiswa.jurusan.name,
+          : props.mahasiswa.jurusan.id,
       nisn: props.mahasiswa?.nisn || null,
       jenis_tinggal: props.mahasiswa?.jenis_tinggal || null,
       alat_transportasi: props.mahasiswa?.alat_transportasi || null,
