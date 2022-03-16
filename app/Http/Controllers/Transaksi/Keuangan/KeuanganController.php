@@ -7,6 +7,7 @@ use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\TahunAjaran;
+use Illuminate\Support\Facades\DB;
 
 class KeuanganController extends Controller
 {
@@ -43,7 +44,6 @@ class KeuanganController extends Controller
             })
             ->paginate($request->get('perPage') ?: 10)
             ->withQueryString();
-        // dd($taa->tahun_ajaran, $request->ta, $mahasiswas);
 
         return Inertia::render('Transaksi/Keuangan/Keuangan.vue',[
             'mahasiswas' => $mahasiswas,
@@ -86,12 +86,32 @@ class KeuanganController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $id = id mahasiswa atau npm
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, Request $request)
     {
-        //
+        // 
+        if (!isset($request['ta']))
+            return redirect()->route('transaksi.keuangan.index');
+
+        // cari mahasiswa ada atau engga
+        $taken = DB::table('status_mahasiswa')
+            ->where('mahasiswa_npm','=', $id)
+            ->where('tahun_ajaran', '=',$request['ta'])->get()->count();
+
+        if (!($taken > 0)){
+            return redirect()->route('transaksi.keuangan.index');
+        }
+        
+        $mahasiswa = Mahasiswa::with(['user', 'tahun_ajaran'])
+            ->find($id);
+            
+        return Inertia::render('Transaksi/Keuangan/KeuanganDetail.vue',[
+            'mahasiswa' => $mahasiswa,
+        ]);
+
+
     }
 
     /**

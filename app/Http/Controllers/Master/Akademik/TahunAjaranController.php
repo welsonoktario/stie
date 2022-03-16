@@ -48,29 +48,6 @@ class TahunAjaranController extends Controller
      */
     public function store(StoreTahunAjaranRequest $request)
     {   
-        // dd('disini');
-        
-        // if ($request['tambahMahasiswa']) {
-        //     $tahunSekarang = (new Carbon($request['tanggal_mulai']))->year;
-        //     $periodeSekarang = $request['periode'];
-        //     $p = ['1'=>'2', '2'=>'1'];
-        //     $periodeTerakhir = $p[$periodeSekarang];
-        //     $tahunTerakhir = $periodeSekarang == '1' ? $tahunSekarang : $tahunSekarang - 1;
-    
-        //     $tahunAjaranLalu = TahunAjaran::whereYear('tanggal_mulai', '=', $tahunTerakhir)
-        //         ->where('periode','=',$periodeTerakhir)->with('mahasiswas')->first();
-
-        //     // select semua mhs di smt terakhir tersebut dengan 
-        //     // status tidak lulus, dikeluarkan, meninggal
-        //     $mahasiswas = $tahunAjaranLalu->mahasiswas;//->has('mahasiswas')->get();
-        //     $id_mhs = [];
-        //     foreach ($mahasiswas as $mhs) {
-        //         if(in_array($mhs->pivot->status, ['Aktif','Tidak Aktif','Cuti'])){
-        //             $id_mhs[] = $mhs->pivot->mahasiswa_npm;
-        //         }
-        //     }
-        // }
-        // dd($request->toArray(), $id_mhs);
         try {
             $tahunAjaran = TahunAjaran::create($request->validated());
 
@@ -123,6 +100,7 @@ class TahunAjaranController extends Controller
      */
     public function edit(TahunAjaran $tahunAjaran)
     {
+        dd($tahunAjaran);
         return Inertia::render(
             'Master/Akademik/TahunAjaran/AkademikTahunAjaranDetail',
             ['tahunAjaran' => $tahunAjaran]

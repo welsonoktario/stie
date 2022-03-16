@@ -43,7 +43,7 @@
         <template #actions="row">
           <Link
             as="button"
-            :href="route('master.mahasiswa-reguler.edit', row.data.npm)"
+            :href="route('transaksi.keuangan.edit', {keuangan: row.data.npm, ta: selectedTahunAjaran})"
             >Edit</Link
           >
         </template>
