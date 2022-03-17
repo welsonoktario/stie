@@ -148,7 +148,7 @@ export default {
     const rowKey = (col, index) => `${col}-${index}`
 
     const sortCol = (col, index) => {
-      // if (!columns[index][col].sortable) return
+      if (!columns[index][col].sortable) return
 
       if (filter.orderBy != col) {
         filter.orderType = ""
@@ -175,7 +175,10 @@ export default {
 
     const search = debounce(() => {
       const current = route().current()
-      Inertia.get(route(current), filter, {
+      const newFilter = { ...filter, ...route().params }
+      newFilter.query = filter.query
+
+      Inertia.get(route(current), newFilter, {
         preserveScroll: true,
         preserveState: true,
       })

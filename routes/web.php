@@ -21,6 +21,7 @@ use App\Http\Controllers\Master\Akademik\TahunAjaranController;
 use App\Http\Controllers\Master\Mahasiswa\MahasiswaRegulerController;
 use App\Http\Controllers\Master\Mahasiswa\MahasiswaKonversiController;
 use App\Http\Controllers\Master\Mahasiswa\MatakuliahKonversiController;
+use App\Http\Controllers\Transaksi\Jadwal\JadwalController;
 
 // use App\Models\TahunAjaran;
 
@@ -85,6 +86,12 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('kurikulum/{kurikulum}/prasyarat', [KurikulumController::class, 'loadPrasyarats'])->name('kurikulum.prasyarat');
 
         Route::get('testing', [TestingController::class, 'index'])->name('testing');
+
+        Route::resources([
+            'jadwal' => JadwalController::class,
+        ], [
+            'except' => 'show'
+        ]);
     });
 });
 
