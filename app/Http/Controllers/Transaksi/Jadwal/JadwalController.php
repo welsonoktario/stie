@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Transaksi\Jadwal\StoreJadwalRequest;
 use App\Http\Requests\Transaksi\Jadwal\UpdateJadwalRequest;
 use App\Models\Jadwal;
+use App\Models\Matakuliah;
+use App\Models\Ruangan;
 use App\Models\TahunAjaran;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
@@ -52,7 +54,18 @@ class JadwalController extends Controller
      */
     public function create()
     {
-        //
+        $tahunAkademik = TahunAjaran::find(Request::input('ta'));
+        $ruangans = Ruangan::all();
+        $matakuliahs = Matakuliah::all();
+
+        return Inertia::render(
+            'Transaksi/Jadwal/JadwalDetail',
+            [
+                'tahunAkademik' => $tahunAkademik,
+                'ruangans' => $ruangans,
+                'matakuliahs' => $matakuliahs
+            ]
+        );
     }
 
     /**
@@ -63,18 +76,16 @@ class JadwalController extends Controller
      */
     public function store(StoreJadwalRequest $request)
     {
-        //
-    }
+        Jadwal::create($request->validated());
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Jadwal  $jadwal
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Jadwal $jadwal)
-    {
-        //
+        return redirect()
+            ->route('transaksi.jadwal.index')
+            ->with(
+                [
+                    'status' => 'OK',
+                    'msg' => "Jadwal berhasil ditambahkan"
+                ]
+            );
     }
 
     /**
@@ -85,7 +96,19 @@ class JadwalController extends Controller
      */
     public function edit(Jadwal $jadwal)
     {
-        //
+        $tahunAkademik = TahunAjaran::find($jadwal->tahun_ajaran_id);
+        $ruangans = Ruangan::all();
+        $matakuliahs = Matakuliah::all();
+
+        return Inertia::render(
+            'Transaksi/Jadwal/JadwalDetail',
+            [
+                'jadwal' => $jadwal,
+                'tahunAkademik' => $tahunAkademik,
+                'ruangans' => $ruangans,
+                'matakuliahs' => $matakuliahs
+            ]
+        );
     }
 
     /**
@@ -97,7 +120,16 @@ class JadwalController extends Controller
      */
     public function update(UpdateJadwalRequest $request, Jadwal $jadwal)
     {
-        //
+        $jadwal->update($request->validated());
+
+        return redirect()
+            ->route('transaksi.jadwal.index')
+            ->with(
+                [
+                    'status' => 'OK',
+                    'msg' => "Jadwal berhasil diubah"
+                ]
+            );
     }
 
     /**
@@ -108,6 +140,24 @@ class JadwalController extends Controller
      */
     public function destroy(Jadwal $jadwal)
     {
-        //
+        if (!$jadwal->delete()) {
+            return redirect()
+                ->route('transaksi.jadwal.index')
+                ->with(
+                    [
+                        'status' => 'FAIL',
+                        'msg' => "Terjadi kesalahan menghapus jadwal"
+                    ]
+                );
+        }
+
+        return redirect()
+            ->route('transaksi.jadwal.index')
+            ->with(
+                [
+                    'status' => 'OK',
+                    'msg' => "Jadwal berhasil dihapus"
+                ]
+            );
     }
 }

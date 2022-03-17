@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Transaksi\Jadwal;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateJadwalRequest extends FormRequest
 {
@@ -13,7 +14,9 @@ class UpdateJadwalRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        $levelPengguna = Auth::user()->staff->level_pengguna;
+
+        return $levelPengguna == 'Administrator' || $levelPengguna == 'Staff';
     }
 
     /**
@@ -24,7 +27,27 @@ class UpdateJadwalRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'tahun_ajaran_id' => ['required', 'numeric'],
+            'matakuliah_id' => ['required', 'numeric'],
+            'ruangan_id' => ['required', 'numeric'],
+            'hari' => ['required', 'string'],
+            'jam' => ['required', 'string']
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'tahun_ajaran_id.required' => 'Masukkan tahun ajaran',
+            'matakuliah_id.required' => 'Matakuliah tidak boleh kosong',
+            'ruangan_id.required' => 'Ruangan tidak boleh kosong',
+            'hari.required' => 'Hari tidak boleh kosong',
+            'jam' => 'Jam tidak boleh kosong'
         ];
     }
 }

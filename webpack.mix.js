@@ -14,7 +14,6 @@ const mix = require("laravel-mix")
 mix
   .js("resources/js/app.js", "public/js")
   .vue()
-  .sourceMaps()
   .webpackConfig({ devtool: "inline-source-map" })
   .postCss("resources/css/app.css", "public/css", [
     require("postcss-import"),
@@ -27,4 +26,6 @@ mix
 
 if (mix.inProduction()) {
   mix.version()
+} else {
+  mix.sourceMaps()
 }
