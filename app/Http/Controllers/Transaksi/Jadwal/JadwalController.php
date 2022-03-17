@@ -21,7 +21,7 @@ class JadwalController extends Controller
      */
     public function index()
     {
-        $selectedTahunAkademik = (int) Request::input('ta');
+        $selectedTahunAkademik = (int) Request::get('ta');
         $tahunAkademiks = TahunAjaran::orderBy('id', 'DESC')->get();
         $jadwals = Jadwal::index();
 
@@ -54,7 +54,7 @@ class JadwalController extends Controller
      */
     public function create()
     {
-        $tahunAkademik = TahunAjaran::find(Request::input('ta'));
+        $tahunAkademik = TahunAjaran::find(Request::get('ta'));
         $ruangans = Ruangan::all();
         $matakuliahs = Matakuliah::all();
 

@@ -46,8 +46,21 @@
           <Link
             as="button"
             :href="route('transaksi.jadwal.edit', { jadwal: row.data.id })"
-            >Edit</Link
           >
+            <PencilIcon class="h-4" />
+          </Link>
+
+          <Link
+            as="button"
+            :href="
+              route('transaksi.jadwal.mahasiswa.index', {
+                jadwal: row.data.id,
+                ta: selectedTA,
+              })
+            "
+          >
+            <UserAddIcon class="ml-2 h-4" />
+          </Link>
         </template>
       </DataTable>
     </div>
@@ -61,6 +74,7 @@ import Button from "@components/Button"
 import { Link } from "@inertiajs/inertia-vue3"
 import { Inertia } from "@inertiajs/inertia"
 import { ref } from "vue"
+import { PencilIcon, UserAddIcon } from "@heroicons/vue/outline"
 
 const props = defineProps({
   jadwals: Object,

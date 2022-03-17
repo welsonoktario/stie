@@ -101,6 +101,20 @@ class Mahasiswa extends Model
         return $this->belongsToMany(TahunAjaran::class, 'status_mahasiswa', 'mahasiswa_npm', 'tahun_ajaran')->withPivot('status');
     }
 
+    public function jadwals()
+    {
+        return $this->belongsToMany(Jadwal::class, 'jadwal_mahasiswa', 'mahasiswa_npm', 'jadwal_id', 'npm', 'id')
+            ->withPivot(['nilai_uts', 'nilai_nas', 'nilai_akhir', 'nisbi']);
+    }
+
+    public function scopeIndexJadwal($query)
+    {
+        $query->select(['mahasiswas.*', 'users.name as nama', 'jurusans.nama as jurusan', 'status_cicilan.jumlah_cicilan_1 as krs'])
+            ->join('users', 'users.id', '=', 'mahasiswas.user_id')
+            ->leftJoin('jurusans', 'jurusans.id', '=', 'mahasiswas.jurusan_id')
+            ->leftJoin('status_cicilan', 'status_cicilan.mahasiswa_npm', '=', 'mahasiswas.npm');
+    }
+
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['query'] ?? null, function ($query, $search) {

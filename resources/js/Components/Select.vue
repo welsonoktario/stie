@@ -20,7 +20,7 @@ defineProps({
   name: String,
   placeholder: String,
   options: Array,
-  modelValue: String,
+  modelValue: [Object, String, Number],
   error: String,
 })
 </script>
