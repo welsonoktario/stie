@@ -5,7 +5,7 @@
     >
       <!-- <div class="p-6">Karyawan / Karyawan</div> -->
       <p class="text-xs md:text-sm text-slate-500">
-        Akademik / Tahun Akademik /
+        Keuangan /
         <span class="font-semibold text-teal-500 dark:text-teal-600">{{
           currentRouteName
         }}</span>
@@ -98,13 +98,14 @@
                     <Input
                       v-model="form.detilHistory.pivot.tanggal_cicilan_1"
                       class="mt-1 block w-full"
-                      type="date"
+                      type="datetime-local"
                       placeholder=""
                       autocomplete="off"
                     ></Input>
                   </td>
                   <td>
                     <Input
+                      v-model="form.detilHistory.pivot.keterangan_ciilan_1"
                       class="mt-1 block w-full"
                       type="text"
                       placeholder=""
@@ -126,6 +127,24 @@
                         autocomplete="off"
                       ></Input>
                   </td>
+                  <td>
+                    <Input
+                      v-model="form.detilHistory.pivot.tanggal_cicilan_2"
+                      class="mt-1 block w-full"
+                      type="datetime-local"
+                      placeholder=""
+                      autocomplete="off"
+                    ></Input>
+                  </td>
+                  <td>
+                    <Input
+                      v-model="form.detilHistory.pivot.keterangan_ciilan_2"
+                      class="mt-1 block w-full"
+                      type="text"
+                      placeholder=""
+                      autocomplete="off"
+                    ></Input>
+                  </td>
                 </tr>
                 
                 <!-- Cicilan 3 -->
@@ -141,6 +160,24 @@
                         autocomplete="off"
                       ></Input>
                   </td>
+                  <td>
+                    <Input
+                      v-model="form.detilHistory.pivot.tanggal_cicilan_3"
+                      class="mt-1 block w-full"
+                      type="datetime-local"
+                      placeholder=""
+                      autocomplete="off"
+                    ></Input>
+                  </td>
+                  <td>
+                    <Input
+                      v-model="form.detilHistory.pivot.keterangan_ciilan_3"
+                      class="mt-1 block w-full"
+                      type="text"
+                      placeholder=""
+                      autocomplete="off"
+                    ></Input>
+                  </td>
                 </tr>
               </tbody>
               <thead>
@@ -149,13 +186,14 @@
               </thead>
               <tbody>
                 <tr>
-                  <th class="text-gray-500 font-normal">Total Bayar</th>
-                  <td> Rp. -</td>
+                  <th class="text-gray-500 font-normal">Total Cicilan</th>
+                  <td> Rp. {{totalCicilan}}</td>
                 </tr>
                 <tr>
                   <th class="text-gray-500 font-medium">UPP</th>
                   <td>
                       <Input
+                        v-model="form.detilHistory.pivot.uang_semester"
                         name="nominal"
                         class="mt-1 block w-full"
                         type="text"
@@ -166,7 +204,7 @@
                 </tr>
                 <tr>
                   <th class="text-gray-500 font-medium">Sisa</th>
-                  <td> Rp. - </td>
+                  <td> Rp. {{sisaComputed}} </td>
                 </tr>
               </tbody>
             </table>
@@ -175,14 +213,6 @@
 
         <div class="flex justify-between">
           <Button class="px-10" :disabled="form.processing">Simpan</Button>
-          <button
-            type="button"
-            v-if="currentRouteName != 'Tambah'"
-            @click="isOpen = !isOpen"
-            class="text-red-500 bg-transparent hover:bg-transparent focus:bg-transparent"
-          >
-            Hapus Data Tahun Ajaran
-          </button>
         </div>
       </form>
     </div>
@@ -247,6 +277,16 @@ export default {
 
     // const tambahMahasiswa = ref(false)
 
+    const totalCicilan = computed(() => {
+      return (Number(form.detilHistory.pivot.jumlah_cicilan_1) +
+        Number(form.detilHistory.pivot.jumlah_cicilan_2) +
+        Number(form.detilHistory.pivot.jumlah_cicilan_3))
+    })
+
+    const sisaComputed = computed(() => {
+      return -(Number(form.detilHistory.pivot.uang_semester) - totalCicilan.value)
+    })
+
     const isOpen = ref(false)
 
     const currentRouteName = computed(() =>
@@ -267,9 +307,9 @@ export default {
     }
 
     const submit = () =>
-      currentRouteName.value == "Tambah"
-        ? form.post(route("master.tahun-ajaran.store"))
-        : form.put(route("master.tahun-ajaran.update", props.tahunAjaran.id))
+      currentRouteName.value == "Edit"
+        ? form.put(route("transaksi.keuangan.update", props.mahasiswa.npm))
+        : ""
 
     const remove = () =>
       form.delete(route("master.tahun-ajaran.destroy", props.tahunAjaran.id))
@@ -279,6 +319,8 @@ export default {
       form,
       isOpen,
       selectedTahunAjaran,
+      sisaComputed,
+      totalCicilan,
       loadTahunAjaran,
       submit,
       remove,

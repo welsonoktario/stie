@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Transaksi\Keuangan;
 
 use Inertia\Inertia;
 use App\Models\Mahasiswa;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\TahunAjaran;
+use Illuminate\Support\Arr;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class KeuanganController extends Controller
 {
@@ -106,7 +107,15 @@ class KeuanganController extends Controller
         
         $mahasiswa = Mahasiswa::with(['user', 'tahun_ajaran'])
             ->find($id);
-            
+        
+        // format tanggal
+        // dd($mahasiswa->tahun_ajaran);
+        foreach ($mahasiswa->tahun_ajaran as  $ta) {
+            $ta->pivot['tanggal_cicilan_1'] = $this->formatToHtmlDate($ta->pivot['tanggal_cicilan_1']);
+            $ta->pivot['tanggal_cicilan_2'] = $this->formatToHtmlDate($ta->pivot['tanggal_cicilan_2']);
+            $ta->pivot['tanggal_cicilan_3'] = $this->formatToHtmlDate($ta->pivot['tanggal_cicilan_3']);
+        }
+
         return Inertia::render('Transaksi/Keuangan/KeuanganDetail.vue',[
             'mahasiswa' => $mahasiswa,
         ]);
@@ -124,6 +133,44 @@ class KeuanganController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $history = $request['detilHistory'];
+        $npm = $id;
+        $mahasiswa = Mahasiswa::find($npm);
+        if (!$mahasiswa){
+            dd("Error: Data mahasiswa tidak ditemukan");
+        }
+
+        $data = Arr::except($history['pivot'], 
+            ['mahasiswa_npm', 'tahun_ajaran', 'status', 'total_cicilan']);
+        
+        $data['total_cicilan'] = $data['jumlah_cicilan_1'] +
+            $data['jumlah_cicilan_2'] +
+            $data['jumlah_cicilan_3'];
+
+        $res = $mahasiswa->tahun_ajaran()->sync([
+            $history['id'] => $data
+        ], false);
+
+        return redirect()->route('transaksi.keuangan.edit', [
+            'keuangan' => $npm,
+            'ta' => $history['id'] 
+        ]);
+    }
+
+    public function formatToHtmlDate($date){
+        $date = explode(" ", $date);
+        // if (count($date))
+        if (count($date) > 1){
+            // dd($date);
+            return join("T", $date);
+        }
+        else if (count($date) == 1){
+            return null;
+        }
+        else {
+            dd($date);
+            return null;
+        }
     }
 
     /**
