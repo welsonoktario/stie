@@ -32,9 +32,9 @@ class KeuanganController extends Controller
                 'users.name as nama',
                 'jurusans.nama as jurusan',
                 'status_mahasiswa.status as status',
-                'status_mahasiswa.jumlah_cicilan_1 as cicilan_1',
-                'status_mahasiswa.jumlah_cicilan_2 as cicilan_1',
-                'status_mahasiswa.jumlah_cicilan_3 as cicilan_1'])
+                'status_mahasiswa.tanggal_cicilan_1 as cicilan_1',
+                'status_mahasiswa.tanggal_cicilan_2 as cicilan_2',
+                'status_mahasiswa.tanggal_cicilan_3 as cicilan_3'])
             ->doesntHave('mahasiswa_konversi')
             ->join('users','users.id','=','mahasiswas.user_id')
             ->leftJoin('jurusans','jurusans.id','=','mahasiswas.jurusan_id')

@@ -48,16 +48,16 @@
           >
         </template>
         <template #row(cicilan_1)="row">
-          <div class="text-red-500" v-if="row.data.cicilan_2 == null"><p class="text-xl font-extrabold">-</p></div>
-          <div v-else>v</div>
+          <div class="text-red-500" v-if="row.data.cicilan_1 == null"><p class="text-xl font-extrabold">-</p></div>
+          <div class="text-green-600" v-else>L</div>
         </template>
         <template #row(cicilan_2)="row">
           <div class="text-red-500" v-if="row.data.cicilan_2 == null"><p class="text-xl font-extrabold">-</p></div>
-          <div v-else>v</div>
+          <div class="text-green-600" v-else>L</div>
         </template>
         <template #row(cicilan_3)="row">
-          <div class="text-red-500" v-if="row.data.cicilan_2 == null"><p class="text-xl font-extrabold">-</p></div>
-          <div v-else>v</div>
+          <div class="text-red-500" v-if="row.data.cicilan_3 == null"><p class="text-xl font-extrabold">-</p></div>
+          <div class="text-green-600" v-else>L</div>
         </template>
       </DataTable>
     </div>
