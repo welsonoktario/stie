@@ -39,7 +39,7 @@
 
       <DataTable :data="jadwals" :columns="columns">
         <template #row(hari)="row">
-          <span>{{ hariJam(row.data.hari, row.data.jam) }}</span>
+          <span>{{ `${row.data.hari}, ${row.data.jam}` }}</span>
         </template>
 
         <template #actions="row">
@@ -114,13 +114,15 @@ const columns = [
 
 const selectedTA = ref(props.selectedTahunAkademik)
 
-const hariJam = (hari, jam) => `${hari}, ${jam.slice(0, -3)}`
+const onTahunAjaranChange = (ta) => {
+  const filter = { ta: selectedTA.value, ...route().params }
+  filter.ta = selectedTA.value
 
-const onTahunAjaranChange = (ta) =>
   ta &&
-  Inertia.visit(route("transaksi.jadwal.index") + `?ta=${ta}`, {
-    only: ["jadwals", "selectedTahunAkademik"],
-    preserveScroll: true,
-    preserveState: true,
-  })
+    Inertia.visit(route("transaksi.jadwal.index", filter), {
+      only: ["jadwals", "selectedTahunAkademik"],
+      preserveScroll: true,
+      preserveState: true,
+    })
+}
 </script>

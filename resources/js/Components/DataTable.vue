@@ -1,41 +1,41 @@
 <template>
-  <div v-if="data.data.length">
-    <div class="inline-flex items-center justify-between w-full">
-      <div class="inline-flex items-center text-sm">
-        <label for="per_page">Data per halaman</label>
-        <select
-          name="per_page"
-          class="ml-2 pl-2 pr-6 text-sm bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
-          v-model="filter.perPage"
-          @change="search"
-        >
-          <option value="10">10</option>
-          <option value="25">25</option>
-          <option value="50">50</option>
-          <option value="100">100</option>
-        </select>
-      </div>
-
-      <label
-        class="relative rounded-md text-sm bg-zinc-100 dark:bg-zinc-700 border-none focus-within:ring-teal-500 focus:ring-2"
+  <div class="inline-flex items-center justify-between w-full">
+    <div class="inline-flex items-center text-sm">
+      <label for="per_page">Data per halaman</label>
+      <select
+        name="per_page"
+        class="ml-2 pl-2 pr-6 text-sm bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+        v-model="filter.perPage"
+        @change="search"
       >
-        <SearchIcon
-          class="w-4 h-4 absolute top-1/2 transform -translate-y-1/2 left-3 text-zinc-500 focus-within:text-zinc-900 pointer-events-none"
-        />
-        <input
-          type="text"
-          name="query"
-          class="form-input border-none mr-1 ml-5 text-sm bg-zinc-100 dark:bg-zinc-700 focus:ring-0 placeholder:text-zinc-500"
-          placeholder="Cari data"
-          autocomplete="off"
-          v-model="filter.query"
-          @input="search"
-        />
-      </label>
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+      </select>
     </div>
-    <div
-      class="w-full rounded-md shadow-md mt-2 dark:bg-zinc-700 dark:text-zinc-100"
+
+    <label
+      class="relative rounded-md text-sm bg-zinc-100 dark:bg-zinc-700 border-none focus-within:ring-teal-500 focus:ring-2"
     >
+      <SearchIcon
+        class="w-4 h-4 absolute top-1/2 transform -translate-y-1/2 left-3 text-zinc-500 focus-within:text-zinc-900 pointer-events-none"
+      />
+      <input
+        type="text"
+        name="query"
+        class="form-input border-none mr-1 ml-5 text-sm bg-zinc-100 dark:bg-zinc-700 focus:ring-0 placeholder:text-zinc-500"
+        placeholder="Cari data"
+        autocomplete="off"
+        v-model="filter.query"
+        @input="search"
+      />
+    </label>
+  </div>
+  <div
+    class="w-full rounded-md shadow-md mt-2 dark:bg-zinc-700 dark:text-zinc-100"
+  >
+    <template v-if="data.data.length">
       <table class="table-auto w-full">
         <thead>
           <tr>
@@ -70,7 +70,10 @@
                 </template>
               </div>
             </th>
-            <th v-if="this.$slots.actions" class="font-semibold text-left py-2 px-4" />
+            <th
+              v-if="this.$slots.actions"
+              class="font-semibold text-left py-2 px-4"
+            />
           </tr>
         </thead>
         <tbody>
@@ -119,13 +122,14 @@
           </div>
         </div>
       </div>
+    </template>
+
+    <div
+      v-else
+      class="flex flex-col my-4 h-32 justify-center items-center w-full rounded-lg bg-zinc-100 dark:bg-zinc-700"
+    >
+      <h1 class="text-lg">Belum ada data</h1>
     </div>
-  </div>
-  <div
-    v-else
-    class="flex flex-col my-4 h-32 justify-center items-center w-full rounded-lg bg-zinc-100 dark:bg-zinc-700"
-  >
-    <h1 class="text-lg">Belum ada data</h1>
   </div>
 </template>
 
@@ -162,7 +166,7 @@ export default {
     const rowKey = (col, index) => `${col}-${index}`
 
     const sortCol = (col, index) => {
-      if (!columns[index][col].sortable) return
+      if (!props.columns[index].sortable) return
 
       if (filter.orderBy != col) {
         filter.orderType = ""
@@ -191,6 +195,9 @@ export default {
       const current = route().current()
       const newFilter = { ...filter, ...route().params }
       newFilter.query = filter.query
+      newFilter.orderBy = filter.orderBy
+      newFilter.orderType = filter.orderType
+      newFilter.perPage = filter.perPage
 
       Inertia.get(route(current), newFilter, {
         preserveScroll: true,
