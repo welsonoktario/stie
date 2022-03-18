@@ -45,6 +45,36 @@
         </div>
 
         <div class="mb-4">
+          <Label>History Pembayaran</Label>
+          <table class="mt-1 w-full bg-zinc-100">
+            <thead>
+              <tr>
+                <th class="text-gray-500 font-medium text-sm p-3">Tahun Akademik</th>
+                <th class="text-gray-500 font-medium text-sm p-3">Cicilan 1</th>
+                <th class="text-gray-500 font-medium text-sm p-3">Cicilan 2</th>
+                <th class="text-gray-500 font-medium text-sm p-3">Cicilan 3</th>
+                <th class="text-gray-500 font-medium text-sm p-3">Total Cicilan</th>
+                <th class="text-gray-500 font-medium text-sm p-3">Uang Semester</th>
+                <th class="text-gray-500 font-medium text-sm p-3">Sisa</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(ta, index) in mahasiswa.tahun_ajaran" :key="index">
+                <td class="text-gray-700 text-sm p-2 px-4">{{ta.tahun_ajaran}}</td>
+                <td class="text-gray-700 text-sm p-2 px-4">Rp. {{ta.pivot.jumlah_cicilan_1 ?? "-"}}</td>
+                <td class="text-gray-700 text-sm p-2 px-4">Rp. {{ta.pivot.jumlah_cicilan_2 ?? "-"}}</td>
+                <td class="text-gray-700 text-sm p-2 px-4">Rp. {{ta.pivot.jumlah_cicilan_3 ?? "-"}}</td>
+                <td class="text-gray-700 text-sm p-2 px-4">Rp. {{ta.pivot.total_cicilan ?? "-"}}</td>
+                <td class="text-gray-700 text-sm p-2 px-4">Rp. {{ta.pivot.uang_semester ?? "-"}}</td>
+                <td class="text-gray-700 text-sm p-2 px-4">
+                  Rp. {{(-(ta.pivot.uang_semester - ta.pivot.total_cicilan))}}</td>
+              </tr>
+              
+            </tbody>
+          </table>
+        </div>
+
+        <div class="mb-4">
           <Label for="nama"> Tahun Ajaran <span class="text-red-500">*</span> </Label>
           <select
             class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
@@ -215,6 +245,8 @@
           <Button class="px-10" :disabled="form.processing">Simpan</Button>
         </div>
       </form>
+
+      
     </div>
 
     <Dialog
