@@ -4,7 +4,7 @@
       class="bg-zinc-50 dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
     >
       <p class="text-xs md:text-sm text-zinc-500 dark:text-zinc-400">
-        Transaksi / Jadwal /
+        Jadwal /
         <span class="font-semibold text-teal-500 dark:text-teal-600">{{
           currentRouteName
         }}</span>
@@ -98,6 +98,21 @@
           />
           <InputError class="mt-2" :message="form.errors.jam" />
         </div>
+        <div class="mt-4">
+          <Label for="local">Local</Label>
+          <Input
+            id="local"
+            class="w-full"
+            name="local"
+            type="text"
+            maxlength="2"
+            minlength="1"
+            v-model="form.local"
+            placeholder="Local jadwal"
+            autocomplete="off"
+          />
+          <InputError class="mt-2" :message="form.errors.jam" />
+        </div>
         <div class="inline-flex items-center justify-between w-full mt-8">
           <Button class="px-10" :disabled="form.processing">Simpan</Button>
           <button
@@ -149,6 +164,7 @@ const form = useForm({
   id: props.jadwal?.id || null,
   jam: props.jadwal?.jam || null,
   hari: props.jadwal?.hari || "-",
+  local: props.jadwal?.local || null,
   matakuliah_id: props.jadwal?.matakuliah_id || "-",
   ruangan_id: props.jadwal?.ruangan_id || "-",
   tahun_ajaran_id: props.tahunAkademik?.id || "-",

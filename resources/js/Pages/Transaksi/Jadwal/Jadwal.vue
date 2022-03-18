@@ -3,7 +3,7 @@
     <div
       class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
     >
-      <p class="text-xs md:text-sm">Keuangan / Daftar Jadwal</p>
+      <p class="text-xs md:text-sm">Jadwal / Daftar Jadwal</p>
 
       <div class="inline-flex justify-between my-3 w-full items-center">
         <div>
@@ -98,6 +98,11 @@ const columns = [
   {
     key: "ruangan_nama",
     label: "Ruangan",
+    sortable: true,
+  },
+  {
+    key: "local",
+    label: "Local",
     sortable: true,
   },
   {

@@ -16,9 +16,14 @@ class Jadwal extends Model
         'id',
         'jam',
         'hari',
+        'local',
         'matakuliah_id',
         'ruangan_id',
         'tahun_ajaran_id',
+    ];
+
+    protected $casts = [
+        'jam' => 'datetime:H:i',
     ];
 
     /**

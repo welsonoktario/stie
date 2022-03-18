@@ -31,7 +31,8 @@ class StoreJadwalRequest extends FormRequest
             'matakuliah_id' => ['required', 'numeric'],
             'ruangan_id' => ['required', 'numeric'],
             'hari' => ['required', 'string'],
-            'jam' => ['required', 'string']
+            'jam' => ['required', 'string'],
+            'local' => ['required', 'string', 'min:1']
         ];
     }
 
@@ -47,7 +48,8 @@ class StoreJadwalRequest extends FormRequest
             'matakuliah_id.required' => 'Matakuliah tidak boleh kosong',
             'ruangan_id.required' => 'Ruangan tidak boleh kosong',
             'hari.required' => 'Hari tidak boleh kosong',
-            'jam' => 'Jam tidak boleh kosong'
+            'jam' => 'Jam tidak boleh kosong',
+            'local' => 'Local tidak boleh kosong'
         ];
     }
 }

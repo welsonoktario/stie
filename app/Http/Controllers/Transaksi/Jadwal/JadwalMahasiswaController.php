@@ -23,7 +23,7 @@ class JadwalMahasiswaController extends Controller
     public function index()
     {
         $jadwal = (int) Request::get('jadwal');
-        $ta = (int) Request::get('ta');
+        $tahunAkademik = TahunAjaran::find(Request::get('ta'));
 
         $mahasiswas = Mahasiswa::indexJadwal()
             ->whereHas('jadwals', function ($q) use ($jadwal) {
@@ -38,7 +38,7 @@ class JadwalMahasiswaController extends Controller
         return Inertia::render('Transaksi/Jadwal/JadwalMahasiswa', [
             'mahasiswas' => $mahasiswas,
             'jadwal' => $jadwal,
-            'ta' => $ta
+            'tahunAkademik' => $tahunAkademik
         ]);
     }
 

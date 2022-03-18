@@ -6,10 +6,13 @@
       <p class="text-xs md:text-sm">Jadwal / Mahasiswa / Daftar Mahasiswa</p>
 
       <div class="inline-flex justify-between my-3 w-full items-center">
-        <strong
-          class="whitespace-nowrap align-middle text-sm md:text-lg content-middle"
-          >Daftar Mahasiswa</strong
-        >
+        <div>
+          <strong
+            class="whitespace-nowrap align-middle text-sm md:text-lg content-middle"
+            >Daftar Mahasiswa</strong
+          >
+          <Input class="ml-2" type="text" :value="tahunAkademik.tahun_ajaran" readonly />
+        </div>
 
         <Button type="button" @click="openDialogTambah">
           Tambah Mahasiswa
@@ -94,6 +97,7 @@ import AppLayout from "@layouts/App"
 import DataTable from "@components/DataTable"
 import Dialog from "@components/Dialog"
 import Button from "@components/Button"
+import Input from "@components/Input"
 import NavLink from "@/Components/NavLink"
 import Select from "@components/Select"
 import { CheckIcon, XIcon, TrashIcon } from "@heroicons/vue/outline"
@@ -102,7 +106,7 @@ import { Inertia } from "@inertiajs/inertia"
 
 const props = defineProps({
   mahasiswas: Object,
-  ta: Number,
+  tahunAkademik: Object,
   jadwal: Number,
 })
 
@@ -136,7 +140,9 @@ const selectedMahasiswaDelete = ref(0)
 
 const openDialogTambah = () => {
   if (!calonMahasiswas.value.length) {
-    fetch(route("transaksi.jadwal.mahasiswa.create", { ta: props.ta }))
+    fetch(
+      route("transaksi.jadwal.mahasiswa.create", { ta: props.tahunAkademik.id })
+    )
       .then((res) => res.json())
       .then((res) => {
         isDialogTambahOpen.value = !isDialogTambahOpen.value
@@ -154,7 +160,7 @@ const tambah = () =>
     {
       jadwal_id: props.jadwal,
       mahasiswa_npm: selectedMahasiswa.value,
-      ta: props.ta,
+      ta: props.tahunAkademik.id,
     },
     {
       onSuccess: (page) =>
@@ -174,7 +180,7 @@ const remove = () =>
       data: {
         jadwal_id: props.jadwal,
         mahasiswa_npm: selectedMahasiswaDelete.value,
-        ta: props.ta,
+        ta: props.tahunAkademik.id,
       },
       preserveState: true,
       onSuccess: (page) => {
