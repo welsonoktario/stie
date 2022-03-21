@@ -73,8 +73,6 @@ class JadwalMahasiswaController extends Controller
      */
     public function update(UpdateJadwalRequest $request, Jadwal $jadwal)
     {
-        // Log::debug('adwasd');
-        // return "sd";
         Log::debug(json_encode(Request::all()));
         try {
             $data = $request->validated();

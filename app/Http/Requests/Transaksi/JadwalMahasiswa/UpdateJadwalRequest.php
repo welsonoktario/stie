@@ -12,12 +12,13 @@ class UpdateJadwalRequest extends FormRequest
      *
      * @return bool
      */
-    // public function authorize()
-    // {
-    //     // $levelPengguna = Auth::user()->staff->level_pengguna;
+    public function authorize()
+    {
+        // $levelPengguna = Auth::user()->staff->level_pengguna;
 
-    //     // return $levelPengguna == 'Administrator' || $levelPengguna == 'Staff';
-    // }
+        // return $levelPengguna == 'Administrator' || $levelPengguna == 'Staff';
+        return true;
+    }
 
     /**
      * Get the validation rules that apply to the request.
