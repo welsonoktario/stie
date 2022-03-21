@@ -12,12 +12,12 @@ class StoreJadwalRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
-    {
-        $levelPengguna = Auth::user()->staff->level_pengguna;
+    // public function authorize()
+    // {
+    //     // $levelPengguna = Auth::user()->staff->level_pengguna;
 
-        return $levelPengguna == 'Administrator' || $levelPengguna == 'Staff';
-    }
+    //     // return $levelPengguna == 'Administrator' || $levelPengguna == 'Staff';
+    // }
 
     /**
      * Get the validation rules that apply to the request.
