@@ -27,7 +27,6 @@ class CreateJadwalMahasiswaTable extends Migration
             $table->decimal('nilai_nas')->nullable();
             $table->decimal('nilai_akhir')->nullable();
             $table->string('nisbi', 3)->nullable();
-            $table->string('local', 2)->nullable();
 
             $table->timestamps();
         });

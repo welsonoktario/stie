@@ -100,7 +100,7 @@ class TahunAjaranController extends Controller
      */
     public function edit(TahunAjaran $tahunAjaran)
     {
-        dd($tahunAjaran);
+        // dd($tahunAjaran);
         return Inertia::render(
             'Master/Akademik/TahunAjaran/AkademikTahunAjaranDetail',
             ['tahunAjaran' => $tahunAjaran]
