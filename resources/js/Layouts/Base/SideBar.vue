@@ -48,7 +48,11 @@
             <NavLink
               v-else
               :active="activeMenu(menu.name)"
+<<<<<<< HEAD
               :href="menu.route ? route(menu.route) : '#'"
+=======
+              :href="route(menu.route ?? 'login')"
+>>>>>>> transaksi/keuangan
               class="text-base"
               as="button"
             >
@@ -226,6 +230,7 @@ export default {
             icon: CreditCardIcon,
             label: "Keuangan",
             name: "akademik-keuangan",
+            route: 'transaksi.keuangan.index',
             subMenus: [],
           },
           {
