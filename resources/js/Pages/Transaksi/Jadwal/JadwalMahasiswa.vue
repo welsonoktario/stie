@@ -163,7 +163,7 @@ const tambah = () =>
       ta: props.tahunAkademik.id,
     },
     {
-      onSuccess: (page) =>
+      onSuccess: (page) => 
         (isDialogTambahOpen.value = !isDialogTambahOpen.value),
     }
   )
