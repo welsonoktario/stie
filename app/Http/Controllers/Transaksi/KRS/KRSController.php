@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Transaksi\Keuangan;
+namespace App\Http\Controllers\Transaksi\KRS;
 
 use Inertia\Inertia;
 use App\Models\Mahasiswa;
 use App\Models\TahunAjaran;
-use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Jadwal;
+use App\Models\Matakuliah;
 
-class KeuanganController extends Controller
+class KRSController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,6 +20,8 @@ class KeuanganController extends Controller
      */
     public function index(Request $request)
     {
+        //
+        // dd('trust me it works');
         $tahun_ajarans = TahunAjaran::all();
         $ta = in_array($request->ta, [null, '']) 
             ? strval(($tahun_ajarans->firstWhere('aktif', '=', true))->id) : $request->ta;
@@ -40,12 +43,13 @@ class KeuanganController extends Controller
                     ->where('tahun_ajaran', '=', $ta);
             })
             ->paginate($request->get('perPage') ?: 10)
-            ->withQueryString();
-
-        return Inertia::render('Transaksi/Keuangan/Keuangan.vue',[
+            ->withQueryString();    
+        
+        // dd('wow');
+        return Inertia::render('Transaksi/KRS/KRS.vue',[
             'mahasiswas' => $mahasiswas,
             'tahun_ajarans' => $tahun_ajarans,
-        ]);
+        ]); 
     }
 
     /**
@@ -83,14 +87,14 @@ class KeuanganController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id = id mahasiswa atau npm
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id, Request $request)
     {
-        // 
+        //
         if (!isset($request['ta']))
-            return redirect()->route('transaksi.keuangan.index');
+        return redirect()->route('transaksi.keuangan.index');
 
         // cari mahasiswa ada atau engga
         $taken = DB::table('status_mahasiswa')
@@ -103,20 +107,37 @@ class KeuanganController extends Controller
         
         $mahasiswa = Mahasiswa::with(['user', 'tahun_ajaran'])
             ->find($id);
-        
-        // format tanggal
-        // dd($mahasiswa->tahun_ajaran);
-        foreach ($mahasiswa->tahun_ajaran as  $ta) {
-            $ta->pivot['tanggal_cicilan_1'] = $this->formatToHtmlDate($ta->pivot['tanggal_cicilan_1']);
-            $ta->pivot['tanggal_cicilan_2'] = $this->formatToHtmlDate($ta->pivot['tanggal_cicilan_2']);
-            $ta->pivot['tanggal_cicilan_3'] = $this->formatToHtmlDate($ta->pivot['tanggal_cicilan_3']);
-        }
+        $jadwal_mhs = Mahasiswa::where('npm','=',$id)
+            ->select(
+                'mahasiswas.npm as npm', 
+                'matakuliahs.kode_matakuliah as kode_matakuliah', 
+                'matakuliahs.nama_matakuliah as nama_matakuliah', 
+                'matakuliahs.sks as sks',
+                'matakuliahs.tipe as tipe',
+                'jadwals.local as lokal',
+                'jadwals.hari as hari',
+                'jadwals.jam as jam',
+                'ruangans.nama_ruangan as ruangan',
+                )
+            ->join('jadwal_mahasiswa', 'jadwal_mahasiswa.mahasiswa_npm', '=', 'mahasiswas.npm')
+            ->join('jadwals', 'jadwals.id', '=', 'jadwal_mahasiswa.jadwal_id')
+            ->join('matakuliahs', 'matakuliahs.id', '=', 'jadwals.matakuliah_id')
+            ->join('ruangans', 'ruangans.id', '=', 'jadwals.ruangan_id')
+            // ->get()
+            ->paginate($request->get('perPage') ?: 20);
+        // dd($jadwal_mhs);
 
-        return Inertia::render('Transaksi/Keuangan/KeuanganDetail.vue',[
+        $jadwals = Jadwal::where('tahun_ajaran_id','=',$request['ta'])
+            ->get();
+        // $jadwals = Jadwal::where('tahun_ajaran_id','=',$request['ta'])
+        //     ->where('')->get();
+
+        // dd($mahasiswa);
+        return Inertia::render('Transaksi/KRS/KRSDetail.vue',[
             'mahasiswa' => $mahasiswa,
+            'jadwals' => $jadwals,
+            'jadwalMahasiswa' => $jadwal_mhs
         ]);
-
-
     }
 
     /**
@@ -129,44 +150,6 @@ class KeuanganController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $history = $request['detilHistory'];
-        $npm = $id;
-        $mahasiswa = Mahasiswa::find($npm);
-        if (!$mahasiswa){
-            dd("Error: Data mahasiswa tidak ditemukan");
-        }
-
-        $data = Arr::except($history['pivot'], 
-            ['mahasiswa_npm', 'tahun_ajaran', 'status', 'total_cicilan']);
-        
-        $data['total_cicilan'] = $data['jumlah_cicilan_1'] +
-            $data['jumlah_cicilan_2'] +
-            $data['jumlah_cicilan_3'];
-
-        $res = $mahasiswa->tahun_ajaran()->sync([
-            $history['id'] => $data
-        ], false);
-
-        return redirect()->route('transaksi.keuangan.edit', [
-            'keuangan' => $npm,
-            'ta' => $history['id'] 
-        ]);
-    }
-
-    public function formatToHtmlDate($date){
-        $date = explode(" ", $date);
-        // if (count($date))
-        if (count($date) > 1){
-            // dd($date);
-            return join("T", $date);
-        }
-        else if (count($date) == 1){
-            return null;
-        }
-        else {
-            dd($date);
-            return null;
-        }
     }
 
     /**

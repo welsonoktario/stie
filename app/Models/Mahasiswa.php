@@ -100,7 +100,6 @@ class Mahasiswa extends Model
     {
         return $this->belongsToMany(TahunAjaran::class, 'status_mahasiswa', 'mahasiswa_npm', 'tahun_ajaran')
             ->withPivot(
-                'status',
                 "jumlah_cicilan_1",
                 "tanggal_cicilan_1",
                 "keterangan_ciilan_1",
@@ -111,7 +110,8 @@ class Mahasiswa extends Model
                 "tanggal_cicilan_3",
                 "keterangan_ciilan_3",
                 "total_cicilan",
-                "uang_semester"
+                "uang_semester",
+                "status",
             );
     }
 

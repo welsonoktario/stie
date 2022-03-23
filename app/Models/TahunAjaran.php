@@ -46,7 +46,20 @@ class TahunAjaran extends Model
     public function mahasiswas()
     {
         return $this->belongsToMany(Mahasiswa::class, 'status_mahasiswa', 'tahun_ajaran', 'mahasiswa_npm')
-            ->withPivot('jumlah_cicilan_1', 'tanggal_cicilan_1', 'keterangan_ciilan_1', 'jumlah_cicilan_2', 'tanggal_cicilan_2', 'keterangan_ciilan_2', 'jumlah_cicilan_3', 'tanggal_cicilan_3', 'keterangan_ciilan_3', 'total_cicilan', 'uang_semester');
+            ->withPivot(
+                'jumlah_cicilan_1', 
+                'tanggal_cicilan_1', 
+                'keterangan_ciilan_1', 
+                'jumlah_cicilan_2', 
+                'tanggal_cicilan_2', 
+                'keterangan_ciilan_2', 
+                'jumlah_cicilan_3', 
+                'tanggal_cicilan_3', 
+                'keterangan_ciilan_3', 
+                'total_cicilan', 
+                'uang_semester',
+                'status',
+            );
     }
 
     public function scopeFilter($query, array $filters)

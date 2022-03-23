@@ -73,13 +73,17 @@ class TahunAjaranController extends Controller
                 $id_mhs = [];
                 foreach ($mahasiswas as $mhs) {
                     if(in_array($mhs->pivot->status, ['Aktif','Tidak Aktif','Cuti'])){
-                        $id_mhs[] = $mhs->pivot->mahasiswa_npm;
+                        $id_mhs[$mhs->pivot->mahasiswa_npm] = ['status' => 'Aktif'];
                     }
                 }
-                $tahunAjaran->mahasiswas()->attach($id_mhs);
+                // $tahunAjaran->mahasiswas()->attach($id_mhs);
+                $tahunAjaran->mahasiswas()->sync($id_mhs, false);
+                dd($id_mhs, $tahunAjaranLalu, $mahasiswas); 
+
             }
         } catch (\Throwable $th) {
             //throw $th;
+            dd($th);
         }
 
         return redirect()

@@ -233,6 +233,7 @@ export default {
             icon: CollectionIcon,
             label: "KRS",
             name: "akademik-krs",
+            route: "transaksi.krs.index",
             subMenus: [],
           },
           {
