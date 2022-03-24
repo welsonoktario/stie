@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Transaksi\Nilai;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreMahasiswaRequest;
-use App\Http\Requests\UpdateMahasiswaRequest;
 use App\Models\Mahasiswa;
 use App\Models\TahunAjaran;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Response;
 use Inertia\Inertia;
+use Throwable;
 
 class NilaiController extends Controller
 {
@@ -55,10 +56,9 @@ class NilaiController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreMahasiswaRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreMahasiswaRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -73,7 +73,14 @@ class NilaiController extends Controller
     {
         $selectedTahunAkademik = (int) Request::get('ta');
         $tahunAkademiks = TahunAjaran::orderBy('id', 'DESC')->get();
-        $mahasiswa->load(['user', 'jurusan', 'jadwals.matakuliah', 'status_mahasiswa']);
+        $mahasiswa->load([
+            'jadwals' => function ($q) use ($selectedTahunAkademik) {
+                return $q->with('matakuliah')->where('tahun_ajaran_id', $selectedTahunAkademik);
+            },
+            'user',
+            'jurusan',
+            'status_mahasiswa'
+        ]);
 
         return Inertia::render('Transaksi/Nilai/NilaiDetail', [
             'tahunAkademiks' => fn () => $tahunAkademiks,
@@ -85,13 +92,48 @@ class NilaiController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateMahasiswaRequest  $request
      * @param  \App\Models\Mahasiswa  $mahasiswa
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateMahasiswaRequest $request, Mahasiswa $mahasiswa)
+    public function update(Request $request, Mahasiswa $mahasiswa)
     {
-        //
+        try {
+            $jadwal = $request::get('jadwal_id');
+            $tipeSemester = $request::get('tipe');
+
+            if ($tipeSemester == 'UTS') {
+                $mahasiswa->jadwals()->syncWithPivotValues([$jadwal], ['nilai_uts' => $request::get('nilai')]);
+            } else {
+                $mahasiswa->jadwals()->syncWithPivotValues([$jadwal], ['nilai_nas' => $request::get('nilai')]);
+            }
+        } catch (Throwable $e) {
+            Log::error($e);
+            return Redirect::route(
+                'transaksi.nilai.edit',
+                [
+                    'mahasiswa' => $mahasiswa->npm,
+                    'ta' => $request::get('ta')
+                ]
+            )->with(
+                [
+                    'status' => 'FAIL',
+                    'msg' => "Terjadi kesalahan mengubah nilai"
+                ]
+            );
+        }
+
+        return Redirect::route(
+            'transaksi.nilai.edit',
+            [
+                'mahasiswa' => $mahasiswa->npm,
+                'ta' => Request::get('ta')
+            ]
+        )->with(
+            [
+                'status' => 'OK',
+                'msg' => "Berhasil mengubah nilai"
+            ]
+        );
     }
 
     /**

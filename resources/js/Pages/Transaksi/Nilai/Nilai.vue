@@ -68,7 +68,7 @@ const props = defineProps({
   tahunAkademiks: Array,
   selectedTahunAkademik: {
     type: Number,
-    default: null,
+    default: '-',
   },
 })
 
