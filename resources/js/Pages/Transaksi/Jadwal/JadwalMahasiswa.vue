@@ -59,18 +59,6 @@
               </option>
             </template>
           </Select>
-
-          <!-- <div class="mt-4" v-if="selectedMahasiswa.npm">
-            <p>
-              NPM: <span>{{ selectedMahasiswa?.npm }}</span>
-            </p>
-            <p>
-              Nama: <span>{{ selectedMahasiswa?.user?.name }}</span>
-            </p>
-            <p>
-              Jurusan: <span>{{ selectedMahasiswa?.jurusan?.nama }}</span>
-            </p>
-          </div> -->
         </div>
       </template>
     </Dialog>

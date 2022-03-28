@@ -117,17 +117,20 @@ class KRSController extends Controller
                 'jadwals.local as lokal',
                 'jadwals.hari as hari',
                 'jadwals.jam as jam',
+                'jadwals.id as jadwal_id',
                 'ruangans.nama_ruangan as ruangan',
                 )
             ->join('jadwal_mahasiswa', 'jadwal_mahasiswa.mahasiswa_npm', '=', 'mahasiswas.npm')
             ->join('jadwals', 'jadwals.id', '=', 'jadwal_mahasiswa.jadwal_id')
             ->join('matakuliahs', 'matakuliahs.id', '=', 'jadwals.matakuliah_id')
             ->join('ruangans', 'ruangans.id', '=', 'jadwals.ruangan_id')
+            ->where('jadwals.tahun_ajaran_id', '=', $request['ta'])
             // ->get()
             ->paginate($request->get('perPage') ?: 20);
         // dd($jadwal_mhs);
 
         $jadwals = Jadwal::where('tahun_ajaran_id','=',$request['ta'])
+            ->with(['matakuliah'])
             ->get();
         // $jadwals = Jadwal::where('tahun_ajaran_id','=',$request['ta'])
         //     ->where('')->get();
@@ -150,6 +153,29 @@ class KRSController extends Controller
     public function update(Request $request, $id)
     {
         //
+        // dd('bisa', $id);
+        if(!isset($request['jadwal_id'])){
+            return redirect()->back();
+        }
+        
+        $mahasiswa = Mahasiswa::find($id);
+        $jadwal = Jadwal::find($request['jadwal_id']);
+        // dd($mahasiswa, $jadwal);
+
+        $ta = $request['ta'];
+
+
+        try {
+            $mahasiswa->jadwals()->sync($jadwal->id, false);
+        } catch (\Throwable $th) {
+            //throw $th;
+            dd($th->getMessage());
+        }
+        return redirect()
+            ->route('transaksi.krs.edit', ['kr' => $mahasiswa->npm, 'ta' => $ta])
+            ->with(['status' => 'OK', 'msg' => 'Berhasil menambah jadwal mahasiswa']);
+            
+
     }
 
     /**
@@ -158,8 +184,25 @@ class KRSController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         //
+        $mahasiswa = Mahasiswa::find($id);
+        $jadwal = Jadwal::find($request['jadwal_id']);
+
+        // dd($mahasiswa, $jadwal, $request['jadwal_id']);
+
+        // $route = route('transaksi.krs.edit', ['kr' => $mahasiswa->npm, 'ta' =>$jadwal->tahun_ajaran_id]);
+        // dd($route);
+
+        try {
+            $mahasiswa->jadwals()->detach($jadwal->id);
+        } catch (\Throwable $th) {
+            //throw $th;
+            dd($th->getMessage());
+        }
+        return redirect()
+            ->route('transaksi.krs.edit', ['kr' => $mahasiswa->npm, 'ta' =>$jadwal->tahun_ajaran_id])
+            ->with(['status' => 'OK', 'msg' => 'Berhasil menambah jadwal mahasiswa']);
     }
 }

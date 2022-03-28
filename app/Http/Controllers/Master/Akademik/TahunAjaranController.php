@@ -78,7 +78,7 @@ class TahunAjaranController extends Controller
                 }
                 // $tahunAjaran->mahasiswas()->attach($id_mhs);
                 $tahunAjaran->mahasiswas()->sync($id_mhs, false);
-                dd($id_mhs, $tahunAjaranLalu, $mahasiswas); 
+                // dd($id_mhs, $tahunAjaranLalu, $mahasiswas); 
 
             }
         } catch (\Throwable $th) {

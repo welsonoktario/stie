@@ -85,47 +85,73 @@
               </option>
           </select>
         </div>
-        <!-- {{selectedTahunAjaran}} -->
+        
+      </form>
 
-        <label for="nama">
+
+      <div class="flex justify-between mb-3">
+        <label for="nama"> 
           Daftar Matakuliah
         </label>
 
-        <DataTable :data='jadwalMahasiswa' :columns="columns">
-          <template #row(jam)="row">
-            {{row.data.hari}}, {{row.data.jam}}
-          </template>
-            
-          <template #actions="row">
-            <NavLink
-              as="button"
-              class="text-red-500"
-              @click="openDialogHapus(row.data.kode_matakuliah)"
-            >
-              <TrashIcon class="h-4" />
-            </NavLink>
-          </template>
-        </DataTable>
+        <Button type="button" class="px-10"
+          @click="openDialogTambahMatakuliah">
+          Tambah Matakuliah</Button>
+      </div>
 
-        <div class="flex justify-between">
-          <Button class="px-10" :disabled="form.processing">Simpan</Button>
-        </div>
-      </form>
+      <DataTable :data='jadwalMahasiswa' :columns="columns">
+        <template #row(jam)="row">
+          {{row.data.hari}}, {{row.data.jam}}
+        </template>
+          
+        <template #actions="row">
+          <NavLink
+            as="button"
+            class="text-red-500"
+            @click="openDialogHapusMatakuliah(row.data.jadwal_id)"
+          >
+            <TrashIcon class="h-4" />
+          </NavLink>
+        </template>
+      </DataTable>
 
     </div>
     
     <Dialog
-      :isOpen="isOpen"
+      :isOpen="isOPenDialogHapusMatakuliah"
       classes="text-red-900 bg-red-100 dark:bg-red-300 hover:bg-red-200 dark:hover:bg-red-400 focus-visible:ring-red-500"
-      title="Hapus tahun ajaran"
+      title="Hapus Matakuliah"
       confirmText="Hapus"
-      @confirm="remove"
-      @cancel="isOpen = !isOpen"
+      @confirm="hapusMatakuliah"
+      @cancel="isOPenDialogHapusMatakuliah = !isOPenDialogHapusMatakuliah"
     >
       <template #content>
         <p class="text-sm">
-          Apakah anda yakin ingin menghapus tahun ajaran ini?
+          Apakah anda yakin ingin menghapus tahun ajaran ini? {{selectedJadwalHapus}}
         </p>
+      </template>
+    </Dialog>
+
+    <Dialog
+      :isOpen="isDialogTambahMatakuliahOpen"
+      classes="text-green-900 bg-green-100 dark:bg-greeb-300 hover:bg-greeb-200 dark:hover:bg-green-400 focus-visible:ring-green-500"
+      title="Tambah Matakuliah"
+      confirmText="Tambah"
+      @confirm="tambahMatakuliah"
+      @cancel="isDialogTambahMatakuliahOpen = !isDialogTambahMatakuliahOpen"
+    >
+      <template #content>
+        <Select
+          class="w-full"
+          :options="jadwals"
+          v-model="selectedJadwal"
+        >
+          <template #option="option">
+            <option :value="option.data.id">
+              {{ `${option.data.matakuliah.kode_matakuliah} - ${option.data.matakuliah.nama_matakuliah} - ${option.data.local} - ${option.data.hari},${option.data.jam}` }}
+            </option>
+          </template>
+        </Select>
       </template>
     </Dialog>
   </AppLayout>
@@ -135,6 +161,9 @@
 import { computed, ref } from "vue"
 import { Link, useForm } from "@inertiajs/inertia-vue3"
 import { Switch, SwitchGroup, SwitchLabel } from "@headlessui/vue"
+import { CheckIcon, XIcon, TrashIcon } from "@heroicons/vue/outline"
+import { Inertia } from '@inertiajs/inertia'
+
 import DataTable from "@components/DataTable.vue"
 import AppLayout from "@layouts/App"
 import Button from "@components/Button"
@@ -142,9 +171,8 @@ import Dialog from "@components/Dialog"
 import Input from "@components/Input"
 import InputError from "@components/InputError"
 import Label from "@/Components/Label"
-import { Inertia } from '@inertiajs/inertia'
+import Select from "@components/Select"
 import NavLink from "@/Components/NavLink"
-import { CheckIcon, XIcon, TrashIcon } from "@heroicons/vue/outline"
 
 export default {
   components: {
@@ -156,6 +184,7 @@ export default {
     Label,
     Inertia,
     NavLink,
+    Select,
     DataTable,
     Link,
     Switch,
@@ -177,22 +206,13 @@ export default {
       npm: props.mahasiswa?.npm || null,
       history: props.mahasiswa?.tahun_ajaran || null,
       detilHistory: props.mahasiswa.tahun_ajaran.find(t => t.id == route().params.ta)
-      // detilHistory
-    })
-
-    // const tambahMahasiswa = ref(false)
-
-    const totalCicilan = computed(() => {
-      return (Number(form.detilHistory.pivot.jumlah_cicilan_1) +
-        Number(form.detilHistory.pivot.jumlah_cicilan_2) +
-        Number(form.detilHistory.pivot.jumlah_cicilan_3))
-    })
-
-    const sisaComputed = computed(() => {
-      return -(Number(form.detilHistory.pivot.uang_semester) - totalCicilan.value)
     })
 
     const isOpen = ref(false)
+    const isDialogTambahMatakuliahOpen = ref(false)
+    const isOPenDialogHapusMatakuliah = ref(false)
+    const selectedJadwal = ref()
+    const selectedJadwalHapus = ref()
 
     const currentRouteName = computed(() =>
       route().current("master.tahun-ajaran.create") ? "Tambah" : "Edit"
@@ -204,7 +224,6 @@ export default {
 
 
     const loadTahunAjaran = (id) => {
-      // alert(id)
       const current = route().current()
 
       const r = route(current, {kr: props.mahasiswa.npm, _query: {ta: id}})
@@ -213,13 +232,63 @@ export default {
 
     const submit = () =>
       currentRouteName.value == "Edit"
-        ? form.put(route("transaksi.keuangan.update", props.mahasiswa.npm))
+        ? form.put(route("", props.mahasiswa.npm))
         : ""
 
     const remove = () =>
-      form.delete(route("master.tahun-ajaran.destroy", props.tahunAjaran.id))
+      form.delete(route("", props.tahunAjaran.id))
 
     const openDialogHapus = (kode_matakuliah) => alert('wow' + kode_matakuliah)
+
+
+    // Tambah matakuliah
+
+    const openDialogTambahMatakuliah = () => {
+      // isOpen.value = !isOpen.value
+      isDialogTambahMatakuliahOpen.value = !isDialogTambahMatakuliahOpen.value
+      console.log(isDialogTambahMatakuliahOpen.value)
+      console.log(!isDialogTambahMatakuliahOpen.value)
+    }
+
+    const tambahMatakuliah = () => {
+      Inertia.put(
+        route("transaksi.krs.update", props.mahasiswa.npm),
+        {
+          jadwal_id: selectedJadwal.value,
+          ta: selectedTahunAjaran.value,
+        },{
+          onSuccess: (page) => {
+            isDialogTambahMatakuliahOpen.value = !isDialogTambahMatakuliahOpen.value
+          }
+        })
+    }
+
+    // hapus matakuliah
+
+    const openDialogHapusMatakuliah = (jadwal) => {
+      // isOpen.value = !isOpen.value
+      isOPenDialogHapusMatakuliah.value = !isOPenDialogHapusMatakuliah.value
+      selectedJadwalHapus.value = jadwal
+      console.log(isOPenDialogHapusMatakuliah.value)
+      console.log(!isOPenDialogHapusMatakuliah.value)
+    }
+
+    const hapusMatakuliah = () => {
+      const r = route('transaksi.krs.destroy', props.mahasiswa.npm)
+      console.log(r)
+      console.log(selectedJadwalHapus.value)
+      
+      Inertia.delete(r, {
+        data: {
+          jadwal_id: selectedJadwalHapus.value,
+        },
+        onSuccess: page => {
+          isOPenDialogHapusMatakuliah.value = !isOPenDialogHapusMatakuliah.value
+          console.log(isOPenDialogHapusMatakuliah.value)
+          console.log(!isOPenDialogHapusMatakuliah.value)
+        },
+      })
+    }
 
     const columns = [
       {
@@ -253,11 +322,17 @@ export default {
       form,
       isOpen,
       selectedTahunAjaran,
-      sisaComputed,
-      totalCicilan,
       columns,
+      isDialogTambahMatakuliahOpen,
+      isOPenDialogHapusMatakuliah,
+      selectedJadwal,
+      openDialogTambahMatakuliah,
+      tambahMatakuliah,
       openDialogHapus,
       loadTahunAjaran,
+      openDialogHapusMatakuliah,
+      hapusMatakuliah,
+      selectedJadwalHapus,
       submit,
       remove,
     }
