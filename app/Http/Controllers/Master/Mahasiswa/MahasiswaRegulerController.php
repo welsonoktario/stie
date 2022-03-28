@@ -48,6 +48,7 @@ class MahasiswaRegulerController extends Controller
         //
         $dosens = Dosen::with('staff.user')->get();
         $jurusans = Jurusan::all();
+        $tahun_ajaran = TahunAjaran::where('aktif','=',1)->get();
         return Inertia::render('Master/Mahasiswa/Reguler/MahasiswaRegulerDetail',[
             'dosens' => $dosens,
             'jurusans' => $jurusans,
@@ -122,7 +123,7 @@ class MahasiswaRegulerController extends Controller
     public function edit($id)
     {
         //
-        $mahasiswa = Mahasiswa::with(['dosen','jurusan','user'])->firstWhere('npm','=',$id);
+        $mahasiswa = Mahasiswa::with(['dosen','jurusan','user', 'tahun_ajaran'])->firstWhere('npm','=',$id);
         $dosens = Dosen::whereHas('staff.user', function ($q) {
             return $q->where([
                 ['level_pengguna', 'Staff'],
@@ -147,6 +148,7 @@ class MahasiswaRegulerController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // dd($request['tahun_ajaran']);
         $request['password'] = Hash::make('12345678');
         $msg = 'Berhasil menambahkan data';
         $status = 'OK';
@@ -160,6 +162,24 @@ class MahasiswaRegulerController extends Controller
                 $request['dosen_id'] = $request['dosen_id'] != '-' ? $request['dosen_id']: null;
                 $key = array_keys($user->mahasiswa->toArray());
                 $user->mahasiswa()->update($request->only($key));
+                // Riwayat Status Mahasiswa
+                try {
+                    $ta_mahasiswa = $user->mahasiswa->tahun_ajaran();
+                    $updated_data_ta = [];
+                    $request_ta = $request->tahun_ajaran;
+
+                    // dd($request_ta);
+                    foreach ($request_ta as $ta) {
+                        $updated_data_ta[$ta['id']] = ['status' => $ta['pivot']['status']];
+                    }
+
+                    // dd($updated_data_ta);
+                    $ta_mahasiswa->sync($updated_data_ta, false);
+
+                } catch (\Throwable $th) {
+                    // throw $th;
+                    dd($th->getMessage());
+                }
             } catch (\Throwable $th) {
                 $user->update($user_old);
                 $msg = 'Gagal menambahkan data mahasiswa. Error: '. $th->getMessage();

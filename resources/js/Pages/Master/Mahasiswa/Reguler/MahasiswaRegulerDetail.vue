@@ -171,6 +171,23 @@
           </select>
         </div>
 
+
+        <!-- <div class="mb-4">
+          <Label for="status_semester"> Status (Pada Semester: ) </Label>
+          <select
+            class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+            name="status_semester"
+          >
+            <option value="Aktif">Aktif</option>
+            <option value="Lulus">Lulus</option>
+            <option value="Mutasi">Mutasi</option>
+            <option value="Dikeluarkan">Dikeluarkan</option>
+            <option value="Mengundurkan diri">Mengundurkan diri</option>
+            <option value="Wafat">Wafat</option>
+            <option value="Hilang">Hilang</option>
+          </select>
+        </div> -->
+
         <!-- TTL, Jenis Kelamin -->
         <div class="mb-4">
           <div class="flex space-x-4">
@@ -325,6 +342,46 @@
             </select>
           </div>
         </div>
+
+        <p class="mb-4 text-sm md:text-lg">
+          <strong>Riwayat Status Kuliah</strong>
+        </p>
+
+        <!-- Data riwayat status kuliah -->
+        <div class="mb-4 w-full">  
+          <table class="table-auto w-full">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Semester</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(ta, index) in form.tahun_ajaran" :key="ta.id">
+                <th>{{index+1}}</th>
+                <td>{{ta.tahun_ajaran}}</td>
+                <td>
+                  <select
+                    class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+                    name="status_semester"
+                    v-model="ta.pivot.status"
+                  >
+                    <option value="Aktif">Aktif</option>
+                    <option value="Lulus">Lulus</option>
+                    <option value="Mutasi">Mutasi</option>
+                    <option value="Dikeluarkan">Dikeluarkan</option>
+                    <option value="Mengundurkan Diri">Mengundurkan Diri</option>
+                    <option value="Wafat">Wafat</option>
+                    <option value="Hilang">Hilang</option>
+                  </select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+
 
         <!-- DATA ORANG TUA -->
 
@@ -582,6 +639,7 @@ export default {
       type: Object,
       default: null,
     },
+    tahun_ajaran: Object,
   },
   setup(props) {
     const form = reactive({
@@ -620,6 +678,9 @@ export default {
       alat_transportasi: props.mahasiswa?.alat_transportasi || null,
       npwp: props.mahasiswa?.npwp || null,
       kps: props.mahasiswa?.kps || 0,
+
+      // data riwayat tahun ajaran
+      tahun_ajaran: props.mahasiswa?.tahun_ajaran || null,
 
       // data ortu
       // ayah
