@@ -7,19 +7,24 @@
 
       <p class="my-3 text-sm md:text-lg font-bold">Detail Nilai</p>
 
-      <div>
-        <p>
-          NPM: <span>{{ mahasiswa.npm }}</span>
-        </p>
-
-        <p>
-          Nama: <span>{{ mahasiswa.user.name }}</span>
-        </p>
-
-        <p>
-          Jurusan: <span>{{ mahasiswa.jurusan?.nama ?? "-" }}</span>
-        </p>
-      </div>
+      <table>
+        <tr>
+          <td>NPM:</td>
+          <td class="pl-2">{{ mahasiswa.npm }}</td>
+        </tr>
+        <tr>
+          <td>Nama:</td>
+          <td class="pl-2">{{ mahasiswa.user.name }}</td>
+        </tr>
+        <tr>
+          <td>Jurusan:</td>
+          <td class="pl-2">{{ mahasiswa.jurusan?.nama ?? "-" }}</td>
+        </tr>
+        <tr>
+          <td>IP:</td>
+          <td class="pl-2">{{ ip }}</td>
+        </tr>
+      </table>
 
       <div class="inline-flex justify-between mb-3 mt-6 w-full items-center">
         <div class="inline-flex">
@@ -78,13 +83,14 @@
         <tbody>
           <tr
             v-for="jadwal in mahasiswa.jadwals"
+            :key="jadwal.id"
             class="border-y dark:border-zinc-600 text-sm dark:text-zinc-200 font-normal"
           >
             <td class="px-4 py-2">{{ jadwal.matakuliah.kode_matakuliah }}</td>
             <td class="px-4 py-2">{{ jadwal.matakuliah.nama_matakuliah }}</td>
             <td class="px-4 py-2">{{ jadwal.matakuliah.sks }}</td>
             <td class="px-4 py-2">{{ nilaiMK(jadwal) }}</td>
-            <td class="px-4 py-2">{{ nilaiNisbi(jadwal) }}</td>
+            <td class="px-4 py-2">{{ nilaiHuruf(jadwal) }}</td>
             <td class="px-4 py-2">
               <PencilIcon
                 @click="openDialogNilai(jadwal)"
@@ -149,7 +155,7 @@ import Label from "@/Components/Label"
 import Select from "@/Components/Select"
 import { Link } from "@inertiajs/inertia-vue3"
 import { PencilIcon } from "@heroicons/vue/outline"
-import { ref, toRef, watch } from "vue"
+import { onMounted, ref, watch } from "vue"
 import { inRange } from "@/util"
 import { Inertia } from "@inertiajs/inertia"
 
@@ -166,8 +172,9 @@ const isDialogNilaiOpen = ref(false)
 const nilai = ref(0)
 const nisbi = ref("")
 const angkaMutu = ref(0)
+const ip = ref(0)
 
-watch(selectedTA, async (newTA, oldTA) => {
+watch([selectedTA, () => nilai.value], async ([newTA, newNilai]) => {
   Inertia.visit(
     route("transaksi.nilai.edit", {
       ta: newTA,
@@ -178,9 +185,7 @@ watch(selectedTA, async (newTA, oldTA) => {
       preserveState: true,
     }
   )
-})
 
-watch(nilai, async (newNilai, oldNilai) => {
   if (inRange(newNilai, 80, 100)) {
     nisbi.value = "A"
     angkaMutu.value = 4
@@ -199,42 +204,79 @@ watch(nilai, async (newNilai, oldNilai) => {
   }
 })
 
+onMounted(() => calcIp())
+
+const calcIp = () => {
+  const jadwals = props.mahasiswa.jadwals
+  const nilaiAm = jadwals.map(
+    (jadwal) =>
+      cekAngkaMutu(Number(jadwal.pivot.nilai_akhir)) * jadwal.matakuliah.sks
+  )
+
+  const totalSks = jadwals.reduce((prev, curr) => {
+    return prev + curr.matakuliah.sks
+  }, 0)
+
+  const totalNilai = nilaiAm.reduce((prev, curr) => {
+    return prev + curr
+  }, 0)
+
+  // ip.value = Math.round((totalNilai / totalSks) * 100) / 100
+  ip.value = (totalNilai / totalSks).toFixed(2)
+}
+
+const cekAngkaMutu = (num) => {
+  let am = 0
+
+  if (inRange(num, 80, 100)) {
+    am = 4
+  } else if (inRange(num, 70, 79)) {
+    am = 3
+  } else if (inRange(num, 56, 69)) {
+    am = 2
+  } else if (inRange(num, 40, 55)) {
+    am = 1
+  } else {
+    am = 0
+  }
+
+  return am
+}
+
+const cekHurufMutu = (num) => {
+  let hm = ""
+
+  if (inRange(num, 80, 100)) {
+    hm = "A"
+  } else if (inRange(num, 70, 79)) {
+    hm = "B"
+  } else if (inRange(num, 56, 69)) {
+    hm = "C"
+  } else if (inRange(num, 40, 55)) {
+    hm = "D"
+  } else {
+    hm = "E"
+  }
+
+  return hm
+}
+
 const nilaiMK = (jadwal) =>
   selectedTipeSemester.value == "UTS"
     ? jadwal.pivot.nilai_uts ?? "-"
     : jadwal.pivot.nilai_nas ?? "-"
 
-const nilaiNisbi = (jadwal) => {
+const nilaiHuruf = (jadwal) => {
   let huruf = ""
 
   if (selectedTipeSemester.value == "UTS") {
     if (!jadwal.pivot.nilai_uts) return "-"
 
-    if (inRange(jadwal.pivot.nilai_uts, 80, 100)) {
-      huruf = "A"
-    } else if (inRange(jadwal.pivot.nilai_uts, 70, 79)) {
-      huruf = "B"
-    } else if (inRange(jadwal.pivot.nilai_uts, 56, 69)) {
-      huruf = "C"
-    } else if (inRange(jadwal.pivot.nilai_uts, 40, 55)) {
-      huruf = "D"
-    } else {
-      huruf = "E"
-    }
+    huruf = cekHurufMutu(jadwal.pivot.nilai_uts)
   } else {
     if (!jadwal.pivot.nilai_nas) return "-"
 
-    if (inRange(jadwal.pivot.nilai_nas, 80, 100)) {
-      huruf = "A"
-    } else if (inRange(jadwal.pivot.nilai_nas, 70, 79)) {
-      huruf = "B"
-    } else if (inRange(jadwal.pivot.nilai_nas, 56, 69)) {
-      huruf = "C"
-    } else if (inRange(jadwal.pivot.nilai_nas, 40, 55)) {
-      huruf = "D"
-    } else {
-      huruf = "E"
-    }
+    huruf = cekHurufMutu(jadwal.pivot.nilai_nas)
   }
 
   return huruf
