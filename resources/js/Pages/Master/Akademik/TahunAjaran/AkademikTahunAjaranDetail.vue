@@ -75,7 +75,7 @@
             v-model="form.periode"
           >
             <option value="null" selected disabled>Pilih periode</option>
-            <option value="1">1 - Gasal</option>
+            <option value="1">1 - Ganjil</option>
             <option value="2">2 - Genap</option>
           </select>
           <InputError class="mt-2" :message="form.errors.periode" />

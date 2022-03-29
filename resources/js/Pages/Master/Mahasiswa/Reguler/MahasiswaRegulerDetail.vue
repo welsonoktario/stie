@@ -83,7 +83,7 @@
         </div>
 
         <fieldset class="mb-4">
-          <Label for="kps">Penerima KPS</Label>
+          <Label for="kps">Penerima KPS <i>(Kartu Perlindungan Sosial)</i></Label>
           <div class="inline-flex">
             <div>
               <input
@@ -170,24 +170,7 @@
             </option>
           </select>
         </div>
-
-
-        <!-- <div class="mb-4">
-          <Label for="status_semester"> Status (Pada Semester: ) </Label>
-          <select
-            class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
-            name="status_semester"
-          >
-            <option value="Aktif">Aktif</option>
-            <option value="Lulus">Lulus</option>
-            <option value="Mutasi">Mutasi</option>
-            <option value="Dikeluarkan">Dikeluarkan</option>
-            <option value="Mengundurkan diri">Mengundurkan diri</option>
-            <option value="Wafat">Wafat</option>
-            <option value="Hilang">Hilang</option>
-          </select>
-        </div> -->
-
+        
         <!-- TTL, Jenis Kelamin -->
         <div class="mb-4">
           <div class="flex space-x-4">
@@ -343,18 +326,21 @@
           </div>
         </div>
 
-        <p class="mb-4 text-sm md:text-lg">
+        <p class="mb-4 text-sm md:text-lg"
+          v-if="currentRouteName == 'Edit'">
           <strong>Riwayat Status Kuliah</strong>
         </p>
 
         <!-- Data riwayat status kuliah -->
-        <div class="mb-4 w-full">  
+        <div class="mb-4 w-full"
+          v-if="currentRouteName == 'Edit'">  
           <table class="table-auto w-full">
             <thead>
               <tr>
                 <th>No</th>
                 <th>Semester</th>
                 <th>Status</th>
+                <th>Hapus</th>
               </tr>
             </thead>
             <tbody>
@@ -376,6 +362,11 @@
                     <option value="Hilang">Hilang</option>
                   </select>
                 </td>
+                <td class="text-sm text-gray-900 font-light py-3 whitespace-nowrap flex justify-center">
+                  <Checkbox>
+
+                  </Checkbox>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -388,6 +379,107 @@
         <p class="mb-4 text-sm md:text-lg">
           <strong>Data Orang Tua</strong>
         </p>
+
+        <!-- Ibu Kandung-->
+        <p class="mb-4 text-xs md:text-sm">
+          <strong>Ibu Kandung</strong>
+        </p>
+
+        <!-- NIK, NAMA -->
+        <div class="mb-4 flex space-x-4">
+          <div class="w-full">
+            <Label for="nik_ibu"> NIK Ibu Kandung</Label>
+            <Input
+              v-model="form.nik_ibu"
+              class="w-full"
+              name="nik_ibu"
+              type="text"
+              placeholder="NIK ibu kandung"
+            ></Input>
+          </div>
+          <div class="w-full">
+            <Label for="nama_ibu"> Nama Ibu Kandung</Label>
+            <Input
+              v-model="form.nama_ibu"
+              class="w-full"
+              name="nama_ibu"
+              type="text"
+              placeholder="Nama ibu kandung"
+            ></Input>
+          </div>
+        </div>
+
+        <!-- TTL, pendnameikan ibu -->
+        <div class="mb-4 flex space-x-4">
+          <div class="w-full">
+            <Label for="tempat_lahir_ibu"> Tempat Lahir Ibu Kandung</Label>
+            <Input
+              v-model="form.tempat_lahir_ibu"
+              class="w-full"
+              name="tempat_lahir_ibu"
+              type="text"
+              placeholder="Tempat lahir ibu kandung"
+            ></Input>
+          </div>
+          <div class="w-full">
+            <Label for="tanggal_lahir_ibu"> Tanggal lahir ibu Kandung</Label>
+            <Input
+              v-model="form.tanggal_lahir_ibu"
+              class="w-full"
+              name="tanggal_lahir_ibu"
+              type="date"
+              placeholder="Tanggal lahir ibu kandung"
+            ></Input>
+          </div>
+          <div class="w-full">
+            <Label for="pendnameikan_ibu"> Pendidikan Ibu </Label>
+            <Input
+              v-model="form.pendnameikan_ibu"
+              class="w-full"
+              name="pendnameikan_ibu"
+              type="text"
+              placeholder="Pendidikan ibu"
+            ></Input>
+          </div>
+        </div>
+
+        <!-- pekerjaan penghasilan ayah -->
+        <div class="mb-4 flex space-x-4">
+          <div class="w-full">
+            <Label for="pekerjaan_ibu"> Pekerjaan Ibu Kandung</Label>
+            <Input
+              v-model="form.pekerjaan_ibu"
+              class="w-full"
+              name="pekerjaan_ibu"
+              type="text"
+              placeholder="Pekerjaan ibu kandung"
+            ></Input>
+          </div>
+          <div class="w-full">
+            <Label for="penghasilan_ibu"> Penghasilan Ibu Kandung</Label>
+            <select
+              v-model="form.penghasilan_ibu"
+              class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+              name="penghasilan_ibu"
+            >
+              <option selected disabled value="-">Pilih penghasilan ibu kandung</option>
+              <option value="< Rp 500.000">&lt; Rp 500.000</option>
+              <option value="Rp 500.000 - Rp 999.999">
+                Rp 500.000 - Rp 999.999
+              </option>
+              <option value="Rp 1.000.000 - Rp 1.999.999">
+                Rp 1.000.000 - Rp 1.999.999
+              </option>
+              <option value="Rp 2.000.000 - Rp 4.999.999">
+                Rp 2.000.000 - Rp 4.999.999
+              </option>
+              <option value="Rp 5.000.000 - Rp 20.000.000">
+                Rp 5.000.000 - Rp 20.000.000
+              </option>
+              <option value="> Rp 20.000.000">&gt; Rp 20.000.000</option>
+            </select>
+          </div>
+        </div>
 
         <!-- Ayah -->
         <p class="mb-4 text-xs md:text-sm">
@@ -492,106 +584,6 @@
           </div>
         </div>
 
-        <!-- Ibu -->
-        <p class="mb-4 text-xs md:text-sm">
-          <strong>Ibu</strong>
-        </p>
-
-        <!-- NIK, NAMA -->
-        <div class="mb-4 flex space-x-4">
-          <div class="w-full">
-            <Label for="nik_ibu"> NIK Ibu </Label>
-            <Input
-              v-model="form.nik_ibu"
-              class="w-full"
-              name="nik_ibu"
-              type="text"
-              placeholder="NIK ibu"
-            ></Input>
-          </div>
-          <div class="w-full">
-            <Label for="nama_ibu"> Nama Ibu </Label>
-            <Input
-              v-model="form.nama_ibu"
-              class="w-full"
-              name="nama_ibu"
-              type="text"
-              placeholder="Nama ibu"
-            ></Input>
-          </div>
-        </div>
-
-        <!-- TTL, pendnameikan ibu -->
-        <div class="mb-4 flex space-x-4">
-          <div class="w-full">
-            <Label for="tempat_lahir_ibu"> Tempat Lahir Ibu </Label>
-            <Input
-              v-model="form.tempat_lahir_ibu"
-              class="w-full"
-              name="tempat_lahir_ibu"
-              type="text"
-              placeholder="Tempat lahir ibu"
-            ></Input>
-          </div>
-          <div class="w-full">
-            <Label for="tanggal_lahir_ibu"> Tanggal lahir ibu </Label>
-            <Input
-              v-model="form.tanggal_lahir_ibu"
-              class="w-full"
-              name="tanggal_lahir_ibu"
-              type="date"
-              placeholder="Tanggal lahir ibu"
-            ></Input>
-          </div>
-          <div class="w-full">
-            <Label for="pendnameikan_ibu"> Pendidikan Ibu </Label>
-            <Input
-              v-model="form.pendnameikan_ibu"
-              class="w-full"
-              name="pendnameikan_ibu"
-              type="text"
-              placeholder="Pendidikan ibu"
-            ></Input>
-          </div>
-        </div>
-
-        <!-- pekerjaan penghasilan ayah -->
-        <div class="mb-4 flex space-x-4">
-          <div class="w-full">
-            <Label for="pekerjaan_ibu"> Pekerjaan Ibu </Label>
-            <Input
-              v-model="form.pekerjaan_ibu"
-              class="w-full"
-              name="pekerjaan_ibu"
-              type="text"
-              placeholder="Pekerjaan ibu"
-            ></Input>
-          </div>
-          <div class="w-full">
-            <Label for="penghasilan_ibu"> Penghasilan Ibu </Label>
-            <select
-              v-model="form.penghasilan_ibu"
-              class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
-              name="penghasilan_ibu"
-            >
-              <option selected disabled value="-">Pilih penghasilan ibu</option>
-              <option value="< Rp 500.000">&lt; Rp 500.000</option>
-              <option value="Rp 500.000 - Rp 999.999">
-                Rp 500.000 - Rp 999.999
-              </option>
-              <option value="Rp 1.000.000 - Rp 1.999.999">
-                Rp 1.000.000 - Rp 1.999.999
-              </option>
-              <option value="Rp 2.000.000 - Rp 4.999.999">
-                Rp 2.000.000 - Rp 4.999.999
-              </option>
-              <option value="Rp 5.000.000 - Rp 20.000.000">
-                Rp 5.000.000 - Rp 20.000.000
-              </option>
-              <option value="> Rp 20.000.000">&gt; Rp 20.000.000</option>
-            </select>
-          </div>
-        </div>
 
         <div class="flex justify-between">
           <Button class="px-10">Simpan</Button>
@@ -613,15 +605,20 @@ import AppLayout from "@layouts/App"
 import Input from "@components/Input"
 import Button from "@components/Button"
 import Label from "@components/Label"
+import NavLink from "@/Components/NavLink"
+import Checkbox from "@/Components/Checkbox.vue"
 
 import { Link } from "@inertiajs/inertia-vue3"
 
-import { reactive } from "vue"
+import { computed, reactive } from "vue"
 import { Inertia } from "@inertiajs/inertia"
+// import route from 'vendor/tightenco/ziggy/src/js'
 export default {
   components: {
     AppLayout,
     Link,
+    Checkbox,
+    NavLink,
     Label,
     Input,
     Button,
@@ -710,7 +707,7 @@ export default {
         // alert(props.staff == null ? 'null bro' : 'ada bro')
         Inertia.post(route("master.mahasiswa-reguler.store"), form)
       } else {
-        form.name = props.mahasiswa?.user.name || null
+        // form.name = props.mahasiswa?.user.name || null
         Inertia.put(
           route("master.mahasiswa-reguler.update", props.mahasiswa.npm),
           form
@@ -724,10 +721,18 @@ export default {
         route("master.mahasiswa-reguler.destroy", props.mahasiswa.npm)
       )
     }
+
+    const currentRouteName = computed(() =>
+      route().current("master.mahasiswa-reguler.create") ? "Tambah" : "Edit"
+    )
+
+
+    
     return {
       form,
       submit,
       remove,
+      currentRouteName,
     }
   },
 }

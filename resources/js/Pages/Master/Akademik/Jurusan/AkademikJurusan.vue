@@ -1,16 +1,16 @@
 <template>
   <AppLayout title="Jurusan">
     <div class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
-      <p class="text-xs md:text-sm">Akademik / Jurusan</p>
+      <p class="text-xs md:text-sm">Akademik / Prodi / Departemen</p>
       <div class="flex justify-between my-3 item-center">
         <span class="align-middle">
           <strong class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
-            >Daftar Jurusan</strong
+            >Daftar Prodi / Departemen</strong
           >
         </span>
 
         <Button type="button">
-          <Link :href="route('master.jurusan.create')"> Tambah Jurusan </Link>
+          <Link :href="route('master.jurusan.create')"> Tambah Prodi / Departemen </Link>
         </Button>
       </div>
 
@@ -45,7 +45,7 @@ export default {
     const columns = [
       {
         key: "kode_jurusan",
-        label: "Kode Jurusan",
+        label: "Kode Prodi / Departemen",
         sortable: true,
       },
       {

@@ -2,7 +2,7 @@
   <AppLayout title="Tambah Jurusan">
     <div class="bg-white dark:bg-zinc-800 shadow-lg rounded-lg p-6">
       <p class="text-xs md:text-sm dark:text-zinc-300">
-        Akademik / Jurusan /
+        Akademik / Prodi /
         <span class="font-semibold text-teal-500 dark:text-teal-600">{{
           currentRouteName
         }}</span>
@@ -14,30 +14,30 @@
             class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
           >
             <span>{{ currentRouteName }}</span>
-            Jurusan
+            Prodi/Departemen
           </strong>
         </span>
       </div>
       <form @submit.prevent="submit">
         <div class="mb-4">
-          <Label for="kode">Kode Jurusan</Label>
+          <Label for="kode">Kode Prodi/Departemen</Label>
           <Input
             v-model="form.kode_jurusan"
             name="kode"
             class="mt-1 block w-full"
             type="text"
-            placeholder="Kode Jurusan"
+            placeholder="Kode Prodi/Departemen"
             autocomplete="off"
           ></Input>
         </div>
         <div class="mb-4">
-          <Label for="nama">Nama Jurusan</Label>
+          <Label for="nama">Nama Prodi/Departemen</Label>
           <Input
             v-model="form.nama"
             name="nama"
             class="mt-1 block w-full"
             type="text"
-            placeholder="Nama jurusan"
+            placeholder="Nama Prodi/Departemen"
             autocomplete="off"
           ></Input>
         </div>

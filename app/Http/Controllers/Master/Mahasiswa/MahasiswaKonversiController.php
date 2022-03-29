@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use App\Models\Dosen;
 use App\Models\Jurusan;
 use App\Models\Mahasiswa;
+use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
 use App\Models\MahasiswaKonversi;
 use App\Models\MatakuliahKonversi;
@@ -71,6 +72,18 @@ class MahasiswaKonversiController extends Controller
                 $user->mahasiswa()->create($request->all());
                 try {
                     $user->mahasiswa->mahasiswa_konversi()->create($request->all());
+                    
+                    // assign ke tahun akademik (dari tanggal masuk sampai thn terakhir)
+                    $tm = $request['tanggal_masuk'];
+                    $tas = TahunAjaran::where('tanggal_selesai', '>', $tm)->get();
+                    // $user->mahasiswa->tahun_ajaran()->detach();
+                    $sync_ta = [];
+                    foreach ($tas as $ta) {
+                        $sync_ta[$ta['id']] = ['status' => 'Aktif'];
+                    }
+                    // $user->mahasiswa->tahun_ajaran()->attach($ta->id, ['status' => 'Aktif']);
+                    $user->mahasiswa->tahun_ajaran()->sync($sync_ta);
+                    
                 } catch (\Throwable $th) {
                     $user->delete();
                     $msg = 'Gagal menambahkan mahasiswa konversi. Error: '. $th->getMessage();
@@ -117,7 +130,7 @@ class MahasiswaKonversiController extends Controller
         //
         $mahasiswa = Mahasiswa::has('mahasiswa_konversi')
         ->where('npm','=',$id)
-        ->with(['user','dosen','jurusan','mahasiswa_konversi.matakuliah_konversis.matakuliah'])
+        ->with(['user','dosen','jurusan','tahun_ajaran','mahasiswa_konversi.matakuliah_konversis.matakuliah'])
         ->get()->first();
 
         $matakuliahs = $mahasiswa->mahasiswa_konversi->matakuliah_konversis;
@@ -165,6 +178,25 @@ class MahasiswaKonversiController extends Controller
                     $key = array_keys($user->mahasiswa->mahasiswa_konversi->toArray());
                     unset($key[0]);
                     $user->mahasiswa->mahasiswa_konversi()->update($request->only($key));
+
+                    // Riwayat status mahasiswa - update
+                    try {
+                        $ta_mahasiswa = $user->mahasiswa->tahun_ajaran();
+                        $updated_data_ta = [];
+                        $request_ta = $request->tahun_ajaran;
+    
+                        foreach ($request_ta as $ta) {
+                            $updated_data_ta[$ta['id']] = ['status' => $ta['pivot']['status']];
+                        }
+                        
+                        // dd($updated_data_ta);
+                        $ta_mahasiswa->sync($updated_data_ta, false);
+    
+                    } catch (\Throwable $th) {
+                        // throw $th;
+                        dd($th->getMessage());
+                    }
+
                 } catch (\Throwable $th) {
                     $user->update($user_old);
                     $user->mahasiswa()->update($mahasiswa_old);
@@ -211,11 +243,20 @@ class MahasiswaKonversiController extends Controller
         $npm = $mahasiswa->npm;
         $msg = "Berhasil menghapus mahasiswa konversi. Data: $nama $npm";
         $status = 'OK';
+        // Hapus riwayat kuliah mahasiswa
+        try {
+            $res = $mahasiswa->tahun_ajaran()->detach();
+        } catch (\Throwable $th) {
+            //throw $th;
+            dd('Gagal menghapus data TA'. $th->getMessage(), $th);
+        }
+
         try {
             $delete = $mahasiswa->user()->delete();
         } catch (\Throwable $th) {
             $status = 'FAIL';
-            $msg = `Gagal menghapus mahasiswa konversi. Data: $nama $npm. Error: $th->getMessage()`;
+            $msg = `Gagal menghapus mahasiswa konversi. Data: $nama $npm. Error: `.$th->getMessage();
+            dd($msg, $th);
         }
 
         $header = ['status' => $status, 'msg' => $msg];

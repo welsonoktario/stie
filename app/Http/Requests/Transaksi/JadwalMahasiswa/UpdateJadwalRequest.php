@@ -29,7 +29,7 @@ class UpdateJadwalRequest extends FormRequest
     {
         return [
             'jadwal_id' => ['required', 'numeric'],
-            'mahasiswa_npm' => ['required', 'numeric']
+            'mahasiswa_npm' => ['required']
         ];
     }
 

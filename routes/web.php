@@ -60,7 +60,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'master', 'as' => 'master.'], function () {
         Route::get('kurikulum/{kurikulum_id}/prasyarat', [KurikulumController::class, 'loadPrasyarats'])->name('kurikulum.prasyarat');
 
-        Route::group(['prefix' => 'matakuliah-konversi'], function () {
+        Route::group(['prefix' => 'mahasiswa-konversi'], function () {
             Route::get('{mahasiswa_konversi_id}/matakuliah-konversi/create', [MatakuliahKonversiController::class, 'create'])->name('mahasiswa-konversi.matakuliah.create');
             Route::get('{mahasiswa_konversi_id}/matakuliah-konversi', [MatakuliahKonversiController::class, 'index'])->name('mahasiswa-konversi.matakuliah.index');
             Route::post('{mahasiswa_konversi_id}/matakuliah-konversi/store', [MatakuliahKonversiController::class, 'store'])->name('mahasiswa-konversi.matakuliah.store');

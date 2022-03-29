@@ -211,11 +211,22 @@ class MahasiswaRegulerController extends Controller
         $npm = $mahasiswa->npm;
         $msg = "Berhasil menghapus mahasiswa. Data: $nama $npm";
         $status = 'OK';
+        // Hapus tahun Ajaran
+        try {
+            $delete = $mahasiswa->tahun_ajaran()->detach();
+        }
+        catch (\Throwable $th) {
+            $status = 'FAIL';
+            $msg = `Gagal menghapus tahun ajaran. Data: $nama $npm. Error: `.$th->getMessage();
+            dd($msg, $th);
+        }
+        
         try {
             $delete = $mahasiswa->user()->delete();
         } catch (\Throwable $th) {
             $status = 'FAIL';
-            $msg = `Gagal menghapus mahasiswa. Data: $nama $npm. Error: $th->getMessage()`;
+            $msg = `Gagal menghapus mahasiswa. Data: $nama $npm. Error: `.$th->getMessage();
+            dd($msg, $th);
         }
 
         $header = ['status' => $status, 'msg' => $msg];

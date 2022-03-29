@@ -31,7 +31,7 @@ class KeuanganController extends Controller
                 'status_mahasiswa.tanggal_cicilan_1 as cicilan_1',
                 'status_mahasiswa.tanggal_cicilan_2 as cicilan_2',
                 'status_mahasiswa.tanggal_cicilan_3 as cicilan_3'])
-            ->doesntHave('mahasiswa_konversi')
+            // ->doesntHave('mahasiswa_konversi')
             ->join('users','users.id','=','mahasiswas.user_id')
             ->leftJoin('jurusans','jurusans.id','=','mahasiswas.jurusan_id')
             ->filter($request->only(['query', 'orderBy', 'orderType']))

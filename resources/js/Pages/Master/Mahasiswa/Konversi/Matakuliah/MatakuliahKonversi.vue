@@ -4,7 +4,7 @@
       class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
     >
       <p class="text-xs md:text-sm text-slate-500">
-        Mahasiswa / Mahasiswa Konversi / Matakuliah Konversi
+        Mahasiswa / Mahasiswa Konversi / Matakuliah Diakui
         <!-- <span v-if="route().current('master.mahasiswa-konversi.create')">Tambah</span>
         <span v-else>Ubah</span> -->
       </p>
@@ -84,7 +84,7 @@
       <div v-show="showMatakuliah">
         <div class="flex justify-between my-3 item-center">
           <span class="align-middle">
-            <strong class="whitespace-nowrap capitalize text-sm md:text-lg content-middle">Matakuliah Konversi</strong>
+            <strong class="whitespace-nowrap capitalize text-sm md:text-lg content-middle">Matakuliah Diakui</strong>
           </span>
           
 					<Link 
@@ -95,7 +95,7 @@
 							type="link"
 							class="ml-1 inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150"
 							>
-							Tambah Matakuliah Konversi
+							Tambah Matakuliah Diakui
 					</Link>
 
         </div>

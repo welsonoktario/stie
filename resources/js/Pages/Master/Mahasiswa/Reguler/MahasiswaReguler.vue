@@ -12,7 +12,7 @@
         <span class="align-middle">
           <strong
             class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
-            >Daftar Mahasiswa</strong
+            >Daftar Mahasiswa Reguler</strong
           >
         </span>
         <Button type="button">

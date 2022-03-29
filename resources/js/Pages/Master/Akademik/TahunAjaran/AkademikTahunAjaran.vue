@@ -3,18 +3,18 @@
     <div
       class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
     >
-      <p class="text-xs md:text-sm">Akademik / Tahun Ajaran</p>
+      <p class="text-xs md:text-sm">Akademik / Tahun Akademik</p>
       <div class="flex justify-between my-3 item-center">
         <span class="align-middle">
           <strong
             class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
-            >Daftar Tahun Ajaran</strong
+            >Daftar Tahun Akademik</strong
           >
         </span>
 
         <Button type="button">
           <Link :href="route('master.tahun-ajaran.create')">
-            Tambah Tahun Ajaran
+            Tambah Tahun Akademik
           </Link>
         </Button>
       </div>

@@ -115,6 +115,67 @@
           </div>
         </div>
 
+        
+        <div class="mb-4">
+          <Label for="nama"> Agama <span class="text-red-500">*</span> </Label>
+          <select
+            class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+            name="agama"
+            v-model="form.agama"
+          >
+            <option value="-" selected disabled>Pilih agama</option>
+            <option value="Islam">Islam</option>
+            <option value="Kristen">Kristen</option>
+            <option value="Katolik">Katolik</option>
+            <option value="Budha">Budha</option>
+            <option value="Hindu">Hindu</option>
+            <option value="Konghucu">Konghucu</option>
+          </select>
+        </div>
+
+        <fieldset class="mb-4">
+          <Label for="kps">Penerima KPS <i>(Kartu Perlindungan Sosial)</i></Label>
+          <div class="inline-flex">
+            <div>
+              <input
+                v-model="form.kps"
+                type="radio"
+                name="kps"
+                value="1"
+                class="checked:bg-teal-500 checked:focus:bg-teal-500 dark:checked:bg-teal-400 dark:checked:focus:bg-teal-400 focus:ring-0"
+              />
+              <span class="ml-2">Ya</span>
+            </div>
+            <div class="ml-4">
+              <input
+                v-model="form.kps"
+                type="radio"
+                name="kps"
+                value="0"
+                class="checked:bg-teal-500 checked:focus:bg-teal-500 dark:checked:bg-teal-400 dark:checked:focus:bg-teal-400 focus:ring-0"
+              />
+              <span class="ml-2">Tidak</span>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- TANGGAL MASUK -->
+        <div class="mb-4">
+          <Label for="tanggal_masuk">
+            Tanggal Masuk <span class="text-red-500">*</span>
+          </Label>
+          <Input
+            v-model="form.tanggal_masuk"
+            class="w-full"
+            name="tanggal_masuk"
+            type="date"
+            placeholder="Tanggal masuk"
+            required
+            :disabled="!route().current('master.mahasiswa-konversi.create')"
+            :readonly="!route().current('master.mahasiswa-konversi.create')"
+          ></Input>
+        </div>
+
         <!-- NPM ASAL, KAMPUS ASAL-->
         <div class="flex sm:space-x-3 sm:flex-row flex-col">
           <div class="mb-3 w-full">
@@ -195,7 +256,7 @@
                 class="w-full"
                 id="tanggal_lahir"
                 type="date"
-                placeholder="tanggal Lahir"
+                placeholder="Tanggal Lahir"
               ></Input>
             </div>
             <div class="w-full">
@@ -333,6 +394,53 @@
           </div>
         </div>
 
+        
+        <!-- Data riwayat status kuliah -->
+        <p class="mb-4 text-sm md:text-lg"
+          v-if="currentRouteName == 'Edit'">
+          <strong>Riwayat Status Kuliah</strong>
+        </p>
+
+        <div class="mb-4 w-full"
+          v-if="currentRouteName == 'Edit'">  
+          <table class="table-auto w-full">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Semester</th>
+                <th>Status</th>
+                <th>Hapus</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(ta, index) in form.tahun_ajaran" :key="ta.id">
+                <th>{{index+1}}</th>
+                <td>{{ta.tahun_ajaran}}</td>
+                <td>
+                  <select
+                    class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+                    name="status_semester"
+                    v-model="ta.pivot.status"
+                  >
+                    <option value="Aktif">Aktif</option>
+                    <option value="Lulus">Lulus</option>
+                    <option value="Mutasi">Mutasi</option>
+                    <option value="Dikeluarkan">Dikeluarkan</option>
+                    <option value="Mengundurkan Diri">Mengundurkan Diri</option>
+                    <option value="Wafat">Wafat</option>
+                    <option value="Hilang">Hilang</option>
+                  </select>
+                </td>
+                <td class="text-sm text-gray-900 font-light py-3 whitespace-nowrap flex justify-center">
+                  <Checkbox>
+
+                  </Checkbox>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
 
         
         <!-- DATA ORANG TUA -->
@@ -446,7 +554,7 @@
         
         <!-- Ibu -->
         <p class="mb-3 text-xs md:text-sm">
-          <strong>Ibu</strong>
+          <strong>Ibu Kandung</strong>
         </p>
         
         <!-- NIK, NAMA -->
@@ -559,7 +667,7 @@
               type="link"
               class="ml-1 inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150"
               >
-              Matakuliah Konversi
+              Matakuliah Diakui
             </Link>
           </div>
           <Link
@@ -579,12 +687,14 @@ import AppLayout from "@layouts/App.vue"
 
 import Input from "@components/Input.vue"
 import Button from "@components/Button.vue"
+import Checkbox from "@/Components/Checkbox.vue"
+import ModalInput from "@/Components/ModalInput.vue"
 
 import { Link } from "@inertiajs/inertia-vue3"
 
-import { reactive, ref } from "vue"
+import { computed, reactive, ref } from "vue"
 import { Inertia } from "@inertiajs/inertia"
-import ModalInput from "@/Components/ModalInput.vue"
+import Label from "@components/Label"
 
 import {
   ChevronDoubleDownIcon,
@@ -598,6 +708,8 @@ export default {
     Input,
     Button,
     ModalInput,
+    Checkbox,
+    Label,
     ChevronDoubleDownIcon,
     ChevronDoubleUpIcon,
   },
@@ -641,13 +753,20 @@ export default {
 
       // mahasiswa data
       npm: props.mahasiswa == null ? null : props.mahasiswa.npm,
+      tanggal_masuk: props.mahasiswa?.tanggal_masuk,
       dosen_id: props.mahasiswa == null ? '-' : (props.mahasiswa.dosen == null ? '-' : props.mahasiswa.dosen.id),
       jurusan_id: props.mahasiswa == null ? '-' : (props.mahasiswa.jurusan == null ? '-' : props.mahasiswa .jurusan.id),
       nisn: props.mahasiswa?.nisn || null,
       jenis_tinggal: props.mahasiswa?.jenis_tinggal || null,
       alat_transportasi: props.mahasiswa?.alat_transportasi || null,
       npwp: props.mahasiswa?.npwp || null,
+      kps: props.mahasiswa?.kps || 0,
 
+
+      // data riwayat tahun ajaran
+      tahun_ajaran: props.mahasiswa?.tahun_ajaran || null,
+
+      
       // data ortu
       // ayah
       nik_ayah: props.mahasiswa?.nik_ayah || null,
@@ -695,12 +814,17 @@ export default {
       Inertia.delete(route("master.mahasiswa-konversi.destroy", props.mahasiswa.npm))
     }
 
+    const currentRouteName = computed(() =>
+      route().current('master.mahasiswa-konversi.create') ? 'Tambah' : 'Edit'
+    )
+
     return {
       showModalMatakuliah,
       form,
       submit,
       remove,
-      showMatakuliah
+      showMatakuliah,
+      currentRouteName,
     }
   },
 }

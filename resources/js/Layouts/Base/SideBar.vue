@@ -162,12 +162,12 @@ export default {
             subMenus: [
               {
                 name: "akademik-jurusan",
-                label: "Jurusan / Program Studi",
+                label: "Program Studi/Departemen",
                 route: "master.jurusan.index",
               },
               {
                 name: "akademik-tahun-ajaran",
-                label: "Tahun Ajaran",
+                label: "Tahun Akademik",
                 route: "master.tahun-ajaran.index",
               },
               {
