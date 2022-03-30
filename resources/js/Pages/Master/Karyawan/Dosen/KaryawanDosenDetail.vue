@@ -390,6 +390,7 @@
               v-model="form.level_pengguna"
             >
               <option value="Staff">Staff</option>
+              <option value="Pengguna">Pengguna</option>
               <option value="Administrator">Administrator</option>
             </select>
           </div>

@@ -68,7 +68,7 @@
             ></Input>
           </div>
           <div class="w-full">
-            <Label for="nik">NIK</Label>
+            <Label for="nik">NIK <i>(Nomor Induk Kependudukan)</i></Label>
             <Input
               v-model="form.nik"
               id="nik"
@@ -155,17 +155,17 @@
           ></Input>
         </div>
 
-        <!-- alamat jalan -->
+        <!-- alamat lengkap -->
         <div class="mb-3">
-          <label class="block text-gray-500 text-sm font-bold mb-2" for="jalan">
-            Jalan
+          <label class="block text-gray-500 text-sm font-bold mb-2" for="alamat">
+            Alamat
           </label>
           <Input
             v-model="form.jalan"
             class="w-full"
-            id="jalan"
+            id="alamat"
             type="text"
-            placeholder="jalan"
+            placeholder="Alamat (Jl. Nama Jalan, RT. 1, Nomor 1)"
           ></Input>
         </div>
 
@@ -215,6 +215,47 @@
               type="text"
               placeholder="Kode Pos"
             ></Input>
+          </div>
+        </div>
+
+        
+        <!-- Provinsi -->
+        <div class="flex space-x-3 mb-3">            
+          <div class="w-full">
+            <Label for="provinsi"> Provinsi </Label>
+            <Select
+              class="w-full"
+              :options="provinsis"
+              :name="'provinsi'"
+              :placeholder="'Pilih provinsi'"
+              v-model="form.provinsi"
+            >
+              <!-- <template #option="option">
+                <option :value="Number(option.data.id)">
+                  {{ option.data.nama_ruangan }}
+                </option>
+              </template> -->
+            </Select>
+            <!-- <InputError class="mt-2" :message="form.errors.ruangan_id" /> -->
+          </div>
+
+          <!-- Kabupaten/Kota -->
+          <div class="w-full">
+            <Label for="kota"> Kabupaten/Kota </Label>
+            <Select
+              class="w-full"
+              :options="kotas"
+              :name="'kota'"
+              :placeholder="'Pilih kota'"
+              v-model="form.kota"
+            >
+              <!-- <template #option="option">
+                <option :value="Number(option.data.id)">
+                  {{ option.data.nama_ruangan }}
+                </option>
+              </template> -->
+            </Select>
+            <!-- <InputError class="mt-2" :message="form.errors.ruangan_id" /> -->
           </div>
         </div>
 
@@ -270,6 +311,16 @@
           </div>
         </div>
 
+        <div class="mb-3">
+          <p>Masa Kerja: {{calculatedMasaKerja}}</p>
+        </div>
+
+        <!-- GOLONGAN -->
+        <div class="mb-3">
+          <Label for='golongan'>Golongan</Label>
+          <Input class="w-full" type="text" v-model="form.golongan" id="golongan" name="golongan"></Input>
+        </div>
+
         <!-- DIVISI, LEVEL PENGGUNA -->
         <div class="mb-4 flex space-x-2">
           <div class="w-full">
@@ -292,7 +343,9 @@
               v-model="form.level_pengguna"
             >
               <option value="Staff">Staff</option>
+              <option value="Pengguna">Pengguna</option>
               <option value="Administrator">Administrator</option>
+              <option value="Tidak Aktif">Tidak Aktif (Jika sudah tidak bekerja)</option>
             </select>
           </div>
         </div>
@@ -369,6 +422,7 @@ import Dialog from "@components/Dialog"
 import Input from "@components/Input"
 import InputError from "@components/InputError"
 import Label from "@/Components/Label"
+import Select from "@/Components/Select.vue"
 
 export default {
   components: {
@@ -378,6 +432,7 @@ export default {
     Input,
     InputError,
     Label,
+    Select,
     Link,
   },
   props: {
@@ -433,8 +488,25 @@ export default {
     const remove = () =>
       form.delete(route("master.karyawan.destroy", props.staff.id))
 
+    const calculatedMasaKerja = computed(() => {
+      const now =  new Date(Date.now())
+      const tanggal_sk_awal = new Date(props.staff.tanggal_sk_awal)
+      const timediff = now.getTime() - tanggal_sk_awal.getTime()
+      const daydiff = Math.floor(timediff /  (1000 * 3600 * 24))
+      // const monthdiff = daydiff / 30
+      // const yeardiff = monthdiff / 12
+
+      const num_year = daydiff / 366
+      const num_month = Math.floor((daydiff % 365) / 30)
+      const num_days = Math.floor(daydiff % 365) % 30
+      // return Math.round(daydiff) + " hari, " + Math.round(monthdiff) + " bulan, " + Math.round(yeardiff) + " tahun"
+      return ' total hari ' + Math.round(num_year) + ' Tahun, ' + Math.round(num_month) + ' Bulan, ' + Math.round(num_days) + ' Hari.'
+      // return now
+    })
+    
     return {
       currentRouteName,
+      calculatedMasaKerja,
       form,
       isOpen,
       submit,
