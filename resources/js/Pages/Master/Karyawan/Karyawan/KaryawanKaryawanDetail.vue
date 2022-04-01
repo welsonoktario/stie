@@ -320,6 +320,28 @@
           <Label for='golongan'>Golongan</Label>
           <Input class="w-full" type="text" v-model="form.golongan" id="golongan" name="golongan"></Input>
         </div>
+        
+        <!-- DIVISI, LEVEL PENGGUNA -->
+        <div class="mb-3">
+          <div class="w-full">
+            <Label for="divisi"> Status Karyawan Berdasarkan Fungsinya </Label>
+            <select
+              class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+              id="divisi"
+              v-model="form.staus_berdasarkan_fungsi"
+            >
+              <option value="BAAK">Tenaga Kependidikan - Administrasi</option>
+              <option value="BAAK">Tenaga Kependidikan - P??</option>
+              <option value="BAAK">Tenaga Kependidikan - Arsiparis</option>
+              <option value="BAAK">Tenaga Kependidikan - Teknisi</option>
+              <option value="BAAK">Tenaga Kependidikan - Laboran</option>
+              <option value="BAAK">Tenaga Kependidikan - Humas</option>
+              <option value="BAAK">Penunjang Operasional - Cleaning Service</option>
+              <option value="BAAK">Penunjang Operasional - ???</option>
+
+            </select>
+          </div>
+        </div>
 
         <!-- DIVISI, LEVEL PENGGUNA -->
         <div class="mb-4 flex space-x-2">

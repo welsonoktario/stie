@@ -27,6 +27,10 @@
           <span class="capitalize">{{ row.data.jurusan ?? "-" }}</span>
         </template>
 
+        <template #row(tanggal_masuk)="row">
+          <span class="capitalize">{{ (row.data.tanggal_masuk).split('-')[0] ?? "-" }}</span>
+        </template>
+
         <template #actions="row">
           <Link
             as="button"
@@ -80,6 +84,11 @@ export default {
         label: "Jurusan",
         sortable: true,
       },
+      {
+        key: "tanggal_masuk",
+        label: "Angkatan",
+        sortable: true
+      }
     ]
     return {
       columns,

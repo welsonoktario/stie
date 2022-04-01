@@ -135,7 +135,8 @@ class Mahasiswa extends Model
             $query->where(function ($query) use ($search) {
                 $query->where('npm', 'LIKE', "%$search%")
                     ->orWhere('nama', 'LIKE', "%$search%")
-                    ->orWhere('jurusan', 'LIKE', "%$search%");
+                    ->orWhere('jurusans.nama', 'LIKE', "%$search%")
+                    ->orWhere('tanggal_masuk', 'LIKE', "%$search%");
             });
         })->when($filters['orderBy'] ?? null, function ($query, $orderBy) use (&$filters) {
             $query->orderBy($orderBy, $filters['orderType']);

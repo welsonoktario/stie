@@ -25,17 +25,23 @@ class JadwalController extends Controller
         $tahunAkademiks = TahunAjaran::orderBy('id', 'DESC')->get();
         $jadwals = Jadwal::index();
 
+        
+
         if ($selectedTahunAkademik) {
             $jadwals = $jadwals->where('tahun_ajaran_id', $selectedTahunAkademik);
         } else {
-            $selectedTahunAkademik = $tahunAkademiks[0]->id;
+            $selectedTahunAkademik = $tahunAkademiks->where('aktif', '=', true)->first()->id;
         }
+
+        // dd($selectedTahunAkademik);
 
         $jadwals = $jadwals->filter(Request::only(['query', 'orderBy', 'orderType']))
             ->paginate(Request::get('perPage') ?: 10)
             ->withQueryString();
 
         // dd($selectedTahunAkademik, $jadwals);
+
+        // dd($selectedTahunAkademik);
 
         return Inertia::render(
             'Transaksi/Jadwal/Jadwal',

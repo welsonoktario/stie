@@ -22,13 +22,14 @@ class MahasiswaRegulerController extends Controller
     public function index(Request $request)
     {
         //
-        $mahasiswas = Mahasiswa::select(['mahasiswas.npm','mahasiswas.status_mahasiswa','users.name as nama','jurusans.nama as jurusan'])
+        $mahasiswas = Mahasiswa::select(['mahasiswas.npm','mahasiswas.status_mahasiswa','users.name as nama','jurusans.nama as jurusan', 'mahasiswas.tanggal_masuk'])
             ->doesntHave('mahasiswa_konversi')
             ->join('users','users.id','=','mahasiswas.user_id')
-            ->leftJoin('jurusans','jurusans.id','=','mahasiswas.jurusan_id')
+            ->leftJoin('jurusans', 'jurusans.id', '=', 'mahasiswas.jurusan_id')
             ->filter($request->only(['query', 'orderBy', 'orderType']))
             ->paginate($request->get('perPage') ?: 10)
             ->withQueryString();
+        // dd($mahasiswas);
             // ->withQueryString();
         // ->with(['user','jurusan'])->get();
 
@@ -220,7 +221,7 @@ class MahasiswaRegulerController extends Controller
             $msg = `Gagal menghapus tahun ajaran. Data: $nama $npm. Error: `.$th->getMessage();
             dd($msg, $th);
         }
-        
+
         try {
             $delete = $mahasiswa->user()->delete();
         } catch (\Throwable $th) {
