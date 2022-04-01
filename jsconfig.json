@@ -8,5 +8,5 @@
             "@pages/*": ["resources/js/Pages/*"]
         }
     },
-    "exclude": ["node_modules", "public"]
+    "exclude": ["node_modules", "public", "vendor"]
 }

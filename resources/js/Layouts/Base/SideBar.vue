@@ -257,6 +257,7 @@ export default {
             icon: BookOpenIcon,
             label: "Nilai",
             name: "akademik-nilai",
+            route: "transaksi.nilai.index",
             subMenus: [],
           },
         ],

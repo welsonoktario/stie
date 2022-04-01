@@ -1,11 +1,11 @@
-const path = require("path");
+const path = require("path")
 
 module.exports = {
   output: {
     chunkFilename: "js/[name].js",
   },
   resolve: {
-    extensions: ['.vue'],
+    extensions: [".vue"],
     alias: {
       "@": path.resolve("resources/js"),
       "@components": path.resolve("resources/js/Components"),
@@ -13,4 +13,4 @@ module.exports = {
       "@pages": path.resolve("resources/js/Pages"),
     },
   },
-};
+}
