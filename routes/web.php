@@ -88,13 +88,17 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Transaksi route
     Route::group(['prefix' => 'transaksi', 'as' => 'transaksi.'], function () {
-        Route::get('kurikulum/{kurikulum}/prasyarat', [KurikulumController::class, 'loadPrasyarats'])->name('kurikulum.prasyarat');
+        Route::get('kurikulum/{kurikulum}/prasyarat', [KurikulumController::class, 'loadPrasyarats'])
+            ->name('kurikulum.prasyarat');
 
         Route::get('testing', [TestingController::class, 'index'])->name('testing');
 
         Route::group(['prefix' => 'jadwal', 'as' => 'jadwal.'], function () {
             Route::resource('mahasiswa', JadwalMahasiswaController::class, ['except' => ['store', 'edit', 'show']]);
         });
+
+        Route::get('ujian/{mahasiswa}/print/{ta}', [UjianController::class, 'show'])
+            ->name('ujian.print');
 
         Route::resources([
             'jadwal' => JadwalController::class,

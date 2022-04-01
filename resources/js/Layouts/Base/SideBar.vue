@@ -48,7 +48,13 @@
             <NavLink
               v-else
               :active="activeMenu(menu.name)"
-              :href="menu.route ? route(menu.route) : '#'"
+              :href="
+                menu.route
+                  ? menu.params
+                    ? route(menu.route, menu.params)
+                    : route(menu.route)
+                  : '#'
+              "
               class="text-base"
               as="button"
             >
@@ -64,14 +70,20 @@
                 class="px-3 py-1 rounded-md hover:bg-opacity-30 hover:bg-teal-100 dark:hover:bg-opacity-10"
                 :class="{
                   'bg-teal-100 bg-opacity-30 dark:bg-opacity-10':
-                    route().current(subMenu.route),
+                    route().current(subMenu.name),
                 }"
                 v-for="subMenu in menu.subMenus"
                 :key="subMenu.name"
               >
                 <NavLink
                   as="button"
-                  :href="route(subMenu.route)"
+                  :href="
+                    subMenu.route
+                      ? subMenu.params
+                        ? route(subMenu.route, subMenu.params)
+                        : route(subMenu.route)
+                      : '#'
+                  "
                   :active="route().current(subMenu.route)"
                   class="w-full h-full"
                   >{{ subMenu.label }}</NavLink
@@ -226,7 +238,7 @@ export default {
             icon: CreditCardIcon,
             label: "Keuangan",
             name: "akademik-keuangan",
-            route: 'transaksi.keuangan.index',
+            route: "transaksi.keuangan.index",
             subMenus: [],
           },
           {
@@ -243,12 +255,14 @@ export default {
               {
                 name: "ujian-uts",
                 label: "UTS",
-                route: "login",
+                route: "transaksi.ujian.index",
+                params: { tipe: "UTS" },
               },
               {
                 name: "ujian-uas",
                 label: "UAS",
-                route: "login",
+                route: "transaksi.ujian.index",
+                params: { tipe: "UAS" },
               },
             ],
           },
