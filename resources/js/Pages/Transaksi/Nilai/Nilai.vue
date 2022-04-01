@@ -18,7 +18,7 @@
             v-model="selectedTA"
             @change="onTahunAjaranChange(selectedTA)"
           >
-            <option :value="null" selected>Pilih tahun akademik</option>
+            <option value="-" selected>Pilih tahun akademik</option>
             <option
               v-for="ta in tahunAkademiks"
               :key="ta.id"
