@@ -129,6 +129,14 @@ class Mahasiswa extends Model
             ->leftJoin('status_cicilan', 'status_cicilan.mahasiswa_npm', '=', 'mahasiswas.npm');
     }
 
+    public function scopeIndexUjian($query) {
+        $query->select(['mahasiswas.*', ''])
+            ->join('jadwal_mahasiswa', 'jadwal_mahasiswa.mahasiswa_npm', '=', 'mahasiswas.npm')
+            ->join('jadwals', 'jadwals.id', '=', 'jadwal_mahasiswa.jadwal_id')
+            ->join('matakuliahs', 'matakuliahs.id', '=', 'jadwals.matakuliah_id')
+            ->join('tahun_ajarans', 'tahun_ajarans.id', '=', 'jadwals.tahun_ajaran_id');
+    }
+
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['query'] ?? null, function ($query, $search) {

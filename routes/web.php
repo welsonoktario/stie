@@ -26,6 +26,7 @@ use App\Http\Controllers\Transaksi\Jadwal\JadwalMahasiswaController;
 
 use App\Http\Controllers\Transaksi\Keuangan\KeuanganController;
 use App\Http\Controllers\Transaksi\Nilai\NilaiController;
+use App\Http\Controllers\Transaksi\Ujian\UjianController;
 
 // use App\Models\TahunAjaran;
 
@@ -98,11 +99,13 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resources([
             'jadwal' => JadwalController::class,
             'keuangan' => KeuanganController::class,
-            'nilai' => NilaiController::class
+            'nilai' => NilaiController::class,
+            'ujian' => UjianController::class,
         ], [
             'except' => 'show',
             'parameters' => [
-                'nilai' => 'mahasiswa'
+                'nilai' => 'mahasiswa',
+                'ujian' => 'mahasiswa'
             ]
         ]);
     });
