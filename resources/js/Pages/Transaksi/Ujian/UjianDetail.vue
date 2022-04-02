@@ -28,33 +28,51 @@
       {{ header }}
     </h1>
 
-    <table class="table-auto mx-auto mt-8 col-span-2 font-mono">
+    <!-- <table class="table-auto mx-auto mt-8 col-span-2 font-mono">
       <tbody>
         <tr>
-          <td>NPM</td>
+          <td class="text-right">NPM</td>
           <td class="pl-2 pr-4">:</td>
           <td>{{ mahasiswa.npm }}</td>
         </tr>
         <tr>
-          <td>Nama Mahasiswa</td>
+          <td class="text-right">Nama Mahasiswa</td>
           <td class="pl-2 pr-4">:</td>
           <td class="uppercase">{{ mahasiswa.user.name }}</td>
         </tr>
         <tr>
-          <td>Tempat/Tgl.Lahir</td>
+          <td class="text-right">Tempat/Tgl.Lahir</td>
           <td class="pl-2 pr-4">:</td>
           <td class="uppercase">{{ ttl }}</td>
         </tr>
         <tr>
-          <td>Program Studi/Jenjang</td>
+          <td class="text-right">Program Studi/Jenjang</td>
           <td class="pl-2 pr-4">:</td>
           <td>{{ jenjang }}</td>
         </tr>
       </tbody>
-    </table>
+    </table> -->
+
+    <div class="grid grid-flow-row grid-cols-12 col-span-2 mt-8 mx-auto gap-0 text-sm">
+      <div class="text-right mt-auto col-span-6">NPM</div>
+      <div class="pl-2 pr-4">:</div>
+      <div class="col-span-5">{{ mahasiswa.npm }}</div>
+
+      <div class="text-right col-span-6">Nama Mahasiswa</div>
+      <div class="pl-2 pr-4">:</div>
+      <div class="uppercase col-span-5">{{ mahasiswa.user.name }}</div>
+
+      <div class="text-right col-span-6">Tempat/Tgl.Lahir</div>
+      <div class="pl-2 pr-4">:</div>
+      <div class="uppercase col-span-5">{{ ttl }}</div>
+
+      <div class="text-right col-span-6">Program Studi/Jenjang</div>
+      <div class="pl-2 pr-4">:</div>
+      <div class="col-span-5">{{ jenjang }}</div>
+    </div>
 
     <table
-      class="table-auto border-collapse border border-black w-full mx-auto mt-8 col-span-2 font-mono"
+      class="table-auto border-collapse border border-black w-full mx-auto mt-8 col-span-2 font-mono text-xs"
     >
       <thead>
         <tr>
@@ -96,9 +114,10 @@
       </tbody>
     </table>
 
-    <div class="col-start-2 mt-4 mr-8">
-      <p>Tarakan, {{ tanggal }}</p>
-      <p>Wakil Ketua I,</p>
+    <div class="col-start-2 mt-4 mr-8 text-sm">
+      <div>Tarakan, {{ tanggal }}</div>
+      <div>Wakil Ketua I,</div>
+      <br />
       <br />
       <br />
       <br />
@@ -119,7 +138,7 @@ const props = defineProps({
 
 onMounted(() => {
   document.title = pdfName.value
-  window.print()
+  // window.print()
 })
 
 const pdfName = computed(
@@ -166,10 +185,10 @@ const tanggal = computed(() => {
   min-height: 29.7cm;
 
   /* Reflect the actual page margin/padding on paper in the screen rendering (must match margin from @page rule) */
-  padding-left: 2cm;
-  padding-top: 2cm;
-  padding-right: 2cm;
-  padding-bottom: 2cm;
+  padding-left: 1cm;
+  padding-top: 1cm;
+  padding-right: 1cm;
+  padding-bottom: 1cm;
 }
 /* Use CSS Paged Media to switch from continuous documents to sheet-like documents with separate pages */
 @page {
@@ -179,9 +198,9 @@ const tanggal = computed(() => {
   size: A4 portrait;
 
   /* Margin per single side of the page */
-  margin-left: 2cm;
-  margin-top: 2cm;
-  margin-right: 2cm;
-  margin-bottom: 2cm;
+  margin-left: 1cm;
+  margin-top: 1cm;
+  margin-right: 1cm;
+  margin-bottom: 1cm;
 }
 </style>
