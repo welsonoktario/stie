@@ -25,7 +25,7 @@
         <div class="mb-4 flex space-x-2">
           <div class="w-full">
             <Label for="id">
-              ID Karyawan <em> (Nomor Induk Karyawan)</em>
+              ID Karyawan <em> (Nomor Induk Karyawan)</em> <span class="text-red-500">*</span>
             </Label>
             <Input
               v-model="form.id"
@@ -55,7 +55,9 @@
         <!-- NAMA, NIK-->
         <div class="mb-4 flex space-x-2">
           <div class="w-full">
-            <Label for="nama"> Nama </Label>
+            <Label for="nama"> Nama
+              <span class="text-red-500">*</span>
+            </Label>
             <Input
               v-model="form.name"
               id="nama"
@@ -84,7 +86,9 @@
         <!-- EMAIL, JENIS KELAMIN -->
         <div class="mb-4 flex space-x-2">
           <div class="w-full">
-            <Label for="email"> Email </Label>
+            <Label for="email"> Email
+              <span class="text-red-500">*</span>
+            </Label>
             <Input
               v-model="form.email"
               id="email"
@@ -218,9 +222,9 @@
           </div>
         </div>
 
-        
+
         <!-- Provinsi -->
-        <div class="flex space-x-3 mb-3">            
+        <div class="flex space-x-3 mb-3">
           <div class="w-full">
             <Label for="provinsi"> Provinsi </Label>
             <Select
@@ -311,7 +315,8 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3"
+        v-if="currentRouteName.route != 'Tambah'">
           <p>Masa Kerja: {{calculatedMasaKerja}}</p>
         </div>
 
@@ -320,7 +325,7 @@
           <Label for='golongan'>Golongan</Label>
           <Input class="w-full" type="text" v-model="form.golongan" id="golongan" name="golongan"></Input>
         </div>
-        
+
         <!-- DIVISI, LEVEL PENGGUNA -->
         <div class="mb-3">
           <div class="w-full">
@@ -328,16 +333,16 @@
             <select
               class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
               id="divisi"
-              v-model="form.staus_berdasarkan_fungsi"
+              v-model="form.status_berdasarkan_fungsi"
             >
-              <option value="BAAK">Tenaga Kependidikan - Administrasi</option>
-              <option value="BAAK">Tenaga Kependidikan - P??</option>
-              <option value="BAAK">Tenaga Kependidikan - Arsiparis</option>
-              <option value="BAAK">Tenaga Kependidikan - Teknisi</option>
-              <option value="BAAK">Tenaga Kependidikan - Laboran</option>
-              <option value="BAAK">Tenaga Kependidikan - Humas</option>
-              <option value="BAAK">Penunjang Operasional - Cleaning Service</option>
-              <option value="BAAK">Penunjang Operasional - ???</option>
+              <option value="Tenaga Kependidikan - Administrasi">Tenaga Kependidikan - Administrasi</option>
+              <option value="Tenaga Kependidikan - Pustakawan">Tenaga Kependidikan - Pustakawan</option>
+              <option value="Tenaga Kependidikan - Arsiparis">Tenaga Kependidikan - Arsiparis</option>
+              <option value="Tenaga Kependidikan - Teknisi">Tenaga Kependidikan - Teknisi</option>
+              <option value="Tenaga Kependidikan - Laboran">Tenaga Kependidikan - Laboran</option>
+              <option value="Tenaga Kependidikan - Humas">Tenaga Kependidikan - Humas</option>
+              <option value="Tenaga Penunjang Akademik - Cleaning Service">Tenaga Penunjang Akademik - Cleaning Service</option>
+              <option value="Tenaga Penunjang Akademik - Satpam/Waker">Tenaga Penunjang Akademik - Satpam/Waker</option>
 
             </select>
           </div>
@@ -473,6 +478,9 @@ export default {
       tanggal_lahir: props.staff?.user.tanggal_lahir || null,
       jalan: props.staff?.user.jalan || null,
       kelurahan: props.staff?.user.kelurahan || null,
+      kecamatan: props.staff?.user.kecamatan || null,
+      kota: props.staff?.user.kota || null,
+      provinsi: props.staff?.user.provinsi || null,
       kode_pos: props.staff?.user.kode_pos || null,
       kewarganegaraan: props.staff?.user.kewarganegaraan || "WNI",
 
@@ -489,6 +497,8 @@ export default {
       nomor_sk_akhir: props.staff?.nomor_sk_akhir || null,
       tanggal_sk_akhir: props.staff?.tanggal_sk_akhir || null,
       status_karyawan: props.staff?.status_karyawan || "Aktif",
+      status_berdasarkan_fungsi: props.staff?.status_berdasarkan_fungsi || "-",
+      golongan: props.staff?.golongan || null,
 
       // data tenaga kependidikan
       nitk: props.staff?.tenaga_kependidikan?.id,
@@ -511,6 +521,11 @@ export default {
       form.delete(route("master.karyawan.destroy", props.staff.id))
 
     const calculatedMasaKerja = computed(() => {
+
+      if (props.staff.tanggal_sk_awal == null) {
+        return 0
+      }
+
       const now =  new Date(Date.now())
       const tanggal_sk_awal = new Date(props.staff.tanggal_sk_awal)
       const timediff = now.getTime() - tanggal_sk_awal.getTime()
@@ -525,7 +540,7 @@ export default {
       return ' total hari ' + Math.round(num_year) + ' Tahun, ' + Math.round(num_month) + ' Bulan, ' + Math.round(num_days) + ' Hari.'
       // return now
     })
-    
+
     return {
       currentRouteName,
       calculatedMasaKerja,

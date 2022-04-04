@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Master\Akademik\JabatanStruktural;
+use App\Http\Controllers\Master\Akademik\JabatanStrukturalController;
 use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
@@ -73,6 +75,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resources([
             'karyawan' => KaryawanController::class,
             'jurusan' => JurusanController::class,
+            'jabatan-struktural' => JabatanStrukturalController::class,
             'tahun-ajaran' => TahunAjaranController::class,
             'ruangan' => RuanganController::class,
             'kurikulum' => KurikulumController::class,

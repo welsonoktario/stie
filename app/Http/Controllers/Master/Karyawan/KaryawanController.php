@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use App\Models\Staff;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\JabatanStruktural;
 use Illuminate\Support\Facades\Hash;
 use Throwable;
 
@@ -95,33 +96,6 @@ class KaryawanController extends Controller
             return redirect('master/karyawan')->with($header);
         }
         return redirect()->back()->with($header);
-
-
-        // $name = $request->name;
-        // $email = $request->email;
-        // $nik = $request->nik;
-        // $id = $request->id;
-
-
-        // $user = new User();
-        // $user->name = $name;
-        // $user->email = $email;
-        // $user->nik = $nik;
-        // $user->password = Hash::make('12345678');
-        // $user_completed = $user->save();
-
-        // if ($user_completed) {
-        //     $karyawan = new Staff;
-        //     $karyawan->id = $id;
-        //     $karyawan->user()->associate($user);
-        //     $karyawan_completed = $karyawan->save();
-        //     if ($karyawan_completed) {
-        //         return redirect()->route('master.karyawan.index');
-        //     }
-        // }
-        // $user->delete();
-        // dd($name,$email,$nik,$status);
-
     }
 
     /**
@@ -132,6 +106,8 @@ class KaryawanController extends Controller
      */
     public function edit($id)
     {
+        // $jabatan = JabatanStruktural::all();
+        // dd($jabatan->first()->staff);/
         $staff = Staff::where('id', '=', $id)->with(['user','tenaga_kependidikan'])->get()->first();
         // dd($staff, $id);
         // dd($staff->tenaga_kependidikan->id);

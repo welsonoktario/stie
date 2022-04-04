@@ -27,6 +27,8 @@ class Staff extends Model
         'tanggal_sk_awal',
         'nomor_sk_akhir',
         'tanggal_sk_akhir',
+        'golongan',
+        'status_berdasarkan_fungsi'
     ];
 
     public function user()
@@ -37,6 +39,11 @@ class Staff extends Model
     public function dosen()
     {
         return $this->hasOne(Dosen::class, 'staff_id', 'id');
+    }
+
+    public function jabatan_struktural()
+    {
+        return $this->hasOne(JabatanStruktural::class, 'staff_id', 'id');
     }
 
     public function tenaga_kependidikan()
