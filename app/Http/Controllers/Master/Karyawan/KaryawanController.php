@@ -86,22 +86,22 @@ class KaryawanController extends Controller
             $status = 'FAIL';
             $msg = 'Gagal menambahkan data user. Error '.$th->getMessage();
             dd($msg, $th);
-            
+
         }
 
-        
+
         $header = ['status' => $status, 'msg' => $msg];
         if ($status != 'FAIL'){
             return redirect('master/karyawan')->with($header);
         }
         return redirect()->back()->with($header);
 
-        
+
         // $name = $request->name;
         // $email = $request->email;
         // $nik = $request->nik;
         // $id = $request->id;
-        
+
 
         // $user = new User();
         // $user->name = $name;
@@ -162,7 +162,7 @@ class KaryawanController extends Controller
                 $key = array_keys($user->staff->toArray());
                 $staff_old = $user->staff->toArray();
                 $user->staff()->update($request->only(($key)));
-                
+
                 if($staff_old['id'] != $request['id'])
                     $user = User::findOrFail($staff_old['user_id']);
 
@@ -179,7 +179,7 @@ class KaryawanController extends Controller
                     } catch (\Throwable $th) {
                         $msg = 'Gagal menambahkan id tenaga kependidikan. Error: '.$th->getMessage();
                         $status = 'FAIL';
-                        
+
                         // dd('disini', $msg);
                         $user->update($user_old);
                         $user->staff()->update($staff_old);

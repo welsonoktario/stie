@@ -29,8 +29,9 @@ class CreateJadwalsTable extends Migration
             // $table->unsignedBigInteger('tahun_ajaran_id');
             // $table->foreign('tahun_ajaran_id')->references('id')->on('tahun_ajarans');
             $table->foreignId('tahun_ajaran_id')->constrained();
-            
+
             $table->string('local', 1)->nullable();
+            $table->integer('kapasitas')->nullable();
             $table->timestamps();
         });
     }

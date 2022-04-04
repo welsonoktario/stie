@@ -25,7 +25,7 @@ class JadwalController extends Controller
         $tahunAkademiks = TahunAjaran::orderBy('id', 'DESC')->get();
         $jadwals = Jadwal::index();
 
-        
+
 
         if ($selectedTahunAkademik) {
             $jadwals = $jadwals->where('tahun_ajaran_id', $selectedTahunAkademik);

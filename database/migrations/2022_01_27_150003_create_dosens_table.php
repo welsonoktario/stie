@@ -16,7 +16,7 @@ class CreateDosensTable extends Migration
         Schema::create('dosens', function (Blueprint $table) {
             $table->string('id', 20);
             $table->primary('id');
-            
+
             $table->string('staff_id', 45);
             $table->foreign('staff_id')->references('id')->on('staffs')->onDelete('cascade')->onUpdate('cascade');
 
@@ -25,7 +25,7 @@ class CreateDosensTable extends Migration
             $table->unsignedBigInteger('jurusan_id')->nullable();
             $table->foreign('jurusan_id')->references('id')->on('jurusans');
 
-            $table->enum('jabatan_akademik',['Tenaga Pengajar', 'Asisten Ahli', 'Lektor']);
+            $table->enum('jabatan_akademik',['Tenaga Pengajar', 'Asisten Ahli', 'Lektor', 'Lektor Kepala', 'Guru Besar']);
             $table->enum('tipe_dosen',['Dosen Tetap', 'Dosen Khusus']);
             $table->string('konsentrasi');
             $table->timestamps();

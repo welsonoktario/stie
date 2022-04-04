@@ -5,13 +5,60 @@
     >
       <p class="text-xs md:text-sm">Jadwal / Mahasiswa / Daftar Mahasiswa</p>
 
+      <div class="mb-3">
+        <strong
+          class="whitespace-nowrap align-middle text-sm md:text-lg content-middle"
+          >Detail Jadwal Mahasiswa</strong
+        >
+
+      </div>
+
+      <div class="flex space-x-3 mb-3">
+        <div class="w-full">
+          <Label for="nama"> Kode Matakuliah </Label>
+          <Input
+            v-model="jadwal.matakuliah.kode_matakuliah"
+            name="nama"
+            class="mt-1 block w-full"
+            type="text"
+            disabled
+          ></Input>
+        </div>
+        <div class="w-full">
+          <Label for="nama"> Matakuliah </Label>
+          <Input
+            v-model="jadwal.matakuliah.nama_matakuliah"
+            name="nama"
+            class="mt-1 block w-full"
+            type="text"
+            disabled
+          ></Input>
+        </div>
+      </div>
+
+      <div class="flex space-x-3 mb-3">
+        <div class="w-full">
+          <Label for="nama"> Lokal </Label>
+          <Input
+            v-model="jadwal.local"
+            name="nama"
+            class="mt-1 block w-full"
+            type="text"
+            disabled
+          ></Input>
+        </div>
+        <div class="w-full">
+          <Label for="nama"> Matakuliah </Label>
+          <Input class="mt-1 block w-full" type="text" :value="tahunAkademik.tahun_ajaran" readonly />
+        </div>
+      </div>
+
       <div class="inline-flex justify-between my-3 w-full items-center">
         <div>
           <strong
             class="whitespace-nowrap align-middle text-sm md:text-lg content-middle"
             >Daftar Mahasiswa</strong
           >
-          <Input class="ml-2" type="text" :value="tahunAkademik.tahun_ajaran" readonly />
         </div>
 
         <Button type="button" @click="openDialogTambah">
@@ -88,6 +135,7 @@ import Button from "@components/Button"
 import Input from "@components/Input"
 import NavLink from "@/Components/NavLink"
 import Select from "@components/Select"
+import Label from "@/Components/Label.vue"
 import { CheckIcon, XIcon, TrashIcon } from "@heroicons/vue/outline"
 import { ref } from "vue"
 import { Inertia } from "@inertiajs/inertia"
@@ -95,7 +143,7 @@ import { Inertia } from "@inertiajs/inertia"
 const props = defineProps({
   mahasiswas: Object,
   tahunAkademik: Object,
-  jadwal: Number,
+  jadwal: Object,
 })
 
 const columns = [
@@ -144,14 +192,14 @@ const openDialogTambah = () => {
 
 const tambah = () =>
   Inertia.put(
-    route("transaksi.jadwal.mahasiswa.update", props.jadwal),
+    route("transaksi.jadwal.mahasiswa.update", props.jadwal.id),
     {
-      jadwal_id: props.jadwal,
+      jadwal_id: props.jadwal.id,
       mahasiswa_npm: selectedMahasiswa.value,
       ta: props.tahunAkademik.id,
     },
     {
-      onSuccess: (page) => 
+      onSuccess: (page) =>
         (isDialogTambahOpen.value = !isDialogTambahOpen.value),
     }
   )
@@ -166,7 +214,7 @@ const remove = () =>
     route("transaksi.jadwal.mahasiswa.destroy", selectedMahasiswaDelete.value),
     {
       data: {
-        jadwal_id: props.jadwal,
+        jadwal_id: props.jadwal.id,
         mahasiswa_npm: selectedMahasiswaDelete.value,
         ta: props.tahunAkademik.id,
       },

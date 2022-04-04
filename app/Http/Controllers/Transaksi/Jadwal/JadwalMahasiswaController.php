@@ -22,12 +22,12 @@ class JadwalMahasiswaController extends Controller
      */
     public function index()
     {
-        $jadwal = (int) Request::get('jadwal');
+        $jadwal = Jadwal::with('matakuliah')->find(Request::get('jadwal'));
         $tahunAkademik = TahunAjaran::find(Request::get('ta'));
 
         $mahasiswas = Mahasiswa::indexJadwal()
             ->whereHas('jadwals', function ($q) use ($jadwal) {
-                return $q->where('id', $jadwal);
+                return $q->where('id', $jadwal->id);
             })
             ->filter(Request::only(['query', 'orderBy', 'orderType']))
             ->paginate(Request::get('perPage') ?: 10)

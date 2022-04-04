@@ -56,9 +56,14 @@ class CreateMahasiswasTable extends Migration
             $table->string('pekerjaan_ibu', 45)->nullable();
             $table->string('penghasilan_ibu', 30)->nullable();
 
-            $table->integer('uang_semester')->default(4000000)->nullable();
             $table->enum('status_mahasiswa', ['Aktif', 'Tidak Aktif', 'Lulus', 'Hilang', 'Cuti'])->default('Aktif');
 
+            // keuangan
+            $table->integer('uang_semester')->default(4000000)->nullable();
+            $table->integer('k_dpp')->nullable();
+            $table->integer('k_praktikum')->nullable();
+            $table->integer('k_almamater')->nullable();
+            $table->integer('k_biaya_konversi')->nullable();
             $table->timestamps();
         });
     }
