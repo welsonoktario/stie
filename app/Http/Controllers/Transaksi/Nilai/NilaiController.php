@@ -23,7 +23,7 @@ class NilaiController extends Controller
         $selectedTahunAkademik = (int) Request::get('ta');
         $tahunAkademiks = TahunAjaran::orderBy('id', 'DESC')->get();
         $mahasiswas = Mahasiswa::select(['mahasiswas.npm', 'mahasiswas.status_mahasiswa', 'users.name as nama', 'jurusans.nama as jurusan'])
-            ->doesntHave('mahasiswa_konversi')
+            // ->doesntHave('mahasiswa_konversi')
             ->join('users', 'users.id', '=', 'mahasiswas.user_id')
             ->leftJoin('jurusans', 'jurusans.id', '=', 'mahasiswas.jurusan_id')
             ->when($selectedTahunAkademik, function ($query, $selectedTahunAkademik) {

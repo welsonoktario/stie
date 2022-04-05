@@ -170,7 +170,7 @@
             </option>
           </select>
         </div>
-        
+
         <!-- TTL, Jenis Kelamin -->
         <div class="mb-4">
           <div class="flex space-x-4">
@@ -278,6 +278,47 @@
           </div>
         </div>
 
+
+        <!-- Provinsi -->
+        <div class="flex space-x-3 mb-3">
+          <div class="w-full">
+            <Label for="provinsi"> Provinsi </Label>
+            <Select
+              class="w-full"
+              :options="provinsis"
+              :name="'provinsi'"
+              :placeholder="'Pilih provinsi'"
+              v-model="form.provinsi"
+            >
+              <template #option="option">
+                <option :value="option.data">
+                  {{ option.data }}
+                </option>
+              </template>
+            </Select>
+            <!-- <InputError class="mt-2" :message="form.errors.ruangan_id" /> -->
+          </div>
+
+          <!-- Kabupaten/Kota -->
+          <div class="w-full">
+            <Label for="kota"> Kabupaten/Kota </Label>
+            <Select
+              class="w-full"
+              :options="kotas"
+              :name="'kota'"
+              :placeholder="'Pilih kota'"
+              v-model="form.kota"
+            >
+              <template #option="option">
+                <option :value="option.data">
+                  {{ option.data }}
+                </option>
+              </template>
+            </Select>
+            <!-- <InputError class="mt-2" :message="form.errors.ruangan_id" /> -->
+          </div>
+        </div>
+
         <!-- nomor hp -->
         <div class="mb-4">
           <Label for="nomor_hp"> Nomor HP </Label>
@@ -333,7 +374,7 @@
 
         <!-- Data riwayat status kuliah -->
         <div class="mb-4 w-full"
-          v-if="currentRouteName == 'Edit'">  
+          v-if="currentRouteName == 'Edit'">
           <table class="table-auto w-full">
             <thead>
               <tr>
@@ -607,6 +648,7 @@ import Button from "@components/Button"
 import Label from "@components/Label"
 import NavLink from "@/Components/NavLink"
 import Checkbox from "@/Components/Checkbox.vue"
+import Select from '@/Components/Select.vue'
 
 import { Link } from "@inertiajs/inertia-vue3"
 
@@ -616,6 +658,7 @@ import { Inertia } from "@inertiajs/inertia"
 export default {
   components: {
     AppLayout,
+    Select,
     Link,
     Checkbox,
     NavLink,
@@ -652,6 +695,8 @@ export default {
       tanggal_lahir: props.mahasiswa?.user.tanggal_lahir || null,
       jalan: props.mahasiswa?.user.jalan || null,
       kelurahan: props.mahasiswa?.user.kelurahan || null,
+      provinsi: props.mahasiswa?.user.provinsi || null,
+      kota: props.mahasiswa?.user.kota || null,
       kode_pos: props.mahasiswa?.user.kode_pos || null,
       kewarganegaraan: props.mahasiswa?.user.kewarganegaraan || "WNI",
 
@@ -727,9 +772,14 @@ export default {
     )
 
 
-    
+    const kotas = ['Tarakan']
+
+    const provinsis = ['Kalimantan Utara']
+
     return {
       form,
+      kotas,
+      provinsis,
       submit,
       remove,
       currentRouteName,

@@ -72,7 +72,7 @@
 
           <div class="mb-3 w-full">
             <label class="block text-gray-500 text-sm font-bold mb-2" for="email">
-              Email
+              Email <span class="text-red-500">*</span>
             </label>
             <Input
               v-model="form.email"
@@ -80,9 +80,12 @@
               id="email"
               type="text"
               placeholder="Email"
+              required
             ></Input>
           </div>
         </div>
+
+
 
 
         <!-- Data konversi -->
@@ -351,6 +354,48 @@
             ></Input>
           </div>
         </div>
+
+
+        <!-- Provinsi -->
+        <div class="flex space-x-3 mb-3">
+          <div class="w-full">
+            <Label for="provinsi"> Provinsi </Label>
+            <Select
+              class="w-full"
+              :options="provinsis"
+              :name="'provinsi'"
+              :placeholder="'Pilih provinsi'"
+              v-model="form.provinsi"
+            >
+              <template #option="option">
+                <option :value="option.data">
+                  {{ option.data }}
+                </option>
+              </template>
+            </Select>
+            <!-- <InputError class="mt-2" :message="form.errors.ruangan_id" /> -->
+          </div>
+
+          <!-- Kabupaten/Kota -->
+          <div class="w-full">
+            <Label for="kota"> Kabupaten/Kota </Label>
+            <Select
+              class="w-full"
+              :options="kotas"
+              :name="'kota'"
+              :placeholder="'Pilih kota'"
+              v-model="form.kota"
+            >
+              <template #option="option">
+                <option :value="option.data">
+                  {{ option.data }}
+                </option>
+              </template>
+            </Select>
+            <!-- <InputError class="mt-2" :message="form.errors.ruangan_id" /> -->
+          </div>
+        </div>
+
 
         <!-- nomor hp -->
         <div class="mb-3">
@@ -690,6 +735,7 @@ import Input from "@components/Input.vue"
 import Button from "@components/Button.vue"
 import Checkbox from "@/Components/Checkbox.vue"
 import ModalInput from "@/Components/ModalInput.vue"
+import Select from "@/Components/Select.vue"
 
 import { Link } from "@inertiajs/inertia-vue3"
 
@@ -705,6 +751,7 @@ import {
 export default {
   components: {
     AppLayout,
+    Select,
     Link,
     Input,
     Button,
@@ -749,8 +796,11 @@ export default {
       tanggal_lahir: props.mahasiswa?.user.tanggal_lahir || null,
       jalan: props.mahasiswa?.user.jalan || null,
       kelurahan: props.mahasiswa?.user.kelurahan || null,
+      kecamatan: props.mahasiswa?.user.kecamatan || null,
       kode_pos: props.mahasiswa?.user.kode_pos || null,
       kewarganegaraan: props.mahasiswa?.user.kewarganegaraan || 'WNI',
+      provinsi: props.mahasiswa?.user.provinsi || null,
+      kota: props.mahasiswa?.user.kota || null,
 
       // mahasiswa data
       npm: props.mahasiswa == null ? null : props.mahasiswa.npm,
@@ -819,7 +869,15 @@ export default {
       route().current('master.mahasiswa-konversi.create') ? 'Tambah' : 'Edit'
     )
 
+
+    const kotas = ['Tarakan']
+
+    const provinsis = ['Kalimantan Utara']
+
+
     return {
+      kotas,
+      provinsis,
       showModalMatakuliah,
       form,
       submit,
