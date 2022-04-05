@@ -168,7 +168,7 @@ export default {
               {
                 name: "akademik-jabatan",
                 label: "Jabatan Struktural",
-                route: "master.jurusan.index",
+                route: "master.jabatan-struktural.index",
               },
               {
                 name: "akademik-tahun-ajaran",
