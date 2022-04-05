@@ -23,7 +23,7 @@ class MahasiswaKonversiController extends Controller
      */
     public function index(Request $request)
     {
-        
+
         $mahasiswas = Mahasiswa::select(['mahasiswas.npm','mahasiswas.status_mahasiswa','users.name as nama','jurusans.nama as jurusan'])
             ->has('mahasiswa_konversi')
             ->join('users','users.id','=','mahasiswas.user_id')
@@ -31,7 +31,7 @@ class MahasiswaKonversiController extends Controller
             ->filter($request->only(['query', 'orderBy', 'orderType']))
             ->paginate($request->get('perPage') ?: 10)
             ->withQueryString();
-            
+
         return Inertia::render('Master/Mahasiswa/Konversi/MahasiswaKonversi',[
             'mahasiswas' => $mahasiswas,
         ]);
@@ -65,14 +65,14 @@ class MahasiswaKonversiController extends Controller
         $request['dosen_id'] = $request['dosen_id'] != '-' ? $request['dosen_id']: null;
         $msg = 'Berhasil menambahkan data';
         $status = 'OK';
-        
+
         try {
             $user = User::create($request->all());
             try {
                 $user->mahasiswa()->create($request->all());
                 try {
                     $user->mahasiswa->mahasiswa_konversi()->create($request->all());
-                    
+
                     // assign ke tahun akademik (dari tanggal masuk sampai thn terakhir)
                     $tm = $request['tanggal_masuk'];
                     $tas = TahunAjaran::where('tanggal_selesai', '>', $tm)->get();
@@ -83,7 +83,7 @@ class MahasiswaKonversiController extends Controller
                     }
                     // $user->mahasiswa->tahun_ajaran()->attach($ta->id, ['status' => 'Aktif']);
                     $user->mahasiswa->tahun_ajaran()->sync($sync_ta);
-                    
+
                 } catch (\Throwable $th) {
                     $user->delete();
                     $msg = 'Gagal menambahkan mahasiswa konversi. Error: '. $th->getMessage();
@@ -101,7 +101,7 @@ class MahasiswaKonversiController extends Controller
             $status = 'FAIL';
             dd($msg, $status);
         }
-        
+
         $header = ['status' => $status, 'msg' => $msg];
         if ($status != 'FAIL'){
             return redirect('master/mahasiswa-konversi')->with($header);
@@ -153,7 +153,7 @@ class MahasiswaKonversiController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {        
+    {
         $request['password'] = Hash::make('12345678');
         $msg = 'Berhasil menyimpan data';
         $status = 'OK';
@@ -168,6 +168,8 @@ class MahasiswaKonversiController extends Controller
                 $request['dosen_id'] = $request['dosen_id'] != '-' ? $request['dosen_id']: null;
                 $mahasiswa_old = $user->mahasiswa->getOriginal();
                 $key = array_keys($user->mahasiswa->toArray());
+                // dd($mahasiswa_old['npm'], $request['npm']);
+
                 $user->mahasiswa()->update($request->only($key));
                 try {
                     if($mahasiswa_old['npm'] != $request['npm'])
@@ -175,6 +177,7 @@ class MahasiswaKonversiController extends Controller
                         // dari model sebelumnya
                         $npm_dirty = true;
                         $user = User::findOrFail($request->id);
+                        // dd($mahasiswa_old['npm'], $request['npm']);
                     $key = array_keys($user->mahasiswa->mahasiswa_konversi->toArray());
                     unset($key[0]);
                     $user->mahasiswa->mahasiswa_konversi()->update($request->only($key));
@@ -184,14 +187,14 @@ class MahasiswaKonversiController extends Controller
                         $ta_mahasiswa = $user->mahasiswa->tahun_ajaran();
                         $updated_data_ta = [];
                         $request_ta = $request->tahun_ajaran;
-    
+
                         foreach ($request_ta as $ta) {
                             $updated_data_ta[$ta['id']] = ['status' => $ta['pivot']['status']];
                         }
-                        
+
                         // dd($updated_data_ta);
                         $ta_mahasiswa->sync($updated_data_ta, false);
-    
+
                     } catch (\Throwable $th) {
                         // throw $th;
                         dd($th->getMessage());
@@ -217,14 +220,15 @@ class MahasiswaKonversiController extends Controller
             $status = 'FAIL';
             dd($msg, $status);
         }
-        
+
         $header = ['status' => $status, 'msg' => $msg];
-        if ($status != 'FAIL'){
-            return redirect('master/mahasiswa-konversi')->with($header);
-        }
-        if(!$npm_dirty){
-            return redirect()->back()->with($header);
-        }
+        // if ($status != 'FAIL'){
+            // return redirect('master/mahasiswa-konversi')->with($header);
+        return redirect()->route('master.mahasiswa-konversi.edit', $request['npm'])->with($header);
+        // }
+        // if(!$npm_dirty){
+        //     return redirect()->back()->with($header);
+        // }
         // return redirect()->route('master.mahasiswa-konversi.show', $request['npm'])
         //     ->with($header);
     }
@@ -238,7 +242,7 @@ class MahasiswaKonversiController extends Controller
     public function destroy($id)
     {
         $mahasiswa = Mahasiswa::where('npm','=',$id)->first();
-        
+
         $nama = $mahasiswa->user->nama;
         $npm = $mahasiswa->npm;
         $msg = "Berhasil menghapus mahasiswa konversi. Data: $nama $npm";

@@ -26,6 +26,9 @@ class CreateStaffsTable extends Migration
             $table->string('gelar_belakang', 45)->nullable();
             $table->enum('status_karyawan',['Aktif','Keluar'])->default('Aktif')->nullable();
             $table->enum('status_berdasarkan_fungsi', [
+                'Dosen - Dosen Tetap',
+                'Dosen - Dosen Tidak Tetap',
+                'Dosen - Dosen Tamu',
                 'Tenaga Kependidikan - Administrasi',
                 'Tenaga Kependidikan - Pustakawan',
                 'Tenaga Kependidikan - Arsiparis',

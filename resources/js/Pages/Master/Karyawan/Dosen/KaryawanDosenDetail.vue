@@ -52,7 +52,7 @@
               name="ID Dosen"
               id="id_dosen"
               type="text"
-              placeholder="id_dosen"
+              placeholder="ID Dosen"
               required
             ></Input>
           </div>
@@ -118,20 +118,23 @@
             ></Input>
           </div>
           <div class="w-full">
-            <label
+            <Label
               class="block text-gray-500 text-sm font-bold mb-2"
               for="jenis_kelamin"
             >
               Jenis Kelamin
-            </label>
-            <select
-              class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
-              id="jenis_kelamin"
+            </Label>
+            <Select
+              class="w-full"
+              :options="['Laki-laki','Perempuan']"
+              :name="'jenis_kelamin'"
+
               v-model="form.jenis_kelamin"
             >
-              <option value="Laki-laki">Laki-laki</option>
-              <option value="Perempuan">Perempuan</option>
-            </select>
+              <template #option="option">
+                <option :value="option.data">{{option.data}}</option>
+              </template>
+            </Select>
           </div>
         </div>
 
@@ -144,6 +147,7 @@
             id="jabatan_akademik"
             v-model="form.jabatan_akademik"
           >
+            <option value="null">-</option>
             <option value="Tenaga Pengajar">Tenaga Pengajar</option>
             <option value="Asisten Ahli">Asisten Ahli</option>
             <option value="Lektor">Lektor</option>
@@ -309,11 +313,11 @@
               :placeholder="'Pilih provinsi'"
               v-model="form.provinsi"
             >
-              <!-- <template #option="option">
-                <option :value="Number(option.data.id)">
-                  {{ option.data.nama_ruangan }}
+              <template #option="option">
+                <option :value="option.data">
+                  {{ option.data }}
                 </option>
-              </template> -->
+              </template>
             </Select>
             <!-- <InputError class="mt-2" :message="form.errors.ruangan_id" /> -->
           </div>
@@ -328,11 +332,11 @@
               :placeholder="'Pilih kota'"
               v-model="form.kota"
             >
-              <!-- <template #option="option">
-                <option :value="Number(option.data.id)">
-                  {{ option.data.nama_ruangan }}
+              <template #option="option">
+                <option :value="option.data">
+                  {{ option.data }}
                 </option>
-              </template> -->
+              </template>
             </Select>
             <!-- <InputError class="mt-2" :message="form.errors.ruangan_id" /> -->
           </div>
@@ -431,6 +435,13 @@
           </div>
         </div>
 
+
+        <!-- GOLONGAN -->
+        <div class="mb-3">
+          <Label for='golongan'>Golongan</Label>
+          <Input class="w-full" type="text" v-model="form.golongan" id="golongan" name="golongan"></Input>
+        </div>
+
         <!-- LEVEL PENGGUNA -->
         <div class="mb-4 flex space-x-2">
           <div class="w-full">
@@ -518,6 +529,8 @@ export default {
       tanggal_lahir: props.dosen?.staff?.user.tanggal_lahir || null,
       jalan: props.dosen?.staff?.user.jalan || null,
       kelurahan: props.dosen?.staff?.user.kelurahan || null,
+      kota: props.dosen?.staff?.user.kota || null,
+      provinsi: props.dosen?.staff?.user.provinsi || null,
       kode_pos: props.dosen?.staff?.user.kode_pos || null,
       kewarganegaraan: props.dosen?.staff?.user.kewarganegaraan || "WNI",
 
@@ -534,6 +547,7 @@ export default {
       nomor_sk_akhir: props.dosen?.staff?.nomor_sk_akhir || null,
       tanggal_sk_akhir: props.dosen?.staff?.tanggal_sk_akhir || null,
       status_karyawan: props.dosen?.staff?.status_karyawan || "Aktif",
+      golongan: props.dosen?.staff?.golongan || null,
 
       // dosen primary data (mandatory)
       id_dosen: props.dosen?.id || null,
@@ -542,6 +556,10 @@ export default {
       jurusan: props.dosen?.jurusan?.id || "-",
       konsentrasi: props.dosen?.konsentrasi || "-",
     })
+
+    const kotas = ['Tarakan']
+
+    const provinsis = ['Kalimantan Utara']
 
     const isOpen = ref(false)
 
@@ -581,6 +599,8 @@ export default {
     return {
       currentRouteName,
       calculatedMasaKerja,
+      kotas,
+      provinsis,
       form,
       isOpen,
       submit,

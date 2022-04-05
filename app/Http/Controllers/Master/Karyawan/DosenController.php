@@ -132,6 +132,7 @@ class DosenController extends Controller
     {
         // $this->saveDosenHandler($request, 'update', $id);
 
+        // dd($request->all());
 
         $dosen = Dosen::findOrFail($id);
         $user = User::findOrFail($dosen->staff->user->id);

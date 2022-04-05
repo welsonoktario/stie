@@ -234,11 +234,11 @@
               :placeholder="'Pilih provinsi'"
               v-model="form.provinsi"
             >
-              <!-- <template #option="option">
-                <option :value="Number(option.data.id)">
-                  {{ option.data.nama_ruangan }}
+              <template #option="option">
+                <option :value="option.data">
+                  {{ option.data }}
                 </option>
-              </template> -->
+              </template>
             </Select>
             <!-- <InputError class="mt-2" :message="form.errors.ruangan_id" /> -->
           </div>
@@ -253,11 +253,11 @@
               :placeholder="'Pilih kota'"
               v-model="form.kota"
             >
-              <!-- <template #option="option">
-                <option :value="Number(option.data.id)">
-                  {{ option.data.nama_ruangan }}
+              <template #option="option">
+                <option :value="option.data">
+                  {{ option.data }}
                 </option>
-              </template> -->
+              </template>
             </Select>
             <!-- <InputError class="mt-2" :message="form.errors.ruangan_id" /> -->
           </div>
@@ -504,6 +504,10 @@ export default {
       nitk: props.staff?.tenaga_kependidikan?.id,
     })
 
+    const kotas = ['Tarakan']
+
+    const provinsis = ['Kalimantan Utara']
+
     const isOpen = ref(false)
 
     const currentRouteName = reactive({
@@ -544,6 +548,8 @@ export default {
     return {
       currentRouteName,
       calculatedMasaKerja,
+      kotas,
+      provinsis,
       form,
       isOpen,
       submit,

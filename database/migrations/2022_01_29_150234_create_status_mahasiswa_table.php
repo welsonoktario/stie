@@ -21,7 +21,7 @@ class CreateStatusMahasiswaTable extends Migration
             $table->foreignId('tahun_ajaran')->constrained();
 
             $table->string('mahasiswa_npm', 25);
-            $table->foreign('mahasiswa_npm')->references('npm')->on('mahasiswas');
+            $table->foreign('mahasiswa_npm')->references('npm')->on('mahasiswas')->onUpdate('cascade');
 
             $table->enum('status', [
                 'Aktif',

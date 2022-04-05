@@ -154,6 +154,7 @@ class MahasiswaRegulerController extends Controller
         $msg = 'Berhasil menambahkan data';
         $status = 'OK';
         $key = '';
+        $npm_dirty = false;
         try {
             $user = User::findOrFail($request->id);
             $user_old = $user->getOriginal();
@@ -162,9 +163,18 @@ class MahasiswaRegulerController extends Controller
                 $request['jurusan_id'] = $request['jurusan_id'] != '-' ? $request['jurusan_id']: null;
                 $request['dosen_id'] = $request['dosen_id'] != '-' ? $request['dosen_id']: null;
                 $key = array_keys($user->mahasiswa->toArray());
+                $mahasiswa_old = $user->mahasiswa->getOriginal();
+
                 $user->mahasiswa()->update($request->only($key));
+
+                // dd('masih disini');
+                if ($mahasiswa_old['npm'] != $request['npm'])
+                    $npm_dirty = true;
+                    $user = User::findOrFail($request->id);
+
                 // Riwayat Status Mahasiswa
                 try {
+
                     $ta_mahasiswa = $user->mahasiswa->tahun_ajaran();
                     $updated_data_ta = [];
                     $request_ta = $request->tahun_ajaran;
@@ -183,20 +193,23 @@ class MahasiswaRegulerController extends Controller
                 }
             } catch (\Throwable $th) {
                 $user->update($user_old);
-                $msg = 'Gagal menambahkan data mahasiswa. Error: '. $th->getMessage();
+                $msg = 'Gagal menyimpan data mahasiswa. Error: '. $th->getMessage();
                 $status = 'FAIL';
+                dd($msg, $status);
             }
         } catch (\Throwable $th) {
-            $msg = 'Gagal menambahkan data user. Error: '. $th->getMessage();
+            $msg = 'Gagal menyimpan data user. Error: '. $th->getMessage();
             $status = 'FAIL';
             dd($msg, $status);
         }
 
         $header = ['status' => $status, 'msg' => $msg];
-        if ($status != 'FAIL'){
-            return redirect('master/mahasiswa-reguler')->with($header);
-        }
-        return redirect()->back()->with($header);
+
+        return redirect()->route('master.mahasiswa-reguler.edit', $request['npm'])->with($header);
+        // if ($status != 'FAIL'){
+        //     return redirect('master/mahasiswa-reguler')->with($header);
+        // }
+        // return redirect()->back()->with($header);
     }
 
     /**
