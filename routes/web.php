@@ -29,6 +29,7 @@ use App\Http\Controllers\Transaksi\Jadwal\JadwalMahasiswaController;
 use App\Http\Controllers\Transaksi\Keuangan\KeuanganController;
 use App\Http\Controllers\Transaksi\KRS\KRSController;
 use App\Http\Controllers\Transaksi\Nilai\NilaiController;
+use App\Http\Controllers\Transaksi\Ujian\UjianController;
 
 // use App\Models\TahunAjaran;
 
@@ -91,7 +92,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Transaksi route
     Route::group(['prefix' => 'transaksi', 'as' => 'transaksi.'], function () {
-        Route::get('kurikulum/{kurikulum}/prasyarat', [KurikulumController::class, 'loadPrasyarats'])->name('kurikulum.prasyarat');
+        Route::get('kurikulum/{kurikulum}/prasyarat', [KurikulumController::class, 'loadPrasyarats'])
+            ->name('kurikulum.prasyarat');
 
         Route::get('testing', [TestingController::class, 'index'])->name('testing');
 
@@ -99,15 +101,20 @@ Route::group(['middleware' => ['auth']], function () {
             Route::resource('mahasiswa', JadwalMahasiswaController::class, ['except' => ['store', 'edit', 'show']]);
         });
 
+        Route::get('ujian/{mahasiswa}/print/{ta}', [UjianController::class, 'show'])
+            ->name('ujian.print');
+
         Route::resources([
             'jadwal' => JadwalController::class,
             'keuangan' => KeuanganController::class,
             'krs' => KRSController::class,
-            'nilai' => NilaiController::class
+            'nilai' => NilaiController::class,
+            'ujian' => UjianController::class,
         ], [
             'except' => 'show',
             'parameters' => [
-                'nilai' => 'mahasiswa'
+                'nilai' => 'mahasiswa',
+                'ujian' => 'mahasiswa'
             ]
         ]);
     });

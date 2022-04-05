@@ -9,6 +9,7 @@ use App\Models\TahunAjaran;
 use App\Models\MahasiswaKonversi;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Builder;
 
 class Mahasiswa extends Model
 {
@@ -129,12 +130,31 @@ class Mahasiswa extends Model
             ->leftJoin('status_cicilan', 'status_cicilan.mahasiswa_npm', '=', 'mahasiswas.npm');
     }
 
+    public function scopeIndexUjian(Builder $query, $tipe)
+    {
+        $query->select([
+                'mahasiswas.npm as npm',
+                'users.name as nama',
+                'jurusans.nama as jurusan',
+                $tipe == 'UTS'
+                    ? 'status_cicilan.jumlah_cicilan_1 as cicilan'
+                    : 'status_cicilan.jumlah_cicilan_2 as cicilan'
+            ])
+            ->join('users', 'users.id', '=', 'mahasiswas.user_id')
+            // ->join('jadwal_mahasiswa', 'jadwal_mahasiswa.mahasiswa_npm', '=', 'mahasiswas.npm')
+            // ->join('jadwals', 'jadwals.id', '=', 'jadwal_mahasiswa.jadwal_id')
+            // ->join('matakuliahs', 'matakuliahs.id', '=', 'jadwals.matakuliah_id')
+            // ->join('tahun_ajarans', 'tahun_ajarans.id', '=', 'jadwals.tahun_ajaran_id')
+            ->leftJoin('jurusans', 'jurusans.id', '=', 'mahasiswas.jurusan_id')
+            ->leftJoin('status_cicilan', 'status_cicilan.mahasiswa_npm', '=', 'mahasiswas.npm');
+    }
+
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['query'] ?? null, function ($query, $search) {
             $query->where(function ($query) use ($search) {
                 $query->where('npm', 'LIKE', "%$search%")
-                    ->orWhere('nama', 'LIKE', "%$search%")
+                    ->orWhere('users.name', 'LIKE', "%$search%")
                     ->orWhere('jurusans.nama', 'LIKE', "%$search%")
                     ->orWhere('tanggal_masuk', 'LIKE', "%$search%");
             });
