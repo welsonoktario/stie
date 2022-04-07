@@ -16,11 +16,11 @@ class NilaiController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
     public function index()
     {
-        $selectedTahunAkademik = (int) Request::get('ta');
+        $selectedTahunAkademik = Request::get('ta');
         $tahunAkademiks = TahunAjaran::orderBy('id', 'DESC')->get();
         $mahasiswas = Mahasiswa::select(['mahasiswas.npm', 'mahasiswas.status_mahasiswa', 'users.name as nama', 'jurusans.nama as jurusan'])
             // ->doesntHave('mahasiswa_konversi')
@@ -45,7 +45,7 @@ class NilaiController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
     public function create()
     {
@@ -55,7 +55,7 @@ class NilaiController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
     public function store(Request $request)
     {
@@ -66,20 +66,28 @@ class NilaiController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Mahasiswa  $mahasiswa
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
     public function edit(Mahasiswa $mahasiswa)
     {
-        $selectedTahunAkademik = (int) Request::get('ta');
+        $selectedTahunAkademik = Request::get('ta');
         $tahunAkademiks = TahunAjaran::orderBy('id', 'DESC')->get();
         $mahasiswa->load([
             'jadwals' => function ($q) use ($selectedTahunAkademik) {
-                return $q->with('matakuliah')->where('tahun_ajaran_id', $selectedTahunAkademik);
+                return $q->with('matakuliah')->when($selectedTahunAkademik, function ($query, $selectedTahunAkademik) {
+                    if ($selectedTahunAkademik == 'semua') {
+                        $query;
+                    } else {
+                        $query->where('tahun_ajaran_id', (int) $selectedTahunAkademik);
+                    }
+                });
             },
             'user',
             'jurusan',
             'status_mahasiswa'
         ]);
+
+        $tahunAkademiks->prepend(['id' => 'semua', 'tahun_ajaran' => 'Semua']);
 
         return Inertia::render('Transaksi/Nilai/NilaiDetail', [
             'tahunAkademiks' => fn () => $tahunAkademiks,
@@ -92,19 +100,14 @@ class NilaiController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Models\Mahasiswa  $mahasiswa
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Mahasiswa $mahasiswa)
     {
         try {
             $jadwal = $request::get('jadwal_id');
-            $tipeSemester = $request::get('tipe');
 
-            if ($tipeSemester == 'UTS') {
-                $mahasiswa->jadwals()->syncWithPivotValues([$jadwal], ['nilai_uts' => $request::get('nilai')]);
-            } else {
-                $mahasiswa->jadwals()->syncWithPivotValues([$jadwal], ['nilai_nas' => $request::get('nilai')]);
-            }
+            $mahasiswa->jadwals()->syncWithPivotValues([$jadwal], ['nilai_akhir' => $request::get('nilai')]);
         } catch (Throwable $e) {
             Log::error($e);
             return Redirect::route(
@@ -139,7 +142,7 @@ class NilaiController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Mahasiswa  $mahasiswa
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
     public function destroy(Mahasiswa $mahasiswa)
     {

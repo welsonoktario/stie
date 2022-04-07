@@ -45,17 +45,6 @@
               </option>
             </template>
           </Select>
-          <Select
-            class="ml-2 text-sm"
-            :options="['UTS', 'UAS']"
-            v-model="selectedTipeSemester"
-          >
-            <template #option="option">
-              <option :value="option.data">
-                {{ option.data }}
-              </option>
-            </template>
-          </Select>
         </div>
 
         <Button type="button">
@@ -72,6 +61,12 @@
       <table class="table-auto w-full">
         <thead>
           <tr>
+            <th
+              v-if="selectedTA == 'semua'"
+              class="font-semibold text-left py-2 px-4"
+            >
+              Tahun Akademik
+            </th>
             <th class="font-semibold text-left py-2 px-4">Kode MK</th>
             <th class="font-semibold text-left py-2 px-4">Matakuliah</th>
             <th class="font-semibold text-left py-2 px-4">SKS</th>
@@ -86,10 +81,13 @@
             :key="jadwal.id"
             class="border-y dark:border-zinc-600 text-sm dark:text-zinc-200 font-normal"
           >
+            <td v-if="selectedTA == 'semua'" class="px-4 py-2">
+              {{ namaTA(jadwal) }}
+            </td>
             <td class="px-4 py-2">{{ jadwal.matakuliah.kode_matakuliah }}</td>
             <td class="px-4 py-2">{{ jadwal.matakuliah.nama_matakuliah }}</td>
             <td class="px-4 py-2">{{ jadwal.matakuliah.sks }}</td>
-            <td class="px-4 py-2">{{ nilaiMK(jadwal) }}</td>
+            <td class="px-4 py-2">{{ jadwal.pivot.nilai_akhir | 0 ?? "-" }}</td>
             <td class="px-4 py-2">{{ nilaiHuruf(jadwal) }}</td>
             <td class="px-4 py-2">
               <PencilIcon
@@ -112,7 +110,7 @@
     >
       <template #content>
         <div class="my-4">
-          <Label>Nilai</Label>
+          <Label>Nilai Akhir</Label>
           <Input
             class="w-full"
             type="number"
@@ -166,7 +164,6 @@ const props = defineProps({
 })
 
 const selectedTA = ref(props.selectedTahunAkademik)
-const selectedTipeSemester = ref("UTS")
 const selectedJadwal = ref(0)
 const isDialogNilaiOpen = ref(false)
 const nilai = ref(0)
@@ -175,6 +172,8 @@ const angkaMutu = ref(0)
 const ip = ref(0)
 
 watch([selectedTA, () => nilai.value], async ([newTA, newNilai]) => {
+  if (newTA == "-") return
+
   Inertia.visit(
     route("transaksi.nilai.edit", {
       ta: newTA,
@@ -202,6 +201,8 @@ watch([selectedTA, () => nilai.value], async ([newTA, newNilai]) => {
     nisbi.value = "E"
     angkaMutu.value = 0
   }
+
+  calcIp()
 })
 
 onMounted(() => calcIp())
@@ -261,25 +262,10 @@ const cekHurufMutu = (num) => {
   return hm
 }
 
-const nilaiMK = (jadwal) =>
-  selectedTipeSemester.value == "UTS"
-    ? jadwal.pivot.nilai_uts ?? "-"
-    : jadwal.pivot.nilai_nas ?? "-"
-
 const nilaiHuruf = (jadwal) => {
-  let huruf = ""
+  if (!jadwal.pivot.nilai_akhir) return "-"
 
-  if (selectedTipeSemester.value == "UTS") {
-    if (!jadwal.pivot.nilai_uts) return "-"
-
-    huruf = cekHurufMutu(jadwal.pivot.nilai_uts)
-  } else {
-    if (!jadwal.pivot.nilai_nas) return "-"
-
-    huruf = cekHurufMutu(jadwal.pivot.nilai_nas)
-  }
-
-  return huruf
+  return cekHurufMutu(jadwal.pivot.nilai_akhir)
 }
 
 const edit = () =>
@@ -288,7 +274,6 @@ const edit = () =>
     {
       jadwal_id: selectedJadwal.value,
       nilai: nilai.value,
-      tipe: selectedTipeSemester.value,
       ta: props.selectedTahunAkademik,
     },
     {
@@ -296,17 +281,15 @@ const edit = () =>
     }
   )
 
+const namaTA = (jadwal) =>
+  props.tahunAkademiks.find((ta) => ta.id == jadwal.tahun_ajaran_id)
+    .tahun_ajaran
+
 const openDialogNilai = (jadwal) => {
   selectedJadwal.value = jadwal.id
-  nilai.value = 0
+  nilai.value = jadwal.pivot.nilai_akhir | 0
   nisbi.value = ""
   angkaMutu.value = 0
-
-  if (selectedTipeSemester.value == "UTS") {
-    nilai.value = jadwal.pivot.nilai_uts ?? 0
-  } else {
-    nilai.value = jadwal.pivot.nilai_nas ?? 0
-  }
 
   isDialogNilaiOpen.value = !isDialogNilaiOpen.value
 }
