@@ -20,7 +20,7 @@ class KeuanganController extends Controller
     public function index(Request $request)
     {
         $tahun_ajarans = TahunAjaran::all();
-        $ta = in_array($request->ta, [null, '']) 
+        $ta = in_array($request->ta, [null, ''])
             ? strval(($tahun_ajarans->firstWhere('aktif', '=', true))->id) : $request->ta;
 
         $mahasiswas = Mahasiswa::select(['mahasiswas.npm',
@@ -88,7 +88,7 @@ class KeuanganController extends Controller
      */
     public function edit($id, Request $request)
     {
-        // 
+        //
         if (!isset($request['ta']))
             return redirect()->route('transaksi.keuangan.index');
 
@@ -100,16 +100,20 @@ class KeuanganController extends Controller
         if (!($taken > 0)){
             return redirect()->route('transaksi.keuangan.index');
         }
-        
+
         $mahasiswa = Mahasiswa::with(['user', 'tahun_ajaran'])
             ->find($id);
-        
+
         // format tanggal
         // dd($mahasiswa->tahun_ajaran);
         foreach ($mahasiswa->tahun_ajaran as  $ta) {
             $ta->pivot['tanggal_cicilan_1'] = $this->formatToHtmlDate($ta->pivot['tanggal_cicilan_1']);
             $ta->pivot['tanggal_cicilan_2'] = $this->formatToHtmlDate($ta->pivot['tanggal_cicilan_2']);
             $ta->pivot['tanggal_cicilan_3'] = $this->formatToHtmlDate($ta->pivot['tanggal_cicilan_3']);
+            $ta->pivot['tanggal_cicilan_dpp'] = $this->formatToHtmlDate($ta->pivot['tanggal_cicilan_dpp']);
+            $ta->pivot['tanggal_cicilan_praktikum'] = $this->formatToHtmlDate($ta->pivot['tanggal_cicilan_praktikum']);
+            $ta->pivot['tanggal_cicilan_almamater'] = $this->formatToHtmlDate($ta->pivot['tanggal_cicilan_almamater']);
+            $ta->pivot['tanggal_cicilan_biaya_konversi'] = $this->formatToHtmlDate($ta->pivot['tanggal_cicilan_biaya_konversi']);
         }
 
         return Inertia::render('Transaksi/Keuangan/KeuanganDetail.vue',[
@@ -136,9 +140,11 @@ class KeuanganController extends Controller
             dd("Error: Data mahasiswa tidak ditemukan");
         }
 
-        $data = Arr::except($history['pivot'], 
+        $data = Arr::except($history['pivot'],
             ['mahasiswa_npm', 'tahun_ajaran', 'status', 'total_cicilan']);
-        
+
+        // cicilan
+        // dd($data);
         $data['total_cicilan'] = $data['jumlah_cicilan_1'] +
             $data['jumlah_cicilan_2'] +
             $data['jumlah_cicilan_3'];
@@ -149,7 +155,7 @@ class KeuanganController extends Controller
 
         return redirect()->route('transaksi.keuangan.edit', [
             'keuangan' => $npm,
-            'ta' => $history['id'] 
+            'ta' => $history['id']
         ]);
     }
 

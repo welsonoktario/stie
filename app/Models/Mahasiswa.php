@@ -113,6 +113,18 @@ class Mahasiswa extends Model
                 "total_cicilan",
                 "uang_semester",
                 "status",
+                "jumlah_cicilan_dpp",
+                "tanggal_cicilan_dpp",
+                "keterangan_cicilan_dpp",
+                "jumlah_cicilan_praktikum",
+                "tanggal_cicilan_praktikum",
+                "keterangan_cicilan_praktikum",
+                "jumlah_cicilan_almamater",
+                "tanggal_cicilan_almamater",
+                "keterangan_cicilan_almamater",
+                "jumlah_cicilan_biaya_konversi",
+                "tanggal_cicilan_biaya_konversi",
+                "keterangan_cicilan_biaya_konversi",
             );
     }
 

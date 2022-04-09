@@ -44,10 +44,33 @@
           ></Input>
         </div>
 
+
         <div class="mb-4">
-          <Label>History Pembayaran</Label>
-          <table class="mt-1 w-full bg-zinc-100">
-            <thead>
+          <Label for="nama"> Tahun Ajaran <span class="text-red-500">*</span> </Label>
+          <select
+            class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+            name="Tahun Ajaran"
+            v-model="selectedTahunAjaran"
+            @change="loadTahunAjaran(selectedTahunAjaran)"
+          >
+            <!-- <option value="" selected disabled>Pilih agama</option> -->
+            <option
+              v-for="(ta, index) in mahasiswa.tahun_ajaran"
+              :key="index"
+              :value="ta.id">{{ta.tahun_ajaran}}
+              </option>
+          </select>
+        </div>
+
+
+        <div class="mb-3"><strong class="mb-3 whitespace-nowrap capitalize text-sm md:text-lg content-middle">
+          Uang Semester</strong></div>
+
+        <!-- History Uang Semester (UPP) -->
+        <div class="mb-4">
+          <Label>History Pembayaran Uang Semester</Label>
+          <table class="mt-1 w-full">
+            <thead class="border-b-2">
               <tr>
                 <th class="text-gray-500 font-medium text-sm p-3">Tahun Akademik</th>
                 <th class="text-gray-500 font-medium text-sm p-3">Cicilan 1</th>
@@ -69,38 +92,25 @@
                 <td class="text-gray-700 text-sm p-2 px-4">
                   Rp. {{(-(ta.pivot.uang_semester - ta.pivot.total_cicilan))}}</td>
               </tr>
-              
+
             </tbody>
           </table>
         </div>
 
-        <div class="mb-4">
-          <Label for="nama"> Tahun Ajaran <span class="text-red-500">*</span> </Label>
-          <select
-            class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
-            name="Tahun Ajaran"
-            v-model="selectedTahunAjaran"
-            @change="loadTahunAjaran(selectedTahunAjaran)"
-          >
-            <!-- <option value="" selected disabled>Pilih agama</option> -->
-            <option 
-              v-for="(ta, index) in mahasiswa.tahun_ajaran" 
-              :key="index"
-              :value="ta.id">{{ta.tahun_ajaran}}
-              </option>
-          </select>
-        </div>
-        <!-- {{selectedTahunAjaran}} -->
-        <div 
+
+        <!-- CRUD Cicilan Uang Semester (UPP) -->
+        <div
           class="mb-5"
           v-for="(ta, index) in mahasiswa.tahun_ajaran" :key="index"
-          
+
           >
           <div v-if="ta.id == selectedTahunAjaran">
-            <div class="mb-3"><strong class="mb-3 whitespace-nowrap capitalize text-sm md:text-lg content-middle">
-              {{ta.tahun_ajaran}} - {{ta.pivot.status}}</strong></div>
-            
-            <table 
+            <!-- <div class="mb-3"><strong class="mb-3 whitespace-nowrap capitalize text-sm md:text-lg content-middle">
+              {{ta.tahun_ajaran}} - {{ta.pivot.status}}</strong></div> -->
+            <Label class="mb-4">
+              Detail pembayaran {{ta.tahun_ajaran}} - {{ta.pivot.status}}
+            </Label>
+            <table
               class="min-w-full divide-y divide-gray-200 mb-3">
               <thead class="">
                 <tr>
@@ -143,7 +153,7 @@
                     ></Input>
                   </td>
                 </tr>
-                
+
                 <!-- Cicilan 2 -->
                 <tr>
                   <th class="text-gray-500 font-medium">C2</th>
@@ -176,7 +186,7 @@
                     ></Input>
                   </td>
                 </tr>
-                
+
                 <!-- Cicilan 3 -->
                 <tr>
                   <th class="text-gray-500 font-medium">C3</th>
@@ -241,12 +251,263 @@
           </div>
         </div>
 
+
+
+
+        <div class="mb-3"><strong class="mb-3 whitespace-nowrap capitalize text-sm md:text-lg content-middle">
+          Lain-lain</strong></div>
+
+        <!-- History pembayaran lain lain -->
+        <div class="mb-4">
+          <Label>History Pembayaran Lain-lain (fitur tambahan)</Label>
+          <table class="mt-1 w-full">
+            <thead>
+              <tr class="border-b-2">
+                <th class="text-gray-500 font-medium text-sm p-3">Tahun Akademik</th>
+                <th class="text-gray-500 font-medium text-sm p-3">Cicilan DPP</th>
+                <th class="text-gray-500 font-medium text-sm p-3">Cicilan Praktikum</th>
+                <th class="text-gray-500 font-medium text-sm p-3">Cicilan Almamater</th>
+                <th class="text-gray-500 font-medium text-sm p-3">Biaya Konversi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(ta, index) in mahasiswa.tahun_ajaran" :key="index">
+                <td class="text-gray-700 text-sm p-2 px-4">{{ta.tahun_ajaran}}</td>
+                <td class="text-gray-700 text-sm p-2 px-4">Rp. {{ta.pivot.jumlah_cicilan_dpp ?? "-"}}</td>
+                <td class="text-gray-700 text-sm p-2 px-4">Rp. {{ta.pivot.jumlah_cicilan_praktikum ?? "-"}}</td>
+                <td class="text-gray-700 text-sm p-2 px-4">Rp. {{ta.pivot.jumlah_cicilan_almamater ?? "-"}}</td>
+                <td class="text-gray-700 text-sm p-2 px-4">Rp. {{ta.pivot.jumlah_cicilan_biaya_konversi ?? "-"}}</td>
+              </tr>
+
+              <!-- Total Cicilan -->
+              <tr class="border-t-2">
+                <td class="text-gray-700 text-sm p-2 px-4 text-right">Total</td>
+                <td class="text-gray-700 text-sm p-2 px-4">Rp. - </td>
+                <td class="text-gray-700 text-sm p-2 px-4">Rp. - </td>
+                <td class="text-gray-700 text-sm p-2 px-4">Rp. - </td>
+                <td class="text-gray-700 text-sm p-2 px-4">Rp. - </td>
+              </tr>
+
+
+              <!-- Harus dibayarkan -->
+              <tr class="border-t-2">
+                <td class="text-gray-700 text-sm p-2 px-4 text-right">Harus dibayarkan</td>
+                <td class="text-gray-700 text-sm p-2 px-4">Rp. {{mahasiswa.k_dpp ?? "-"}}</td>
+                <td class="text-gray-700 text-sm p-2 px-4">Rp. {{mahasiswa.k_praktikum ?? "-"}}</td>
+                <td class="text-gray-700 text-sm p-2 px-4">Rp. {{mahasiswa.k_almamater ?? "-"}}</td>
+                <td class="text-gray-700 text-sm p-2 px-4">Rp. {{mahasiswa.k_biaya_kovnversi ?? "-"}}</td>
+              </tr>
+
+              <!-- Total Sisa -->
+              <tr>
+                <td class="text-gray-700 text-sm p-2 px-4 text-right">Sisa</td>
+                <td class="text-gray-700 text-sm p-2 px-4">Rp. - </td>
+                <td class="text-gray-700 text-sm p-2 px-4">Rp. - </td>
+                <td class="text-gray-700 text-sm p-2 px-4">Rp. - </td>
+                <td class="text-gray-700 text-sm p-2 px-4">Rp. - </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- CRUD pembayaran lain-lain -->
+        <div
+          class="mb-5"
+          v-for="(ta, index) in mahasiswa.tahun_ajaran" :key="index"
+
+          >
+          <div v-if="ta.id == selectedTahunAjaran">
+            <!-- <div class="mb-3"><strong class="mb-3 whitespace-nowrap capitalize text-sm md:text-lg content-middle">
+              {{ta.tahun_ajaran}} - {{ta.pivot.status}}</strong></div> -->
+            <Label class="mb-4">
+              Detail pembayaran lain-lain {{ta.tahun_ajaran}} - {{ta.pivot.status}}
+            </Label>
+            <table
+              class="min-w-full divide-y divide-gray-200 mb-3">
+              <thead class="">
+                <tr>
+                  <th class="text-gray-500 font-medium">Cicilan</th>
+                  <th class="text-gray-500 font-medium w-1/4">Nominal</th>
+                  <th class="text-gray-500 font-medium w-1/6">Tanggal Bayar</th>
+                  <th class="text-gray-500 font-medium">Keterangan</th>
+                </tr>
+              </thead>
+              <tbody class="">
+                <!-- Cicilan DPP -->
+                <tr>
+                  <th class="text-gray-500 font-medium">DPP</th>
+                  <td>
+                    <Input
+                      name="nominal"
+                      v-model="form.detilHistory.pivot.jumlah_cicilan_dpp"
+                      class="mt-1 block w-full"
+                      type="number"
+                      placeholder=""
+                      autocomplete="off"
+                    ></Input>
+                  </td>
+                  <td>
+                    <Input
+                      v-model="form.detilHistory.pivot.tanggal_cicilan_dpp"
+                      class="mt-1 block w-full"
+                      type="datetime-local"
+                      placeholder=""
+                      autocomplete="off"
+                    ></Input>
+                  </td>
+                  <td>
+                    <Input
+                      v-model="form.detilHistory.pivot.keterangan_cicilan_dpp"
+                      class="mt-1 block w-full"
+                      type="text"
+                      placeholder=""
+                      autocomplete="off"
+                    ></Input>
+                  </td>
+                </tr>
+
+                <!-- Cicilan Praktikum -->
+                <tr>
+                  <th class="text-gray-500 font-medium">Praktikum</th>
+                  <td>
+                      <Input
+                        name="nominal"
+                        class="mt-1 block w-full"
+                        v-model="form.detilHistory.pivot.jumlah_cicilan_praktikum"
+                        type="number"
+                        placeholder=""
+                        autocomplete="off"
+                      ></Input>
+                  </td>
+                  <td>
+                    <Input
+                      v-model="form.detilHistory.pivot.tanggal_cicilan_praktikum"
+                      class="mt-1 block w-full"
+                      type="datetime-local"
+                      placeholder=""
+                      autocomplete="off"
+                    ></Input>
+                  </td>
+                  <td>
+                    <Input
+                      v-model="form.detilHistory.pivot.keterangan_cicilan_praktikum"
+                      class="mt-1 block w-full"
+                      type="text"
+                      placeholder=""
+                      autocomplete="off"
+                    ></Input>
+                  </td>
+                </tr>
+
+                <!-- Cicilan Almamater -->
+                <tr>
+                  <th class="text-gray-500 font-medium">Almamater</th>
+                  <td>
+                      <Input
+                        v-model="form.detilHistory.pivot.jumlah_cicilan_almamater"
+                        name="nominal"
+                        class="mt-1 block w-full"
+                        type="number"
+                        placeholder=""
+                        autocomplete="off"
+                      ></Input>
+                  </td>
+                  <td>
+                    <Input
+                      v-model="form.detilHistory.pivot.tanggal_cicilan_almamater"
+                      class="mt-1 block w-full"
+                      type="datetime-local"
+                      placeholder=""
+                      autocomplete="off"
+                    ></Input>
+                  </td>
+                  <td>
+                    <Input
+                      v-model="form.detilHistory.pivot.keterangan_cicilan_almamater"
+                      class="mt-1 block w-full"
+                      type="text"
+                      placeholder=""
+                      autocomplete="off"
+                    ></Input>
+                  </td>
+                </tr>
+
+                <!-- Cicilan Biaya Konversi -->
+                <tr>
+                  <th class="text-gray-500 font-medium">Biaya Konversi</th>
+                  <td>
+                      <Input
+                        v-model="form.detilHistory.pivot.jumlah_cicilan_biaya_konversi"
+                        name="nominal"
+                        class="mt-1 block w-full"
+                        type="number"
+                        placeholder=""
+                        autocomplete="off"
+                      ></Input>
+                  </td>
+                  <td>
+                    <Input
+                      v-model="form.detilHistory.pivot.tanggal_cicilan_biaya_konversi"
+                      class="mt-1 block w-full"
+                      type="datetime-local"
+                      placeholder=""
+                      autocomplete="off"
+                    ></Input>
+                  </td>
+                  <td>
+                    <Input
+                      v-model="form.detilHistory.pivot.keterangan_cicilan_biaya_konversi"
+                      class="mt-1 block w-full"
+                      type="text"
+                      placeholder=""
+                      autocomplete="off"
+                    ></Input>
+                  </td>
+                </tr>
+
+              </tbody>
+              <thead>
+                <tr>
+                </tr>
+              </thead>
+              <!-- <tbody>
+                <tr>
+                  <th class="text-gray-500 font-normal">Total Cicilan</th>
+                  <td> Rp. {{totalCicilan}}</td>
+                </tr>
+                <tr>
+                  <th class="text-gray-500 font-normal">Harus dibayarkan</th>
+                  <td>
+                      <Input
+                        v-model="form.detilHistory.pivot.uang_semester"
+                        name="nominal"
+                        class="mt-1 block w-full"
+                        type="text"
+                        placeholder=""
+                        autocomplete="off"
+                      ></Input>
+                  </td>
+                </tr>
+                <tr class="border-t-2">
+                  <th class="text-gray-500 font-normal">Sisa</th>
+                  <td> Rp. {{sisaComputed}} </td>
+                </tr>
+              </tbody> -->
+            </table>
+          </div>
+        </div>
+
+
+
+
+
+
         <div class="flex justify-between">
           <Button class="px-10" :disabled="form.processing">Simpan</Button>
         </div>
       </form>
 
-      
+
     </div>
 
     <Dialog
