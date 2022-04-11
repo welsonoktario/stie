@@ -82,13 +82,13 @@
         </div>
 
         <div class="mb-4 flex space-x-5">
-          <div class="">
+          <div  class="">
             <SwitchGroup>
               <SwitchLabel class="block text-gray-500 text-sm font-bold mb-2"
                 >Aktif</SwitchLabel
               >
               <Switch
-                v-model="form.aktif"
+                v-model="form.aktif" disabled
                 :class="form.aktif ? 'bg-teal-600' : 'bg-gray-200'"
                 class="relative inline-flex items-center h-6 transition-colors rounded-full w-11 ring-0"
               >
