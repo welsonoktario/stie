@@ -33,18 +33,14 @@
           >
             Detail Nilai
           </p>
-          <Select
-            class="ml-2 text-sm"
-            :placeholder="'Pilih tahun akademik'"
-            :options="tahunAkademiks"
+          <select
+            class="ml-2 text-sm pl-3 py-2 pr-8 bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
             v-model="selectedTA"
           >
-            <template #option="option">
-              <option :value="option.data.id">
-                {{ option.data.tahun_ajaran }}
-              </option>
-            </template>
-          </Select>
+            <option v-for="ta in tahunAkademiks" :value="ta.id">
+              {{ ta.tahun_ajaran }}
+            </option>
+          </select>
         </div>
 
         <Button type="button">
@@ -159,7 +155,10 @@ import { Inertia } from "@inertiajs/inertia"
 
 const props = defineProps({
   tahunAkademiks: Array,
-  selectedTahunAkademik: Number | String,
+  selectedTahunAkademik: {
+    type: Number,
+    default: 0,
+  },
   mahasiswa: Object,
 })
 
@@ -174,16 +173,17 @@ const ip = ref(0)
 watch([selectedTA, () => nilai.value], async ([newTA, newNilai]) => {
   if (newTA == "-") return
 
-  Inertia.visit(
-    route("transaksi.nilai.edit", {
-      ta: newTA,
-      mahasiswa: props.mahasiswa.npm,
-    }),
-    {
-      preserveScroll: true,
-      preserveState: true,
-    }
-  )
+  if (!isDialogNilaiOpen.value) {
+    Inertia.visit(
+      route("transaksi.nilai.edit", {
+        ta: newTA,
+        mahasiswa: props.mahasiswa.npm,
+      }),
+      {
+        preserveScroll: true,
+      }
+    )
+  }
 
   if (inRange(newNilai, 80, 100)) {
     nisbi.value = "A"

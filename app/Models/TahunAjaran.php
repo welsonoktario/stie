@@ -25,6 +25,7 @@ class TahunAjaran extends Model
         // 'tahun_selesai' => 'integer',
         // 'tanggal_mulai' => 'date',
         // 'tanggal_selesai' => 'date',
+        'id' => 'integer',
         'periode' => 'integer',
         'aktif' => 'boolean'
     ];
@@ -47,16 +48,16 @@ class TahunAjaran extends Model
     {
         return $this->belongsToMany(Mahasiswa::class, 'status_mahasiswa', 'tahun_ajaran', 'mahasiswa_npm')
             ->withPivot(
-                'jumlah_cicilan_1', 
-                'tanggal_cicilan_1', 
-                'keterangan_ciilan_1', 
-                'jumlah_cicilan_2', 
-                'tanggal_cicilan_2', 
-                'keterangan_ciilan_2', 
-                'jumlah_cicilan_3', 
-                'tanggal_cicilan_3', 
-                'keterangan_ciilan_3', 
-                'total_cicilan', 
+                'jumlah_cicilan_1',
+                'tanggal_cicilan_1',
+                'keterangan_ciilan_1',
+                'jumlah_cicilan_2',
+                'tanggal_cicilan_2',
+                'keterangan_ciilan_2',
+                'jumlah_cicilan_3',
+                'tanggal_cicilan_3',
+                'keterangan_ciilan_3',
+                'total_cicilan',
                 'uang_semester',
                 'status',
             );
