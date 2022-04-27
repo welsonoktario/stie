@@ -49,7 +49,12 @@ class Mahasiswa extends Model
         'penghasilan_ibu',
         'uang_semester',
         'status_mahasiswa',
-        'tanggal_masuk'
+        'tanggal_masuk',
+        'tanggal_selesai',
+
+        'asal_slta',
+        'tahun_lulus_slta',
+        'daerah_asal'
     ];
 
     public function getRouteKeyName()

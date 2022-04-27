@@ -358,8 +358,8 @@
               v-model="form.divisi"
             >
               <option value="BAAK">BAAK</option>
-              <option value="Data">Data</option>
-              <option value="Dosen">Dosen</option>
+              <option value="BAU">BAU</option>
+              <option value="Lainnya">Lainnya</option>
             </select>
           </div>
           <div class="w-full">
@@ -541,7 +541,7 @@ export default {
       const num_month = Math.floor((daydiff % 365) / 30)
       const num_days = Math.floor(daydiff % 365) % 30
       // return Math.round(daydiff) + " hari, " + Math.round(monthdiff) + " bulan, " + Math.round(yeardiff) + " tahun"
-      return ' total hari ' + Math.round(num_year) + ' Tahun, ' + Math.round(num_month) + ' Bulan, ' + Math.round(num_days) + ' Hari.'
+      return " "+Math.round(num_year) + ' Tahun, ' + Math.round(num_month) + ' Bulan, ' + Math.round(num_days) + ' Hari.'
       // return now
     })
 

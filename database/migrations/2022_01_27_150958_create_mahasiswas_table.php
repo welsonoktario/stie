@@ -34,9 +34,16 @@ class CreateMahasiswasTable extends Migration
             // data pribadi
             $table->string('jenis_tinggal', 45)->nullable();
             $table->string('alat_transportasi', 45)->nullable();
-            $table->string('nisn', 20)->nullable();
             $table->string('npwp', 15)->nullable();
             $table->boolean('kps')->nullable()->default(false);
+            $table->date('tanggal_selesai')->nullable();
+
+
+            // Data SLTA
+            $table->string('nisn', 50)->nullable();
+            $table->string('daerah_asal', 128)->nullable();
+            $table->string('asal_slta', 128)->nullable();
+            $table->year('tahun_lulus_slta')->nullable();
 
             // data ayah
             $table->string('nik_ayah', 20)->nullable();

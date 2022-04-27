@@ -88,7 +88,7 @@
                 >Aktif</SwitchLabel
               >
               <Switch
-                v-model="form.aktif" disabled
+                v-model="form.aktif"
                 :class="form.aktif ? 'bg-teal-600' : 'bg-gray-200'"
                 class="relative inline-flex items-center h-6 transition-colors rounded-full w-11 ring-0"
               >

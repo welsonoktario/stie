@@ -163,20 +163,33 @@
         </fieldset>
 
         <!-- TANGGAL MASUK -->
-        <div class="mb-4">
-          <Label for="tanggal_masuk">
-            Tanggal Masuk <span class="text-red-500">*</span>
-          </Label>
-          <Input
-            v-model="form.tanggal_masuk"
-            class="w-full"
-            name="tanggal_masuk"
-            type="date"
-            placeholder="Tanggal masuk"
-            required
-            :disabled="!route().current('master.mahasiswa-konversi.create')"
-            :readonly="!route().current('master.mahasiswa-konversi.create')"
-          ></Input>
+        <div class="mb-4 flex space-x-3">
+          <div class="w-full">
+            <Label for="tanggal_masuk">
+              Tanggal Masuk <span class="text-red-500">*</span>
+            </Label>
+            <Input
+              v-model="form.tanggal_masuk"
+              class="w-full"
+              name="tanggal_masuk"
+              type="date"
+              placeholder="Tanggal masuk"
+              required
+              :disabled="!route().current('master.mahasiswa-konversi.create')"
+              :readonly="!route().current('master.mahasiswa-konversi.create')"
+            ></Input>
+          </div>
+          <div class="w-full">
+            <Label for="tanggal_selesai">
+              Tanggal Selesai <i>(Kosongkan jika belum lulus)</i>
+            </Label>
+            <Input
+              v-model="form.tanggal_selesai"
+                class="w-full"
+                name="tanggal_lahir"
+                type="date"
+            ></Input>
+          </div>
         </div>
 
         <!-- NPM ASAL, KAMPUS ASAL-->
@@ -285,18 +298,6 @@
               id="npwp"
               type="text"
               placeholder="npwp"
-            ></Input>
-          </div>
-          <div class="w-full">
-            <label class="block text-gray-500 text-sm font-bold mb-2" for="nisn">
-              NISN
-            </label>
-            <Input
-              v-model="form.nisn"
-              class="w-full"
-              id="nisn"
-              type="text"
-              placeholder="nisn"
             ></Input>
           </div>
         </div>
@@ -439,6 +440,49 @@
           </div>
         </div>
 
+
+        <!-- SLTA -->
+
+        <p class="mb-4 text-sm md:text-lg"
+          v-if="currentRouteName == 'Edit'">
+          <strong>SLTA</strong>
+        </p>
+        <div class="mb-4 w-full">
+          <label class="block text-gray-500 text-sm font-bold mb-2" for="nisn">
+            NISN
+          </label>
+          <Input
+            v-model="form.nisn"
+            class="w-full"
+            id="nisn"
+            type="text"
+            placeholder="NISN"
+          ></Input>
+        </div>
+        <div class="flex space-x-3 mb-4">
+          <div class="w-full">
+            <Label for="asal_slta"> Asal SLTA </Label>
+            <Input
+              v-model="form.asal_slta"
+              class="w-full"
+              name="asal_slta"
+              type="text"
+              placeholder="Asal SLTA"
+            ></Input>
+          </div>
+          <div class="w-full">
+            <Label for="tahun_lulus_slta"> Tahun Lulus SLTA </Label>
+            <Input
+              v-model="form.tahun_lulus_slta"
+              class="w-full"
+              name="tahun_lulus_slta"
+              type="number"
+              min="1000"
+              max="9999"
+              placeholder="Tahun Lulus SLTA "
+            ></Input>
+          </div>
+        </div>
 
         <!-- Data riwayat status kuliah -->
         <p class="mb-4 text-sm md:text-lg"
