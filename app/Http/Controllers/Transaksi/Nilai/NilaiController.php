@@ -70,15 +70,15 @@ class NilaiController extends Controller
      */
     public function edit(Mahasiswa $mahasiswa)
     {
-        $selectedTahunAkademik = Request::get('ta');
+        $selectedTahunAkademik = (int) Request::get('ta') ?: 0;
         $tahunAkademiks = TahunAjaran::orderBy('id', 'DESC')->get();
         $mahasiswa->load([
             'jadwals' => function ($q) use ($selectedTahunAkademik) {
                 return $q->with('matakuliah')->when($selectedTahunAkademik, function ($query, $selectedTahunAkademik) {
                     if ($selectedTahunAkademik == 'semua') {
-                        $query;
+                        return $query;
                     } else {
-                        $query->where('tahun_ajaran_id', (int) $selectedTahunAkademik);
+                        return $query->where('tahun_ajaran_id', (int) $selectedTahunAkademik);
                     }
                 });
             },
@@ -87,7 +87,7 @@ class NilaiController extends Controller
             'status_mahasiswa'
         ]);
 
-        $tahunAkademiks->prepend(['id' => 'semua', 'tahun_ajaran' => 'Semua']);
+        $tahunAkademiks->prepend(['id' => 0, 'tahun_ajaran' => 'Semua']);
 
         return Inertia::render('Transaksi/Nilai/NilaiDetail', [
             'tahunAkademiks' => fn () => $tahunAkademiks,
