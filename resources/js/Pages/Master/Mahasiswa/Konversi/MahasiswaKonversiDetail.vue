@@ -89,7 +89,7 @@
 
 
         <!-- Data konversi -->
-        <!-- NPM ASAL, PT ASAL-->
+        <!-- NPM ASAL, T ASAL-->
         <div class="flex sm:space-x-3 sm:flex-row flex-col">
           <div class="mb-3 w-full">
             <label class="block text-gray-500 text-sm font-bold mb-2" for="npm_asal">

@@ -23,7 +23,7 @@ class KRSController extends Controller
         //
         // dd('trust me it works');
         $tahun_ajarans = TahunAjaran::all();
-        $ta = in_array($request->ta, [null, '']) 
+        $ta = in_array($request->ta, [null, ''])
             ? strval(($tahun_ajarans->firstWhere('aktif', '=', true))->id) : $request->ta;
 
         $mahasiswas = Mahasiswa::select(['mahasiswas.npm',
@@ -43,13 +43,13 @@ class KRSController extends Controller
                     ->where('tahun_ajaran', '=', $ta);
             })
             ->paginate($request->get('perPage') ?: 10)
-            ->withQueryString();    
-        
+            ->withQueryString();
+
         // dd('wow');
         return Inertia::render('Transaksi/KRS/KRS.vue',[
             'mahasiswas' => $mahasiswas,
             'tahun_ajarans' => $tahun_ajarans,
-        ]); 
+        ]);
     }
 
     /**
@@ -104,14 +104,14 @@ class KRSController extends Controller
         if (!($taken > 0)){
             return redirect()->route('transaksi.keuangan.index');
         }
-        
+
         $mahasiswa = Mahasiswa::with(['user', 'tahun_ajaran'])
             ->find($id);
         $jadwal_mhs = Mahasiswa::where('npm','=',$id)
             ->select(
-                'mahasiswas.npm as npm', 
-                'matakuliahs.kode_matakuliah as kode_matakuliah', 
-                'matakuliahs.nama_matakuliah as nama_matakuliah', 
+                'mahasiswas.npm as npm',
+                'matakuliahs.kode_matakuliah as kode_matakuliah',
+                'matakuliahs.nama_matakuliah as nama_matakuliah',
                 'matakuliahs.sks as sks',
                 'matakuliahs.tipe as tipe',
                 'jadwals.local as lokal',
@@ -157,7 +157,7 @@ class KRSController extends Controller
         if(!isset($request['jadwal_id'])){
             return redirect()->back();
         }
-        
+
         $mahasiswa = Mahasiswa::find($id);
         $jadwal = Jadwal::find($request['jadwal_id']);
         // dd($mahasiswa, $jadwal);
@@ -174,7 +174,7 @@ class KRSController extends Controller
         return redirect()
             ->route('transaksi.krs.edit', ['kr' => $mahasiswa->npm, 'ta' => $ta])
             ->with(['status' => 'OK', 'msg' => 'Berhasil menambah jadwal mahasiswa']);
-            
+
 
     }
 
@@ -204,5 +204,38 @@ class KRSController extends Controller
         return redirect()
             ->route('transaksi.krs.edit', ['kr' => $mahasiswa->npm, 'ta' =>$jadwal->tahun_ajaran_id])
             ->with(['status' => 'OK', 'msg' => 'Berhasil menambah jadwal mahasiswa']);
+    }
+
+    public function copy(Request $request, Mahasiswa $mahasiswa)
+    {
+        // dd($request->npm_salin, $request->tahun_ajaran, $mahasiswa);
+
+        // $mahasiswa_salin = Mahasiswa::where("npm","=",$request->npm_salin)->first();
+        $mahasiswa_salin = Mahasiswa::findOrFail($request->npm_salin);
+
+        // $jadwals = $mahasiswa_salin->inner("jadwals")->get();
+
+        // $jadwals = Jadwal::where("tahun_ajaran_id", "=", $request->tahun_ajaran)->get();
+        // dd($mahasiswa_salin->jadwals);
+
+        $jadwals = $mahasiswa_salin->jadwals;
+
+        $jadwal_ids = array();
+        $jadwal_names = array();
+        foreach ($jadwals as $jadwal) {
+            if ($jadwal->tahun_ajaran_id == $request->tahun_ajaran) {
+                $jadwal_ids[] = $jadwal->id;
+                $jadwal_names[] = $jadwal->matakuliah->nama_matakuliah;
+            }
+        }
+
+        // dd($jadwal_ids, $jadwal_names);
+        // sync matakuliah
+        $mahasiswa->jadwals()->sync($jadwal_ids, false);
+
+        return redirect()
+            ->route('transaksi.krs.edit', ['kr' => $mahasiswa->npm, 'ta' => $request->tahun_ajaran])
+            ->with(['status' => 'OK', 'msg' => 'Berhasil menyalin matakuliah mahasiswa ' .$request->npm_salin]);
+
     }
 }

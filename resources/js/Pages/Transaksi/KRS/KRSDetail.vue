@@ -78,21 +78,24 @@
             @change="loadTahunAjaran(selectedTahunAjaran)"
           >
             <!-- <option value="" selected disabled>Pilih agama</option> -->
-            <option 
-              v-for="(ta, index) in mahasiswa.tahun_ajaran" 
+            <option
+              v-for="(ta, index) in mahasiswa.tahun_ajaran"
               :key="index"
               :value="ta.id">{{ta.tahun_ajaran}}
               </option>
           </select>
         </div>
-        
+
       </form>
 
 
       <div class="flex justify-between mb-3">
-        <label for="nama"> 
-          Daftar Matakuliah
-        </label>
+        <div class="flex justify-center content-center">
+          <strong class="whitespace-nowrap capitalize text-sm md:text-lg content-middle">
+            Daftar Matakuliah
+          </strong>
+        </div>
+
 
         <Button type="button" class="px-10"
           @click="openDialogTambahMatakuliah">
@@ -103,7 +106,7 @@
         <template #row(jam)="row">
           {{row.data.hari}}, {{row.data.jam}}
         </template>
-          
+
         <template #actions="row">
           <NavLink
             as="button"
@@ -115,8 +118,44 @@
         </template>
       </DataTable>
 
+
+      <div class="">
+
+        <div class="w-full mt-3">
+          <Label for="npm_salin">Salin Matakuliah dari NRP</Label>
+          <Input
+            v-model="npm_salin"
+            name="npm_salin"
+            class="mt-1 block w-full"
+            type="text"
+
+          ></Input>
+        </div>
+        <div class="flex justify-end">
+          <Button type="button" class="px-10 mt-2 "
+            @click="openDialogSalinMatakuliah">
+            Salin Matakuliah</Button>
+        </div>
+      </div>
+
     </div>
-    
+
+
+    <Dialog
+      :isOpen="isOpenDialogSalinMatakuliah"
+      classes="text-green-900 bg-green-100 dark:bg-greeb-300 hover:bg-greeb-200 dark:hover:bg-green-400 focus-visible:ring-green-500"
+      title="Salin Matakuliah"
+      confirmText="Tambah"
+      @confirm="salinMatakuliah"
+      @cancel="isOpenDialogSalinMatakuliah = !isOpenDialogSalinMatakuliah"
+    >
+      <template #content>
+        <p class="text-sm">
+          Apakah anda yakin ingin menyalin matakuliah dari NPM {{npm_salin}}?
+        </p>
+      </template>
+    </Dialog>
+
     <Dialog
       :isOpen="isOPenDialogHapusMatakuliah"
       classes="text-red-900 bg-red-100 dark:bg-red-300 hover:bg-red-200 dark:hover:bg-red-400 focus-visible:ring-red-500"
@@ -196,7 +235,7 @@ export default {
     // tahunAjaran: Object,
     // tahunAjarans: Object,
     mahasiswa: Object,
-    jadwals: Object, 
+    jadwals: Object,
     jadwalMahasiswa: Object,
 
   },
@@ -207,10 +246,11 @@ export default {
       history: props.mahasiswa?.tahun_ajaran || null,
       detilHistory: props.mahasiswa.tahun_ajaran.find(t => t.id == route().params.ta)
     })
-
+    const npm_salin = ref();
     const isOpen = ref(false)
     const isDialogTambahMatakuliahOpen = ref(false)
     const isOPenDialogHapusMatakuliah = ref(false)
+    const isOpenDialogSalinMatakuliah = ref(false)
     const selectedJadwal = ref()
     const selectedJadwalHapus = ref()
 
@@ -277,7 +317,7 @@ export default {
       const r = route('transaksi.krs.destroy', props.mahasiswa.npm)
       console.log(r)
       console.log(selectedJadwalHapus.value)
-      
+
       Inertia.delete(r, {
         data: {
           jadwal_id: selectedJadwalHapus.value,
@@ -288,6 +328,39 @@ export default {
           console.log(!isOPenDialogHapusMatakuliah.value)
         },
       })
+    }
+
+    // salin matakuliah
+
+    const openDialogSalinMatakuliah = () => {
+      if (npm_salin.value !== undefined) {
+        isOpenDialogSalinMatakuliah.value = !isOpenDialogSalinMatakuliah.value
+      }
+    }
+
+    const salinMatakuliah = () => {
+      if (npm_salin.value !== undefined) {
+        console.log("menyalin dari " + npm_salin.value)
+        const parameter = {
+          mahasiswa: props.mahasiswa.npm,
+          tahun_ajaran: selectedTahunAjaran.value,
+          npm_salin: npm_salin.value,
+        }
+
+        const r = route('transaksi.krs.copy', props.mahasiswa.npm)
+        console.log(r)
+        console.log(parameter)
+
+        Inertia.post(r, parameter, {
+          onSuccess: (page) => {
+            console.log("mantap")
+            console.log(page.props.flash.status)
+            console.log(page.props.flash.msg)
+          },
+        })
+
+      }
+      isOpenDialogSalinMatakuliah.value = !isOpenDialogSalinMatakuliah.value
     }
 
     const columns = [
@@ -320,13 +393,17 @@ export default {
     return {
       currentRouteName,
       form,
+      npm_salin,
       isOpen,
       selectedTahunAjaran,
       columns,
       isDialogTambahMatakuliahOpen,
       isOPenDialogHapusMatakuliah,
+      isOpenDialogSalinMatakuliah,
       selectedJadwal,
       openDialogTambahMatakuliah,
+      openDialogSalinMatakuliah,
+      salinMatakuliah,
       tambahMatakuliah,
       openDialogHapus,
       loadTahunAjaran,

@@ -96,6 +96,7 @@ Route::group(['middleware' => ['auth']], function () {
             ->name('kurikulum.prasyarat');
 
         Route::get('testing', [TestingController::class, 'index'])->name('testing');
+        Route::post('krs/{mahasiswa}/copy', [KRSController::class, 'copy'])->name('krs.copy');
 
         Route::group(['prefix' => 'jadwal', 'as' => 'jadwal.'], function () {
             Route::resource('mahasiswa', JadwalMahasiswaController::class, ['except' => ['store', 'edit', 'show']]);
