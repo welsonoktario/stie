@@ -16,12 +16,10 @@ class KRSController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
     public function index(Request $request)
     {
-        //
-        // dd('trust me it works');
         $tahun_ajarans = TahunAjaran::all();
         $ta = in_array($request->ta, [null, ''])
             ? strval(($tahun_ajarans->firstWhere('aktif', '=', true))->id) : $request->ta;
@@ -35,18 +33,18 @@ class KRSController extends Controller
                 'status_mahasiswa.tanggal_cicilan_2 as cicilan_2',
                 'status_mahasiswa.tanggal_cicilan_3 as cicilan_3'])
             // ->doesntHave('mahasiswa_konversi')
-            ->join('users','users.id','=','mahasiswas.user_id')
-            ->leftJoin('jurusans','jurusans.id','=','mahasiswas.jurusan_id')
+            ->join('users', 'users.id', '=', 'mahasiswas.user_id')
+            ->leftJoin('jurusans', 'jurusans.id', '=', 'mahasiswas.jurusan_id')
             ->filter($request->only(['query', 'orderBy', 'orderType']))
-            ->when($ta ?? null, function($query, $ta) {
-                return $query->join('status_mahasiswa', 'mahasiswas.npm','=','mahasiswa_npm')
+            ->when($ta ?? null, function ($query, $ta) {
+                return $query->join('status_mahasiswa', 'mahasiswas.npm', '=', 'mahasiswa_npm')
                     ->where('tahun_ajaran', '=', $ta);
             })
             ->paginate($request->get('perPage') ?: 10)
             ->withQueryString();
 
         // dd('wow');
-        return Inertia::render('Transaksi/KRS/KRS.vue',[
+        return Inertia::render('Transaksi/KRS/KRS.vue', [
             'mahasiswas' => $mahasiswas,
             'tahun_ajarans' => $tahun_ajarans,
         ]);
@@ -88,26 +86,26 @@ class KRSController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
     public function edit($id, Request $request)
     {
-        //
-        if (!isset($request['ta']))
-        return redirect()->route('transaksi.keuangan.index');
+        if (!isset($request['ta'])) {
+            return redirect()->route('transaksi.keuangan.index');
+        }
 
         // cari mahasiswa ada atau engga
         $taken = DB::table('status_mahasiswa')
-            ->where('mahasiswa_npm','=', $id)
-            ->where('tahun_ajaran', '=',$request['ta'])->get()->count();
+            ->where('mahasiswa_npm', '=', $id)
+            ->where('tahun_ajaran', '=', $request['ta'])->get()->count();
 
-        if (!($taken > 0)){
+        if (!($taken > 0)) {
             return redirect()->route('transaksi.keuangan.index');
         }
 
         $mahasiswa = Mahasiswa::with(['user', 'tahun_ajaran'])
             ->find($id);
-        $jadwal_mhs = Mahasiswa::where('npm','=',$id)
+        $jadwal_mhs = Mahasiswa::where('npm', '=', $id)
             ->select(
                 'mahasiswas.npm as npm',
                 'matakuliahs.kode_matakuliah as kode_matakuliah',
@@ -119,7 +117,7 @@ class KRSController extends Controller
                 'jadwals.jam as jam',
                 'jadwals.id as jadwal_id',
                 'ruangans.nama_ruangan as ruangan',
-                )
+            )
             ->join('jadwal_mahasiswa', 'jadwal_mahasiswa.mahasiswa_npm', '=', 'mahasiswas.npm')
             ->join('jadwals', 'jadwals.id', '=', 'jadwal_mahasiswa.jadwal_id')
             ->join('matakuliahs', 'matakuliahs.id', '=', 'jadwals.matakuliah_id')
@@ -129,14 +127,14 @@ class KRSController extends Controller
             ->paginate($request->get('perPage') ?: 20);
         // dd($jadwal_mhs);
 
-        $jadwals = Jadwal::where('tahun_ajaran_id','=',$request['ta'])
+        $jadwals = Jadwal::where('tahun_ajaran_id', '=', $request['ta'])
             ->with(['matakuliah'])
             ->get();
         // $jadwals = Jadwal::where('tahun_ajaran_id','=',$request['ta'])
         //     ->where('')->get();
 
         // dd($mahasiswa);
-        return Inertia::render('Transaksi/KRS/KRSDetail.vue',[
+        return Inertia::render('Transaksi/KRS/KRSDetail.vue', [
             'mahasiswa' => $mahasiswa,
             'jadwals' => $jadwals,
             'jadwalMahasiswa' => $jadwal_mhs
@@ -154,7 +152,7 @@ class KRSController extends Controller
     {
         //
         // dd('bisa', $id);
-        if(!isset($request['jadwal_id'])){
+        if (!isset($request['jadwal_id'])) {
             return redirect()->back();
         }
 

@@ -5,7 +5,10 @@
     >
       <p class="text-xs md:text-sm">Nilai / Detail Nilai</p>
 
-      <p class="my-3 text-sm md:text-lg font-bold">Detail Nilai</p>
+      <div class="inline-flex my-3 text-sm md:text-lg align-middle">
+        <ChevronLeftIcon @click="back" class="w-5 cursor-pointer" />
+        <p class="font-bold capitalize nowrap ml-2">Detail Nilai</p>
+      </div>
 
       <table>
         <tr>
@@ -22,7 +25,7 @@
         </tr>
         <tr>
           <td>IP:</td>
-          <td class="pl-2">{{ ip }}</td>
+          <td class="pl-2">{{ ip == "NaN" ? "-" : ip }}</td>
         </tr>
       </table>
 
@@ -148,7 +151,7 @@ import Input from "@/Components/Input"
 import Label from "@/Components/Label"
 import Select from "@/Components/Select"
 import { Link } from "@inertiajs/inertia-vue3"
-import { PencilIcon } from "@heroicons/vue/outline"
+import { ChevronLeftIcon, PencilIcon } from "@heroicons/vue/outline"
 import { onMounted, ref, watch } from "vue"
 import { inRange } from "@/util"
 import { Inertia } from "@inertiajs/inertia"
@@ -206,6 +209,8 @@ watch([selectedTA, () => nilai.value], async ([newTA, newNilai]) => {
 })
 
 onMounted(() => calcIp())
+
+const back = () => window.history.back()
 
 const calcIp = () => {
   const jadwals = props.mahasiswa.jadwals
