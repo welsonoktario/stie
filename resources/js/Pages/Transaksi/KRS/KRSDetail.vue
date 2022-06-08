@@ -12,15 +12,11 @@
       </p>
 
       <!-- <p>{{route().current()}}</p> -->
-      <div class="flex justify-between my-3 item-center">
-        <span class="align-middle">
-          <strong
-            class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
-          >
-            <span>{{ currentRouteName }}</span>
-            KRS Mahasiswa</strong
-          >
-        </span>
+      <div class="inline-flex mt-6 mb-4 text-sm md:text-lg">
+        <ChevronLeftIcon @click="back" class="w-6 cursor-pointer" />
+        <p class="font-bold capitalize nowrap ml-2">
+          {{ currentRouteName }} KRS Mahasiswa
+        </p>
       </div>
       <form @submit.prevent="submit">
         <div class="mb-4 flex space-x-3 w-full">
@@ -70,7 +66,9 @@
         </div>
 
         <div class="mb-4">
-          <Label for="nama"> Tahun Ajaran <span class="text-red-500">*</span> </Label>
+          <Label for="nama">
+            Tahun Ajaran <span class="text-red-500">*</span>
+          </Label>
           <select
             class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
             name="Tahun Ajaran"
@@ -78,32 +76,30 @@
             @change="loadTahunAjaran(selectedTahunAjaran)"
           >
             <!-- <option value="" selected disabled>Pilih agama</option> -->
-            <option 
-              v-for="(ta, index) in mahasiswa.tahun_ajaran" 
+            <option
+              v-for="(ta, index) in mahasiswa.tahun_ajaran"
               :key="index"
-              :value="ta.id">{{ta.tahun_ajaran}}
-              </option>
+              :value="ta.id"
+            >
+              {{ ta.tahun_ajaran }}
+            </option>
           </select>
         </div>
-        
       </form>
 
-
       <div class="flex justify-between mb-3">
-        <label for="nama"> 
-          Daftar Matakuliah
-        </label>
+        <label for="nama"> Daftar Matakuliah </label>
 
-        <Button type="button" class="px-10"
-          @click="openDialogTambahMatakuliah">
-          Tambah Matakuliah</Button>
+        <Button type="button" class="px-10" @click="openDialogTambahMatakuliah">
+          Tambah Matakuliah</Button
+        >
       </div>
 
-      <DataTable :data='jadwalMahasiswa' :columns="columns">
+      <DataTable :data="jadwalMahasiswa" :columns="columns">
         <template #row(jam)="row">
-          {{row.data.hari}}, {{row.data.jam}}
+          {{ row.data.hari }}, {{ row.data.jam }}
         </template>
-          
+
         <template #actions="row">
           <NavLink
             as="button"
@@ -114,9 +110,8 @@
           </NavLink>
         </template>
       </DataTable>
-
     </div>
-    
+
     <Dialog
       :isOpen="isOPenDialogHapusMatakuliah"
       classes="text-red-900 bg-red-100 dark:bg-red-300 hover:bg-red-200 dark:hover:bg-red-400 focus-visible:ring-red-500"
@@ -127,7 +122,8 @@
     >
       <template #content>
         <p class="text-sm">
-          Apakah anda yakin ingin menghapus tahun ajaran ini? {{selectedJadwalHapus}}
+          Apakah anda yakin ingin menghapus tahun ajaran ini?
+          {{ selectedJadwalHapus }}
         </p>
       </template>
     </Dialog>
@@ -141,14 +137,12 @@
       @cancel="isDialogTambahMatakuliahOpen = !isDialogTambahMatakuliahOpen"
     >
       <template #content>
-        <Select
-          class="w-full"
-          :options="jadwals"
-          v-model="selectedJadwal"
-        >
+        <Select class="w-full" :options="jadwals" v-model="selectedJadwal">
           <template #option="option">
             <option :value="option.data.id">
-              {{ `${option.data.matakuliah.kode_matakuliah} - ${option.data.matakuliah.nama_matakuliah} - ${option.data.local} - ${option.data.hari},${option.data.jam}` }}
+              {{
+                `${option.data.matakuliah.kode_matakuliah} - ${option.data.matakuliah.nama_matakuliah} - ${option.data.local} - ${option.data.hari},${option.data.jam}`
+              }}
             </option>
           </template>
         </Select>
@@ -161,8 +155,8 @@
 import { computed, ref } from "vue"
 import { Link, useForm } from "@inertiajs/inertia-vue3"
 import { Switch, SwitchGroup, SwitchLabel } from "@headlessui/vue"
-import { CheckIcon, XIcon, TrashIcon } from "@heroicons/vue/outline"
-import { Inertia } from '@inertiajs/inertia'
+import { ChevronLeftIcon, TrashIcon } from "@heroicons/vue/outline"
+import { Inertia } from "@inertiajs/inertia"
 
 import DataTable from "@components/DataTable.vue"
 import AppLayout from "@layouts/App"
@@ -190,22 +184,24 @@ export default {
     Switch,
     SwitchGroup,
     SwitchLabel,
+    ChevronLeftIcon,
     TrashIcon,
   },
   props: {
     // tahunAjaran: Object,
     // tahunAjarans: Object,
     mahasiswa: Object,
-    jadwals: Object, 
+    jadwals: Object,
     jadwalMahasiswa: Object,
-
   },
   setup(props) {
     const form = useForm({
       nama: props.mahasiswa?.user?.name || null,
       npm: props.mahasiswa?.npm || null,
       history: props.mahasiswa?.tahun_ajaran || null,
-      detilHistory: props.mahasiswa.tahun_ajaran.find(t => t.id == route().params.ta)
+      detilHistory: props.mahasiswa.tahun_ajaran.find(
+        (t) => t.id == route().params.ta
+      ),
     })
 
     const isOpen = ref(false)
@@ -218,16 +214,15 @@ export default {
       route().current("master.tahun-ajaran.create") ? "Tambah" : "Edit"
     )
 
-    const selectedTahunAjaran = ref(
-      route().params.ta
-    );
+    const selectedTahunAjaran = ref(route().params.ta)
 
+    const back = () => window.history.back();
 
     const loadTahunAjaran = (id) => {
       const current = route().current()
 
-      const r = route(current, {kr: props.mahasiswa.npm, _query: {ta: id}})
-      return Inertia.get(r, {},{})
+      const r = route(current, { kr: props.mahasiswa.npm, _query: { ta: id } })
+      return Inertia.get(r, {}, {})
     }
 
     const submit = () =>
@@ -235,11 +230,9 @@ export default {
         ? form.put(route("", props.mahasiswa.npm))
         : ""
 
-    const remove = () =>
-      form.delete(route("", props.tahunAjaran.id))
+    const remove = () => form.delete(route("", props.tahunAjaran.id))
 
-    const openDialogHapus = (kode_matakuliah) => alert('wow' + kode_matakuliah)
-
+    const openDialogHapus = (kode_matakuliah) => alert("wow" + kode_matakuliah)
 
     // Tambah matakuliah
 
@@ -256,11 +249,14 @@ export default {
         {
           jadwal_id: selectedJadwal.value,
           ta: selectedTahunAjaran.value,
-        },{
+        },
+        {
           onSuccess: (page) => {
-            isDialogTambahMatakuliahOpen.value = !isDialogTambahMatakuliahOpen.value
-          }
-        })
+            isDialogTambahMatakuliahOpen.value =
+              !isDialogTambahMatakuliahOpen.value
+          },
+        }
+      )
     }
 
     // hapus matakuliah
@@ -274,15 +270,15 @@ export default {
     }
 
     const hapusMatakuliah = () => {
-      const r = route('transaksi.krs.destroy', props.mahasiswa.npm)
+      const r = route("transaksi.krs.destroy", props.mahasiswa.npm)
       console.log(r)
       console.log(selectedJadwalHapus.value)
-      
+
       Inertia.delete(r, {
         data: {
           jadwal_id: selectedJadwalHapus.value,
         },
-        onSuccess: page => {
+        onSuccess: (page) => {
           isOPenDialogHapusMatakuliah.value = !isOPenDialogHapusMatakuliah.value
           console.log(isOPenDialogHapusMatakuliah.value)
           console.log(!isOPenDialogHapusMatakuliah.value)
@@ -292,28 +288,28 @@ export default {
 
     const columns = [
       {
-        key: 'kode_matakuliah',
-        label: 'Kode'
+        key: "kode_matakuliah",
+        label: "Kode",
       },
       {
-        key: 'nama_matakuliah',
-        label: 'Nama'
+        key: "nama_matakuliah",
+        label: "Nama",
       },
       {
-        key: 'sks',
-        label: 'SKS'
+        key: "sks",
+        label: "SKS",
       },
       {
-        key: 'lokal',
-        label: 'Lokal'
+        key: "lokal",
+        label: "Lokal",
       },
       {
-        key: 'ruangan',
-        label: 'Ruangan'
+        key: "ruangan",
+        label: "Ruangan",
       },
       {
-        key: 'jam',
-        label: 'Jadwal'
+        key: "jam",
+        label: "Jadwal",
       },
     ]
 
@@ -335,6 +331,7 @@ export default {
       selectedJadwalHapus,
       submit,
       remove,
+      back
     }
   },
 }

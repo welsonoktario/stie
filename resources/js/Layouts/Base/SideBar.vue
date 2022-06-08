@@ -84,7 +84,11 @@
                         : route(subMenu.route)
                       : '#'
                   "
-                  :active="route().current(subMenu.route)"
+                  :active="
+                    subMenu.params
+                      ? route().current(subMenu.route, subMenu.params)
+                      : route().current(subMenu.route)
+                  "
                   class="w-full h-full"
                   >{{ subMenu.label }}</NavLink
                 >

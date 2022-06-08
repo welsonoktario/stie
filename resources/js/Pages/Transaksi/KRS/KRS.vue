@@ -17,7 +17,6 @@
         </span>
       </div>
 
-      
       <div class="inline-flex items-center text-sm mb-1">
         <label for="tahun_ajarans">Tahun Akademik</label>
         <select
@@ -27,11 +26,14 @@
           v-model="selectedTahunAjaran"
           @change="loadTahunAjaran(selectedTahunAjaran)"
         >
-          <option 
+          <option
             v-for="ta in tahun_ajarans"
-            :key="ta.id" 
+            :key="ta.id"
             :value="ta.id"
-            :selected="ta.aktif">{{ta.tahun_ajaran}}</option>
+            :selected="ta.aktif"
+          >
+            {{ ta.tahun_ajaran }}
+          </option>
         </select>
       </div>
 
@@ -41,22 +43,32 @@
         </template>
 
         <template #actions="row">
-          <Link
-            as="button"
-            :href="route('transaksi.krs.edit', {kr: row.data.npm, ta: selectedTahunAjaran})"
-            >Edit</Link
+          <NavLink
+            :href="
+              route('transaksi.krs.edit', {
+                kr: row.data.npm,
+                ta: selectedTahunAjaran,
+              })
+            "
+            >Edit</NavLink
           >
         </template>
         <template #row(cicilan_1)="row">
-          <div class="text-red-500" v-if="row.data.cicilan_1 == null"><p class="text-xl font-extrabold">-</p></div>
+          <div class="text-red-500" v-if="row.data.cicilan_1 == null">
+            <p class="text-xl font-extrabold">-</p>
+          </div>
           <div class="text-green-600" v-else>L</div>
         </template>
         <template #row(cicilan_2)="row">
-          <div class="text-red-500" v-if="row.data.cicilan_2 == null"><p class="text-xl font-extrabold">-</p></div>
+          <div class="text-red-500" v-if="row.data.cicilan_2 == null">
+            <p class="text-xl font-extrabold">-</p>
+          </div>
           <div class="text-green-600" v-else>L</div>
         </template>
         <template #row(cicilan_3)="row">
-          <div class="text-red-500" v-if="row.data.cicilan_3 == null"><p class="text-xl font-extrabold">-</p></div>
+          <div class="text-red-500" v-if="row.data.cicilan_3 == null">
+            <p class="text-xl font-extrabold">-</p>
+          </div>
           <div class="text-green-600" v-else>L</div>
         </template>
       </DataTable>
@@ -68,15 +80,15 @@
 import AppLayout from "@layouts/App"
 import DataTable from "@components/DataTable"
 import Button from "@components/Button"
+import NavLink from "@/Components/NavLink"
 
-import { Link } from "@inertiajs/inertia-vue3"
-import { Inertia } from '@inertiajs/inertia'
-import { ref } from 'vue'
+import { Inertia } from "@inertiajs/inertia"
+import { ref } from "vue"
 
 export default {
   components: {
     AppLayout,
-    Link,
+    NavLink,
     DataTable,
     Button,
   },
@@ -88,7 +100,7 @@ export default {
     tahun_ajarans: {
       type: Object,
       default: null,
-    }
+    },
   },
   setup(props) {
     const columns = [
@@ -119,21 +131,20 @@ export default {
     ]
 
     const selectedTahunAjaran = ref(
-      props.tahun_ajarans.find(o => o.aktif === true).id
-    );
+      props.tahun_ajarans.find((o) => o.aktif === true).id
+    )
 
     const loadTahunAjaran = (id) => {
-      // alert(id)
       const current = route().current()
       const params = route().params
       params.ta = id
-      
+
       Inertia.get(route(current), params, {
         preserveScroll: true,
         preserveState: true,
       })
     }
-    
+
     return {
       columns,
       selectedTahunAjaran,
