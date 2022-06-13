@@ -24,14 +24,16 @@ class KRSController extends Controller
         $ta = in_array($request->ta, [null, ''])
             ? strval(($tahun_ajarans->firstWhere('aktif', '=', true))->id) : $request->ta;
 
-        $mahasiswas = Mahasiswa::select(['mahasiswas.npm',
-                'mahasiswas.status_mahasiswa',
-                'users.name as nama',
-                'jurusans.nama as jurusan',
-                'status_mahasiswa.status as status',
-                'status_mahasiswa.tanggal_cicilan_1 as cicilan_1',
-                'status_mahasiswa.tanggal_cicilan_2 as cicilan_2',
-                'status_mahasiswa.tanggal_cicilan_3 as cicilan_3'])
+        $mahasiswas = Mahasiswa::select([
+            'mahasiswas.npm',
+            'mahasiswas.status_mahasiswa',
+            'users.name as nama',
+            'jurusans.nama as jurusan',
+            'status_mahasiswa.status as status',
+            'status_mahasiswa.tanggal_cicilan_1 as cicilan_1',
+            'status_mahasiswa.tanggal_cicilan_2 as cicilan_2',
+            'status_mahasiswa.tanggal_cicilan_3 as cicilan_3'
+        ])
             // ->doesntHave('mahasiswa_konversi')
             ->join('users', 'users.id', '=', 'mahasiswas.user_id')
             ->leftJoin('jurusans', 'jurusans.id', '=', 'mahasiswas.jurusan_id')
@@ -91,9 +93,10 @@ class KRSController extends Controller
     public function edit($id, Request $request)
     {
         if (!isset($request['ta'])) {
-            return redirect()->route('transaksi.keuangan.index');
+            return redirect()->route('transaksi.krs.index');
         }
 
+        $filters = $request->only(['query', 'orderBy', 'orderType']);
         // cari mahasiswa ada atau engga
         $taken = DB::table('status_mahasiswa')
             ->where('mahasiswa_npm', '=', $id)
@@ -123,6 +126,14 @@ class KRSController extends Controller
             ->join('matakuliahs', 'matakuliahs.id', '=', 'jadwals.matakuliah_id')
             ->join('ruangans', 'ruangans.id', '=', 'jadwals.ruangan_id')
             ->where('jadwals.tahun_ajaran_id', '=', $request['ta'])
+            ->when($filters['query'] ?? null, function ($query, $search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('kode_matakuliah', 'LIKE', "%$search%")
+                        ->orWhere('nama_matakuliah', 'LIKE', "%$search%");
+                });
+            })->when($filters['orderBy'] ?? null, function ($query, $orderBy) use (&$filters) {
+                $query->orderBy($orderBy, $filters['orderType']);
+            })
             // ->get()
             ->paginate($request->get('perPage') ?: 20);
         // dd($jadwal_mhs);
@@ -134,10 +145,21 @@ class KRSController extends Controller
         //     ->where('')->get();
 
         // dd($mahasiswa);
+        $tahunAjaran = TahunAjaran::find($request['ta']);
+        $ipsSebelumnya = TahunAjaran::firstWhere('tanggal_mulai', '<', $tahunAjaran->tanggal_mulai);
+
+        if ($ipsSebelumnya) {
+            $ipsSebelumnya = $this->calcIP($mahasiswa->npm, $ipsSebelumnya->id);
+        }
+        else {
+            $ipsSebelumnya = "Baru";
+        }
+
         return Inertia::render('Transaksi/KRS/KRSDetail.vue', [
             'mahasiswa' => $mahasiswa,
             'jadwals' => $jadwals,
-            'jadwalMahasiswa' => $jadwal_mhs
+            'jadwalMahasiswa' => $jadwal_mhs,
+            'ipsSebelumnya' => $ipsSebelumnya
         ]);
     }
 
@@ -172,8 +194,6 @@ class KRSController extends Controller
         return redirect()
             ->route('transaksi.krs.edit', ['kr' => $mahasiswa->npm, 'ta' => $ta])
             ->with(['status' => 'OK', 'msg' => 'Berhasil menambah jadwal mahasiswa']);
-
-
     }
 
     /**
@@ -200,7 +220,7 @@ class KRSController extends Controller
             dd($th->getMessage());
         }
         return redirect()
-            ->route('transaksi.krs.edit', ['kr' => $mahasiswa->npm, 'ta' =>$jadwal->tahun_ajaran_id])
+            ->route('transaksi.krs.edit', ['kr' => $mahasiswa->npm, 'ta' => $jadwal->tahun_ajaran_id])
             ->with(['status' => 'OK', 'msg' => 'Berhasil menambah jadwal mahasiswa']);
     }
 
@@ -233,7 +253,38 @@ class KRSController extends Controller
 
         return redirect()
             ->route('transaksi.krs.edit', ['kr' => $mahasiswa->npm, 'ta' => $request->tahun_ajaran])
-            ->with(['status' => 'OK', 'msg' => 'Berhasil menyalin matakuliah mahasiswa ' .$request->npm_salin]);
-
+            ->with(['status' => 'OK', 'msg' => 'Berhasil menyalin matakuliah mahasiswa ' . $request->npm_salin]);
     }
+
+    private function calcIP($mhs, $ta)
+    {
+        $mahasiswa = Mahasiswa::query()
+            ->with(['jadwals' => function ($q) use ($ta) {
+                return $q->where('tahun_ajaran_id', $ta);
+            }])
+            ->find($mhs);
+
+        // hitung ip smt lalu
+        $totalSks = 0;
+        $nisbiSks = 0;
+        $angkaMutu = [
+            'A' => 4,
+            'B' => 3,
+            'C' => 2,
+            'D' => 1,
+            'E' => 0,
+            null => 0,
+        ];
+
+        foreach ($mahasiswa->jadwals as $jadwal) {
+            $sks = $jadwal->matakuliah->sks;
+            $totalSks = $totalSks + $sks;
+            $nisbiSks = $nisbiSks + ($angkaMutu[$jadwal->pivot->nisbi] * $sks);
+        }
+        // dd($totalSks, $nisbiSks, $nisbiSks/$totalSks);
+        return $nisbiSks/$totalSks;
+        // dd($mahasiswa->toJson());
+    }
+
+
 }

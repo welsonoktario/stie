@@ -134,6 +134,7 @@ const props = defineProps({
   ta: Object,
   tipe: String,
   mahasiswa: Object,
+  wakil_ketua_2: Object,
 })
 
 onMounted(() => {

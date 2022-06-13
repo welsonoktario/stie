@@ -5,10 +5,7 @@
     >
       <p class="text-xs md:text-sm">Nilai / Detail Nilai</p>
 
-      <div class="inline-flex my-3 text-sm md:text-lg align-middle">
-        <ChevronLeftIcon @click="back" class="w-5 cursor-pointer" />
-        <p class="font-bold capitalize nowrap ml-2">Detail Nilai</p>
-      </div>
+      <p class="my-3 text-sm md:text-lg font-bold">Detail Nilai</p>
 
       <table>
         <tr>
@@ -45,16 +42,6 @@
             </option>
           </select>
         </div>
-
-        <Button type="button">
-          <Link
-            :href="
-              route('transaksi.nilai.create', { ta: selectedTahunAkademik })
-            "
-          >
-            Tambah Nilai
-          </Link>
-        </Button>
       </div>
 
       <table class="table-auto w-full">
@@ -151,7 +138,7 @@ import Input from "@/Components/Input"
 import Label from "@/Components/Label"
 import Select from "@/Components/Select"
 import { Link } from "@inertiajs/inertia-vue3"
-import { ChevronLeftIcon, PencilIcon } from "@heroicons/vue/outline"
+import { PencilIcon } from "@heroicons/vue/outline"
 import { onMounted, ref, watch } from "vue"
 import { inRange } from "@/util"
 import { Inertia } from "@inertiajs/inertia"
@@ -210,24 +197,21 @@ watch([selectedTA, () => nilai.value], async ([newTA, newNilai]) => {
 
 onMounted(() => calcIp())
 
-const back = () => window.history.back()
-
 const calcIp = () => {
   const jadwals = props.mahasiswa.jadwals
+
+  // setiap angka mutu jadwal * sks mk
   const nilaiAm = jadwals.map(
     (jadwal) =>
       cekAngkaMutu(Number(jadwal.pivot.nilai_akhir)) * jadwal.matakuliah.sks
   )
 
-  const totalSks = jadwals.reduce((prev, curr) => {
-    return prev + curr.matakuliah.sks
-  }, 0)
+  // itung total sks yang diambil
+  const totalSks = jadwals.reduce((prev, curr) => prev + curr.matakuliah.sks, 0)
 
-  const totalNilai = nilaiAm.reduce((prev, curr) => {
-    return prev + curr
-  }, 0)
+  // total nilai
+  const totalNilai = nilaiAm.reduce((prev, curr) => prev + curr, 0)
 
-  // ip.value = Math.round((totalNilai / totalSks) * 100) / 100
   ip.value = (totalNilai / totalSks).toFixed(2)
 }
 
@@ -279,10 +263,14 @@ const edit = () =>
     {
       jadwal_id: selectedJadwal.value,
       nilai: nilai.value,
+      nisbi: nisbi.value,
       ta: props.selectedTahunAkademik,
     },
     {
-      onSuccess: (page) => (isDialogNilaiOpen.value = !isDialogNilaiOpen.value),
+      onSuccess: (page) => {
+        isDialogNilaiOpen.value = !isDialogNilaiOpen.value
+        calcIp()
+      },
     }
   )
 

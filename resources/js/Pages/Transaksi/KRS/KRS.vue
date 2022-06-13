@@ -43,14 +43,15 @@
         </template>
 
         <template #actions="row">
-          <NavLink
+          <Link
             :href="
               route('transaksi.krs.edit', {
                 kr: row.data.npm,
                 ta: selectedTahunAjaran,
               })
             "
-            >Edit</NavLink
+            target="_blank"
+            >Edit</Link
           >
         </template>
         <template #row(cicilan_1)="row">
@@ -80,7 +81,7 @@
 import AppLayout from "@layouts/App"
 import DataTable from "@components/DataTable"
 import Button from "@components/Button"
-import NavLink from "@/Components/NavLink"
+import Link from "@/Components/Link"
 
 import { Inertia } from "@inertiajs/inertia"
 import { ref } from "vue"
@@ -88,7 +89,7 @@ import { ref } from "vue"
 export default {
   components: {
     AppLayout,
-    NavLink,
+    Link,
     DataTable,
     Button,
   },

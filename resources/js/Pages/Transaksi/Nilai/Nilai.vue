@@ -38,13 +38,13 @@
 
         <template #actions="row">
           <Link
-            as="button"
             :href="
               route('transaksi.nilai.edit', {
                 mahasiswa: row.data.npm,
                 ta: selectedTA,
               })
             "
+            target="_blank"
           >
             <PencilIcon class="h-4" />
           </Link>
@@ -55,20 +55,19 @@
 </template>
 
 <script setup>
+import { ref } from "vue"
+import { Inertia } from "@inertiajs/inertia"
+import { PencilIcon } from "@heroicons/vue/outline"
 import AppLayout from "@layouts/App"
 import DataTable from "@components/DataTable"
-import Button from "@components/Button"
-import { Link } from "@inertiajs/inertia-vue3"
-import { Inertia } from "@inertiajs/inertia"
-import { ref } from "vue"
-import { PencilIcon } from "@heroicons/vue/outline"
+import Link from "@/Components/Link"
 
 const props = defineProps({
   mahasiswas: Object,
   tahunAkademiks: Array,
   selectedTahunAkademik: {
     type: Number,
-    default: '-',
+    default: "-",
   },
 })
 

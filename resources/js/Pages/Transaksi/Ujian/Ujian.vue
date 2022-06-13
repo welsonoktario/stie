@@ -95,7 +95,7 @@ const columns = ref([
   },
   {
     key: "cicilan",
-    label: `Bayar UTS`,
+    label: `Bayar ${selectedTipe.value}`,
   },
 ])
 

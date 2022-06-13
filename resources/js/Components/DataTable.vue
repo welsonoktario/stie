@@ -195,14 +195,14 @@ export default {
       const params = route().params
       const filterProps = Object.getOwnPropertyNames(filter)
       // foreach {
-      //   alert(p) 
+      //   alert(p)
       //   break
       // }
 
-      filterProps.forEach(p => {
+      filterProps.forEach((p) => {
         params[p] = filter[p]
       })
-      
+
       const current = route().current()
       const newFilter = { ...filter, ...route().params }
       newFilter.query = filter.query
@@ -210,7 +210,7 @@ export default {
       newFilter.orderType = filter.orderType
       newFilter.perPage = filter.perPage
 
-      Inertia.get(route(current), newFilter, {
+      Inertia.get(route(current, params), newFilter, {
         preserveScroll: true,
         preserveState: true,
       })

@@ -20,7 +20,7 @@ class NilaiController extends Controller
      */
     public function index()
     {
-        $selectedTahunAkademik = Request::get('ta');
+        $selectedTahunAkademik = (int) Request::get('ta') ?: TahunAjaran::firstWhere('aktif', true)->id;
         $tahunAkademiks = TahunAjaran::orderBy('id', 'DESC')->get();
         $mahasiswas = Mahasiswa::select(['mahasiswas.npm', 'mahasiswas.status_mahasiswa', 'users.name as nama', 'jurusans.nama as jurusan'])
             // ->doesntHave('mahasiswa_konversi')
@@ -107,7 +107,7 @@ class NilaiController extends Controller
         try {
             $jadwal = $request::get('jadwal_id');
 
-            $mahasiswa->jadwals()->syncWithPivotValues([$jadwal], ['nilai_akhir' => $request::get('nilai')], false);
+            $mahasiswa->jadwals()->syncWithPivotValues([$jadwal], ['nilai_akhir' => $request::get('nilai'), 'nisbi'=> $request::get('nisbi')], false);
         } catch (Throwable $e) {
             Log::error($e);
             return Redirect::route(

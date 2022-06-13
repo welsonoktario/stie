@@ -12,11 +12,15 @@
       </p>
 
       <!-- <p>{{route().current()}}</p> -->
-      <div class="inline-flex mt-6 mb-4 text-sm md:text-lg">
-        <ChevronLeftIcon @click="back" class="w-6 cursor-pointer" />
-        <p class="font-bold capitalize nowrap ml-2">
-          {{ currentRouteName }} KRS Mahasiswa
-        </p>
+      <div class="flex justify-between my-3 item-center">
+        <span class="align-middle">
+          <strong
+            class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
+          >
+            <span>{{ currentRouteName }}</span>
+            KRS Mahasiswa</strong
+          >
+        </span>
       </div>
       <form @submit.prevent="submit">
         <div class="mb-4 flex space-x-3 w-full">
@@ -44,22 +48,12 @@
 
         <div class="mb-4 flex space-x-3 w-full">
           <div class="w-full">
-            <Label for="nama"> IPK </Label>
-            <Input
-              v-model="form.nama"
-              name="nama"
-              class="mt-1 block w-full"
-              type="text"
-              disabled
-            ></Input>
-          </div>
-          <div class="w-full">
             <Label for="npm">IPS Sebelumnya</Label>
             <Input
-              v-model="form.npm"
               name="npm"
               class="mt-1 block w-full"
               type="text"
+              v-model ='ipsSebelumnya'
               disabled
             ></Input>
           </div>
@@ -89,11 +83,12 @@
 
       <div class="flex justify-between mb-3">
         <div class="flex justify-center content-center">
-          <strong class="whitespace-nowrap capitalize text-sm md:text-lg content-middle">
+          <strong
+            class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
+          >
             Daftar Matakuliah
           </strong>
         </div>
-
 
         <Button type="button" class="px-10" @click="openDialogTambahMatakuliah">
           Tambah Matakuliah</Button
@@ -106,19 +101,16 @@
         </template>
 
         <template #actions="row">
-          <NavLink
-            as="button"
+          <button
             class="text-red-500"
             @click="openDialogHapusMatakuliah(row.data.jadwal_id)"
           >
             <TrashIcon class="h-4" />
-          </NavLink>
+          </button>
         </template>
       </DataTable>
 
-
       <div class="">
-
         <div class="w-full mt-3">
           <Label for="npm_salin">Salin Matakuliah dari NRP</Label>
           <Input
@@ -126,18 +118,19 @@
             name="npm_salin"
             class="mt-1 block w-full"
             type="text"
-
           ></Input>
         </div>
         <div class="flex justify-end">
-          <Button type="button" class="px-10 mt-2 "
-            @click="openDialogSalinMatakuliah">
-            Salin Matakuliah</Button>
+          <Button
+            type="button"
+            class="px-10 mt-2"
+            @click="openDialogSalinMatakuliah"
+          >
+            Salin Matakuliah</Button
+          >
         </div>
       </div>
-
     </div>
-
 
     <Dialog
       :isOpen="isOpenDialogSalinMatakuliah"
@@ -149,7 +142,7 @@
     >
       <template #content>
         <p class="text-sm">
-          Apakah anda yakin ingin menyalin matakuliah dari NPM {{npm_salin}}?
+          Apakah anda yakin ingin menyalin matakuliah dari NPM {{ npm_salin }}?
         </p>
       </template>
     </Dialog>
@@ -165,7 +158,6 @@
       <template #content>
         <p class="text-sm">
           Apakah anda yakin ingin menghapus tahun ajaran ini?
-          {{ selectedJadwalHapus }}
         </p>
       </template>
     </Dialog>
@@ -197,7 +189,7 @@
 import { computed, ref } from "vue"
 import { Link, useForm } from "@inertiajs/inertia-vue3"
 import { Switch, SwitchGroup, SwitchLabel } from "@headlessui/vue"
-import { ChevronLeftIcon, TrashIcon } from "@heroicons/vue/outline"
+import { TrashIcon } from "@heroicons/vue/outline"
 import { Inertia } from "@inertiajs/inertia"
 
 import DataTable from "@components/DataTable.vue"
@@ -226,7 +218,6 @@ export default {
     Switch,
     SwitchGroup,
     SwitchLabel,
-    ChevronLeftIcon,
     TrashIcon,
   },
   props: {
@@ -235,6 +226,7 @@ export default {
     mahasiswa: Object,
     jadwals: Object,
     jadwalMahasiswa: Object,
+    ipsSebelumnya: String,
   },
   setup(props) {
     const form = useForm({
@@ -245,7 +237,7 @@ export default {
         (t) => t.id == route().params.ta
       ),
     })
-    const npm_salin = ref();
+    const npm_salin = ref()
     const isOpen = ref(false)
     const isDialogTambahMatakuliahOpen = ref(false)
     const isOPenDialogHapusMatakuliah = ref(false)
@@ -259,7 +251,7 @@ export default {
 
     const selectedTahunAjaran = ref(route().params.ta)
 
-    const back = () => window.history.back();
+    const back = () => window.history.back()
 
     const loadTahunAjaran = (id) => {
       const current = route().current()
@@ -309,7 +301,7 @@ export default {
       isOPenDialogHapusMatakuliah.value = !isOPenDialogHapusMatakuliah.value
       selectedJadwalHapus.value = jadwal
       console.log(isOPenDialogHapusMatakuliah.value)
-      console.log(!isOPenDialogHapusMatakuliah.value)
+      // console.log(!isOPenDialogHapusMatakuliah.value)
     }
 
     const hapusMatakuliah = () => {
@@ -346,7 +338,7 @@ export default {
           npm_salin: npm_salin.value,
         }
 
-        const r = route('transaksi.krs.copy', props.mahasiswa.npm)
+        const r = route("transaksi.krs.copy", props.mahasiswa.npm)
         console.log(r)
         console.log(parameter)
 
@@ -357,7 +349,6 @@ export default {
             console.log(page.props.flash.msg)
           },
         })
-
       }
       isOpenDialogSalinMatakuliah.value = !isOpenDialogSalinMatakuliah.value
     }
@@ -411,7 +402,7 @@ export default {
       selectedJadwalHapus,
       submit,
       remove,
-      back
+      back,
     }
   },
 }

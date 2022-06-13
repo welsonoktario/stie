@@ -18,7 +18,7 @@ class UjianController extends Controller
     public function index(Request $request)
     {
         $tahunAkademiks = TahunAjaran::orderBy('id', 'DESC')->get();
-        $selectedTahunAkademik = $request->ta ? $tahunAkademiks->firstWhere('id', $request->ta) : $tahunAkademiks[0];
+        $selectedTahunAkademik = $request->ta ? $tahunAkademiks->firstWhere('id', $request->ta) : $tahunAkademiks->firstWhere('aktif','=',1);
         $mahasiswas = Mahasiswa::indexUjian($request->tipe)
             ->whereHas('tahun_ajaran', function ($q) use ($selectedTahunAkademik) {
                 return $q->where('id', $selectedTahunAkademik->id);
@@ -63,6 +63,8 @@ class UjianController extends Controller
                 return $q->with(['matakuliah', 'ruangan'])->where('tahun_ajaran_id', $tahunAjaran->id);
             }
         ])->find($id);
+
+
 
         // dd($mahasiswa);
 
