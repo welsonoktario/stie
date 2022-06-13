@@ -32,6 +32,19 @@ class CreateJadwalsTable extends Migration
 
             $table->string('local', 1)->nullable();
             $table->integer('kapasitas')->nullable();
+
+            // jadwal uts
+            $table->date('uts_tanggal')->nullable();
+            $table->time('uts_pukul_mulai')->nullable();
+            $table->time('uts_pukul_selesai')->nullable();
+            $table->string('uts_ruangan', 10)->nullable();
+
+            // jadwal uas
+            $table->date('uas_tanggal')->nullable();
+            $table->time('uas_pukul_mulai')->nullable();
+            $table->time('uas_pukul_selesai')->nullable();
+            $table->string('uas_ruangan', 10)->nullable();
+
             $table->timestamps();
         });
     }

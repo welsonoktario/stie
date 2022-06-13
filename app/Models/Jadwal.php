@@ -20,6 +20,16 @@ class Jadwal extends Model
         'matakuliah_id',
         'ruangan_id',
         'tahun_ajaran_id',
+        // uts
+        'uts_tanggal',
+        'uts_pukul_mulai',
+        'uts_pukul_selesai',
+        'uts_ruangan',
+        // uas
+        'uas_tanggal',
+        'uas_pukul_mulai',
+        'uas_pukul_selesai',
+        'uas_ruangan',
     ];
 
     protected $casts = [

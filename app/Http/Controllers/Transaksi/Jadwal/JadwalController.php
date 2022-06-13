@@ -130,6 +130,7 @@ class JadwalController extends Controller
      */
     public function update(UpdateJadwalRequest $request, Jadwal $jadwal)
     {
+        // dd($request->all());
         $jadwal->update($request->validated());
 
         return redirect()

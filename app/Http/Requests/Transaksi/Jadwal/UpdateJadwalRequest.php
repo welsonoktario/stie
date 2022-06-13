@@ -32,7 +32,17 @@ class UpdateJadwalRequest extends FormRequest
             'ruangan_id' => ['required', 'numeric'],
             'hari' => ['required', 'string'],
             'jam' => ['required', 'string'],
-            'local' => ['required', 'string', 'min:1']
+            'local' => ['required', 'string', 'min:1'],
+            // uts
+            'uts_tanggal' => ['nullable','string'],
+            'uts_pukul_mulai' => ['nullable','string'],
+            'uts_pukul_selesai' => ['nullable','string'],
+            'uts_ruangan' => ['nullable','string'],
+            // uas
+            'uas_tanggal' => ['nullable','string'],
+            'uas_pukul_mulai' => ['nullable','string'],
+            'uas_pukul_selesai' => ['nullable','string'],
+            'uas_ruangan' => ['nullable','string'],
         ];
     }
 
