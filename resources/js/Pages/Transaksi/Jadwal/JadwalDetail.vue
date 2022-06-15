@@ -45,7 +45,7 @@
             <template #option="option">
               <option :value="Number(option.data.id)">
                 {{
-                  `${option.data.kode_matakuliah} - ${option.data.nama_matakuliah}`
+                  `S${option.data.semester} - ${option.data.kode_matakuliah} - ${option.data.nama_matakuliah}`
                 }}
               </option>
             </template>

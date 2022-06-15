@@ -115,6 +115,7 @@ class MatakuliahController extends Controller
     public function update(UpdateMatakuliahRequest $request, Matakuliah $matakuliah)
     {
         $jurusan = $request->matakuliah_jurusan;
+        // dd($request->validated());
         // dd($jurusan['jurusan_id']);
         $jurusan['jurusan_id'] = $jurusan['jurusan_id'] != '-' ? $jurusan['jurusan_id'] : null;
         $prasyarat = collect($request->prasyarats)->mapWithKeys(fn ($item, $key) => [

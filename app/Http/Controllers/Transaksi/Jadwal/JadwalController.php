@@ -66,14 +66,14 @@ class JadwalController extends Controller
     {
         $tahunAkademik = TahunAjaran::find(Request::get('ta'));
         $ruangans = Ruangan::all();
-        $matakuliahs = Matakuliah::all();
-
+        $matakuliahs = Matakuliah::all()->sortBy('semester');
+        // dd($matakuliahs->toArray());
         return Inertia::render(
             'Transaksi/Jadwal/JadwalDetail',
             [
                 'tahunAkademik' => $tahunAkademik,
                 'ruangans' => $ruangans,
-                'matakuliahs' => $matakuliahs
+                'matakuliahs' => $matakuliahs->sortBy('semester')->toArray()
             ]
         );
     }
@@ -108,8 +108,8 @@ class JadwalController extends Controller
     {
         $tahunAkademik = TahunAjaran::find($jadwal->tahun_ajaran_id);
         $ruangans = Ruangan::all();
-        $matakuliahs = Matakuliah::all();
-
+        $matakuliahs = Matakuliah::all()->sortBy('semester');
+        // dd($matakuliahs);
         return Inertia::render(
             'Transaksi/Jadwal/JadwalDetail',
             [

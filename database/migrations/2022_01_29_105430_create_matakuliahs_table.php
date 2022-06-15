@@ -21,6 +21,7 @@ class CreateMatakuliahsTable extends Migration
 
             $table->string('kode_matakuliah', 10)->nullable();
             $table->string('nama_matakuliah', 45)->nullable();
+            $table->enum('semester', [1,2,3,4,5,6,7,8,9,10,11,12,13])->nullable();
             $table->tinyInteger('sks')->nullable();
             $table->enum('tipe', ['wajib', 'pilihan', 'pilihan wajib'])->nullable();
             $table->timestamps();

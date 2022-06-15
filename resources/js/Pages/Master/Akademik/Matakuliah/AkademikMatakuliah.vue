@@ -81,6 +81,11 @@ export default {
         sortable: true,
       },
       {
+        key: "semester",
+        label: "SMT",
+        sortable: true,
+      },
+      {
         key: "sks",
         label: "SKS",
         sortable: true,

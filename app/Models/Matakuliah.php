@@ -22,6 +22,7 @@ class Matakuliah extends Model
         'nama_matakuliah',
         'sks',
         'tipe',
+        'semester',
     ];
 
     protected $casts = ['sks' => 'integer'];

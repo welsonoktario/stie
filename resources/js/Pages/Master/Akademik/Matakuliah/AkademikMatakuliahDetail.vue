@@ -56,23 +56,49 @@
           ></Input>
           <InputError class="mt-2" :message="form.errors.nama_matakuliah" />
         </div>
-        <div class="mb-4">
-          <label
-            class="block text-gray-500 dark:text-gray-400 text-sm font-bold mb-2"
-            for="sks"
-          >
-            Jumlah SKS
-          </label>
-          <Input
-            v-model="form.sks"
-            class="w-full"
-            id="sks"
-            type="number"
-            placeholder="Jumlah SKS"
-            autocomplete="off"
-          ></Input>
-          <InputError class="mt-2" :message="form.errors.sks" />
+
+
+        <div class="flex space-x-2">
+
+          <div class="mb-4 w-full">
+            <label
+              class="block text-gray-500 dark:text-gray-400 text-sm font-bold mb-2"
+              for="sks"
+            >
+              Jumlah SKS
+            </label>
+            <Input
+              v-model="form.sks"
+              class="w-full"
+              id="sks"
+              type="number"
+              placeholder="Jumlah SKS"
+              autocomplete="off"
+            ></Input>
+            <InputError class="mt-2" :message="form.errors.sks" />
+          </div>
+
+          <div class="mb-4 w-full">
+            <label for="semester" class="block text-gray-500 dark:text-gray-400 text-sm font-bold mb-2">Semester</label>
+            <select
+              class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none"
+              v-model="form.semester"
+            >
+              <option value="" selected>Pilih semester</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+          </div>
         </div>
+
         <div class="mb-4">
           <label
             for="tipe"
@@ -146,6 +172,7 @@
           </select>
           <InputError class="mt-2" :message="form.errors.kurikulum_id" />
         </div>
+
         <div class="mb-4">
           <label
             for="prasyarat"
@@ -186,7 +213,7 @@
               @click="openDialogPrasyarat(matakuliah)"
               class="w-full focus:bg-teal-400 focus:text-white cursor-pointer"
             >
-              {{ matakuliah.nama_matakuliah }}
+              S{{matakuliah.semester}} - {{ matakuliah.kode_matakuliah }} - {{ matakuliah.nama_matakuliah }}
             </li>
           </ul>
         </div>
@@ -286,6 +313,7 @@ const form = useForm({
   sks: props.matakuliah?.sks || 1,
   tipe: props.matakuliah?.tipe || null,
   prasyarats: props.matakuliah?.prasyarats || [],
+  semester: props.matakuliah?.semester || null,
 })
 
 const tipes = ["wajib", "pilihan", "pilihan wajib"]
@@ -301,6 +329,7 @@ onMounted(() => {
     const selected = props.kurikulums.find((k) => k.id == form.kurikulum_id)
     prasyarats.length = 0
     prasyarats.push.apply(prasyarats, selected.matakuliahs)
+    prasyarats.sort((a,b) => a.semester.localeCompare(b.semester))
   }
 })
 
@@ -318,6 +347,7 @@ const openDialogPrasyarat = (mk) => {
 const loadPrasyarats = (index) => {
   prasyarats.length = 0
   prasyarats.push.apply(prasyarats, props.kurikulums[index - 1].matakuliahs)
+  prasyarats.sort((a,b) => a.semester.localeCompare(b.semester))
 }
 
 const addPrasyarat = () => {
