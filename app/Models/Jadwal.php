@@ -63,7 +63,7 @@ class Jadwal extends Model
     public function mahasiswas()
     {
         return $this->belongsToMany(Mahasiswa::class, 'jadwal_mahasiswa', 'jadwal_id', 'mahasiswa_npm', 'id', 'npm')
-            ->withPivot(['nilai_uts', 'nilai_nas', 'nilai_akhir', 'nisbi']);
+            ->withPivot(['nilai_uts', 'nilai_nas', 'nilai_akhir', 'nisbi', 'angka_mutu']);
     }
 
     public function scopeIndex($query)

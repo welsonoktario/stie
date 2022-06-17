@@ -53,6 +53,8 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/print/{ta}', [TestingController::class, 'export']);
+
 Route::group(['middleware' => ['auth']], function () {
     Route::get('dashboard', function () {
         return Inertia::render('Dashboard');

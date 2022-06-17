@@ -107,7 +107,11 @@ class NilaiController extends Controller
         try {
             $jadwal = $request::get('jadwal_id');
 
-            $mahasiswa->jadwals()->syncWithPivotValues([$jadwal], ['nilai_akhir' => $request::get('nilai'), 'nisbi'=> $request::get('nisbi')], false);
+            $mahasiswa->jadwals()->syncWithPivotValues([$jadwal], [
+                'nilai_akhir' => $request::get('nilai'),
+                'nisbi'=> $request::get('nisbi'),
+                'angka_mutu' => $request::get('angka_mutu'),
+            ], false);
         } catch (Throwable $e) {
             Log::error($e);
             return Redirect::route(

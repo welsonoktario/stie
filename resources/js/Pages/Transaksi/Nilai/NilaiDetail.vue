@@ -264,6 +264,7 @@ const edit = () =>
       jadwal_id: selectedJadwal.value,
       nilai: nilai.value,
       nisbi: nisbi.value,
+      angka_mutu: angkaMutu.value,
       ta: props.selectedTahunAkademik,
     },
     {
