@@ -57,6 +57,8 @@ class Mahasiswa extends Model
         'daerah_asal'
     ];
 
+    //protected $appends = ['ipk'];
+
     public function getRouteKeyName()
     {
         return 'npm';
@@ -136,7 +138,7 @@ class Mahasiswa extends Model
     public function jadwals()
     {
         return $this->belongsToMany(Jadwal::class, 'jadwal_mahasiswa', 'mahasiswa_npm', 'jadwal_id', 'npm', 'id')
-            ->withPivot(['nilai_uts', 'nilai_nas', 'nilai_akhir', 'nisbi']);
+            ->withPivot(['nilai_uts', 'nilai_nas', 'nilai_akhir', 'nisbi', 'angka_mutu']);
     }
 
     public function scopeIndexJadwal($query)
@@ -179,4 +181,13 @@ class Mahasiswa extends Model
             $query->orderBy($orderBy, $filters['orderType']);
         });
     }
+
+    /* public function getIpkAttribute()
+    {
+        $jadwals = $this->jadwals()
+            ->with(['matakuliah' => fn ($q) => $q->groupBy('id')])
+            ->get();
+
+        return $jadwals;
+    } */
 }
