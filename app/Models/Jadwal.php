@@ -72,10 +72,14 @@ class Jadwal extends Model
             'jadwals.*',
             'matakuliahs.nama_matakuliah as matakuliah_nama',
             'matakuliahs.kode_matakuliah as matakuliah_kode',
-            'ruangans.nama_ruangan as ruangan_nama'
+            'ruangans.nama_ruangan as ruangan_nama',
+            'kurikulums.nama as kurikulum_nama',
+            'kurikulums.aktif as kurikulum_status'
         ])
             ->join('matakuliahs', 'matakuliahs.id', '=', 'jadwals.matakuliah_id')
-            ->join('ruangans', 'ruangans.id', '=', 'jadwals.ruangan_id');
+            ->join('kurikulums', 'kurikulums.id', '=', 'matakuliahs.kurikulum_id')
+            ->join('ruangans', 'ruangans.id', '=', 'jadwals.ruangan_id')
+            ->where('kurikulums.aktif','=',1);
     }
 
     /**
@@ -86,7 +90,8 @@ class Jadwal extends Model
         $query->when($filters['query'] ?? null, function ($query, $search) {
             $query->where(function ($query) use ($search) {
                 $query->where('kode_matakuliah', 'LIKE', "%$search%")
-                    ->orWhere('nama_matakuliah', 'LIKE', "%$search%");
+                    ->orWhere('nama_matakuliah', 'LIKE', "%$search%")
+                    ->orWhere('kurikulums.nama', 'LIKE', "%$search%");
             });
         })->when($filters['orderBy'] ?? null, function ($query, $orderBy) use (&$filters) {
             $query->orderBy($orderBy, $filters['orderType']);

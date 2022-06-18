@@ -11,6 +11,7 @@
             class="whitespace-nowrap align-middle text-sm md:text-lg content-middle"
             >Daftar Jadwal</strong
           >
+
           <select
             name="tahun_ajarans"
             id="tahun_ajaran"
@@ -108,6 +109,11 @@ const columns = [
   {
     key: "hari",
     label: "Hari, Jam",
+    sortable: true,
+  },
+  {
+    key: "kurikulum_nama",
+    label: "Kurikulum",
     sortable: true,
   },
 ]

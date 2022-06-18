@@ -46,6 +46,7 @@ class JadwalController extends Controller
         // dd($selectedTahunAkademik, $jadwals);
 
         // dd($selectedTahunAkademik);
+        // dd($jadwals);
 
         return Inertia::render(
             'Transaksi/Jadwal/Jadwal',
