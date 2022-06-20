@@ -79,7 +79,7 @@ class MahasiswaKonversiController extends Controller
                     // $user->mahasiswa->tahun_ajaran()->detach();
                     $sync_ta = [];
                     foreach ($tas as $ta) {
-                        $sync_ta[$ta['id']] = ['status' => 'Aktif'];
+                        $sync_ta[$ta['id']] = ['status' => 'Tidak Aktif'];
                     }
                     // $user->mahasiswa->tahun_ajaran()->attach($ta->id, ['status' => 'Aktif']);
                     $user->mahasiswa->tahun_ajaran()->sync($sync_ta);

@@ -312,6 +312,7 @@ export default {
       Inertia.delete(r, {
         data: {
           jadwal_id: selectedJadwalHapus.value,
+          ta: selectedTahunAjaran.value
         },
         onSuccess: (page) => {
           isOPenDialogHapusMatakuliah.value = !isOPenDialogHapusMatakuliah.value

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Jadwal;
 use App\Models\Matakuliah;
+use SebastianBergmann\CodeUnit\FunctionUnit;
 
 class KRSController extends Controller
 {
@@ -141,6 +142,7 @@ class KRSController extends Controller
         $jadwals = Jadwal::where('tahun_ajaran_id', '=', $request['ta'])
             ->with(['matakuliah'])
             ->get();
+
         // $jadwals = Jadwal::where('tahun_ajaran_id','=',$request['ta'])
         //     ->where('')->get();
 
@@ -178,11 +180,22 @@ class KRSController extends Controller
             return redirect()->back();
         }
 
-        $mahasiswa = Mahasiswa::find($id);
+        $ta = $request['ta'];
+        // $mahasiswa = Mahasiswa::with('tahun_ajarans')->where("npm","=",$id)->get();
+
+        $mahasiswa = Mahasiswa::with(['tahun_ajaran' => function ($query) use ($ta) {
+            return $query->where('id', '=', $ta);
+        }, 'jadwals' => function($query) use ($ta) {
+            return $query->where('tahun_ajaran_id', '=', $ta);
+        }])->findOrFail($id);
         $jadwal = Jadwal::find($request['jadwal_id']);
         // dd($mahasiswa, $jadwal);
 
-        $ta = $request['ta'];
+        // dd(count($mahasiswa->jadwals));
+
+
+        $mahasiswa->tahun_ajaran()->sync([$ta => ['status' => 'Aktif']], false);
+        // dd($mahasiswa);
 
 
         try {
@@ -205,7 +218,12 @@ class KRSController extends Controller
     public function destroy(Request $request, $id)
     {
         //
-        $mahasiswa = Mahasiswa::find($id);
+        $ta = $request->ta;
+        $mahasiswa = Mahasiswa::with(['tahun_ajaran' => function ($query) use ($ta) {
+            return $query->where('id', '=', $ta);
+        }, 'jadwals' => function($query) use ($ta) {
+            return $query->where('tahun_ajaran_id', '=', $ta);
+        }])->findOrFail($id);
         $jadwal = Jadwal::find($request['jadwal_id']);
 
         // dd($mahasiswa, $jadwal, $request['jadwal_id']);
@@ -219,6 +237,12 @@ class KRSController extends Controller
             //throw $th;
             dd($th->getMessage());
         }
+
+        // dd(count($mahasiswa->jadwals) - 1);
+        if (!(count($mahasiswa->jadwals) - 1)) {
+            $mahasiswa->tahun_ajaran()->sync([$ta => ['status' => 'Tidak Aktif']], false);
+        }
+
         return redirect()
             ->route('transaksi.krs.edit', ['kr' => $mahasiswa->npm, 'ta' => $jadwal->tahun_ajaran_id])
             ->with(['status' => 'OK', 'msg' => 'Berhasil menambah jadwal mahasiswa']);
@@ -282,6 +306,9 @@ class KRSController extends Controller
             $nisbiSks = $nisbiSks + ($angkaMutu[$jadwal->pivot->nisbi] * $sks);
         }
         // dd($totalSks, $nisbiSks, $nisbiSks/$totalSks);
+        if ($totalSks == 0) {
+            return 0;
+        }
         return $nisbiSks/$totalSks;
         // dd($mahasiswa->toJson());
     }

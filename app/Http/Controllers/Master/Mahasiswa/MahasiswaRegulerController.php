@@ -81,7 +81,7 @@ class MahasiswaRegulerController extends Controller
                 $tas = TahunAjaran::where('tanggal_selesai', '>', $tm)->get();
                 $user->mahasiswa->tahun_ajaran()->detach();
                 foreach ($tas as $ta) {
-                    $user->mahasiswa->tahun_ajaran()->attach($ta->id, ['status' => 'Aktif']);
+                    $user->mahasiswa->tahun_ajaran()->attach($ta->id, ['status' => 'Tidak Aktif']);
                 }
             } catch (\Throwable $th) {
                 $user->delete();

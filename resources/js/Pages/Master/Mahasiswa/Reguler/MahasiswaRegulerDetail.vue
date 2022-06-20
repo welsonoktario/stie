@@ -446,6 +446,7 @@
                     <option value="Mengundurkan Diri">Mengundurkan Diri</option>
                     <option value="Wafat">Wafat</option>
                     <option value="Hilang">Hilang</option>
+                    <option value="Tidak Aktif">Tidak Aktif</option>
                   </select>
                 </td>
                 <td class="text-sm text-gray-900 font-light py-3 whitespace-nowrap flex justify-center">
