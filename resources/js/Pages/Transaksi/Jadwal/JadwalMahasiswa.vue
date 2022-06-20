@@ -10,7 +10,6 @@
           class="whitespace-nowrap align-middle text-sm md:text-lg content-middle"
           >Detail Jadwal Mahasiswa</strong
         >
-
       </div>
 
       <div class="flex space-x-3 mb-3">
@@ -49,7 +48,12 @@
         </div>
         <div class="w-full">
           <Label for="nama"> Matakuliah </Label>
-          <Input class="mt-1 block w-full" type="text" :value="tahunAkademik.tahun_ajaran" readonly />
+          <Input
+            class="mt-1 block w-full"
+            type="text"
+            :value="tahunAkademik.tahun_ajaran"
+            readonly
+          />
         </div>
       </div>
 
@@ -73,24 +77,29 @@
         </template>
 
         <template #actions="row">
-          <NavLink
-            as="button"
-            class="text-red-500"
-            @click="openDialogHapus(row.data.npm)"
-          >
-            <TrashIcon class="h-4" />
-          </NavLink>
+          <div class="inline-flex align-middle">
+            <IconButton
+              class="text-red-500 hover:text-red-400"
+              @click.native="openDialogHapus(row.data.npm)"
+            >
+              <TrashIcon class="h-4" />
+            </IconButton>
+
+            <IconButton @click.native="openDialogNilai(row.data.npm)">
+              <PencilAltIcon class="h-4" />
+            </IconButton>
+          </div>
         </template>
       </DataTable>
     </div>
 
     <Dialog
-      :isOpen="isDialogTambahOpen"
+      :isOpen="isDialogOpen.tambah"
       title="Tambah Mahasiswa"
       confirmText="Tambah"
       classes="text-teal-900 bg-teal-100 hover:bg-teal-200 focus-visible:ring-teal-500"
       @confirm="tambah"
-      @cancel="isDialogTambahOpen = !isDialogTambahOpen"
+      @cancel="isDialogOpen.tambah = !isDialogOpen.tambah"
     >
       <template #content>
         <div class="my-4">
@@ -111,17 +120,59 @@
     </Dialog>
 
     <Dialog
-      :isOpen="isDialogHapusOpen"
-      title="Hapus matakuliah"
+      :isOpen="isDialogOpen.hapus"
+      title="Hapus Matakuliah"
       confirmText="Hapus"
       classes="text-red-900 bg-red-100 hover:bg-red-200 focus-visible:ring-red-500"
       @confirm="remove"
-      @cancel="isDialogHapusOpen = !isDialogHapusOpen"
+      @cancel="isDialogOpen.hapus = !isDialogOpen.hapus"
     >
       <template #content>
         <p class="text-sm">
           Apakah anda yakin ingin menghapus mahasiswa dari jadwal ini?
         </p>
+      </template>
+    </Dialog>
+
+    <Dialog
+      :isOpen="isDialogOpen.nilai"
+      title="Edit Nilai"
+      confirmText="Edit"
+      classes="text-teal-900 bg-teal-100 hover:bg-teal-200 focus-visible:ring-teal-500"
+      @confirm="editNilai"
+      @cancel="isDialogOpen.nilai = !isDialogOpen.nilai"
+    >
+      <template #content>
+        <div class="my-4">
+          <Label>Nilai Akhir</Label>
+          <Input
+            class="w-full"
+            type="number"
+            min="0"
+            max="100"
+            v-model="nilai"
+          />
+        </div>
+        <div class="my-4 inline-flex justify-between">
+          <div class="mr-2">
+            <Label>Huruf Mutu</Label>
+            <Input
+              class="w-full cursor-not-allowed"
+              type="text"
+              v-model="nisbi"
+              readonly
+            />
+          </div>
+          <div class="ml-2">
+            <Label>Angka Mutu</Label>
+            <Input
+              class="w-full cursor-not-allowed"
+              type="text"
+              v-model="angkaMutu"
+              readonly
+            />
+          </div>
+        </div>
       </template>
     </Dialog>
   </AppLayout>
@@ -133,12 +184,18 @@ import DataTable from "@components/DataTable"
 import Dialog from "@components/Dialog"
 import Button from "@components/Button"
 import Input from "@components/Input"
-import NavLink from "@/Components/NavLink"
 import Select from "@components/Select"
 import Label from "@/Components/Label.vue"
-import { CheckIcon, XIcon, TrashIcon } from "@heroicons/vue/outline"
-import { ref } from "vue"
+import IconButton from "@/Components/IconButton"
+import {
+  CheckIcon,
+  PencilAltIcon,
+  TrashIcon,
+  XIcon,
+} from "@heroicons/vue/outline"
+import { reactive, ref, watch } from "vue"
 import { Inertia } from "@inertiajs/inertia"
+import { inRange } from "@/util"
 
 const props = defineProps({
   mahasiswas: Object,
@@ -168,11 +225,59 @@ const columns = [
   },
 ]
 
-const isDialogTambahOpen = ref(false)
-const isDialogHapusOpen = ref(false)
+const isDialogOpen = reactive({
+  tambah: false,
+  hapus: false,
+  nilai: false,
+})
 const calonMahasiswas = ref([])
 const selectedMahasiswa = ref(0)
 const selectedMahasiswaDelete = ref(0)
+const nilai = ref(0)
+const nisbi = ref("")
+const angkaMutu = ref(0)
+
+watch(
+  () => nilai.value,
+  async (newNilai, oldNilai) => {
+    if (inRange(newNilai, 80, 100)) {
+      nisbi.value = "A"
+      angkaMutu.value = 4
+    } else if (inRange(newNilai, 70, 79)) {
+      nisbi.value = "B"
+      angkaMutu.value = 3
+    } else if (inRange(newNilai, 56, 69)) {
+      nisbi.value = "C"
+      angkaMutu.value = 2
+    } else if (inRange(newNilai, 40, 55)) {
+      nisbi.value = "D"
+      angkaMutu.value = 1
+    } else {
+      nisbi.value = "E"
+      angkaMutu.value = 0
+    }
+  }
+)
+
+const loadNilai = async (npm) => {
+  const res = await fetch(
+    route("transaksi.jadwal.mahasiswa.loadNilai", {
+      jadwal: props.jadwal,
+      mahasiswa: npm,
+    })
+  )
+  const data = await res.json()
+
+  if (data) {
+    nilai.value = Number(data.pivot.nilai_akhir)
+    nisbi.value = data.pivot.nisbi
+    angkaMutu.value = data.pivot.anga_mutu
+  } else {
+    nilai.value = 0
+    nisbi.value = ""
+    angkaMutu.value = null
+  }
+}
 
 const openDialogTambah = () => {
   if (!calonMahasiswas.value.length) {
@@ -181,12 +286,12 @@ const openDialogTambah = () => {
     )
       .then((res) => res.json())
       .then((res) => {
-        isDialogTambahOpen.value = !isDialogTambahOpen.value
+        isDialogOpen.tambah = !isDialogOpen.tambah
         calonMahasiswas.value = res.data
       })
   } else {
     selectedMahasiswa.value = "-"
-    isDialogTambahOpen.value = !isDialogTambahOpen.value
+    isDialogOpen.tambah = !isDialogOpen.tambah
   }
 }
 
@@ -199,14 +304,19 @@ const tambah = () =>
       ta: props.tahunAkademik.id,
     },
     {
-      onSuccess: (page) =>
-        (isDialogTambahOpen.value = !isDialogTambahOpen.value),
+      onSuccess: () => (isDialogOpen.tambah = !isDialogOpen.tambah),
     }
   )
 
 const openDialogHapus = (npm) => {
   selectedMahasiswaDelete.value = npm
-  isDialogHapusOpen.value = !isDialogHapusOpen.value
+  isDialogOpen.hapus = !isDialogOpen.hapus
+}
+
+const openDialogNilai = async (npm) => {
+  await loadNilai(npm)
+  selectedMahasiswa.value = npm
+  isDialogOpen.nilai = !isDialogOpen.nilai
 }
 
 const remove = () =>
@@ -221,8 +331,30 @@ const remove = () =>
       preserveState: true,
       onSuccess: (page) => {
         selectedMahasiswaDelete.value = 0
-        isDialogHapusOpen.value = !isDialogHapusOpen.value
+        isDialogOpen.hapus = !isDialogOpen.hapus
       },
     }
   )
+
+const editNilai = () => {
+  Inertia.patch(
+    route("transaksi.jadwal.mahasiswa.editNilai", {
+      jadwal: props.jadwal,
+      mahasiswa: selectedMahasiswa.value,
+    }),
+    {
+      nilaiAkhir: nilai.value,
+      nisbi: nisbi.value,
+      angkaMutu: angkaMutu.value,
+      ta: props.tahunAkademik.id,
+    },
+    {
+      preserveState: true,
+      onSuccess: () => {
+        selectedMahasiswa.value = 0
+        isDialogOpen.nilai = !isDialogOpen.nilai
+      },
+    }
+  )
+}
 </script>
