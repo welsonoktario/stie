@@ -101,6 +101,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('krs/{mahasiswa}/copy', [KRSController::class, 'copy'])->name('krs.copy');
 
         Route::group(['prefix' => 'jadwal', 'as' => 'jadwal.'], function () {
+            Route::patch('mahasiswa/{jadwal}/nilai/{mahasiswa}', [JadwalMahasiswaController::class, 'editNilai'])->name('mahasiswa.editNilai');
+            Route::get('mahasiswa/{jadwal}/nilai/{mahasiswa}', [JadwalMahasiswaController::class, 'loadNilai'])->name('mahasiswa.loadNilai');
             Route::resource('mahasiswa', JadwalMahasiswaController::class, ['except' => ['store', 'edit', 'show']]);
         });
 

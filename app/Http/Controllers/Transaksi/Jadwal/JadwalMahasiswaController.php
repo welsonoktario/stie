@@ -7,6 +7,7 @@ use App\Http\Requests\Transaksi\JadwalMahasiswa\UpdateJadwalRequest;
 use App\Models\Jadwal;
 use App\Models\Mahasiswa;
 use App\Models\TahunAjaran;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
@@ -155,5 +156,48 @@ class JadwalMahasiswaController extends Controller
                     'msg' => "Jadwal berhasil dihapus"
                 ]
             );
+    }
+
+    public function loadNilai(Jadwal $jadwal, Mahasiswa $mahasiswa)
+    {
+        $nilai = $mahasiswa->jadwals()
+            ->firstWhere('jadwal_id', $jadwal->id);
+
+        return response()->json($nilai);
+    }
+
+    public function editNilai(Jadwal $jadwal, Mahasiswa $mahasiswa)
+    {
+        $data = Request::only(['nilaiAkhir', 'nisbi', 'angkaMutu']);
+        DB::beginTransaction();
+        try {
+            $mahasiswa->jadwals()->sync([$jadwal->id => [
+                    'nilai_akhir' => $data['nilaiAkhir'],
+                    'nisbi' => $data['nisbi'],
+                    'angka_mutu' => $data['angkaMutu']
+                ]
+            ], false);
+
+            DB::commit();
+
+            return redirect()
+                ->route(
+                    'transaksi.jadwal.mahasiswa.index',
+                    [
+                        'jadwal' => $jadwal->id,
+                        'ta' => Request::get('ta')
+                    ]
+                )
+                ->with(
+                    [
+                        'status' => 'OK',
+                        'msg' => "Jadwal berhasil dihapus"
+                    ]
+                );
+        } catch (Throwable $e) {
+            DB::rollBack();
+
+            return response()->json(['status' => 'FAIL', 'msg' => $e->getMessage()]);
+        }
     }
 }
