@@ -16,9 +16,9 @@
           >
         </span>
         <Button type="button">
-          <Link :href="route('master.mahasiswa-reguler.create')" type="link">
+          <NavLink :href="route('master.mahasiswa-reguler.create')" type="link">
             Tambah Mahasiswa
-          </Link>
+          </NavLink>
         </Button>
       </div>
 
@@ -32,10 +32,9 @@
         </template>
 
         <template #actions="row">
-          <Link
-            as="button"
+          <NavLink
             :href="route('master.mahasiswa-reguler.edit', row.data.npm)"
-            >Edit</Link
+            >Edit</NavLink
           >
         </template>
       </DataTable>
@@ -48,12 +47,12 @@ import AppLayout from "@layouts/App"
 import DataTable from "@components/DataTable"
 import Button from "@components/Button"
 
-import { Link } from "@inertiajs/inertia-vue3"
+import NavLink from "@components/NavLink"
 
 export default {
   components: {
     AppLayout,
-    Link,
+    NavLink,
     DataTable,
     Button,
   },

@@ -27,7 +27,7 @@
         </template>
 
         <template #actions="row">
-          <NavLink as="button" :href="route('master.matakuliah.edit', row.data.id)"
+          <NavLink :href="route('master.matakuliah.edit', row.data.id)"
             >Edit</NavLink
           >
         </template>

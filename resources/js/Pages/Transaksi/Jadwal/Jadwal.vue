@@ -32,9 +32,9 @@
         </div>
 
         <Button type="button">
-          <Link :href="route('transaksi.jadwal.create', { ta: selectedTA })">
+          <NavLink :href="route('transaksi.jadwal.create', { ta: selectedTA })">
             Tambah Jadwal
-          </Link>
+          </NavLink>
         </Button>
       </div>
 
@@ -44,15 +44,13 @@
         </template>
 
         <template #actions="row">
-          <Link
-            as="button"
+          <NavLink
             :href="route('transaksi.jadwal.edit', { jadwal: row.data.id })"
           >
             <PencilIcon class="h-4" />
-          </Link>
+          </NavLink>
 
-          <Link
-            as="button"
+          <NavLink
             :href="
               route('transaksi.jadwal.mahasiswa.index', {
                 jadwal: row.data.id,
@@ -61,7 +59,7 @@
             "
           >
             <UserAddIcon class="ml-2 h-4" />
-          </Link>
+          </NavLink>
         </template>
       </DataTable>
     </div>
@@ -72,7 +70,7 @@
 import AppLayout from "@layouts/App"
 import DataTable from "@components/DataTable"
 import Button from "@components/Button"
-import { Link } from "@inertiajs/inertia-vue3"
+import NavLink from "@components/NavLink"
 import { Inertia } from "@inertiajs/inertia"
 import { ref } from "vue"
 import { PencilIcon, UserAddIcon } from "@heroicons/vue/outline"

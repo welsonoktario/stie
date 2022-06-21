@@ -24,7 +24,6 @@
 
         <template #actions="row">
           <NavLink
-            as="button"
             :href="route('master.kurikulum.edit', row.data.id)"
             >Edit</NavLink
           >

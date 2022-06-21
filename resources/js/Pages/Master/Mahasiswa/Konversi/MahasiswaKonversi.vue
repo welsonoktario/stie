@@ -15,31 +15,29 @@
             >Daftar Mahasiswa Konversi</strong
           >
         </span>
-        <Link
+        <NavLink
           :href="route('master.mahasiswa-konversi.create')"
           method="get"
-          as="button"
           type="link"
           class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150"
         >
           Tambah Mahasiswa
-        </Link>
+        </NavLink>
       </div>
 
-      <DataTable :data="mahasiswas" :columns="columns"> 
-        
+      <DataTable :data="mahasiswas" :columns="columns">
+
         <template #row(jurusan)="row">
           <span class="capitalize">{{ row.data.jurusan ?? '-' }}</span>
         </template>
 
         <template #actions="row">
-          <Link
-            as="button"
+          <NavLink
             :href="route('master.mahasiswa-konversi.edit', row.data.npm)"
-            >Edit</Link>
+            >Edit</NavLink>
         </template>
       </DataTable>
-      
+
     </div>
   </AppLayout>
 </template>
@@ -48,12 +46,12 @@
 import AppLayout from "@layouts/App.vue"
 import DataTable from "@components/DataTable.vue"
 
-import { Link } from "@inertiajs/inertia-vue3"
+import NavLink from "@components/NavLink.vue"
 
 export default {
   components: {
     AppLayout,
-    Link,
+    NavLink,
     DataTable,
   },
   props: {
