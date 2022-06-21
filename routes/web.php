@@ -60,7 +60,7 @@ Route::group(['middleware' => ['auth']], function () {
         return Inertia::render('Dashboard');
     })->name('master.dashboard');
 
-    Route::get('testing', [ModelTestingController::class, 'index']);
+    Route::get('testing', [TestingController::class, 'index']);
 
     // Master route
     Route::group(['prefix' => 'master', 'as' => 'master.'], function () {
