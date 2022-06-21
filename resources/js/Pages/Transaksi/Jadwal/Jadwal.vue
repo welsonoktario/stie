@@ -112,6 +112,11 @@ const columns = [
     sortable: true,
   },
   {
+    key: "semester",
+    label: "SMT",
+    sortable: true,
+  },
+  {
     key: "kurikulum_nama",
     label: "Kurikulum",
     sortable: true,

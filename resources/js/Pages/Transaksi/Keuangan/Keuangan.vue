@@ -17,7 +17,7 @@
         </span>
       </div>
 
-      
+
       <div class="inline-flex items-center text-sm mb-1">
         <label for="tahun_ajarans">Tahun Akademik</label>
         <select
@@ -27,9 +27,9 @@
           v-model="selectedTahunAjaran"
           @change="loadTahunAjaran(selectedTahunAjaran)"
         >
-          <option 
+          <option
             v-for="ta in tahun_ajarans"
-            :key="ta.id" 
+            :key="ta.id"
             :value="ta.id"
             :selected="ta.aktif">{{ta.tahun_ajaran}}</option>
         </select>
@@ -137,13 +137,13 @@ export default {
       const current = route().current()
       const params = route().params
       params.ta = id
-      
+
       Inertia.get(route(current), params, {
         preserveScroll: true,
         preserveState: true,
       })
     }
-    
+
     return {
       columns,
       selectedTahunAjaran,

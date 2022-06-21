@@ -72,6 +72,7 @@ class Jadwal extends Model
             'jadwals.*',
             'matakuliahs.nama_matakuliah as matakuliah_nama',
             'matakuliahs.kode_matakuliah as matakuliah_kode',
+            'matakuliahs.semester as semester',
             'ruangans.nama_ruangan as ruangan_nama',
             'kurikulums.nama as kurikulum_nama',
             'kurikulums.aktif as kurikulum_status'

@@ -25,8 +25,16 @@
             >Edit</NavLink
           >
         </template>
+
+        <!-- <template #row(name)="row">
+
+        </template> -->
         <template #row(name)="row">
           <p v-if="!row.data.name">-</p>
+          <!-- <p v-if="row.data.gelar_belakang || row.data.gelar_depan">{{row.data.gelar_depan}} {{row.data.name}}{{", " + row.data.gelar_belakang}}</p> -->
+          <p v-else>{{row.data.gelar_depan}} {{row.data.name}}{{", " + row.data.gelar_belakang}}</p>
+          <!-- <p v-else>{{row.data.name}}</p> -->
+          <!-- <p v-else>{{row.data.name}}</p> -->
         </template>
       </DataTable>
     </div>

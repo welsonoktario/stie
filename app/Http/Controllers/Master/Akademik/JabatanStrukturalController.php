@@ -18,13 +18,15 @@ class JabatanStrukturalController extends Controller
     {
         //
 
-        $jabatans = JabatanStruktural::select('jabatan_strukturals.*', 'users.name as name')
+        $jabatans = JabatanStruktural::select('jabatan_strukturals.*', 'users.name as name', 'staffs.gelar_belakang as gelar_belakang', 'staffs.gelar_depan as gelar_depan')
             ->leftJoin('staffs', 'jabatan_strukturals.staff_id', '=', 'staffs.id')
             ->leftJoin('users', 'staffs.user_id', '=', 'users.id')
             ->paginate(100);
         return Inertia::render('Master/Akademik/JabatanStruktural/JabatanStruktural.vue',[
             'jabatans' => $jabatans,
         ]);
+
+        dd($jabatans);
     }
 
     /**
