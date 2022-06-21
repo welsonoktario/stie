@@ -14,7 +14,9 @@ const mix = require("laravel-mix")
 mix
   .css("resources/css/sheets-of-paper.css", "public/css")
   .js("resources/js/app.js", "public/js")
-  .vue()
+  .vue({
+    extractStyles: true,
+  })
   .postCss("resources/css/app.css", "public/css", [
     require("postcss-import"),
     require("tailwindcss"),
