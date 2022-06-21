@@ -26,6 +26,11 @@ mix
 
 if (mix.inProduction()) {
   mix.version()
+    .webpackConfig({
+      output: {
+        publicPath: "/stie/"
+      }
+    })
 } else {
   mix.sourceMaps().webpackConfig({
     devtool: "inline-source-map",
