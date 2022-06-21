@@ -50,10 +50,10 @@
           <div class="w-full">
             <Label for="npm">IPS Sebelumnya</Label>
             <Input
+              v-model ='ipsSebelumnya'
               name="npm"
               class="mt-1 block w-full"
               type="text"
-              v-model ='ipsSebelumnya'
               disabled
             ></Input>
           </div>
@@ -64,9 +64,9 @@
             Tahun Ajaran <span class="text-red-500">*</span>
           </Label>
           <select
+            v-model="selectedTahunAjaran"
             class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
             name="Tahun Ajaran"
-            v-model="selectedTahunAjaran"
             @change="loadTahunAjaran(selectedTahunAjaran)"
           >
             <!-- <option value="" selected disabled>Pilih agama</option> -->
@@ -133,10 +133,10 @@
     </div>
 
     <Dialog
-      :isOpen="isOpenDialogSalinMatakuliah"
+      :is-open="isOpenDialogSalinMatakuliah"
       classes="text-green-900 bg-green-100 dark:bg-greeb-300 hover:bg-greeb-200 dark:hover:bg-green-400 focus-visible:ring-green-500"
       title="Salin Matakuliah"
-      confirmText="Tambah"
+      confirm-text="Tambah"
       @confirm="salinMatakuliah"
       @cancel="isOpenDialogSalinMatakuliah = !isOpenDialogSalinMatakuliah"
     >
@@ -148,10 +148,10 @@
     </Dialog>
 
     <Dialog
-      :isOpen="isOPenDialogHapusMatakuliah"
+      :is-open="isOPenDialogHapusMatakuliah"
       classes="text-red-900 bg-red-100 dark:bg-red-300 hover:bg-red-200 dark:hover:bg-red-400 focus-visible:ring-red-500"
       title="Hapus Matakuliah"
-      confirmText="Hapus"
+      confirm-text="Hapus"
       @confirm="hapusMatakuliah"
       @cancel="isOPenDialogHapusMatakuliah = !isOPenDialogHapusMatakuliah"
     >
@@ -163,15 +163,15 @@
     </Dialog>
 
     <Dialog
-      :isOpen="isDialogTambahMatakuliahOpen"
+      :is-open="isDialogTambahMatakuliahOpen"
       classes="text-green-900 bg-green-100 dark:bg-greeb-300 hover:bg-greeb-200 dark:hover:bg-green-400 focus-visible:ring-green-500"
       title="Tambah Matakuliah"
-      confirmText="Tambah"
+      confirm-text="Tambah"
       @confirm="tambahMatakuliah"
       @cancel="isDialogTambahMatakuliahOpen = !isDialogTambahMatakuliahOpen"
     >
       <template #content>
-        <Select class="w-full" :options="jadwals" v-model="selectedJadwal">
+        <Select v-model="selectedJadwal" class="w-full" :options="jadwals">
           <template #option="option">
             <option :value="option.data.id">
               {{

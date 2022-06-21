@@ -61,13 +61,13 @@
 </template>
 
 <script>
-import BreezeButton from "@/Components/Button";
-import BreezeCheckbox from "@/Components/Checkbox";
-import BreezeGuestLayout from "@/Layouts/Guest";
-import BreezeInput from "@/Components/Input";
-import BreezeLabel from "@/Components/Label";
-import BreezeValidationErrors from "@/Components/ValidationErrors";
-import { Head, Link } from "@inertiajs/inertia-vue3";
+import BreezeButton from "@/Components/Button"
+import BreezeCheckbox from "@/Components/Checkbox"
+import BreezeGuestLayout from "@/Layouts/Guest"
+import BreezeInput from "@/Components/Input"
+import BreezeLabel from "@/Components/Label"
+import BreezeValidationErrors from "@/Components/ValidationErrors"
+import { Head, Link } from "@inertiajs/inertia-vue3"
 
 export default {
   components: {
@@ -93,15 +93,15 @@ export default {
         password: "",
         remember: false,
       }),
-    };
+    }
   },
 
   methods: {
     submit() {
       this.form.post(this.route("login"), {
         onFinish: () => this.form.reset("password"),
-      });
+      })
     },
   },
-};
+}
 </script>

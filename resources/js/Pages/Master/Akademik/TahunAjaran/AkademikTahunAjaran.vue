@@ -1,35 +1,26 @@
 <template>
   <AppLayout>
-    <div
-      class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
-    >
+    <div class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
       <p class="text-xs md:text-sm">Akademik / Tahun Akademik</p>
       <div class="flex justify-between my-3 item-center">
         <span class="align-middle">
           <strong
             class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
-            >Daftar Tahun Akademik</strong
-          >
+          >Daftar Tahun Akademik</strong>
         </span>
 
-        <Button type="button">
-          <Link :href="route('master.tahun-ajaran.create')">
-            Tambah Tahun Akademik
-          </Link>
-        </Button>
+        <LinkButton :href="route('master.tahun-ajaran.create')">Tambah Tahun Akademik</LinkButton>
       </div>
 
       <DataTable :columns="columns" :data="tahunAjarans">
         <template #actions="row">
-          <NavLink :href="route('master.tahun-ajaran.edit', row.data.id)"
-            >Edit</NavLink 
-          >
+          <NavLink :href="route('master.tahun-ajaran.edit', row.data.id)">Edit</NavLink>
         </template>
         <template #row(aktif)="row">
-          <span 
-          :class="[row.data.aktif ? 'text-green-100 bg-green-600 ' : 'text-red-100 bg-red-600 ']"
-          class="inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none rounded-full">
-            {{row.data.aktif ? 'Aktif' : 'Nonaktif'}}</span>
+          <span
+            :class="[row.data.aktif ? 'text-green-100 bg-green-600 ' : 'text-red-100 bg-red-600 ']"
+            class="inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none rounded-full"
+          >{{ row.data.aktif ? 'Aktif' : 'Nonaktif' }}</span>
         </template>
       </DataTable>
     </div>
@@ -37,19 +28,17 @@
 </template>
 
 <script>
-import { Link } from "@inertiajs/inertia-vue3"
 import AppLayout from "@layouts/App"
-import Button from "@components/Button"
 import DataTable from "@/Components/DataTable"
 import NavLink from "@/Components/NavLink"
+import LinkButton from "@/Components/LinkButton"
 
 export default {
   components: {
     AppLayout,
     DataTable,
-    Button,
     NavLink,
-    Link,
+    LinkButton
   },
   props: {
     tahunAjarans: Object,

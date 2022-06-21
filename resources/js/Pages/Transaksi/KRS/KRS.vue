@@ -20,10 +20,10 @@
       <div class="inline-flex items-center text-sm mb-1">
         <label for="tahun_ajarans">Tahun Akademik</label>
         <select
-          name="tahun_ajarans"
           id="tahun_ajaran"
-          class="ml-2 pl-2 pr-6 text-sm bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
           v-model="selectedTahunAjaran"
+          name="tahun_ajarans"
+          class="ml-2 pl-2 pr-6 text-sm bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
           @change="loadTahunAjaran(selectedTahunAjaran)"
         >
           <option
@@ -55,22 +55,22 @@
           >
         </template>
         <template #row(cicilan_1)="row">
-          <div class="text-red-500" v-if="row.data.cicilan_1 == null">
+          <div v-if="row.data.cicilan_1 == null" class="text-red-500">
             <p class="text-xl font-extrabold">-</p>
           </div>
-          <div class="text-green-600" v-else>L</div>
+          <div v-else class="text-green-600">L</div>
         </template>
         <template #row(cicilan_2)="row">
-          <div class="text-red-500" v-if="row.data.cicilan_2 == null">
+          <div v-if="row.data.cicilan_2 == null" class="text-red-500">
             <p class="text-xl font-extrabold">-</p>
           </div>
-          <div class="text-green-600" v-else>L</div>
+          <div v-else class="text-green-600">L</div>
         </template>
         <template #row(cicilan_3)="row">
-          <div class="text-red-500" v-if="row.data.cicilan_3 == null">
+          <div v-if="row.data.cicilan_3 == null" class="text-red-500">
             <p class="text-xl font-extrabold">-</p>
           </div>
-          <div class="text-green-600" v-else>L</div>
+          <div v-else class="text-green-600">L</div>
         </template>
       </DataTable>
     </div>

@@ -12,10 +12,10 @@
             >Daftar Nahasiswa</strong
           >
           <select
-            name="tahun_ajarans"
             id="tahun_ajaran"
-            class="ml-2 pl-2 pr-8 text-sm bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
             v-model="selectedTA"
+            name="tahun_ajarans"
+            class="ml-2 pl-2 pr-8 text-sm bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
             @change="onTahunAjaranChange(selectedTA)"
           >
             <option value="-" selected>Pilih tahun akademik</option>
@@ -36,9 +36,9 @@
           <span class="capitalize">{{ row.data.jurusan ?? "-" }}</span>
         </template>
 
-        <template #row(cicilan)="row" v-show="tipe == 'UTS'">
-          <CheckIcon class="text-teal-500 h-4" v-if="row.data.cicilan" />
-          <XIcon class="text-red-500 h-4" v-else />
+        <template v-show="tipe == 'UTS'" #row(cicilan)="row">
+          <CheckIcon v-if="row.data.cicilan" class="text-teal-500 h-4" />
+          <XIcon v-else class="text-red-500 h-4" />
         </template>
 
         <template #actions="row">
@@ -66,7 +66,7 @@ import DataTable from "@components/DataTable"
 import { Inertia } from "@inertiajs/inertia"
 import { ref, watch } from "vue"
 import { CheckIcon, PrinterIcon, XIcon } from "@heroicons/vue/outline"
-import { computed } from "@vue/reactivity"
+import { computed } from "vue"
 
 const props = defineProps({
   tipe: String,
