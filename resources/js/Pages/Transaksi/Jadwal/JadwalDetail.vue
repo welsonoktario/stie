@@ -25,22 +25,22 @@
           <Label for="tahun_akademik">Tahun Akademik</Label>
           <Input
             id="tahun_akademik"
+            v-model="tahunAkademik.tahun_ajaran"
             name="tahun_akademik"
             type="text"
             class="w-full"
             placeholder="Nama Matakuliah"
-            v-model="tahunAkademik.tahun_ajaran"
             readonly
           />
         </div>
         <div class="mt-4">
           <Label for="matakuliah"> Matakuliah </Label>
           <Select
+            v-model="form.matakuliah_id"
             class="w-full"
             :options="matakuliahs"
             :name="'matakuliah'"
             :placeholder="'Pilih matakuliah'"
-            v-model="form.matakuliah_id"
           >
             <template #option="option">
               <option :value="Number(option.data.id)">
@@ -55,11 +55,11 @@
         <div class="mt-4">
           <Label for="ruangan"> Ruangan </Label>
           <Select
+            v-model="form.ruangan_id"
             class="w-full"
             :options="ruangans"
             :name="'ruangan'"
             :placeholder="'Pilih ruangan'"
-            v-model="form.ruangan_id"
           >
             <template #option="option">
               <option :value="Number(option.data.id)">
@@ -72,11 +72,11 @@
         <div class="mt-4">
           <Label for="tahun_akademik">Hari</Label>
           <Select
+            v-model="form.hari"
             class="w-full"
             :options="hari"
             :name="'hari'"
             :placeholder="'Pilih hari'"
-            v-model="form.hari"
           >
             <template #option="option">
               <option :value="option.data">
@@ -90,10 +90,10 @@
           <Label for="jam">Jam</Label>
           <Input
             id="jam"
+            v-model="form.jam"
             class="w-full"
             name="jam"
             type="time"
-            v-model="form.jam"
             placeholder="Jam jadwal"
           />
           <InputError class="mt-2" :message="form.errors.jam" />
@@ -102,12 +102,12 @@
           <Label for="local">Local</Label>
           <Input
             id="local"
+            v-model="form.local"
             class="w-full"
             name="local"
             type="text"
             maxlength="2"
             minlength="1"
-            v-model="form.local"
             placeholder="Local jadwal"
             autocomplete="off"
           />
@@ -132,9 +132,9 @@
             <Label for="uts_tanggal">Tanggal UTS</Label>
             <Input
               id="uts_tanggal"
+              v-model="form.uts_tanggal"
               class="w-full"
               name="uts_tanggal"
-              v-model="form.uts_tanggal"
               type="date"
             />
             <InputError class="mt-2" :message="form.errors.uts_tanggal" />
@@ -144,9 +144,9 @@
             <Label for="uts_pukul_mulai">Mulai Pukul</Label>
             <Input
               id="uts_pukul_mulai"
+              v-model="form.uts_pukul_mulai"
               class="w-full"
               name="uts_pukul_mulai"
-              v-model="form.uts_pukul_mulai"
               type="time"
             />
             <InputError class="mt-2" :message="form.errors.uts_pukul_mulai" />
@@ -155,9 +155,9 @@
             <Label for="uts_pukul_selesai">Selesai Pukul</Label>
             <Input
               id="uts_pukul_selesai"
+              v-model="form.uts_pukul_selesai"
               class="w-full"
               name="uts_pukul_selesai"
-              v-model="form.uts_pukul_selesai"
               type="time"
             />
             <InputError class="mt-2" :message="form.errors.uts_pukul_selesai" />
@@ -167,11 +167,11 @@
         <div class="mt-4">
           <Label for="uts_ruangan"> Ruangan UTS </Label>
           <Select
+            v-model="form.uts_ruangan"
             class="w-full"
             :options="ruangans"
             :name="'uts_ruangan'"
             :placeholder="'Pilih ruangan UTS'"
-            v-model="form.uts_ruangan"
           >
             <template #option="option">
               <option :value="Number(option.data.id)">
@@ -201,10 +201,10 @@
             <Label for="uas_tanggal">Tanggal UAS</Label>
             <Input
               id="uas_tanggal"
+              v-model="form.uas_tanggal"
               class="w-full"
               name="uas_tanggal"
               type="date"
-              v-model="form.uas_tanggal"
             />
             <InputError class="mt-2" :message="form.errors.uas_tanggal" />
           </div>
@@ -213,9 +213,9 @@
             <Label for="uas_pukul_mulai">Mulai Pukul</Label>
             <Input
               id="uas_pukul_mulai"
+              v-model="form.uas_pukul_mulai"
               class="w-full"
               name="uas_pukul_mulai"
-              v-model="form.uas_pukul_mulai"
               type="time"
             />
             <InputError class="mt-2" :message="form.errors.uas_pukul_mulai" />
@@ -224,9 +224,9 @@
             <Label for="uas_pukul_selesai">Selesai Pukul</Label>
             <Input
               id="uas_pukul_selesai"
+              v-model="form.uas_pukul_selesai"
               class="w-full"
               name="uas_pukul_selesai"
-              v-model="form.uas_pukul_selesai"
               type="time"
             />
             <InputError class="mt-2" :message="form.errors.uas_pukul_selesai" />
@@ -236,11 +236,11 @@
         <div class="mt-4">
           <Label for="uas_ruangan"> Ruangan UAS </Label>
           <Select
+            v-model="form.uas_ruangan"
             class="w-full"
             :options="ruangans"
             :name="'uas_ruangan'"
             :placeholder="'Pilih ruangan UAS'"
-            v-model="form.uas_ruangan"
           >
             <template #option="option">
               <option :value="Number(option.data.id)">
@@ -255,10 +255,10 @@
         <div class="inline-flex items-center justify-between w-full mt-8">
           <Button class="px-10" :disabled="form.processing">Simpan</Button>
           <button
-            type="button"
             v-if="currentRouteName != 'Tambah'"
-            @click="isDialogHapusOpen = !isDialogHapusOpen"
+            type="button"
             class="text-red-500 bg-transparent hover:bg-transparent focus:bg-transparent"
+            @click="isDialogHapusOpen = !isDialogHapusOpen"
           >
             Hapus Jadwal
           </button>
@@ -267,9 +267,9 @@
     </div>
 
     <Dialog
-      :isOpen="isDialogHapusOpen"
+      :is-open="isDialogHapusOpen"
       title="Hapus matakuliah"
-      confirmText="Hapus"
+      confirm-text="Hapus"
       classes="text-red-900 bg-red-100 hover:bg-red-200 focus-visible:ring-red-500"
       @confirm="remove"
       @cancel="isDialogHapusOpen = !isDialogHapusOpen"

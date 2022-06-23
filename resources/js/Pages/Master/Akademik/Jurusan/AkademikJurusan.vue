@@ -4,14 +4,12 @@
       <p class="text-xs md:text-sm">Akademik / Prodi / Departemen</p>
       <div class="flex justify-between my-3 item-center">
         <span class="align-middle">
-          <strong class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
-            >Daftar Prodi / Departemen</strong
-          >
+          <strong
+            class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
+          >Daftar Prodi / Departemen</strong>
         </span>
 
-        <Button type="button">
-          <Link :href="route('master.jurusan.create')"> Tambah Prodi / Departemen </Link>
-        </Button>
+        <LinkButton :href="route('master.jurusan.create')">Tambah Prodi / Departemen</LinkButton>
       </div>
 
       <DataTable :columns="columns" :data="jurusans">
@@ -24,19 +22,17 @@
 </template>
 
 <script>
-import AppLayout from "@layouts/App";
-import Button from "@components/Button";
-import DataTable from "@/Components/DataTable";
-import NavLink from "@/Components/NavLink";
-import { Link } from "@inertiajs/inertia-vue3";
+import AppLayout from "@layouts/App"
+import DataTable from "@/Components/DataTable"
+import NavLink from "@/Components/NavLink"
+import LinkButton from "@/Components/LinkButton"
 
 export default {
   components: {
     AppLayout,
-    Button,
     DataTable,
-    Link,
     NavLink,
+    LinkButton,
   },
   props: {
     jurusans: Object,
@@ -53,11 +49,11 @@ export default {
         label: "Nama",
         sortable: true,
       },
-    ];
+    ]
 
     return {
       columns,
-    };
+    }
   },
-};
+}
 </script>

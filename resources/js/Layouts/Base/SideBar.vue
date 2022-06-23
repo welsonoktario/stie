@@ -67,13 +67,13 @@
               class="flex flex-col rounded-lg bg-zinc-100 dark:bg-zinc-700 mt-2"
             >
               <div
+                v-for="subMenu in menu.subMenus"
+                :key="subMenu.name"
                 class="px-3 py-1 rounded-md hover:bg-opacity-30 hover:bg-teal-100 dark:hover:bg-opacity-10"
                 :class="{
                   'bg-teal-100 bg-opacity-30 dark:bg-opacity-10':
                     route().current(subMenu.name),
                 }"
-                v-for="subMenu in menu.subMenus"
-                :key="subMenu.name"
               >
                 <NavLink
                   as="button"

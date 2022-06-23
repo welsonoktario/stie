@@ -1,8 +1,8 @@
 <template>
   <select
+    :id="id"
     ref="select"
     :name="name"
-    :id="id"
     class="pl-3 py-2 pr-8 bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
     :value="modelValue"
     @change="$emit('update:modelValue', $event.target.value)"

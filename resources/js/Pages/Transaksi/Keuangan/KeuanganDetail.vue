@@ -48,9 +48,9 @@
         <div class="mb-4">
           <Label for="nama"> Tahun Ajaran <span class="text-red-500">*</span> </Label>
           <select
+            v-model="selectedTahunAjaran"
             class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
             name="Tahun Ajaran"
-            v-model="selectedTahunAjaran"
             @change="loadTahunAjaran(selectedTahunAjaran)"
           >
             <!-- <option value="" selected disabled>Pilih agama</option> -->
@@ -100,8 +100,8 @@
 
         <!-- CRUD Cicilan Uang Semester (UPP) -->
         <div
-          class="mb-5"
-          v-for="(ta, index) in mahasiswa.tahun_ajaran" :key="index"
+          v-for="(ta, index) in mahasiswa.tahun_ajaran"
+          :key="index" class="mb-5"
 
           >
           <div v-if="ta.id == selectedTahunAjaran">
@@ -126,8 +126,8 @@
                   <th class="text-gray-500 font-medium">C1</th>
                   <td>
                     <Input
-                      name="nominal"
                       v-model="form.detilHistory.pivot.jumlah_cicilan_1"
+                      name="nominal"
                       class="mt-1 block w-full"
                       type="text"
                       placeholder=""
@@ -159,9 +159,9 @@
                   <th class="text-gray-500 font-medium">C2</th>
                   <td>
                       <Input
+                        v-model="form.detilHistory.pivot.jumlah_cicilan_2"
                         name="nominal"
                         class="mt-1 block w-full"
-                        v-model="form.detilHistory.pivot.jumlah_cicilan_2"
                         type="text"
                         placeholder=""
                         autocomplete="off"
@@ -312,8 +312,8 @@
 
         <!-- CRUD pembayaran lain-lain -->
         <div
-          class="mb-5"
-          v-for="(ta, index) in mahasiswa.tahun_ajaran" :key="index"
+          v-for="(ta, index) in mahasiswa.tahun_ajaran"
+          :key="index" class="mb-5"
 
           >
           <div v-if="ta.id == selectedTahunAjaran">
@@ -338,8 +338,8 @@
                   <th class="text-gray-500 font-medium">DPP</th>
                   <td>
                     <Input
-                      name="nominal"
                       v-model="form.detilHistory.pivot.jumlah_cicilan_dpp"
+                      name="nominal"
                       class="mt-1 block w-full"
                       type="number"
                       placeholder=""
@@ -371,9 +371,9 @@
                   <th class="text-gray-500 font-medium">Praktikum</th>
                   <td>
                       <Input
+                        v-model="form.detilHistory.pivot.jumlah_cicilan_praktikum"
                         name="nominal"
                         class="mt-1 block w-full"
-                        v-model="form.detilHistory.pivot.jumlah_cicilan_praktikum"
                         type="number"
                         placeholder=""
                         autocomplete="off"
@@ -511,10 +511,10 @@
     </div>
 
     <Dialog
-      :isOpen="isOpen"
+      :is-open="isOpen"
       classes="text-red-900 bg-red-100 dark:bg-red-300 hover:bg-red-200 dark:hover:bg-red-400 focus-visible:ring-red-500"
       title="Hapus tahun ajaran"
-      confirmText="Hapus"
+      confirm-text="Hapus"
       @confirm="remove"
       @cancel="isOpen = !isOpen"
     >
@@ -588,7 +588,7 @@ export default {
 
     const selectedTahunAjaran = ref(
       route().params.ta
-    );
+    )
 
 
     const loadTahunAjaran = (id) => {

@@ -12,10 +12,10 @@
             >Daftar Nilai</strong
           >
           <select
-            name="tahun_ajarans"
             id="tahun_ajaran"
-            class="ml-2 pl-2 pr-8 text-sm bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
             v-model="selectedTA"
+            name="tahun_ajarans"
+            class="ml-2 pl-2 pr-8 text-sm bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
             @change="onTahunAjaranChange(selectedTA)"
           >
             <option value="-" selected>Pilih tahun akademik</option>

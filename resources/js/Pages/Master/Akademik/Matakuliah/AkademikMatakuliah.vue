@@ -4,17 +4,12 @@
       <p class="text-xs md:text-sm">Akademik / Matakuliah</p>
       <div class="flex justify-between my-3 item-center">
         <span class="align-middle">
-          <strong class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
-            >Daftar Matakuliah</strong
-          >
+          <strong
+            class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
+          >Daftar Matakuliah</strong>
         </span>
 
-
-        <Button type="button">
-          <Link :href="route('master.matakuliah.create')" preserve-state
-            >Tambah Matakuliah</Link
-          >
-        </Button>
+        <LinkButton :href="route('master.matakuliah.create')">Tambah Matakuliah</LinkButton>
       </div>
 
       <DataTable :columns="columns" :data="matakuliahs">
@@ -27,9 +22,7 @@
         </template>
 
         <template #actions="row">
-          <NavLink :href="route('master.matakuliah.edit', row.data.id)"
-            >Edit</NavLink
-          >
+          <NavLink :href="route('master.matakuliah.edit', row.data.id)">Edit</NavLink>
         </template>
       </DataTable>
     </div>
@@ -37,19 +30,17 @@
 </template>
 
 <script>
-import AppLayout from "@layouts/App";
-import Button from "@components/Button";
-import DataTable from "@components/DataTable";
-import NavLink from "@components/NavLink";
-import { Link } from "@inertiajs/inertia-vue3";
+import AppLayout from "@layouts/App"
+import DataTable from "@components/DataTable"
+import NavLink from "@components/NavLink"
+import LinkButton from "@/Components/LinkButton"
 
 export default {
   components: {
     AppLayout,
-    Button,
     DataTable,
     NavLink,
-    Link,
+    LinkButton
   },
   props: {
     matakuliahs: Object,
@@ -96,9 +87,9 @@ export default {
         label: "Tipe",
         sortable: true,
       },
-    ];
+    ]
 
-    return { columns };
+    return { columns }
   },
-};
+}
 </script>
