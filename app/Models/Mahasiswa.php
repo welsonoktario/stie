@@ -141,6 +141,12 @@ class Mahasiswa extends Model
             ->withPivot(['nilai_uts', 'nilai_nas', 'nilai_akhir', 'nisbi', 'angka_mutu']);
     }
 
+    public function hitungIPS($semester) {
+        // $jadwal = $this->jadwals();
+        $result = $this->with(['jadwals.matakuliah'])->get();
+        return $result;
+    }
+
     public function scopeIndexJadwal($query)
     {
         $query->select(['mahasiswas.*', 'users.name as nama', 'jurusans.nama as jurusan', 'status_cicilan.jumlah_cicilan_1 as krs'])

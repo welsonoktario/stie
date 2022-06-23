@@ -170,8 +170,79 @@ class TestingController extends Controller
         $this->createSheet(compact('ta', 'data'));
     }
 
+    public function export (TahunAjaran $ta) {
 
-    public function export(TahunAjaran $ta)
+        // jangan lupa ini wherenya dihapus, ini cuma untuk cindy karolin
+        $mhss = $ta->mahasiswas;//->where('npm', '=','20.113023.61201.008');
+        foreach($mhss as $mhs) {
+            $tas_mahasiswa = $mhs->tahun_ajaran()->where('tanggal_mulai', '<=', $ta->tanggal_mulai)->orderBy('tanggal_mulai', 'desc')->get();
+
+            $ips = 0;
+            $ipk = 0;
+            foreach($tas_mahasiswa as $ta_mahasiswa) {
+
+                $jadwal_all = $mhs->jadwals();
+                // START HITUNG IPS DI SMT TERTENTU
+                $jadwal_smt = $mhs->jadwals()->where('tahun_ajaran_id', '=', $ta_mahasiswa->id)->with('matakuliah')->get();
+                // dd($jadwal_all->get());
+                // dd();
+                $total_nilai_kali_sks = 0;
+                $total_sks = 0;
+                foreach ($jadwal_smt as $j) {
+                    $am = $j->pivot->angka_mutu;
+                    $sks = $j->matakuliah->sks;
+                    $total_nilai_kali_sks = $total_nilai_kali_sks + ($sks * $am);
+                    $total_sks = $total_sks + $sks;
+                    // dump($sks);
+                }
+
+                if ($total_sks == 0) {
+                    $ips = 0;
+                } else {
+                    $ips = $total_nilai_kali_sks / $total_sks;
+                }
+                // dump($ips);
+
+                // END HITUNG IPS
+
+
+                // START HITUNG IPK
+                // ambil smua matkul
+                // $jadwal_all = $jadwal_all->get();
+                $total_nilai_kali_sks = 0;
+                $total_sks = 0;
+
+                // group by jadwal by id, ambil max angka mutu di jadwal (karena kemungkinan mengulang matkul)
+                $jadwal_all = $jadwal_all->groupBy('matakuliah_id')->get(); // belum ambil max nilainya
+                // hitung
+                foreach ($jadwal_all as $j) {
+                    $am = $j->pivot->angka_mutu;
+                    $sks = $j->matakuliah->sks;
+                    $total_nilai_kali_sks = $total_nilai_kali_sks + ($sks * $am);
+                    $total_sks = $total_sks + $sks;
+                    // dump($sks);
+
+                }
+
+                if ($total_sks == 0) {
+                    $ipk = 0;
+                } else {
+                    $ipk = $total_nilai_kali_sks / $total_sks;
+                }
+                break;
+                // dd($jadwal_all);
+
+            }
+
+            dump($mhs->npm. ' IPS: '. round($ips, 3). ' IPK: '. round($ipk, 3));
+        }
+
+
+
+    }
+
+
+    public function export3(TahunAjaran $ta)
     {
         $nilaiMahasiswas = DB::table('mahasiswas', 'm')
         ->select([
@@ -231,9 +302,9 @@ class TestingController extends Controller
             ->join('status_mahasiswa', 'status_mahasiswa.mahasiswa_npm', '=', 'npm')
             ->where('status_mahasiswa.tahun_ajaran', '=', $ta->id)
             ->groupBy('npm')
-            // ->toSql();
-            ->get();
-
+            ->toSql();
+            // ->get();
+        dd($data);
         // dd($data, $ta->id);
         $this->createSheet(compact('ta', 'data'));
 
