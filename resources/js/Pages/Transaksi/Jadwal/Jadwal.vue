@@ -1,22 +1,19 @@
 <template>
   <AppLayout>
-    <div
-      class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
-    >
+    <div class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
       <p class="text-xs md:text-sm">Jadwal / Daftar Jadwal</p>
 
       <div class="inline-flex justify-between my-3 w-full items-center">
         <div>
           <strong
             class="whitespace-nowrap align-middle text-sm md:text-lg content-middle"
-            >Daftar Jadwal</strong
-          >
+          >Daftar Jadwal</strong>
 
           <select
-            name="tahun_ajarans"
             id="tahun_ajaran"
-            class="ml-2 pl-2 pr-8 text-sm bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
             v-model="selectedTA"
+            name="tahun_ajarans"
+            class="ml-2 pl-2 pr-8 text-sm bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
             @change="onTahunAjaranChange(selectedTA)"
           >
             <option :value="null" selected>Pilih tahun akademik</option>
@@ -25,17 +22,11 @@
               :key="ta.id"
               :value="ta.id"
               :selected="ta.aktif"
-            >
-              {{ ta.tahun_ajaran }}
-            </option>
+            >{{ ta.tahun_ajaran }}</option>
           </select>
         </div>
 
-        <Button type="button">
-          <NavLink :href="route('transaksi.jadwal.create', { ta: selectedTA })">
-            Tambah Jadwal
-          </NavLink>
-        </Button>
+        <LinkButton :href="route('transaksi.jadwal.create', { ta: selectedTA })">Tambah Jadwal</LinkButton>
       </div>
 
       <DataTable :data="jadwals" :columns="columns">
@@ -44,9 +35,7 @@
         </template>
 
         <template #actions="row">
-          <NavLink
-            :href="route('transaksi.jadwal.edit', { jadwal: row.data.id })"
-          >
+          <NavLink :href="route('transaksi.jadwal.edit', { jadwal: row.data.id })">
             <PencilIcon class="h-4" />
           </NavLink>
 
@@ -69,7 +58,6 @@
 <script setup>
 import AppLayout from "@layouts/App"
 import DataTable from "@components/DataTable"
-import Button from "@components/Button"
 import NavLink from "@components/NavLink"
 import { Inertia } from "@inertiajs/inertia"
 import { ref } from "vue"

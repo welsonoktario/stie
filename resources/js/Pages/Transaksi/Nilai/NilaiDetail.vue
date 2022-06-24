@@ -34,8 +34,8 @@
             Detail Nilai
           </p>
           <select
-            class="ml-2 text-sm pl-3 py-2 pr-8 bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
             v-model="selectedTA"
+            class="ml-2 text-sm pl-3 py-2 pr-8 bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
           >
             <option v-for="ta in tahunAkademiks" :value="ta.id">
               {{ ta.tahun_ajaran }}
@@ -77,8 +77,8 @@
             <td class="px-4 py-2">{{ nilaiHuruf(jadwal) }}</td>
             <td class="px-4 py-2">
               <PencilIcon
-                @click="openDialogNilai(jadwal)"
                 class="h-4 cursor-pointer"
+                @click="openDialogNilai(jadwal)"
               />
             </td>
           </tr>
@@ -87,9 +87,9 @@
     </div>
 
     <Dialog
-      :isOpen="isDialogNilaiOpen"
+      :is-open="isDialogNilaiOpen"
       title="Edit Nilai"
-      confirmText="Edit"
+      confirm-text="Edit"
       classes="text-teal-900 bg-teal-100 hover:bg-teal-200 focus-visible:ring-teal-500"
       @confirm="edit"
       @cancel="isDialogNilaiOpen = !isDialogNilaiOpen"
@@ -98,29 +98,29 @@
         <div class="my-4">
           <Label>Nilai Akhir</Label>
           <Input
+            v-model="nilai"
             class="w-full"
             type="number"
             min="0"
             max="100"
-            v-model="nilai"
           />
         </div>
         <div class="my-4 inline-flex justify-between">
           <div class="mr-2">
             <Label>Huruf Mutu</Label>
             <Input
+              v-model="nisbi"
               class="w-full cursor-not-allowed"
               type="text"
-              v-model="nisbi"
               readonly
             />
           </div>
           <div class="ml-2">
             <Label>Angka Mutu</Label>
             <Input
+              v-model="angkaMutu"
               class="w-full cursor-not-allowed"
               type="text"
-              v-model="angkaMutu"
               readonly
             />
           </div>

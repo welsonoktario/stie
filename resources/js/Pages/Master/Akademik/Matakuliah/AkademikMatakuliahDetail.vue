@@ -1,23 +1,21 @@
 <template>
   <AppLayout>
-    <div
-      class="bg-zinc-50 dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
-    >
+    <div class="bg-zinc-50 dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
       <p class="text-xs md:text-sm text-zinc-500 dark:text-zinc-400">
         Akademik / Matakuliah /
-        <span class="font-semibold text-teal-500 dark:text-teal-600">{{
-          currentRouteName
-        }}</span>
+        <span class="font-semibold text-teal-500 dark:text-teal-600">
+          {{
+            currentRouteName
+          }}
+        </span>
       </p>
 
       <div class="flex justify-between my-3 item-center">
         <span class="align-middle">
-          <strong
-            class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
-          >
+          <strong class="whitespace-nowrap capitalize text-sm md:text-lg content-middle">
             <span>{{ currentRouteName }}</span>
-            Matakuliah</strong
-          >
+            Matakuliah
+          </strong>
         </span>
       </div>
       <form @submit.prevent="submit(route().current())">
@@ -25,13 +23,11 @@
           <label
             class="block text-gray-500 dark:text-gray-400 text-sm font-bold mb-2"
             for="kode"
-          >
-            Kode Matakuliah
-          </label>
+          >Kode Matakuliah</label>
           <Input
+            id="kode"
             v-model="form.kode_matakuliah"
             class="w-full"
-            id="kode"
             type="text"
             placeholder="Kode Matakuliah"
             autocomplete="off"
@@ -43,13 +39,11 @@
           <label
             class="block text-gray-500 dark:text-gray-400 text-sm font-bold mb-2"
             for="nama"
-          >
-            Nama Matakuliah
-          </label>
+          >Nama Matakuliah</label>
           <Input
+            id="nama"
             v-model="form.nama_matakuliah"
             class="w-full"
-            id="nama"
             type="text"
             placeholder="Nama Matakuliah"
             autocomplete="off"
@@ -57,20 +51,16 @@
           <InputError class="mt-2" :message="form.errors.nama_matakuliah" />
         </div>
 
-
         <div class="flex space-x-2">
-
           <div class="mb-4 w-full">
             <label
               class="block text-gray-500 dark:text-gray-400 text-sm font-bold mb-2"
               for="sks"
-            >
-              Jumlah SKS
-            </label>
+            >Jumlah SKS</label>
             <Input
+              id="sks"
               v-model="form.sks"
               class="w-full"
-              id="sks"
               type="number"
               placeholder="Jumlah SKS"
               autocomplete="off"
@@ -79,12 +69,15 @@
           </div>
 
           <div class="mb-4 w-full">
-            <label for="semester" class="block text-gray-500 dark:text-gray-400 text-sm font-bold mb-2">Semester</label>
+            <label
+              for="semester"
+              class="block text-gray-500 dark:text-gray-400 text-sm font-bold mb-2"
+            >Semester</label>
             <select
-              class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none"
               v-model="form.semester"
+              class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none"
             >
-              <option value="" selected>Pilih semester</option>
+              <option value selected>Pilih semester</option>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -103,23 +96,18 @@
           <label
             for="tipe"
             class="block text-gray-500 dark:text-gray-400 text-sm font-bold mb-2"
-            >Tipe</label
-          >
+          >Tipe</label>
           <select
+            v-model="form.tipe"
             name="tipe"
             class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
-            v-model="form.tipe"
           >
-            <option value="null" selected disabled>
-              Pilih tipe matakuliah
-            </option>
+            <option value="null" selected disabled>Pilih tipe matakuliah</option>
             <option
               v-for="tipe in tipes"
               :value="tipe"
               :selected="form.tipe == tipe"
-            >
-              {{ capitalize(tipe) }}
-            </option>
+            >{{ capitalize(tipe) }}</option>
           </select>
           <InputError class="mt-2" :message="form.errors.tipe" />
         </div>
@@ -127,12 +115,11 @@
           <label
             for="kurikulum"
             class="block text-gray-500 dark:text-400 text-sm font-bold mb-2"
-            >Kurikulum</label
-          >
+          >Kurikulum</label>
           <select
+            v-model="form.kurikulum_id"
             name="kurikulum"
             class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
-            v-model="form.kurikulum_id"
             @change="loadPrasyarats($event.target.selectedIndex)"
           >
             <option value="null" selected disabled>Pilih kurikulum</option>
@@ -140,9 +127,7 @@
               v-for="kurikulum in kurikulums"
               :value="kurikulum.id"
               :selected="form.kurikulum_id == kurikulum.id"
-            >
-              {{ kurikulum.nama }}
-            </option>
+            >{{ kurikulum.nama }}</option>
           </select>
           <InputError class="mt-2" :message="form.errors.kurikulum_id" />
         </div>
@@ -150,12 +135,11 @@
           <label
             for="kurikulum"
             class="block text-gray-500 dark:text-gray-400 text-sm font-bold mb-2"
-            >Jurusan</label
-          >
+          >Jurusan</label>
           <select
+            v-model="form.matakuliah_jurusan.jurusan_id"
             name="kurikulum"
             class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
-            v-model="form.matakuliah_jurusan.jurusan_id"
           >
             <option value="null" selected disabled>Pilih jurusan</option>
             <option value="-">-</option>
@@ -166,9 +150,7 @@
                 form.matakuliah_jurusan &&
                 form.matakuliah_jurusan.jurusan_id == jurusan.id
               "
-            >
-              {{ jurusan.nama }}
-            </option>
+            >{{ jurusan.nama }}</option>
           </select>
           <InputError class="mt-2" :message="form.errors.kurikulum_id" />
         </div>
@@ -177,8 +159,7 @@
           <label
             for="prasyarat"
             class="block text-gray-500 dark:text-gray-400 text-sm font-bold mb-2"
-            >Prasyarat</label
-          >
+          >Prasyarat</label>
           <div
             class="w-full bg-zinc-100 dark:bg-zinc-700 dark:text-zinc-500 rounded-md mb-4 py-2 px-3 flex flex-row items-center"
           >
@@ -187,20 +168,21 @@
                 v-for="(prasyarat, index) in form.prasyarats"
                 class="inline-flex items-center bg-teal-500 text-zinc-50 py-1 px-2 text-sm rounded-lg hover:bg-teal-600 first:ml-0 last:mr-0 mx-1"
               >
-                <span>{{
-                  `${prasyarat.nama_matakuliah} (${
-                    prasyarat.nilai_minimum || prasyarat.pivot.nilai_minimum
-                  })`
-                }}</span>
+                <span>
+                  {{
+                    `${prasyarat.nama_matakuliah} (${prasyarat.nilai_minimum || prasyarat.pivot.nilai_minimum
+                      })`
+                  }}
+                </span>
                 <XIcon
-                  @click="removePrasyarat(index)"
                   class="cursor-pointer ml-2 w-4 h-4 hover:text-red-400"
+                  @click="removePrasyarat(index)"
                 />
               </div>
             </div>
             <ChevronDownIcon
-              @click="isPrasyaratOpen = !isPrasyaratOpen"
               class="w-5 h-5 cursor-pointer text-zinc-500"
+              @click="isPrasyaratOpen = !isPrasyaratOpen"
             />
           </div>
 
@@ -210,31 +192,27 @@
           >
             <li
               v-for="matakuliah in prasyarats"
-              @click="openDialogPrasyarat(matakuliah)"
               class="w-full focus:bg-teal-400 focus:text-white cursor-pointer"
-            >
-              S{{matakuliah.semester}} - {{ matakuliah.kode_matakuliah }} - {{ matakuliah.nama_matakuliah }}
-            </li>
+              @click="openDialogPrasyarat(matakuliah)"
+            >S{{ matakuliah.semester }} - {{ matakuliah.kode_matakuliah }} - {{ matakuliah.nama_matakuliah }}</li>
           </ul>
         </div>
         <div class="inline-flex items-center justify-between w-full">
           <Button class="px-10" :disabled="form.processing">Simpan</Button>
           <button
-            type="button"
             v-if="currentRouteName != 'Tambah'"
-            @click="isDialogHapusOpen = !isDialogHapusOpen"
+            type="button"
             class="text-red-500 bg-transparent hover:bg-transparent focus:bg-transparent"
-          >
-            Hapus Matakuliah
-          </button>
+            @click="isDialogHapusOpen = !isDialogHapusOpen"
+          >Hapus Matakuliah</button>
         </div>
       </form>
     </div>
 
     <Dialog
-      :isOpen="isDialogPrasyaratOpen"
+      :is-open="isDialogPrasyaratOpen"
       title="Tambah prasyarat"
-      confirmText="Simpan"
+      confirm-text="Simpan"
       classes="text-teal-900 bg-teal-100 hover:bg-teal-200 focus-visible:ring-teal-500"
       @confirm="addPrasyarat"
       @cancel="isDialogPrasyaratOpen = !isDialogPrasyaratOpen"
@@ -242,21 +220,16 @@
       <template #content>
         <div class="mb-3">
           <label for="matakuliah" class="block mb-2 text-sm">Matakuliah</label>
-          <Input
-            class="w-full"
-            type="text"
-            :value="selectedPrasyarat.nama_matakuliah"
-            readonly
-          />
+          <Input class="w-full" type="text" :value="selectedPrasyarat.nama_matakuliah" readonly />
         </div>
 
         <div>
           <label for="nilai" class="block text-sm mb-2">Nilai minimum</label>
           <select
-            class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none"
             v-model="prasyaratNilai"
+            class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none"
           >
-            <option value="" selected disabled>Pilih nilai minimum</option>
+            <option value selected disabled>Pilih nilai minimum</option>
             <option value="A">A</option>
             <option value="AB">AB</option>
             <option value="B">B</option>
@@ -272,9 +245,9 @@
     </Dialog>
 
     <Dialog
-      :isOpen="isDialogHapusOpen"
+      :is-open="isDialogHapusOpen"
       title="Hapus matakuliah"
-      confirmText="Hapus"
+      confirm-text="Hapus"
       classes="text-red-900 bg-red-100 hover:bg-red-200 focus-visible:ring-red-500"
       @confirm="remove"
       @cancel="isDialogHapusOpen = !isDialogHapusOpen"
@@ -329,7 +302,7 @@ onMounted(() => {
     const selected = props.kurikulums.find((k) => k.id == form.kurikulum_id)
     prasyarats.length = 0
     prasyarats.push.apply(prasyarats, selected.matakuliahs)
-    prasyarats.sort((a,b) => a.semester.localeCompare(b.semester))
+    prasyarats.sort((a, b) => a.semester.localeCompare(b.semester))
   }
 })
 
@@ -347,7 +320,7 @@ const openDialogPrasyarat = (mk) => {
 const loadPrasyarats = (index) => {
   prasyarats.length = 0
   prasyarats.push.apply(prasyarats, props.kurikulums[index - 1].matakuliahs)
-  prasyarats.sort((a,b) => a.semester.localeCompare(b.semester))
+  prasyarats.sort((a, b) => a.semester.localeCompare(b.semester))
 }
 
 const addPrasyarat = () => {

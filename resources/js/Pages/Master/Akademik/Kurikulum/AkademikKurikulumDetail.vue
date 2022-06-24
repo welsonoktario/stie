@@ -1,33 +1,29 @@
 <template>
   <AppLayout title="Tambah Kurikulum">
-    <div
-      class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
-    >
+    <div class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
       <p class="text-xs md:text-sm text-slate-500">
         Akademik / Kurikulum /
-        <span class="font-semibold text-teal-500 dark:text-teal-600">{{ currentRouteName }}</span>
+        <span
+          class="font-semibold text-teal-500 dark:text-teal-600"
+        >{{ currentRouteName }}</span>
       </p>
 
       <div class="flex justify-between my-3 item-center">
         <span class="align-middle">
-          <strong
-            class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
-          >
+          <strong class="whitespace-nowrap capitalize text-sm md:text-lg content-middle">
             <span>{{ currentRouteName }}</span>
-            Kurikulum</strong
-          >
+            Kurikulum
+          </strong>
         </span>
       </div>
       <form @submit.prevent="submit(route().current())">
         <InputError :message="form.errors.nama" class="mb-3" />
         <div class="mb-4">
-          <label class="text-gray-500 text-sm font-bold" for="nama">
-            Nama Kurikulum
-          </label>
+          <label class="text-gray-500 text-sm font-bold" for="nama">Nama Kurikulum</label>
           <Input
-            class="w-full mt-2"
-            v-model="form.nama"
             id="nama"
+            v-model="form.nama"
+            class="w-full mt-2"
             type="text"
             placeholder="Nama Kurikulum"
             autocomplete="off"
@@ -35,9 +31,7 @@
         </div>
         <div class="mb-4">
           <SwitchGroup>
-            <SwitchLabel class="block text-gray-500 text-sm font-bold mb-2"
-              >Aktif</SwitchLabel
-            >
+            <SwitchLabel class="block text-gray-500 text-sm font-bold mb-2">Aktif</SwitchLabel>
             <Switch
               v-model="form.aktif"
               :class="form.aktif ? 'bg-teal-600' : 'bg-gray-200'"
@@ -53,21 +47,20 @@
         <div class="flex justify-between">
           <Button class="px-10">Simpan</Button>
           <Button
-            type="button"
             v-if="currentRouteName != 'Tambah'"
-            @click="isOpen = !isOpen"
+            type="button"
             class="text-red-500 bg-transparent hover:bg-transparent focus:bg-transparent"
-            >Hapus Data Kurikulum</Button
-          >
+            @click="isOpen = !isOpen"
+          >Hapus Data Kurikulum</Button>
         </div>
       </form>
     </div>
 
     <Dialog
-      :isOpen="isOpen"
+      :is-open="isOpen"
       classes="text-red-900 bg-red-100 dark:bg-red-300 hover:bg-red-200 dark:hover:bg-red-400 focus-visible:ring-red-500"
       title="Hapus kurikulum"
-      confirmText="Hapus"
+      confirm-text="Hapus"
       @confirm="remove"
       @cancel="isOpen = !isOpen"
     >

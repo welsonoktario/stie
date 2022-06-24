@@ -1,38 +1,35 @@
 <template>
   <AppLayout>
-    <div
-      class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
-    >
+    <div class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
       <p class="text-xs md:text-sm">Akademik / Jabatan Struktural</p>
       <div class="flex justify-between my-3 item-center">
         <span class="align-middle">
           <strong
             class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
-            >Daftar Jabatan Struktural</strong
-          >
+          >Daftar Jabatan Struktural</strong>
         </span>
 
         <!-- <Button type="button">
           <Link :href="route('master.tahun-ajaran.create')">
             Tambah Tahun Akademik
           </Link>
-        </Button> -->
+        </Button>-->
       </div>
 
       <DataTable :columns="columns" :data="jabatans">
         <template #actions="row">
-          <NavLink
-            >Edit</NavLink
-          >
+          <NavLink>Edit</NavLink>
         </template>
 
         <!-- <template #row(name)="row">
 
-        </template> -->
+        </template>-->
         <template #row(name)="row">
           <p v-if="!row.data.name">-</p>
           <!-- <p v-if="row.data.gelar_belakang || row.data.gelar_depan">{{row.data.gelar_depan}} {{row.data.name}}{{", " + row.data.gelar_belakang}}</p> -->
-          <p v-else>{{row.data.gelar_depan}} {{row.data.name}}{{", " + row.data.gelar_belakang}}</p>
+          <p
+            v-else
+          >{{ row.data.gelar_depan }} {{ row.data.name }}{{ ", " + row.data.gelar_belakang }}</p>
           <!-- <p v-else>{{row.data.name}}</p> -->
           <!-- <p v-else>{{row.data.name}}</p> -->
         </template>

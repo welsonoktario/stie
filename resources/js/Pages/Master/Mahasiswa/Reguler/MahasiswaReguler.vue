@@ -1,8 +1,6 @@
 <template>
   <AppLayout>
-    <div
-      class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
-    >
+    <div class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
       <!-- <div class="p-6">Mahasiswa / Mahasiswa Reguler</div> -->
       <p class="text-xs md:text-sm">Mahasiswa / Mahasiswa Reguler</p>
 
@@ -12,14 +10,10 @@
         <span class="align-middle">
           <strong
             class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
-            >Daftar Mahasiswa Reguler</strong
-          >
+          >Daftar Mahasiswa Reguler</strong>
         </span>
-        <Button type="button">
-          <NavLink :href="route('master.mahasiswa-reguler.create')" type="link">
-            Tambah Mahasiswa
-          </NavLink>
-        </Button>
+
+        <LinkButton :href="route('master.mahasiswa-reguler.create')" type="link">Tambah Mahasiswa</LinkButton>
       </div>
 
       <DataTable :data="mahasiswas" :columns="columns">
@@ -32,10 +26,7 @@
         </template>
 
         <template #actions="row">
-          <NavLink
-            :href="route('master.mahasiswa-reguler.edit', row.data.npm)"
-            >Edit</NavLink
-          >
+          <NavLink :href="route('master.mahasiswa-reguler.edit', row.data.npm)">Edit</NavLink>
         </template>
       </DataTable>
     </div>
@@ -45,16 +36,15 @@
 <script>
 import AppLayout from "@layouts/App"
 import DataTable from "@components/DataTable"
-import Button from "@components/Button"
-
 import NavLink from "@components/NavLink"
+import LinkButton from "@/Components/LinkButton.vue"
 
 export default {
   components: {
     AppLayout,
     NavLink,
     DataTable,
-    Button,
+    LinkButton
   },
   props: {
     mahasiswas: {

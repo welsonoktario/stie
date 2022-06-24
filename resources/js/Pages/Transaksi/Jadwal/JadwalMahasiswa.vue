@@ -72,8 +72,8 @@
 
       <DataTable :data="mahasiswas" :columns="columns">
         <template #row(krs)="row">
-          <CheckIcon class="text-teal-500 h-4" v-if="row.data.krs" />
-          <XIcon class="text-red-500 h-4" v-else />
+          <CheckIcon v-if="row.data.krs" class="text-teal-500 h-4" />
+          <XIcon v-else class="text-red-500 h-4" />
         </template>
 
         <template #actions="row">
@@ -94,9 +94,9 @@
     </div>
 
     <Dialog
-      :isOpen="isDialogOpen.tambah"
+      :is-open="isDialogOpen.tambah"
       title="Tambah Mahasiswa"
-      confirmText="Tambah"
+      confirm-text="Tambah"
       classes="text-teal-900 bg-teal-100 hover:bg-teal-200 focus-visible:ring-teal-500"
       @confirm="tambah"
       @cancel="isDialogOpen.tambah = !isDialogOpen.tambah"
@@ -104,10 +104,10 @@
       <template #content>
         <div class="my-4">
           <Select
+            v-model="selectedMahasiswa"
             class="w-full"
             :placeholder="'Pilih mahasiswa'"
             :options="calonMahasiswas"
-            v-model="selectedMahasiswa"
           >
             <template #option="option">
               <option :value="option.data.npm">
@@ -120,9 +120,9 @@
     </Dialog>
 
     <Dialog
-      :isOpen="isDialogOpen.hapus"
+      :is-open="isDialogOpen.hapus"
       title="Hapus Matakuliah"
-      confirmText="Hapus"
+      confirm-text="Hapus"
       classes="text-red-900 bg-red-100 hover:bg-red-200 focus-visible:ring-red-500"
       @confirm="remove"
       @cancel="isDialogOpen.hapus = !isDialogOpen.hapus"
@@ -135,9 +135,9 @@
     </Dialog>
 
     <Dialog
-      :isOpen="isDialogOpen.nilai"
+      :is-open="isDialogOpen.nilai"
       title="Edit Nilai"
-      confirmText="Edit"
+      confirm-text="Edit"
       classes="text-teal-900 bg-teal-100 hover:bg-teal-200 focus-visible:ring-teal-500"
       @confirm="editNilai"
       @cancel="isDialogOpen.nilai = !isDialogOpen.nilai"
@@ -146,29 +146,29 @@
         <div class="my-4">
           <Label>Nilai Akhir</Label>
           <Input
+            v-model="nilai"
             class="w-full"
             type="number"
             min="0"
             max="100"
-            v-model="nilai"
           />
         </div>
         <div class="my-4 inline-flex justify-between">
           <div class="mr-2">
             <Label>Huruf Mutu</Label>
             <Input
+              v-model="nisbi"
               class="w-full cursor-not-allowed"
               type="text"
-              v-model="nisbi"
               readonly
             />
           </div>
           <div class="ml-2">
             <Label>Angka Mutu</Label>
             <Input
+              v-model="angkaMutu"
               class="w-full cursor-not-allowed"
               type="text"
-              v-model="angkaMutu"
               readonly
             />
           </div>

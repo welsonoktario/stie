@@ -1,29 +1,27 @@
 <template>
   <AppLayout>
-    <div
-      class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
-    >
+    <div class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
       <!-- <div class="p-6">Karyawan / Karyawan</div> -->
       <p class="text-xs md:text-sm text-slate-500">
         Akademik / Ruangan /
-        <span class="font-semibold text-teal-500 dark:text-teal-600">{{
-          currentRouteName
-        }}</span>
+        <span class="font-semibold text-teal-500 dark:text-teal-600">
+          {{
+            currentRouteName
+          }}
+        </span>
       </p>
 
       <div class="flex justify-between my-3 item-center">
         <span class="align-middle">
-          <strong
-            class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
-          >
+          <strong class="whitespace-nowrap capitalize text-sm md:text-lg content-middle">
             <span>{{ currentRouteName }}</span>
-            Ruangan</strong
-          >
+            Ruangan
+          </strong>
         </span>
       </div>
       <form @submit.prevent="submit(route().current())">
         <div class="mb-4">
-          <Label for="nama_ruangan"> Nama Ruangan </Label>
+          <Label for="nama_ruangan">Nama Ruangan</Label>
           <Input
             v-model="form.nama_ruangan"
             name="nama_ruangan"
@@ -36,22 +34,20 @@
         <div class="flex justify-between">
           <Button class="px-10">Simpan</Button>
           <button
-            type="button"
             v-if="currentRouteName != 'Tambah'"
-            @click="isOpen = !isOpen"
+            type="button"
             class="text-red-500 bg-transparent hover:bg-transparent focus:bg-transparent"
-          >
-            Hapus Data Ruangan
-          </button>
+            @click="isOpen = !isOpen"
+          >Hapus Data Ruangan</button>
         </div>
       </form>
     </div>
 
     <Dialog
-      :isOpen="isOpen"
+      :is-open="isOpen"
       classes="text-red-900 bg-red-100 dark:bg-red-300 hover:bg-red-200 dark:hover:bg-red-400 focus-visible:ring-red-500"
       title="Hapus ruangan"
-      confirmText="Hapus"
+      confirm-text="Hapus"
       @confirm="remove"
       @cancel="isOpen = !isOpen"
     >

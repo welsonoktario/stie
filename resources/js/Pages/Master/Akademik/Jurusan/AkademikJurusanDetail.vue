@@ -3,16 +3,16 @@
     <div class="bg-white dark:bg-zinc-800 shadow-lg rounded-lg p-6">
       <p class="text-xs md:text-sm dark:text-zinc-300">
         Akademik / Prodi /
-        <span class="font-semibold text-teal-500 dark:text-teal-600">{{
-          currentRouteName
-        }}</span>
+        <span class="font-semibold text-teal-500 dark:text-teal-600">
+          {{
+            currentRouteName
+          }}
+        </span>
       </p>
 
       <div class="flex justify-between my-3 item-center">
         <span class="align-middle">
-          <strong
-            class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
-          >
+          <strong class="whitespace-nowrap capitalize text-sm md:text-lg content-middle">
             <span>{{ currentRouteName }}</span>
             Prodi/Departemen
           </strong>
@@ -45,19 +45,18 @@
           <Button class="px-10" :disabled="form.processing">Simpan</Button>
           <button
             v-if="currentRouteName != 'Tambah'"
-            @click="isOpen = !isOpen"
             type="button"
             class="text-red-500"
-            >Hapus Data Jurusan</button
-          >
+            @click="isOpen = !isOpen"
+          >Hapus Data Jurusan</button>
         </div>
       </form>
     </div>
 
     <Dialog
-      :isOpen="isOpen"
+      :is-open="isOpen"
       title="Hapus jurusan"
-      confirmText="Hapus"
+      confirm-text="Hapus"
       classes="text-red-900 bg-red-100 dark:bg-red-300 hover:bg-red-200 dark:hover:bg-red-400 focus-visible:ring-red-500"
       @confirm="remove"
       @cancel="isOpen = !isOpen"

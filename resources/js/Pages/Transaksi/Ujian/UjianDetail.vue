@@ -127,7 +127,7 @@
 </template>
 
 <script setup>
-import { computed } from "@vue/reactivity"
+import { computed } from "vue"
 import { onMounted } from "vue"
 
 const props = defineProps({

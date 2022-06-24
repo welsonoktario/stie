@@ -7,14 +7,42 @@ use App\Models\Mahasiswa;
 use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class TestingController extends Controller
 {
-    //
     public function index()
+    {
+        $tas = TahunAjaran::all();
+
+        foreach ($tas as $ta) {
+            $mhss = $ta->mahasiswas;
+
+            if (!$mhss) {
+                continue;
+            }
+
+            foreach ($mhss as $mhs) {
+                // dump($mhs);
+                $jadwals = $mhs->jadwals()->where('tahun_ajaran_id', $ta->id)->get();
+
+                // dump($jadwals);
+                if (count($jadwals) == 0) {
+                    $status = $mhs->status_mahasiswa();
+                    // dump($status);
+                    $status->sync([$ta->id => [
+                        'status' => 'Tidak Aktif'
+                    ]], false);
+                }
+            }
+        }
+    }
+
+    //
+    public function index2()
     {
 
         /*
@@ -307,28 +335,36 @@ class TestingController extends Controller
         dd($data);
         // dd($data, $ta->id);
         $this->createSheet(compact('ta', 'data'));
-
     }
 
     public function createSheet($data)
     {
         $ta = $data['ta'];
         $fileName = "Laporan_{$ta['tahun_ajaran']}.xlsx";
-        $mhs = collect($data['data'])->map(fn ($m, $key) => [
-            $key+1,
-            $m->npm,
-            $m->nama,
-            $m->departmen,
-            $m->status,
-            $m->ips,
-            $m->sks_per,
-            $m->ipk,
-            $m->sks_total
-        ]);
+        $mhs = collect($data['data'])->map(function ($m, $key) {
+            $tmp = [
+                $key+1,
+                $m->npm,
+                $m->nama,
+                $m->departmen,
+                $m->status,
+                $m->ips,
+                $m->sks_per,
+                $m->ipk,
+                $m->sks_total
+            ];
+
+            if ($tmp[4] == 'Tidak Aktif') {
+                $tmp[6] = '0.00';
+            }
+            Log::debug($tmp);
+
+            return $tmp;
+        });
 
         $cellValue = [
             ["Semester {$ta->tahun_ajaran}"],
-            ['NO', 'NPM', 'NAMA', 'DEPARTMEN', 'STATUS MAHASISWAw', 'IPS', 'JUMLAH SKS SEMESTER', 'IPK', 'JUMLAH SKS TOTAL'],
+            ['NO', 'NPM', 'NAMA', 'DEPARTMEN', 'STATUS MAHASISWA', 'IPS', 'JUMLAH SKS SEMESTER', 'IPK', 'JUMLAH SKS TOTAL'],
             ...$mhs
         ];
 
