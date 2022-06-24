@@ -24,6 +24,26 @@
               :selected="ta.aktif"
             >{{ ta.tahun_ajaran }}</option>
           </select>
+
+
+          <select
+            id="tahun_ajaran"
+            v-model="selectedKur"
+            name="tahun_ajarans"
+            class="ml-2 pl-2 pr-8 text-sm bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+            @change="onKurikulumChange(selectedKur)"
+          >
+            <option :value="null" :key="null" disabled selected>Pilih Kurikulum Aktif</option>
+            <option :key="0" :value="0">Semua</option>
+            <option
+              v-for="k in kurikulums"
+              :key="k.id"
+              :value="k.id"
+              :selected="selectedKur"
+            >{{ k.nama }}</option>
+
+          </select>
+
         </div>
 
         <LinkButton :href="route('transaksi.jadwal.create', { ta: selectedTA })">Tambah Jadwal</LinkButton>
@@ -59,6 +79,7 @@
 import AppLayout from "@layouts/App"
 import DataTable from "@components/DataTable"
 import NavLink from "@components/NavLink"
+import LinkButton from "@components/LinkButton"
 import { Inertia } from "@inertiajs/inertia"
 import { ref } from "vue"
 import { PencilIcon, UserAddIcon } from "@heroicons/vue/outline"
@@ -70,6 +91,11 @@ const props = defineProps({
     type: Number,
     default: null,
   },
+  selectedKurikulum: {
+    type: Number,
+    default: null,
+  },
+  kurikulums: Object,
 })
 
 const columns = [
@@ -110,6 +136,7 @@ const columns = [
 ]
 
 const selectedTA = ref(props.selectedTahunAkademik)
+const selectedKur = ref(props.selectedKurikulum)
 
 const onTahunAjaranChange = (ta) => {
   const filter = { ta: selectedTA.value, ...route().params }
@@ -121,5 +148,20 @@ const onTahunAjaranChange = (ta) => {
       preserveScroll: true,
       preserveState: true,
     })
+}
+
+
+const onKurikulumChange = (kurikulum) => {
+  console.log(selectedKur.value)
+  const filter = { kur: selectedKur.value, ...route().params }
+  filter.kur = selectedKur.value
+
+
+    Inertia.visit(route("transaksi.jadwal.index", filter), {
+      only: ["jadwals", "selectedKur"],
+      preserveScroll: true,
+      preserveState: true,
+    })
+  // console.log(selectedKur.value)
 }
 </script>

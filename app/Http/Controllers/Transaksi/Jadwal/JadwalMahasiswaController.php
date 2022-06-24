@@ -23,13 +23,18 @@ class JadwalMahasiswaController extends Controller
      */
     public function index()
     {
+        // dd("wo");
         $jadwal = Jadwal::with('matakuliah')->find(Request::get('jadwal'));
         $tahunAkademik = TahunAjaran::find(Request::get('ta'));
 
         $mahasiswas = Mahasiswa::indexJadwal()
+            // ->with(['jadwals' => function($query) use ($jadwal){
+            //     return $query->where('id', $jadwal->id);
+            // }])
             ->whereHas('jadwals', function ($q) use ($jadwal) {
                 return $q->where('id', $jadwal->id);
             })
+            ->where('jadwal_mahasiswa.jadwal_id', $jadwal->id)
             ->filter(Request::only(['query', 'orderBy', 'orderType']))
             ->paginate(Request::get('perPage') ?: 10)
             ->withQueryString();
@@ -58,7 +63,7 @@ class JadwalMahasiswaController extends Controller
         } catch (Throwable $e) {
             return Response::json(['status' => 'FAIL', 'msg' => $e->getMessage()]);
         }
-
+        // dd($mahasiswas);
         return Response::json([
             'status' => 'OK',
             'data' => $mahasiswas

@@ -46,7 +46,8 @@
           </div>
         </div>
 
-        <div class="mb-4 flex space-x-3 w-full">
+        <div class="flex space-x-3 mb-4">
+        <div class="w-full">
           <div class="w-full">
             <Label for="npm">IPS Sebelumnya</Label>
             <Input
@@ -57,6 +58,20 @@
               disabled
             ></Input>
           </div>
+        </div>
+
+        <div class="w-full">
+          <div class="w-full">
+            <Label for="sks">SKS Diambil</Label>
+            <Input
+              v-model ='sksDiambil'
+              name="sks"
+              class="mt-1 block w-full"
+              type="text"
+              disabled
+            ></Input>
+          </div>
+        </div>
         </div>
 
         <div class="mb-4">
@@ -227,6 +242,7 @@ export default {
     jadwals: Object,
     jadwalMahasiswa: Object,
     ipsSebelumnya: String,
+    sksDiambil: String,
   },
   setup(props) {
     const form = useForm({
