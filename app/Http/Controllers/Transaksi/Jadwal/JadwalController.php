@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Transaksi\Jadwal\StoreJadwalRequest;
 use App\Http\Requests\Transaksi\Jadwal\UpdateJadwalRequest;
 use App\Models\Jadwal;
+use App\Models\Kurikulum;
 use App\Models\Matakuliah;
 use App\Models\Ruangan;
 use App\Models\TahunAjaran;
@@ -22,37 +23,41 @@ class JadwalController extends Controller
     public function index()
     {
         $selectedTahunAkademik = (int) Request::get('ta');
-        $tahunAkademiks = TahunAjaran::orderBy('id', 'DESC')->get();
-        $jadwals = Jadwal::index();
+        $tahunAkademiks = TahunAjaran::orderBy('tanggal_mulai', 'DESC')->get();
+        $kurikulums = Kurikulum::where('aktif',1)->orderBy('nama', 'DESC')->get();
+        // dd($kurikulums);
 
-        // dd(10 == false);
+
+        $jadwals = Jadwal::index();
+        $selectedKurikulum = (int) Request::get('kur');
 
         if ($selectedTahunAkademik) {
             $jadwals = $jadwals->where('tahun_ajaran_id', $selectedTahunAkademik);
         } else {
-
             $selectedTahunAkademik = $tahunAkademiks->firstWhere('aktif', '=', true)->id;
 
             $jadwals = $jadwals->where('tahun_ajaran_id', $selectedTahunAkademik);
         }
 
-        // dd($selectedTahunAkademik);
-        // $jadwals = $jadwals->where('tahun_ajaran_id')
+        // dd($selectedKurikulum);
+        if ($selectedKurikulum) {
+            $jadwals = $jadwals->where('kurikulums.id', $selectedKurikulum);
+        } else {
+            $jadwals = $jadwals->where('kurikulums.aktif', 1);
+        }
+        // dd($jadwals, $selectedKurikulum);
+
         $jadwals = $jadwals->filter(Request::only(['query', 'orderBy', 'orderType']))
             ->paginate(Request::get('perPage') ?: 10)
             ->withQueryString();
-
-
-        // dd($selectedTahunAkademik, $jadwals);
-
-        // dd($selectedTahunAkademik);
-        // dd($jadwals);
 
         return Inertia::render(
             'Transaksi/Jadwal/Jadwal',
             [
                 'tahunAkademiks' => fn () => $tahunAkademiks,
+                'kurikulums' => fn () => $kurikulums,
                 'selectedTahunAkademik' => fn () => $selectedTahunAkademik,
+                'selectedKurikulum' => fn () => $selectedKurikulum,
                 'jadwals' => fn () => $jadwals
             ]
         );

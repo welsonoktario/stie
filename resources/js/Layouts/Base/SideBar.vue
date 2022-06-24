@@ -259,7 +259,7 @@ export default {
           },
           {
             icon: ClipboardListIcon,
-            label: "Ujian",
+            label: "Kartu Ujian",
             name: "akademik-ujian",
             subMenus: [
               {

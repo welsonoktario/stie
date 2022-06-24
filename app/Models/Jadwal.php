@@ -75,12 +75,13 @@ class Jadwal extends Model
             'matakuliahs.semester as semester',
             'ruangans.nama_ruangan as ruangan_nama',
             'kurikulums.nama as kurikulum_nama',
+            'kurikulums.id as kurikulum_id',
             'kurikulums.aktif as kurikulum_status'
         ])
             ->join('matakuliahs', 'matakuliahs.id', '=', 'jadwals.matakuliah_id')
             ->join('kurikulums', 'kurikulums.id', '=', 'matakuliahs.kurikulum_id')
-            ->join('ruangans', 'ruangans.id', '=', 'jadwals.ruangan_id')
-            ->where('kurikulums.aktif','=',1);
+            ->join('ruangans', 'ruangans.id', '=', 'jadwals.ruangan_id');
+            // ->where('kurikulums.aktif','=',1);
     }
 
     /**

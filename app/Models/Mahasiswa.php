@@ -149,10 +149,13 @@ class Mahasiswa extends Model
 
     public function scopeIndexJadwal($query)
     {
-        $query->select(['mahasiswas.*', 'users.name as nama', 'jurusans.nama as jurusan', 'status_cicilan.jumlah_cicilan_1 as krs'])
+        $query->select(['mahasiswas.*', 'jadwal_mahasiswa.*', 'jadwal_mahasiswa.angka_mutu as nilai', 'jadwal_mahasiswa.nilai_akhir as nilai_akhir', 'users.name as nama', 'jurusans.nama as jurusan', 'status_cicilan.jumlah_cicilan_1 as krs'])
             ->join('users', 'users.id', '=', 'mahasiswas.user_id')
             ->leftJoin('jurusans', 'jurusans.id', '=', 'mahasiswas.jurusan_id')
-            ->leftJoin('status_cicilan', 'status_cicilan.mahasiswa_npm', '=', 'mahasiswas.npm');
+            ->leftJoin('status_cicilan', 'status_cicilan.mahasiswa_npm', '=', 'mahasiswas.npm')
+            ->join('jadwal_mahasiswa', 'jadwal_mahasiswa.mahasiswa_npm', '=', 'mahasiswas.npm');
+            // ->where('jadwal_mahasiswa.jadwal_id')
+            // ->leftJoin('jadwal_mahasiswa', 'jadwal_mahasiswa.mahasiswa_npm', '=', 'mahasiswas.npm');
     }
 
     public function scopeIndexUjian(Builder $query, $tipe)

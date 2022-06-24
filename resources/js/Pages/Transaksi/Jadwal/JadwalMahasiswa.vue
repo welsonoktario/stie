@@ -78,6 +78,10 @@
 
         <template #actions="row">
           <div class="inline-flex align-middle">
+            <IconButton @click.native="openDialogNilai(row.data.npm)">
+              <PencilAltIcon class="h-4" /> <p>Nilai</p>
+            </IconButton>
+
             <IconButton
               class="text-red-500 hover:text-red-400"
               @click.native="openDialogHapus(row.data.npm)"
@@ -85,9 +89,6 @@
               <TrashIcon class="h-4" />
             </IconButton>
 
-            <IconButton @click.native="openDialogNilai(row.data.npm)">
-              <PencilAltIcon class="h-4" />
-            </IconButton>
           </div>
         </template>
       </DataTable>
@@ -222,6 +223,14 @@ const columns = [
   {
     key: "krs",
     label: "Bayar KRS",
+  },
+  {
+    key: "nilai_akhir",
+    label: "NA",
+  },
+  {
+    key: "nisbi",
+    label: "Nisbi",
   },
 ]
 

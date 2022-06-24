@@ -134,34 +134,53 @@ class KRSController extends Controller
                 });
             })->when($filters['orderBy'] ?? null, function ($query, $orderBy) use (&$filters) {
                 $query->orderBy($orderBy, $filters['orderType']);
-            })
+            });
+        // $sksDiambil = 0;
+        $sksDiambil = $jadwal_mhs->sum("matakuliahs.sks");
+        // dd($sksDiambil);
+        $jadwal_mhs = $jadwal_mhs
             // ->get()
             ->paginate($request->get('perPage') ?: 20);
         // dd($jadwal_mhs);
+        // dd($sksSebelumnya = );
 
         $jadwals = Jadwal::where('tahun_ajaran_id', '=', $request['ta'])
+            // ->join('matakuliahs', 'matakuliahs.id', 'jadwals.id')
             ->with(['matakuliah'])
+            // ->orderBy('matakuliahs.semester','asc')
             ->get();
+        // $jadwals = $jadwals->sortByDesc(function ($jadwals) {
+        //     return $jadwals->matakuliah->semester;
+        // });
 
         // $jadwals = Jadwal::where('tahun_ajaran_id','=',$request['ta'])
         //     ->where('')->get();
 
         // dd($mahasiswa);
         $tahunAjaran = TahunAjaran::find($request['ta']);
-        $ipsSebelumnya = TahunAjaran::firstWhere('tanggal_mulai', '<', $tahunAjaran->tanggal_mulai);
+        // $ipsSebelumnya = TahunAjaran::firstWhere('tanggal_mulai', '<', $tahunAjaran->tanggal_mulai);
 
+        $ipsSebelumnya = $mahasiswa->tahun_ajaran->firstWhere('tanggal_mulai', '<', $tahunAjaran->tanggal_mulai);
+        // dd($ipsSebelumnya);
+        // $res = array();
         if ($ipsSebelumnya) {
             $ipsSebelumnya = $this->calcIP($mahasiswa->npm, $ipsSebelumnya->id);
+            // $ipsSebelumnya = $res[0];
+            // $sksDiambil
         }
         else {
             $ipsSebelumnya = "Baru";
         }
 
+
+        // if ()
+
         return Inertia::render('Transaksi/KRS/KRSDetail.vue', [
             'mahasiswa' => $mahasiswa,
             'jadwals' => $jadwals,
             'jadwalMahasiswa' => $jadwal_mhs,
-            'ipsSebelumnya' => $ipsSebelumnya
+            'ipsSebelumnya' => $ipsSebelumnya,
+            'sksDiambil' => $sksDiambil,
         ]);
     }
 
@@ -280,6 +299,8 @@ class KRSController extends Controller
             ->with(['status' => 'OK', 'msg' => 'Berhasil menyalin matakuliah mahasiswa ' . $request->npm_salin]);
     }
 
+
+
     private function calcIP($mhs, $ta)
     {
         $mahasiswa = Mahasiswa::query()
@@ -309,7 +330,7 @@ class KRSController extends Controller
         if ($totalSks == 0) {
             return 0;
         }
-        return $nisbiSks/$totalSks;
+        return [$nisbiSks/$totalSks, $totalSks];
         // dd($mahasiswa->toJson());
     }
 
