@@ -2,7 +2,7 @@
   <Link
     :as="as"
     :href="href"
-    class="md:text-sm text-center px-4 py-2 rounded-md font-semibold text-xs transition ease-in-out duration-150"
+    class="rounded-md px-4 py-2 text-center text-xs font-semibold transition duration-150 ease-in-out md:text-sm"
     :class="classes"
     :preserve-state="preserveState"
     :preserve-scroll="preserveScroll"
@@ -13,7 +13,7 @@
 
 <script setup>
 import { Link } from "@inertiajs/inertia-vue3"
-import { computed } from "vue";
+import { computed } from "vue"
 
 const props = defineProps({
   as: String,

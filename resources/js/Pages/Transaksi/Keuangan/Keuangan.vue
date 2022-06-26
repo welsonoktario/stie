@@ -1,37 +1,39 @@
 <template>
   <AppLayout>
     <div
-      class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
+      class="overflow-hidden bg-white p-6 shadow-sm dark:bg-zinc-800 sm:rounded-lg"
     >
       <!-- <div class="p-6">Mahasiswa / Mahasiswa Reguler</div> -->
       <p class="text-xs md:text-sm">Keuangan / Daftar Mahasiswa</p>
 
       <!-- Belum bisa ubah id dosen dan staff -->
 
-      <div class="flex justify-between my-3 item-center">
+      <div class="item-center my-3 flex justify-between">
         <span class="align-middle">
           <strong
-            class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
+            class="content-middle whitespace-nowrap text-sm capitalize md:text-lg"
             >Daftar Mahasiswa</strong
           >
         </span>
       </div>
 
-
-      <div class="inline-flex items-center text-sm mb-1">
+      <div class="mb-1 inline-flex items-center text-sm">
         <label for="tahun_ajarans">Tahun Akademik</label>
         <select
           id="tahun_ajaran"
           v-model="selectedTahunAjaran"
           name="tahun_ajarans"
-          class="ml-2 pl-2 pr-6 text-sm bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+          class="ml-2 rounded-md border-none bg-zinc-100 pl-2 pr-6 text-sm focus:ring-teal-500 dark:bg-zinc-700 dark:focus:ring-teal-600"
           @change="loadTahunAjaran(selectedTahunAjaran)"
         >
           <option
             v-for="ta in tahun_ajarans"
             :key="ta.id"
             :value="ta.id"
-            :selected="ta.aktif">{{ta.tahun_ajaran}}</option>
+            :selected="ta.aktif"
+          >
+            {{ ta.tahun_ajaran }}
+          </option>
         </select>
       </div>
 
@@ -42,20 +44,31 @@
 
         <template #actions="row">
           <NavLink
-            :href="route('transaksi.keuangan.edit', {keuangan: row.data.npm, ta: selectedTahunAjaran})"
+            :href="
+              route('transaksi.keuangan.edit', {
+                keuangan: row.data.npm,
+                ta: selectedTahunAjaran,
+              })
+            "
             >Edit</NavLink
           >
         </template>
         <template #row(cicilan_1)="row">
-          <div v-if="row.data.cicilan_1 == null" class="text-red-500"><p class="text-xl font-extrabold">-</p></div>
+          <div v-if="row.data.cicilan_1 == null" class="text-red-500">
+            <p class="text-xl font-extrabold">-</p>
+          </div>
           <div v-else class="text-green-600">L</div>
         </template>
         <template #row(cicilan_2)="row">
-          <div v-if="row.data.cicilan_2 == null" class="text-red-500"><p class="text-xl font-extrabold">-</p></div>
+          <div v-if="row.data.cicilan_2 == null" class="text-red-500">
+            <p class="text-xl font-extrabold">-</p>
+          </div>
           <div v-else class="text-green-600">L</div>
         </template>
         <template #row(cicilan_3)="row">
-          <div v-if="row.data.cicilan_3 == null" class="text-red-500"><p class="text-xl font-extrabold">-</p></div>
+          <div v-if="row.data.cicilan_3 == null" class="text-red-500">
+            <p class="text-xl font-extrabold">-</p>
+          </div>
           <div v-else class="text-green-600">L</div>
         </template>
       </DataTable>
@@ -69,8 +82,8 @@ import DataTable from "@components/DataTable"
 import Button from "@components/Button"
 
 import NavLink from "@components/NavLink"
-import { Inertia } from '@inertiajs/inertia'
-import { ref } from 'vue'
+import { Inertia } from "@inertiajs/inertia"
+import { ref } from "vue"
 
 export default {
   components: {
@@ -87,7 +100,7 @@ export default {
     tahun_ajarans: {
       type: Object,
       default: null,
-    }
+    },
   },
   setup(props) {
     const columns = [
@@ -128,7 +141,7 @@ export default {
     ]
 
     const selectedTahunAjaran = ref(
-      props.tahun_ajarans.find(o => o.aktif === true).id
+      props.tahun_ajarans.find((o) => o.aktif === true).id
     )
 
     const loadTahunAjaran = (id) => {

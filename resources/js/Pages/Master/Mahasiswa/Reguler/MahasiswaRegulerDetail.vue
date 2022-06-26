@@ -1,18 +1,24 @@
 <template>
   <AppLayout>
-    <div class="container mx-auto p-6 rounded-md bg-white dark:bg-zinc-800 overflow-auto">
-      <p class="text-xs md:text-sm text-slate-500">
+    <div
+      class="container mx-auto overflow-auto rounded-md bg-white p-6 dark:bg-zinc-800"
+    >
+      <p class="text-xs text-slate-500 md:text-sm">
         Mahasiswa / Mahasiswa Reguler /
-        <span
-          v-if="route().current('master.mahasiswa-reguler.create')"
-        >Tambah</span>
+        <span v-if="route().current('master.mahasiswa-reguler.create')"
+          >Tambah</span
+        >
         <span v-else>Ubah</span>
       </p>
 
-      <div class="flex justify-between my-3 item-center">
+      <div class="item-center my-3 flex justify-between">
         <span class="align-mnamedle">
-          <strong class="whitespace-nowrap capitalize text-sm md:text-lg content-mnamedle">
-            <span v-if="route().current('master.mahasiswa-reguler.create')">Tambah</span>
+          <strong
+            class="content-mnamedle whitespace-nowrap text-sm capitalize md:text-lg"
+          >
+            <span v-if="route().current('master.mahasiswa-reguler.create')"
+              >Tambah</span
+            >
             <span v-else>Ubah</span>
             Mahasiswa Reguler
           </strong>
@@ -38,7 +44,13 @@
 
           <div class="w-full">
             <Label for="nik">NIK</Label>
-            <Input v-model="form.nik" class="w-full" name="nik" type="text" placeholder="NIK"></Input>
+            <Input
+              v-model="form.nik"
+              class="w-full"
+              name="nik"
+              type="text"
+              placeholder="NIK"
+            ></Input>
           </div>
         </div>
 
@@ -64,7 +76,7 @@
           </Label>
           <select
             v-model="form.agama"
-            class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+            class="w-full rounded-md border-none bg-zinc-100 focus:ring-teal-500 dark:bg-zinc-700 dark:focus:ring-teal-600"
             name="agama"
           >
             <option value="-" selected disabled>Pilih agama</option>
@@ -89,7 +101,7 @@
                 type="radio"
                 name="kps"
                 value="1"
-                class="checked:bg-teal-500 checked:focus:bg-teal-500 dark:checked:bg-teal-400 dark:checked:focus:bg-teal-400 focus:ring-0"
+                class="checked:bg-teal-500 focus:ring-0 checked:focus:bg-teal-500 dark:checked:bg-teal-400 dark:checked:focus:bg-teal-400"
               />
               <span class="ml-2">Ya</span>
             </div>
@@ -99,7 +111,7 @@
                 type="radio"
                 name="kps"
                 value="0"
-                class="checked:bg-teal-500 checked:focus:bg-teal-500 dark:checked:bg-teal-400 dark:checked:focus:bg-teal-400 focus:ring-0"
+                class="checked:bg-teal-500 focus:ring-0 checked:focus:bg-teal-500 dark:checked:bg-teal-400 dark:checked:focus:bg-teal-400"
               />
               <span class="ml-2">Tidak</span>
             </div>
@@ -128,20 +140,31 @@
               Tanggal Selesai
               <i>(Kosongkan jika belum lulus)</i>
             </Label>
-            <Input v-model="form.tanggal_selesai" class="w-full" name="tanggal_lahir" type="date"></Input>
+            <Input
+              v-model="form.tanggal_selesai"
+              class="w-full"
+              name="tanggal_lahir"
+              type="date"
+            ></Input>
           </div>
         </div>
 
         <div class="mb-4">
           <Label for="email">Email</Label>
-          <Input v-model="form.email" class="w-full" name="email" type="text" placeholder="Email"></Input>
+          <Input
+            v-model="form.email"
+            class="w-full"
+            name="email"
+            type="text"
+            placeholder="Email"
+          ></Input>
         </div>
 
         <div class="mb-4">
           <Label for="jurusan">Jurusan</Label>
           <select
             v-model="form.jurusan_id"
-            class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+            class="w-full rounded-md border-none bg-zinc-100 focus:ring-teal-500 dark:bg-zinc-700 dark:focus:ring-teal-600"
             name="jurusan"
           >
             <option value="-">-</option>
@@ -149,7 +172,9 @@
               v-for="jurusan in jurusans"
               :key="jurusan.id"
               :value="jurusan.id"
-            >{{ jurusan.nama }} - {{ jurusan.kode_jurusan }}</option>
+            >
+              {{ jurusan.nama }} - {{ jurusan.kode_jurusan }}
+            </option>
           </select>
         </div>
 
@@ -157,7 +182,7 @@
           <Label for="dosen">Dosen Wali</Label>
           <select
             v-model="form.dosen_name"
-            class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+            class="w-full rounded-md border-none bg-zinc-100 focus:ring-teal-500 dark:bg-zinc-700 dark:focus:ring-teal-600"
             name="dosen"
           >
             <option value="-">-</option>
@@ -165,7 +190,9 @@
               v-for="dosen in dosens"
               :key="dosen.name"
               :value="dosen.name"
-            >{{ dosen.staff.user.name }}</option>
+            >
+              {{ dosen.staff.user.name }}
+            </option>
           </select>
         </div>
 
@@ -196,7 +223,7 @@
               <Label for="jenis_kelamin">Jenis Kelamin</Label>
               <select
                 v-model="form.jenis_kelamin"
-                class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+                class="w-full rounded-md border-none bg-zinc-100 focus:ring-teal-500 dark:bg-zinc-700 dark:focus:ring-teal-600"
                 name="jenis_kelamin"
               >
                 <option value="Laki-laki" selected>Laki-laki</option>
@@ -210,14 +237,26 @@
         <div class="mb-4 flex space-x-4">
           <div class="w-full">
             <Label for="npwp">NPWP</Label>
-            <Input v-model="form.npwp" class="w-full" name="npwp" type="text" placeholder="NPWP"></Input>
+            <Input
+              v-model="form.npwp"
+              class="w-full"
+              name="npwp"
+              type="text"
+              placeholder="NPWP"
+            ></Input>
           </div>
         </div>
 
         <!-- alamat jalan -->
         <div class="mb-4">
           <Label for="jalan">Jalan</Label>
-          <Input v-model="form.jalan" class="w-full" name="jalan" type="text" placeholder="Jalan"></Input>
+          <Input
+            v-model="form.jalan"
+            class="w-full"
+            name="jalan"
+            type="text"
+            placeholder="Jalan"
+          ></Input>
         </div>
 
         <!-- kelurahan, kecamatan, kode pos -->
@@ -255,7 +294,7 @@
         </div>
 
         <!-- Provinsi -->
-        <div class="flex space-x-3 mb-3">
+        <div class="mb-3 flex space-x-3">
           <div class="w-full">
             <Label for="provinsi">Provinsi</Label>
             <Select
@@ -308,7 +347,7 @@
             <Label for="jenis_tinggal">Jenis Tinggal</Label>
             <select
               v-model="form.jenis_tinggal"
-              class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+              class="w-full rounded-md border-none bg-zinc-100 focus:ring-teal-500 dark:bg-zinc-700 dark:focus:ring-teal-600"
             >
               <option selected disabled value="-">Pilih jenis tinggal</option>
               <option value="Bersama Orang Tua">Bersama Orang Tua</option>
@@ -322,9 +361,11 @@
             <Label for="alat_transportasi">Alat Transportasi</Label>
             <select
               v-model="form.alat_transportasi"
-              class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+              class="w-full rounded-md border-none bg-zinc-100 focus:ring-teal-500 dark:bg-zinc-700 dark:focus:ring-teal-600"
             >
-              <option selected disabled value="-">Pilih alat transportasi</option>
+              <option selected disabled value="-">
+                Pilih alat transportasi
+              </option>
               <option value="Sepeda">Sepeda</option>
               <option value="Sepeda Motor">Sepeda Motor</option>
               <option value="Mobil Pribadi">Mobil Pribadi</option>
@@ -343,9 +384,15 @@
         <!-- SLTA -->
         <div class="mb-4 w-full">
           <Label for="nisn">NISN</Label>
-          <Input v-model="form.nisn" class="w-full" name="nisn" type="text" placeholder="NISN"></Input>
+          <Input
+            v-model="form.nisn"
+            class="w-full"
+            name="nisn"
+            type="text"
+            placeholder="NISN"
+          ></Input>
         </div>
-        <div class="flex space-x-3 mb-4">
+        <div class="mb-4 flex space-x-3">
           <div class="w-full">
             <Label for="asal_slta">Asal SLTA</Label>
             <Input
@@ -376,7 +423,7 @@
 
         <!-- Data riwayat status kuliah -->
         <div v-if="currentRouteName == 'Edit'" class="mb-4 w-full">
-          <table class="table-auto w-full">
+          <table class="w-full table-auto">
             <thead>
               <tr>
                 <th>No</th>
@@ -392,7 +439,7 @@
                 <td>
                   <select
                     v-model="ta.pivot.status"
-                    class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+                    class="w-full rounded-md border-none bg-zinc-100 focus:ring-teal-500 dark:bg-zinc-700 dark:focus:ring-teal-600"
                     name="status_semester"
                   >
                     <option value="Aktif">Aktif</option>
@@ -406,7 +453,7 @@
                   </select>
                 </td>
                 <td
-                  class="text-sm text-gray-900 font-light py-3 whitespace-nowrap flex justify-center"
+                  class="flex justify-center whitespace-nowrap py-3 text-sm font-light text-gray-900"
                 >
                   <Checkbox></Checkbox>
                 </td>
@@ -500,15 +547,25 @@
             <Label for="penghasilan_ibu">Penghasilan Ibu Kandung</Label>
             <select
               v-model="form.penghasilan_ibu"
-              class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+              class="w-full rounded-md border-none bg-zinc-100 focus:ring-teal-500 dark:bg-zinc-700 dark:focus:ring-teal-600"
               name="penghasilan_ibu"
             >
-              <option selected disabled value="-">Pilih penghasilan ibu kandung</option>
+              <option selected disabled value="-">
+                Pilih penghasilan ibu kandung
+              </option>
               <option value="< Rp 500.000">&lt; Rp 500.000</option>
-              <option value="Rp 500.000 - Rp 999.999">Rp 500.000 - Rp 999.999</option>
-              <option value="Rp 1.000.000 - Rp 1.999.999">Rp 1.000.000 - Rp 1.999.999</option>
-              <option value="Rp 2.000.000 - Rp 4.999.999">Rp 2.000.000 - Rp 4.999.999</option>
-              <option value="Rp 5.000.000 - Rp 20.000.000">Rp 5.000.000 - Rp 20.000.000</option>
+              <option value="Rp 500.000 - Rp 999.999">
+                Rp 500.000 - Rp 999.999
+              </option>
+              <option value="Rp 1.000.000 - Rp 1.999.999">
+                Rp 1.000.000 - Rp 1.999.999
+              </option>
+              <option value="Rp 2.000.000 - Rp 4.999.999">
+                Rp 2.000.000 - Rp 4.999.999
+              </option>
+              <option value="Rp 5.000.000 - Rp 20.000.000">
+                Rp 5.000.000 - Rp 20.000.000
+              </option>
               <option value="> Rp 20.000.000">&gt; Rp 20.000.000</option>
             </select>
           </div>
@@ -593,15 +650,25 @@
             <Label for="penghasilan_ayah">Penghasilan Ayah</Label>
             <select
               v-model="form.penghasilan_ayah"
-              class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+              class="w-full rounded-md border-none bg-zinc-100 focus:ring-teal-500 dark:bg-zinc-700 dark:focus:ring-teal-600"
               name="penghasilan_ayah"
             >
-              <option selected disabled value="-">Pilih penghasilan ayah</option>
+              <option selected disabled value="-">
+                Pilih penghasilan ayah
+              </option>
               <option value="< Rp 500.000">&lt; Rp 500.000</option>
-              <option value="Rp 500.000 - Rp 999.999">Rp 500.000 - Rp 999.999</option>
-              <option value="Rp 1.000.000 - Rp 1.999.999">Rp 1.000.000 - Rp 1.999.999</option>
-              <option value="Rp 2.000.000 - Rp 4.999.999">Rp 2.000.000 - Rp 4.999.999</option>
-              <option value="Rp 5.000.000 - Rp 20.000.000">Rp 5.000.000 - Rp 20.000.000</option>
+              <option value="Rp 500.000 - Rp 999.999">
+                Rp 500.000 - Rp 999.999
+              </option>
+              <option value="Rp 1.000.000 - Rp 1.999.999">
+                Rp 1.000.000 - Rp 1.999.999
+              </option>
+              <option value="Rp 2.000.000 - Rp 4.999.999">
+                Rp 2.000.000 - Rp 4.999.999
+              </option>
+              <option value="Rp 5.000.000 - Rp 20.000.000">
+                Rp 5.000.000 - Rp 20.000.000
+              </option>
               <option value="> Rp 20.000.000">&gt; Rp 20.000.000</option>
             </select>
           </div>
@@ -613,7 +680,8 @@
             v-if="!route().current('master.mahasiswa-reguler.create')"
             class="text-red-500"
             @click="remove()"
-          >Hapus Data Mahasiswa Reguler</Link>
+            >Hapus Data Mahasiswa Reguler</Link
+          >
         </div>
       </form>
     </div>
@@ -628,7 +696,7 @@ import Button from "@components/Button"
 import Label from "@components/Label"
 import NavLink from "@/Components/NavLink"
 import Checkbox from "@/Components/Checkbox.vue"
-import Select from '@/Components/Select.vue'
+import Select from "@/Components/Select.vue"
 
 import { Link } from "@inertiajs/inertia-vue3"
 
@@ -688,14 +756,14 @@ export default {
         props.mahasiswa == null
           ? "-"
           : props.mahasiswa.dosen == null
-            ? "-"
-            : props.mahasiswa.dosen.name,
+          ? "-"
+          : props.mahasiswa.dosen.name,
       jurusan_id:
         props.mahasiswa == null
           ? "-"
           : props.mahasiswa.jurusan == null
-            ? "-"
-            : props.mahasiswa.jurusan.id,
+          ? "-"
+          : props.mahasiswa.jurusan.id,
       nisn: props.mahasiswa?.nisn || null,
       jenis_tinggal: props.mahasiswa?.jenis_tinggal || null,
       alat_transportasi: props.mahasiswa?.alat_transportasi || null,
@@ -755,10 +823,9 @@ export default {
       route().current("master.mahasiswa-reguler.create") ? "Tambah" : "Edit"
     )
 
+    const kotas = ["Tarakan"]
 
-    const kotas = ['Tarakan']
-
-    const provinsis = ['Kalimantan Utara']
+    const provinsis = ["Kalimantan Utara"]
 
     return {
       form,

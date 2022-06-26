@@ -1,19 +1,24 @@
 <template>
   <AppLayout>
-    <div class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
+    <div
+      class="overflow-hidden bg-white p-6 shadow-sm dark:bg-zinc-800 sm:rounded-lg"
+    >
       <!-- <div class="p-6">Mahasiswa / Mahasiswa Reguler</div> -->
       <p class="text-xs md:text-sm">Mahasiswa / Mahasiswa Reguler</p>
 
       <!-- Belum bisa ubah id dosen dan staff -->
 
-      <div class="flex justify-between my-3 item-center">
+      <div class="item-center my-3 flex justify-between">
         <span class="align-middle">
           <strong
-            class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
-          >Daftar Mahasiswa Reguler</strong>
+            class="content-middle whitespace-nowrap text-sm capitalize md:text-lg"
+            >Daftar Mahasiswa Reguler</strong
+          >
         </span>
 
-        <LinkButton :href="route('master.mahasiswa-reguler.create')" type="link">Tambah Mahasiswa</LinkButton>
+        <LinkButton :href="route('master.mahasiswa-reguler.create')" type="link"
+          >Tambah Mahasiswa</LinkButton
+        >
       </div>
 
       <DataTable :data="mahasiswas" :columns="columns">
@@ -22,11 +27,15 @@
         </template>
 
         <template #row(tanggal_masuk)="row">
-          <span class="capitalize">{{ (row.data.tanggal_masuk).split('-')[0] ?? "-" }}</span>
+          <span class="capitalize">{{
+            row.data.tanggal_masuk.split("-")[0] ?? "-"
+          }}</span>
         </template>
 
         <template #actions="row">
-          <NavLink :href="route('master.mahasiswa-reguler.edit', row.data.npm)">Edit</NavLink>
+          <NavLink :href="route('master.mahasiswa-reguler.edit', row.data.npm)"
+            >Edit</NavLink
+          >
         </template>
       </DataTable>
     </div>
@@ -44,7 +53,7 @@ export default {
     AppLayout,
     NavLink,
     DataTable,
-    LinkButton
+    LinkButton,
   },
   props: {
     mahasiswas: {
@@ -76,8 +85,8 @@ export default {
       {
         key: "tanggal_masuk",
         label: "Angkatan",
-        sortable: true
-      }
+        sortable: true,
+      },
     ]
     return {
       columns,

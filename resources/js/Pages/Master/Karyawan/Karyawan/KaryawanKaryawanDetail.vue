@@ -1,18 +1,20 @@
 <template>
   <AppLayout>
-    <div class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
-      <p class="text-xs md:text-sm text-slate-500">
+    <div
+      class="overflow-hidden bg-white p-6 shadow-sm dark:bg-zinc-800 sm:rounded-lg"
+    >
+      <p class="text-xs text-slate-500 md:text-sm">
         Karyawan / Karyawan /
         <span class="font-semibold text-teal-500 dark:text-teal-600">
-          {{
-            currentRouteName.route
-          }}
+          {{ currentRouteName.route }}
         </span>
       </p>
 
-      <div class="flex justify-between my-3 item-center">
+      <div class="item-center my-3 flex justify-between">
         <span class="align-middle">
-          <strong class="whitespace-nowrap capitalize text-sm md:text-lg content-middle">
+          <strong
+            class="content-middle whitespace-nowrap text-sm capitalize md:text-lg"
+          >
             <span>{{ currentRouteName.route }}</span>
             Karyawan
           </strong>
@@ -106,13 +108,14 @@
           </div>
           <div class="w-full">
             <label
-              class="block text-gray-500 text-sm font-bold mb-2"
+              class="mb-2 block text-sm font-bold text-gray-500"
               for="jenis_kelamin"
-            >Jenis Kelamin</label>
+              >Jenis Kelamin</label
+            >
             <select
               id="jenis_kelamin"
               v-model="form.jenis_kelamin"
-              class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+              class="w-full rounded-md border-none bg-zinc-100 focus:ring-teal-500 dark:bg-zinc-700 dark:focus:ring-teal-600"
             >
               <option value="Laki-laki">Laki-laki</option>
               <option value="Perempuan">Perempuan</option>
@@ -147,7 +150,11 @@
 
         <!-- NOMOR HP -->
         <div class="mb-3">
-          <label class="block text-gray-500 text-sm font-bold mb-2" for="nomor_hp">Nomor HP</label>
+          <label
+            class="mb-2 block text-sm font-bold text-gray-500"
+            for="nomor_hp"
+            >Nomor HP</label
+          >
           <Input
             id="nomor_hp"
             v-model="form.nomor_hp"
@@ -159,7 +166,9 @@
 
         <!-- alamat lengkap -->
         <div class="mb-3">
-          <label class="block text-gray-500 text-sm font-bold mb-2" for="alamat">Alamat</label>
+          <label class="mb-2 block text-sm font-bold text-gray-500" for="alamat"
+            >Alamat</label
+          >
           <Input
             id="alamat"
             v-model="form.jalan"
@@ -172,7 +181,11 @@
         <!-- kelurahan, kecamatan, kode pos -->
         <div class="mb-3 flex space-x-2">
           <div class="w-full">
-            <label class="block text-gray-500 text-sm font-bold mb-2" for="kelurahan">Kelurahan</label>
+            <label
+              class="mb-2 block text-sm font-bold text-gray-500"
+              for="kelurahan"
+              >Kelurahan</label
+            >
             <Input
               id="kelurahan"
               v-model="form.kelurahan"
@@ -182,7 +195,11 @@
             ></Input>
           </div>
           <div class="w-full">
-            <label class="block text-gray-500 text-sm font-bold mb-2" for="kecamatan">Kecamatan</label>
+            <label
+              class="mb-2 block text-sm font-bold text-gray-500"
+              for="kecamatan"
+              >Kecamatan</label
+            >
             <Input
               id="kecamatan"
               v-model="form.kecamatan"
@@ -192,7 +209,11 @@
             ></Input>
           </div>
           <div class="w-full">
-            <label class="block text-gray-500 text-sm font-bold mb-2" for="kode_pos">Kode Pos</label>
+            <label
+              class="mb-2 block text-sm font-bold text-gray-500"
+              for="kode_pos"
+              >Kode Pos</label
+            >
             <Input
               id="kode_pos"
               v-model="form.kode_pos"
@@ -204,7 +225,7 @@
         </div>
 
         <!-- Provinsi -->
-        <div class="flex space-x-3 mb-3">
+        <div class="mb-3 flex space-x-3">
           <div class="w-full">
             <Label for="provinsi">Provinsi</Label>
             <Select
@@ -298,7 +319,13 @@
         <!-- GOLONGAN -->
         <div class="mb-3">
           <Label for="golongan">Golongan</Label>
-          <Input id="golongan" v-model="form.golongan" class="w-full" type="text" name="golongan"></Input>
+          <Input
+            id="golongan"
+            v-model="form.golongan"
+            class="w-full"
+            type="text"
+            name="golongan"
+          ></Input>
         </div>
 
         <!-- DIVISI, LEVEL PENGGUNA -->
@@ -308,20 +335,32 @@
             <select
               id="divisi"
               v-model="form.status_berdasarkan_fungsi"
-              class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+              class="w-full rounded-md border-none bg-zinc-100 focus:ring-teal-500 dark:bg-zinc-700 dark:focus:ring-teal-600"
             >
-              <option value="Tenaga Kependidikan - Administrasi">Tenaga Kependidikan - Administrasi</option>
-              <option value="Tenaga Kependidikan - Pustakawan">Tenaga Kependidikan - Pustakawan</option>
-              <option value="Tenaga Kependidikan - Arsiparis">Tenaga Kependidikan - Arsiparis</option>
-              <option value="Tenaga Kependidikan - Teknisi">Tenaga Kependidikan - Teknisi</option>
-              <option value="Tenaga Kependidikan - Laboran">Tenaga Kependidikan - Laboran</option>
-              <option value="Tenaga Kependidikan - Humas">Tenaga Kependidikan - Humas</option>
-              <option
-                value="Tenaga Penunjang Akademik - Cleaning Service"
-              >Tenaga Penunjang Akademik - Cleaning Service</option>
-              <option
-                value="Tenaga Penunjang Akademik - Satpam/Waker"
-              >Tenaga Penunjang Akademik - Satpam/Waker</option>
+              <option value="Tenaga Kependidikan - Administrasi">
+                Tenaga Kependidikan - Administrasi
+              </option>
+              <option value="Tenaga Kependidikan - Pustakawan">
+                Tenaga Kependidikan - Pustakawan
+              </option>
+              <option value="Tenaga Kependidikan - Arsiparis">
+                Tenaga Kependidikan - Arsiparis
+              </option>
+              <option value="Tenaga Kependidikan - Teknisi">
+                Tenaga Kependidikan - Teknisi
+              </option>
+              <option value="Tenaga Kependidikan - Laboran">
+                Tenaga Kependidikan - Laboran
+              </option>
+              <option value="Tenaga Kependidikan - Humas">
+                Tenaga Kependidikan - Humas
+              </option>
+              <option value="Tenaga Penunjang Akademik - Cleaning Service">
+                Tenaga Penunjang Akademik - Cleaning Service
+              </option>
+              <option value="Tenaga Penunjang Akademik - Satpam/Waker">
+                Tenaga Penunjang Akademik - Satpam/Waker
+              </option>
             </select>
           </div>
         </div>
@@ -333,7 +372,7 @@
             <select
               id="divisi"
               v-model="form.divisi"
-              class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+              class="w-full rounded-md border-none bg-zinc-100 focus:ring-teal-500 dark:bg-zinc-700 dark:focus:ring-teal-600"
             >
               <option value="BAAK">BAAK</option>
               <option value="BAU">BAU</option>
@@ -345,12 +384,14 @@
             <select
               id="level_pengguna"
               v-model="form.level_pengguna"
-              class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+              class="w-full rounded-md border-none bg-zinc-100 focus:ring-teal-500 dark:bg-zinc-700 dark:focus:ring-teal-600"
             >
               <option value="Staff">Staff</option>
               <option value="Pengguna">Pengguna</option>
               <option value="Administrator">Administrator</option>
-              <option value="Tidak Aktif">Tidak Aktif (Jika sudah tidak bekerja)</option>
+              <option value="Tidak Aktif">
+                Tidak Aktif (Jika sudah tidak bekerja)
+              </option>
             </select>
           </div>
         </div>
@@ -394,9 +435,11 @@
           <button
             v-if="currentRouteName.route != 'Tambah'"
             type="button"
-            class="text-red-500 bg-transparent hover:bg-transparent focus:bg-transparent"
+            class="bg-transparent text-red-500 hover:bg-transparent focus:bg-transparent"
             @click="isOpen = !isOpen"
-          >Hapus Data Karyawan</button>
+          >
+            Hapus Data Karyawan
+          </button>
         </div>
       </form>
     </div>
@@ -480,9 +523,9 @@ export default {
       nitk: props.staff?.tenaga_kependidikan?.id,
     })
 
-    const kotas = ['Tarakan']
+    const kotas = ["Tarakan"]
 
-    const provinsis = ['Kalimantan Utara']
+    const provinsis = ["Kalimantan Utara"]
 
     const isOpen = ref(false)
 
@@ -501,7 +544,6 @@ export default {
       form.delete(route("master.karyawan.destroy", props.staff.id))
 
     const calculatedMasaKerja = computed(() => {
-
       if (props.staff.tanggal_sk_awal == null) {
         return 0
       }
@@ -517,7 +559,15 @@ export default {
       const num_month = Math.floor((daydiff % 365) / 30)
       const num_days = Math.floor(daydiff % 365) % 30
       // return Math.round(daydiff) + " hari, " + Math.round(monthdiff) + " bulan, " + Math.round(yeardiff) + " tahun"
-      return " " + Math.round(num_year) + ' Tahun, ' + Math.round(num_month) + ' Bulan, ' + Math.round(num_days) + ' Hari.'
+      return (
+        " " +
+        Math.round(num_year) +
+        " Tahun, " +
+        Math.round(num_month) +
+        " Bulan, " +
+        Math.round(num_days) +
+        " Hari."
+      )
       // return now
     })
 

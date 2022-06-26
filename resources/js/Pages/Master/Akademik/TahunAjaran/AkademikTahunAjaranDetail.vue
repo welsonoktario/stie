@@ -1,20 +1,22 @@
 <template>
   <AppLayout :title="`${currentRouteName} Tahun Akademik`">
-    <div class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
+    <div
+      class="overflow-hidden bg-white p-6 shadow-sm dark:bg-zinc-800 sm:rounded-lg"
+    >
       <!-- <div class="p-6">Karyawan / Karyawan</div> -->
-      <p class="text-xs md:text-sm text-slate-500">
+      <p class="text-xs text-slate-500 md:text-sm">
         Akademik / Tahun Akademik /
         <span class="font-semibold text-teal-500 dark:text-teal-600">
-          {{
-            currentRouteName
-          }}
+          {{ currentRouteName }}
         </span>
       </p>
 
       <!-- <p>{{route().current()}}</p> -->
-      <div class="flex justify-between my-3 item-center">
+      <div class="item-center my-3 flex justify-between">
         <span class="align-middle">
-          <strong class="whitespace-nowrap capitalize text-sm md:text-lg content-middle">
+          <strong
+            class="content-middle whitespace-nowrap text-sm capitalize md:text-lg"
+          >
             <span>{{ currentRouteName }}</span>
             Tahun Akademik
           </strong>
@@ -68,7 +70,7 @@
           <Label for="periode">Periode</Label>
           <select
             v-model="form.periode"
-            class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+            class="w-full rounded-md border-none bg-zinc-100 focus:ring-teal-500 dark:bg-zinc-700 dark:focus:ring-teal-600"
             name="periode"
           >
             <option value="null" selected disabled>Pilih periode</option>
@@ -81,15 +83,17 @@
         <div class="mb-4 flex space-x-5">
           <div class>
             <SwitchGroup>
-              <SwitchLabel class="block text-gray-500 text-sm font-bold mb-2">Aktif</SwitchLabel>
+              <SwitchLabel class="mb-2 block text-sm font-bold text-gray-500"
+                >Aktif</SwitchLabel
+              >
               <Switch
                 v-model="form.aktif"
                 :class="form.aktif ? 'bg-teal-600' : 'bg-gray-200'"
-                class="relative inline-flex items-center h-6 transition-colors rounded-full w-11 ring-0"
+                class="relative inline-flex h-6 w-11 items-center rounded-full ring-0 transition-colors"
               >
                 <span
                   :class="form.aktif ? 'translate-x-6' : 'translate-x-1'"
-                  class="inline-block w-4 h-4 transition-transform transform bg-white rounded-full"
+                  class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
                 />
               </Switch>
             </SwitchGroup>
@@ -97,15 +101,19 @@
 
           <div v-if="currentRouteName == 'Tambah'" class>
             <SwitchGroup>
-              <SwitchLabel class="block text-gray-500 text-sm font-bold mb-2">Tambah Mahasiswa</SwitchLabel>
+              <SwitchLabel class="mb-2 block text-sm font-bold text-gray-500"
+                >Tambah Mahasiswa</SwitchLabel
+              >
               <Switch
                 v-model="form.tambahMahasiswa"
                 :class="form.tambahMahasiswa ? 'bg-teal-600' : 'bg-gray-200'"
-                class="relative inline-flex items-center h-6 transition-colors rounded-full w-11 ring-0"
+                class="relative inline-flex h-6 w-11 items-center rounded-full ring-0 transition-colors"
               >
                 <span
-                  :class="form.tambahMahasiswa ? 'translate-x-6' : 'translate-x-1'"
-                  class="inline-block w-4 h-4 transition-transform transform bg-white rounded-full"
+                  :class="
+                    form.tambahMahasiswa ? 'translate-x-6' : 'translate-x-1'
+                  "
+                  class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
                 />
               </Switch>
             </SwitchGroup>
@@ -117,9 +125,11 @@
           <button
             v-if="currentRouteName != 'Tambah'"
             type="button"
-            class="text-red-500 bg-transparent hover:bg-transparent focus:bg-transparent"
+            class="bg-transparent text-red-500 hover:bg-transparent focus:bg-transparent"
             @click="isOpen = !isOpen"
-          >Hapus Data Tahun Ajaran</button>
+          >
+            Hapus Data Tahun Ajaran
+          </button>
         </div>
       </form>
     </div>
@@ -133,7 +143,9 @@
       @cancel="isOpen = !isOpen"
     >
       <template #content>
-        <p class="text-sm">Apakah anda yakin ingin menghapus tahun ajaran ini?</p>
+        <p class="text-sm">
+          Apakah anda yakin ingin menghapus tahun ajaran ini?
+        </p>
       </template>
     </Dialog>
   </AppLayout>
@@ -173,7 +185,7 @@ export default {
       tanggal_selesai: props.tahunAjaran?.tanggal_selesai || null,
       periode: props.tahunAjaran?.periode || null,
       aktif: props.tahunAjaran == null ? false : props.tahunAjaran.aktif,
-      tambahMahasiswa: false
+      tambahMahasiswa: false,
     })
 
     // const tambahMahasiswa = ref(false)

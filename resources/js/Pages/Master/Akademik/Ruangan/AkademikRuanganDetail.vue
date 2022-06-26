@@ -1,19 +1,21 @@
 <template>
   <AppLayout>
-    <div class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
+    <div
+      class="overflow-hidden bg-white p-6 shadow-sm dark:bg-zinc-800 sm:rounded-lg"
+    >
       <!-- <div class="p-6">Karyawan / Karyawan</div> -->
-      <p class="text-xs md:text-sm text-slate-500">
+      <p class="text-xs text-slate-500 md:text-sm">
         Akademik / Ruangan /
         <span class="font-semibold text-teal-500 dark:text-teal-600">
-          {{
-            currentRouteName
-          }}
+          {{ currentRouteName }}
         </span>
       </p>
 
-      <div class="flex justify-between my-3 item-center">
+      <div class="item-center my-3 flex justify-between">
         <span class="align-middle">
-          <strong class="whitespace-nowrap capitalize text-sm md:text-lg content-middle">
+          <strong
+            class="content-middle whitespace-nowrap text-sm capitalize md:text-lg"
+          >
             <span>{{ currentRouteName }}</span>
             Ruangan
           </strong>
@@ -36,9 +38,11 @@
           <button
             v-if="currentRouteName != 'Tambah'"
             type="button"
-            class="text-red-500 bg-transparent hover:bg-transparent focus:bg-transparent"
+            class="bg-transparent text-red-500 hover:bg-transparent focus:bg-transparent"
             @click="isOpen = !isOpen"
-          >Hapus Data Ruangan</button>
+          >
+            Hapus Data Ruangan
+          </button>
         </div>
       </form>
     </div>

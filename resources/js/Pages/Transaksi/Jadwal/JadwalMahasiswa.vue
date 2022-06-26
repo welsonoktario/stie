@@ -1,18 +1,18 @@
 <template>
   <AppLayout>
     <div
-      class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
+      class="overflow-hidden bg-white p-6 shadow-sm dark:bg-zinc-800 sm:rounded-lg"
     >
       <p class="text-xs md:text-sm">Jadwal / Mahasiswa / Daftar Mahasiswa</p>
 
       <div class="mb-3">
         <strong
-          class="whitespace-nowrap align-middle text-sm md:text-lg content-middle"
+          class="content-middle whitespace-nowrap align-middle text-sm md:text-lg"
           >Detail Jadwal Mahasiswa</strong
         >
       </div>
 
-      <div class="flex space-x-3 mb-3">
+      <div class="mb-3 flex space-x-3">
         <div class="w-full">
           <Label for="nama"> Kode Matakuliah </Label>
           <Input
@@ -35,7 +35,7 @@
         </div>
       </div>
 
-      <div class="flex space-x-3 mb-3">
+      <div class="mb-3 flex space-x-3">
         <div class="w-full">
           <Label for="nama"> Lokal </Label>
           <Input
@@ -57,10 +57,10 @@
         </div>
       </div>
 
-      <div class="inline-flex justify-between my-3 w-full items-center">
+      <div class="my-3 inline-flex w-full items-center justify-between">
         <div>
           <strong
-            class="whitespace-nowrap align-middle text-sm md:text-lg content-middle"
+            class="content-middle whitespace-nowrap align-middle text-sm md:text-lg"
             >Daftar Mahasiswa</strong
           >
         </div>
@@ -72,14 +72,15 @@
 
       <DataTable :data="mahasiswas" :columns="columns">
         <template #row(krs)="row">
-          <CheckIcon v-if="row.data.krs" class="text-teal-500 h-4" />
-          <XIcon v-else class="text-red-500 h-4" />
+          <CheckIcon v-if="row.data.krs" class="h-4 text-teal-500" />
+          <XIcon v-else class="h-4 text-red-500" />
         </template>
 
         <template #actions="row">
           <div class="inline-flex align-middle">
             <IconButton @click.native="openDialogNilai(row.data.npm)">
-              <PencilAltIcon class="h-4" /> <p>Nilai</p>
+              <PencilAltIcon class="h-4" />
+              <p>Nilai</p>
             </IconButton>
 
             <IconButton
@@ -88,7 +89,6 @@
             >
               <TrashIcon class="h-4" />
             </IconButton>
-
           </div>
         </template>
       </DataTable>

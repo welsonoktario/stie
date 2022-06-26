@@ -1,19 +1,19 @@
 <template>
   <AppLayout>
     <div
-      class="bg-zinc-50 dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
+      class="overflow-hidden bg-zinc-50 p-6 shadow-sm dark:bg-zinc-800 sm:rounded-lg"
     >
-      <p class="text-xs md:text-sm text-zinc-500 dark:text-zinc-400">
+      <p class="text-xs text-zinc-500 dark:text-zinc-400 md:text-sm">
         Jadwal /
         <span class="font-semibold text-teal-500 dark:text-teal-600">{{
           currentRouteName
         }}</span>
       </p>
 
-      <div class="flex justify-between my-3 item-center">
+      <div class="item-center my-3 flex justify-between">
         <span class="align-middle">
           <strong
-            class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
+            class="content-middle whitespace-nowrap text-sm capitalize md:text-lg"
           >
             <span>{{ currentRouteName }}</span>
             Jadwal</strong
@@ -116,10 +116,10 @@
 
         <!-- uts -->
 
-        <div class="flex justify-between mt-3 item-center">
+        <div class="item-center mt-3 flex justify-between">
           <span class="align-middle">
             <strong
-              class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
+              class="content-middle whitespace-nowrap text-sm capitalize md:text-lg"
             >
               Jadwal UTS</strong
             >
@@ -127,7 +127,6 @@
         </div>
 
         <div class="flex justify-between space-x-3">
-
           <div class="mt-4 w-full">
             <Label for="uts_tanggal">Tanggal UTS</Label>
             <Input
@@ -182,13 +181,12 @@
           <InputError class="mt-2" :message="form.errors.uts_ruangan" />
         </div>
 
-
         <!-- UAS -->
 
-        <div class="flex justify-between mt-3 item-center">
+        <div class="item-center mt-3 flex justify-between">
           <span class="align-middle">
             <strong
-              class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
+              class="content-middle whitespace-nowrap text-sm capitalize md:text-lg"
             >
               Jadwal UAS</strong
             >
@@ -196,7 +194,6 @@
         </div>
 
         <div class="flex justify-between space-x-3">
-
           <div class="mt-4 w-full">
             <Label for="uas_tanggal">Tanggal UAS</Label>
             <Input
@@ -251,13 +248,12 @@
           <InputError class="mt-2" :message="form.errors.uas_ruangan" />
         </div>
 
-
-        <div class="inline-flex items-center justify-between w-full mt-8">
+        <div class="mt-8 inline-flex w-full items-center justify-between">
           <Button class="px-10" :disabled="form.processing">Simpan</Button>
           <button
             v-if="currentRouteName != 'Tambah'"
             type="button"
-            class="text-red-500 bg-transparent hover:bg-transparent focus:bg-transparent"
+            class="bg-transparent text-red-500 hover:bg-transparent focus:bg-transparent"
             @click="isDialogHapusOpen = !isDialogHapusOpen"
           >
             Hapus Jadwal

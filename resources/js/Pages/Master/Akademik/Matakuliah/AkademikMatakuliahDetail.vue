@@ -1,18 +1,20 @@
 <template>
   <AppLayout>
-    <div class="bg-zinc-50 dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
-      <p class="text-xs md:text-sm text-zinc-500 dark:text-zinc-400">
+    <div
+      class="overflow-hidden bg-zinc-50 p-6 shadow-sm dark:bg-zinc-800 sm:rounded-lg"
+    >
+      <p class="text-xs text-zinc-500 dark:text-zinc-400 md:text-sm">
         Akademik / Matakuliah /
         <span class="font-semibold text-teal-500 dark:text-teal-600">
-          {{
-            currentRouteName
-          }}
+          {{ currentRouteName }}
         </span>
       </p>
 
-      <div class="flex justify-between my-3 item-center">
+      <div class="item-center my-3 flex justify-between">
         <span class="align-middle">
-          <strong class="whitespace-nowrap capitalize text-sm md:text-lg content-middle">
+          <strong
+            class="content-middle whitespace-nowrap text-sm capitalize md:text-lg"
+          >
             <span>{{ currentRouteName }}</span>
             Matakuliah
           </strong>
@@ -21,9 +23,10 @@
       <form @submit.prevent="submit(route().current())">
         <div class="mb-4">
           <label
-            class="block text-gray-500 dark:text-gray-400 text-sm font-bold mb-2"
+            class="mb-2 block text-sm font-bold text-gray-500 dark:text-gray-400"
             for="kode"
-          >Kode Matakuliah</label>
+            >Kode Matakuliah</label
+          >
           <Input
             id="kode"
             v-model="form.kode_matakuliah"
@@ -37,9 +40,10 @@
         </div>
         <div class="mb-4">
           <label
-            class="block text-gray-500 dark:text-gray-400 text-sm font-bold mb-2"
+            class="mb-2 block text-sm font-bold text-gray-500 dark:text-gray-400"
             for="nama"
-          >Nama Matakuliah</label>
+            >Nama Matakuliah</label
+          >
           <Input
             id="nama"
             v-model="form.nama_matakuliah"
@@ -54,9 +58,10 @@
         <div class="flex space-x-2">
           <div class="mb-4 w-full">
             <label
-              class="block text-gray-500 dark:text-gray-400 text-sm font-bold mb-2"
+              class="mb-2 block text-sm font-bold text-gray-500 dark:text-gray-400"
               for="sks"
-            >Jumlah SKS</label>
+              >Jumlah SKS</label
+            >
             <Input
               id="sks"
               v-model="form.sks"
@@ -71,11 +76,12 @@
           <div class="mb-4 w-full">
             <label
               for="semester"
-              class="block text-gray-500 dark:text-gray-400 text-sm font-bold mb-2"
-            >Semester</label>
+              class="mb-2 block text-sm font-bold text-gray-500 dark:text-gray-400"
+              >Semester</label
+            >
             <select
               v-model="form.semester"
-              class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none"
+              class="w-full rounded-md border-none bg-zinc-100 dark:bg-zinc-700"
             >
               <option value selected>Pilih semester</option>
               <option value="1">1</option>
@@ -95,31 +101,37 @@
         <div class="mb-4">
           <label
             for="tipe"
-            class="block text-gray-500 dark:text-gray-400 text-sm font-bold mb-2"
-          >Tipe</label>
+            class="mb-2 block text-sm font-bold text-gray-500 dark:text-gray-400"
+            >Tipe</label
+          >
           <select
             v-model="form.tipe"
             name="tipe"
-            class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+            class="w-full rounded-md border-none bg-zinc-100 focus:ring-teal-500 dark:bg-zinc-700 dark:focus:ring-teal-600"
           >
-            <option value="null" selected disabled>Pilih tipe matakuliah</option>
+            <option value="null" selected disabled>
+              Pilih tipe matakuliah
+            </option>
             <option
               v-for="tipe in tipes"
               :value="tipe"
               :selected="form.tipe == tipe"
-            >{{ capitalize(tipe) }}</option>
+            >
+              {{ capitalize(tipe) }}
+            </option>
           </select>
           <InputError class="mt-2" :message="form.errors.tipe" />
         </div>
         <div class="mb-4">
           <label
             for="kurikulum"
-            class="block text-gray-500 dark:text-400 text-sm font-bold mb-2"
-          >Kurikulum</label>
+            class="dark:text-400 mb-2 block text-sm font-bold text-gray-500"
+            >Kurikulum</label
+          >
           <select
             v-model="form.kurikulum_id"
             name="kurikulum"
-            class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+            class="w-full rounded-md border-none bg-zinc-100 focus:ring-teal-500 dark:bg-zinc-700 dark:focus:ring-teal-600"
             @change="loadPrasyarats($event.target.selectedIndex)"
           >
             <option value="null" selected disabled>Pilih kurikulum</option>
@@ -127,19 +139,22 @@
               v-for="kurikulum in kurikulums"
               :value="kurikulum.id"
               :selected="form.kurikulum_id == kurikulum.id"
-            >{{ kurikulum.nama }}</option>
+            >
+              {{ kurikulum.nama }}
+            </option>
           </select>
           <InputError class="mt-2" :message="form.errors.kurikulum_id" />
         </div>
         <div class="mb-4">
           <label
             for="kurikulum"
-            class="block text-gray-500 dark:text-gray-400 text-sm font-bold mb-2"
-          >Jurusan</label>
+            class="mb-2 block text-sm font-bold text-gray-500 dark:text-gray-400"
+            >Jurusan</label
+          >
           <select
             v-model="form.matakuliah_jurusan.jurusan_id"
             name="kurikulum"
-            class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+            class="w-full rounded-md border-none bg-zinc-100 focus:ring-teal-500 dark:bg-zinc-700 dark:focus:ring-teal-600"
           >
             <option value="null" selected disabled>Pilih jurusan</option>
             <option value="-">-</option>
@@ -150,7 +165,9 @@
                 form.matakuliah_jurusan &&
                 form.matakuliah_jurusan.jurusan_id == jurusan.id
               "
-            >{{ jurusan.nama }}</option>
+            >
+              {{ jurusan.nama }}
+            </option>
           </select>
           <InputError class="mt-2" :message="form.errors.kurikulum_id" />
         </div>
@@ -158,53 +175,60 @@
         <div class="mb-4">
           <label
             for="prasyarat"
-            class="block text-gray-500 dark:text-gray-400 text-sm font-bold mb-2"
-          >Prasyarat</label>
+            class="mb-2 block text-sm font-bold text-gray-500 dark:text-gray-400"
+            >Prasyarat</label
+          >
           <div
-            class="w-full bg-zinc-100 dark:bg-zinc-700 dark:text-zinc-500 rounded-md mb-4 py-2 px-3 flex flex-row items-center"
+            class="mb-4 flex w-full flex-row items-center rounded-md bg-zinc-100 py-2 px-3 dark:bg-zinc-700 dark:text-zinc-500"
           >
             <div class="flex-1">
               <div
                 v-for="(prasyarat, index) in form.prasyarats"
-                class="inline-flex items-center bg-teal-500 text-zinc-50 py-1 px-2 text-sm rounded-lg hover:bg-teal-600 first:ml-0 last:mr-0 mx-1"
+                class="mx-1 inline-flex items-center rounded-lg bg-teal-500 py-1 px-2 text-sm text-zinc-50 first:ml-0 last:mr-0 hover:bg-teal-600"
               >
                 <span>
                   {{
-                    `${prasyarat.nama_matakuliah} (${prasyarat.nilai_minimum || prasyarat.pivot.nilai_minimum
-                      })`
+                    `${prasyarat.nama_matakuliah} (${
+                      prasyarat.nilai_minimum || prasyarat.pivot.nilai_minimum
+                    })`
                   }}
                 </span>
                 <XIcon
-                  class="cursor-pointer ml-2 w-4 h-4 hover:text-red-400"
+                  class="ml-2 h-4 w-4 cursor-pointer hover:text-red-400"
                   @click="removePrasyarat(index)"
                 />
               </div>
             </div>
             <ChevronDownIcon
-              class="w-5 h-5 cursor-pointer text-zinc-500"
+              class="h-5 w-5 cursor-pointer text-zinc-500"
               @click="isPrasyaratOpen = !isPrasyaratOpen"
             />
           </div>
 
           <ul
             v-show="isPrasyaratOpen"
-            class="bg-zinc-100 dark:bg-zinc-700 w-full rounded-md shadow-inner p-2"
+            class="w-full rounded-md bg-zinc-100 p-2 shadow-inner dark:bg-zinc-700"
           >
             <li
               v-for="matakuliah in prasyarats"
-              class="w-full focus:bg-teal-400 focus:text-white cursor-pointer"
+              class="w-full cursor-pointer focus:bg-teal-400 focus:text-white"
               @click="openDialogPrasyarat(matakuliah)"
-            >S{{ matakuliah.semester }} - {{ matakuliah.kode_matakuliah }} - {{ matakuliah.nama_matakuliah }}</li>
+            >
+              S{{ matakuliah.semester }} - {{ matakuliah.kode_matakuliah }} -
+              {{ matakuliah.nama_matakuliah }}
+            </li>
           </ul>
         </div>
-        <div class="inline-flex items-center justify-between w-full">
+        <div class="inline-flex w-full items-center justify-between">
           <Button class="px-10" :disabled="form.processing">Simpan</Button>
           <button
             v-if="currentRouteName != 'Tambah'"
             type="button"
-            class="text-red-500 bg-transparent hover:bg-transparent focus:bg-transparent"
+            class="bg-transparent text-red-500 hover:bg-transparent focus:bg-transparent"
             @click="isDialogHapusOpen = !isDialogHapusOpen"
-          >Hapus Matakuliah</button>
+          >
+            Hapus Matakuliah
+          </button>
         </div>
       </form>
     </div>
@@ -219,15 +243,20 @@
     >
       <template #content>
         <div class="mb-3">
-          <label for="matakuliah" class="block mb-2 text-sm">Matakuliah</label>
-          <Input class="w-full" type="text" :value="selectedPrasyarat.nama_matakuliah" readonly />
+          <label for="matakuliah" class="mb-2 block text-sm">Matakuliah</label>
+          <Input
+            class="w-full"
+            type="text"
+            :value="selectedPrasyarat.nama_matakuliah"
+            readonly
+          />
         </div>
 
         <div>
-          <label for="nilai" class="block text-sm mb-2">Nilai minimum</label>
+          <label for="nilai" class="mb-2 block text-sm">Nilai minimum</label>
           <select
             v-model="prasyaratNilai"
-            class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none"
+            class="w-full rounded-md border-none bg-zinc-100 dark:bg-zinc-700"
           >
             <option value selected disabled>Pilih nilai minimum</option>
             <option value="A">A</option>

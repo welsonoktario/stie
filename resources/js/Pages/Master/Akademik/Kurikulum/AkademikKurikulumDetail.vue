@@ -1,16 +1,20 @@
 <template>
   <AppLayout title="Tambah Kurikulum">
-    <div class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
-      <p class="text-xs md:text-sm text-slate-500">
+    <div
+      class="overflow-hidden bg-white p-6 shadow-sm dark:bg-zinc-800 sm:rounded-lg"
+    >
+      <p class="text-xs text-slate-500 md:text-sm">
         Akademik / Kurikulum /
-        <span
-          class="font-semibold text-teal-500 dark:text-teal-600"
-        >{{ currentRouteName }}</span>
+        <span class="font-semibold text-teal-500 dark:text-teal-600">{{
+          currentRouteName
+        }}</span>
       </p>
 
-      <div class="flex justify-between my-3 item-center">
+      <div class="item-center my-3 flex justify-between">
         <span class="align-middle">
-          <strong class="whitespace-nowrap capitalize text-sm md:text-lg content-middle">
+          <strong
+            class="content-middle whitespace-nowrap text-sm capitalize md:text-lg"
+          >
             <span>{{ currentRouteName }}</span>
             Kurikulum
           </strong>
@@ -19,11 +23,13 @@
       <form @submit.prevent="submit(route().current())">
         <InputError :message="form.errors.nama" class="mb-3" />
         <div class="mb-4">
-          <label class="text-gray-500 text-sm font-bold" for="nama">Nama Kurikulum</label>
+          <label class="text-sm font-bold text-gray-500" for="nama"
+            >Nama Kurikulum</label
+          >
           <Input
             id="nama"
             v-model="form.nama"
-            class="w-full mt-2"
+            class="mt-2 w-full"
             type="text"
             placeholder="Nama Kurikulum"
             autocomplete="off"
@@ -31,15 +37,17 @@
         </div>
         <div class="mb-4">
           <SwitchGroup>
-            <SwitchLabel class="block text-gray-500 text-sm font-bold mb-2">Aktif</SwitchLabel>
+            <SwitchLabel class="mb-2 block text-sm font-bold text-gray-500"
+              >Aktif</SwitchLabel
+            >
             <Switch
               v-model="form.aktif"
               :class="form.aktif ? 'bg-teal-600' : 'bg-gray-200'"
-              class="relative inline-flex items-center h-6 transition-colors rounded-full w-11 ring-0"
+              class="relative inline-flex h-6 w-11 items-center rounded-full ring-0 transition-colors"
             >
               <span
                 :class="form.aktif ? 'translate-x-6' : 'translate-x-1'"
-                class="inline-block w-4 h-4 transition-transform transform bg-white rounded-full"
+                class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
               />
             </Switch>
           </SwitchGroup>
@@ -49,9 +57,10 @@
           <Button
             v-if="currentRouteName != 'Tambah'"
             type="button"
-            class="text-red-500 bg-transparent hover:bg-transparent focus:bg-transparent"
+            class="bg-transparent text-red-500 hover:bg-transparent focus:bg-transparent"
             @click="isOpen = !isOpen"
-          >Hapus Data Kurikulum</Button>
+            >Hapus Data Kurikulum</Button
+          >
         </div>
       </form>
     </div>

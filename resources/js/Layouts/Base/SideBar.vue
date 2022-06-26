@@ -2,22 +2,22 @@
   <!-- sidebar -->
   <aside
     id="sideBar"
-    class="md:flex md:flex-none h-full md:top-0 md:z-30 z-30 dark:text-zinc-100"
+    class="z-30 h-full dark:text-zinc-100 md:top-0 md:z-30 md:flex md:flex-none"
     :class="{
       hidden: !isSidebarOpen,
       fixed: isSidebarOpen,
       'w-screen': isSidebarOpen,
     }"
   >
-    <div class="flex flex-row h-full w-full">
+    <div class="flex h-full w-full flex-row">
       <!-- sidebar content -->
       <div
-        class="flex flex-col divide-y dark:divide-zinc-600 bg-white dark:bg-zinc-800 border-r border-zinc-300 dark:border-zinc-700 p-6 w-72 md:shadow-xl"
+        class="flex w-72 flex-col divide-y border-r border-zinc-300 bg-white p-6 dark:divide-zinc-600 dark:border-zinc-700 dark:bg-zinc-800 md:shadow-xl"
       >
         <!-- menu master data -->
         <div v-for="(master, index) in masterMenu" :key="master.name">
           <p
-            class="text-sm uppercase font-bold text-zinc-600 dark:text-zinc-400 mb-4 tracking-wider"
+            class="mb-4 text-sm font-bold uppercase tracking-wider text-zinc-600 dark:text-zinc-400"
             :class="{ 'pt-4': index != 0 }"
           >
             {{ master.label }}
@@ -27,23 +27,23 @@
           <div
             v-for="menu in master.menus"
             :key="menu.name"
-            class="flex flex-col mb-4"
+            class="mb-4 flex flex-col"
           >
             <button
               v-if="menu.subMenus.length"
-              class="inline-flex items-center px-1 pt-1 text-base font-medium leading-5 dark:text-zinc-100 focus:outline-none transition duration-150 ease-in-out"
+              class="inline-flex items-center px-1 pt-1 text-base font-medium leading-5 transition duration-150 ease-in-out focus:outline-none dark:text-zinc-100"
               :class="{
                 'text-teal-600 dark:text-teal-500': activeMenu(menu.name),
               }"
               @click="toggleSubMenu(menu.name)"
             >
-              <component :is="menu.icon" class="w-5 h-5" />
+              <component :is="menu.icon" class="h-5 w-5" />
               <p class="ml-4 flex-1 text-left">{{ menu.label }}</p>
               <ChevronRightIcon
                 v-if="!isSubMenuOpen(menu.name)"
-                class="w-5 h-5"
+                class="h-5 w-5"
               />
-              <ChevronDownIcon v-else class="w-5 h-5" />
+              <ChevronDownIcon v-else class="h-5 w-5" />
             </button>
             <NavLink
               v-else
@@ -58,18 +58,18 @@
               class="text-base"
               as="button"
             >
-              <component :is="menu.icon" class="w-5 h-5" />
+              <component :is="menu.icon" class="h-5 w-5" />
               <p class="ml-4 flex-1 text-left">{{ menu.label }}</p>
             </NavLink>
             <div
               v-if="menu.subMenus.length"
               v-show="isSubMenuOpen(menu.name)"
-              class="flex flex-col rounded-lg bg-zinc-100 dark:bg-zinc-700 mt-2"
+              class="mt-2 flex flex-col rounded-lg bg-zinc-100 dark:bg-zinc-700"
             >
               <div
                 v-for="subMenu in menu.subMenus"
                 :key="subMenu.name"
-                class="px-3 py-1 rounded-md hover:bg-opacity-30 hover:bg-teal-100 dark:hover:bg-opacity-10"
+                class="rounded-md px-3 py-1 hover:bg-teal-100 hover:bg-opacity-30 dark:hover:bg-opacity-10"
                 :class="{
                   'bg-teal-100 bg-opacity-30 dark:bg-opacity-10':
                     route().current(subMenu.name),
@@ -89,7 +89,7 @@
                       ? route().current(subMenu.route, subMenu.params)
                       : route().current(subMenu.route)
                   "
-                  class="w-full h-full"
+                  class="h-full w-full"
                   >{{ subMenu.label }}</NavLink
                 >
               </div>
@@ -100,7 +100,7 @@
         <!-- end menu master data -->
       </div>
       <!-- end sidebar content -->
-      <div class="flex-1 w-full" @click="isSidebarOpen = !isSidebarOpen"></div>
+      <div class="w-full flex-1" @click="isSidebarOpen = !isSidebarOpen"></div>
     </div>
   </aside>
   <!-- end sidebar -->

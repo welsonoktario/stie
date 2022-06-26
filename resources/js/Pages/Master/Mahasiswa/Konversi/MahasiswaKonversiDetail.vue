@@ -1,20 +1,26 @@
 <template>
   <AppLayout>
-    <div class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
+    <div
+      class="overflow-hidden bg-white p-6 shadow-sm dark:bg-zinc-800 sm:rounded-lg"
+    >
       <!-- <div class="p-6">Karyawan / Karyawan</div> -->
-      <p class="text-xs md:text-sm text-slate-500">
+      <p class="text-xs text-slate-500 md:text-sm">
         Mahasiswa / Mahasiswa Konversi /
-        <span
-          v-if="route().current('master.mahasiswa-konversi.create')"
-        >Tambah</span>
+        <span v-if="route().current('master.mahasiswa-konversi.create')"
+          >Tambah</span
+        >
         <span v-else>Ubah</span>
       </p>
 
       <!-- <p>{{route().current()}}</p> -->
-      <div class="flex justify-between my-3 item-center">
+      <div class="item-center my-3 flex justify-between">
         <span class="align-middle">
-          <strong class="whitespace-nowrap capitalize text-sm md:text-lg content-middle">
-            <span v-if="route().current('master.mahasiswa-konversi.create')">Tambah</span>
+          <strong
+            class="content-middle whitespace-nowrap text-sm capitalize md:text-lg"
+          >
+            <span v-if="route().current('master.mahasiswa-konversi.create')"
+              >Tambah</span
+            >
             <span v-else>Ubah</span>
             Mahasiswa Konversi
           </strong>
@@ -22,9 +28,9 @@
       </div>
 
       <form @submit.prevent="submit(route().current())">
-        <div class="flex sm:space-x-2 sm:flex-row flex-col">
+        <div class="flex flex-col sm:flex-row sm:space-x-2">
           <div class="mb-3 w-full">
-            <label class="block text-gray-500 text-sm font-bold mb-2" for="npm">
+            <label class="mb-2 block text-sm font-bold text-gray-500" for="npm">
               NPM / NIM
               <span class="text-red-500">*</span>
             </label>
@@ -39,14 +45,25 @@
           </div>
 
           <div class="mb-2 w-full">
-            <label class="block text-gray-500 text-sm font-bold mb-2" for="nik">NIK</label>
-            <Input id="nik" v-model="form.nik" class="w-full" type="text" placeholder="NIK"></Input>
+            <label class="mb-2 block text-sm font-bold text-gray-500" for="nik"
+              >NIK</label
+            >
+            <Input
+              id="nik"
+              v-model="form.nik"
+              class="w-full"
+              type="text"
+              placeholder="NIK"
+            ></Input>
           </div>
         </div>
 
-        <div class="flex sm:space-x-3 sm:flex-row flex-col">
+        <div class="flex flex-col sm:flex-row sm:space-x-3">
           <div class="mb-3 w-full">
-            <label class="block text-gray-500 text-sm font-bold mb-2" for="nama">
+            <label
+              class="mb-2 block text-sm font-bold text-gray-500"
+              for="nama"
+            >
               Nama
               <span class="text-red-500">*</span>
             </label>
@@ -61,7 +78,10 @@
           </div>
 
           <div class="mb-3 w-full">
-            <label class="block text-gray-500 text-sm font-bold mb-2" for="email">
+            <label
+              class="mb-2 block text-sm font-bold text-gray-500"
+              for="email"
+            >
               Email
               <span class="text-red-500">*</span>
             </label>
@@ -78,9 +98,13 @@
 
         <!-- Data konversi -->
         <!-- NPM ASAL, T ASAL-->
-        <div class="flex sm:space-x-3 sm:flex-row flex-col">
+        <div class="flex flex-col sm:flex-row sm:space-x-3">
           <div class="mb-3 w-full">
-            <label class="block text-gray-500 text-sm font-bold mb-2" for="npm_asal">NPM Asal</label>
+            <label
+              class="mb-2 block text-sm font-bold text-gray-500"
+              for="npm_asal"
+              >NPM Asal</label
+            >
             <Input
               id="npm_asal"
               v-model="form.npm_asal"
@@ -92,9 +116,10 @@
 
           <div class="mb-3 w-full">
             <label
-              class="block text-gray-500 text-sm font-bold mb-2"
+              class="mb-2 block text-sm font-bold text-gray-500"
               for="perguruan_tinggi_asal"
-            >Perguruan Tinggi Asal</label>
+              >Perguruan Tinggi Asal</label
+            >
             <Input
               id="perguruan_tinggi_asal"
               v-model="form.perguruan_tinggi_asal"
@@ -112,7 +137,7 @@
           </Label>
           <select
             v-model="form.agama"
-            class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+            class="w-full rounded-md border-none bg-zinc-100 focus:ring-teal-500 dark:bg-zinc-700 dark:focus:ring-teal-600"
             name="agama"
           >
             <option value="-" selected disabled>Pilih agama</option>
@@ -137,7 +162,7 @@
                 type="radio"
                 name="kps"
                 value="1"
-                class="checked:bg-teal-500 checked:focus:bg-teal-500 dark:checked:bg-teal-400 dark:checked:focus:bg-teal-400 focus:ring-0"
+                class="checked:bg-teal-500 focus:ring-0 checked:focus:bg-teal-500 dark:checked:bg-teal-400 dark:checked:focus:bg-teal-400"
               />
               <span class="ml-2">Ya</span>
             </div>
@@ -147,7 +172,7 @@
                 type="radio"
                 name="kps"
                 value="0"
-                class="checked:bg-teal-500 checked:focus:bg-teal-500 dark:checked:bg-teal-400 dark:checked:focus:bg-teal-400 focus:ring-0"
+                class="checked:bg-teal-500 focus:ring-0 checked:focus:bg-teal-500 dark:checked:bg-teal-400 dark:checked:focus:bg-teal-400"
               />
               <span class="ml-2">Tidak</span>
             </div>
@@ -177,17 +202,23 @@
               Tanggal Selesai
               <i>(Kosongkan jika belum lulus)</i>
             </Label>
-            <Input v-model="form.tanggal_selesai" class="w-full" name="tanggal_lahir" type="date"></Input>
+            <Input
+              v-model="form.tanggal_selesai"
+              class="w-full"
+              name="tanggal_lahir"
+              type="date"
+            ></Input>
           </div>
         </div>
 
         <!-- NPM ASAL, KAMPUS ASAL-->
-        <div class="flex sm:space-x-3 sm:flex-row flex-col">
+        <div class="flex flex-col sm:flex-row sm:space-x-3">
           <div class="mb-3 w-full">
             <label
-              class="block text-gray-500 text-sm font-bold mb-2"
+              class="mb-2 block text-sm font-bold text-gray-500"
               for="jurusan_asal"
-            >Jurusan Asal</label>
+              >Jurusan Asal</label
+            >
             <Input
               id="jurusan_asal"
               v-model="form.jurusan_asal"
@@ -199,9 +230,10 @@
 
           <div class="mb-3 w-full">
             <label
-              class="block text-gray-500 text-sm font-bold mb-2"
+              class="mb-2 block text-sm font-bold text-gray-500"
               for="jenjang_pendidikan"
-            >Jenjang Pendidikan</label>
+              >Jenjang Pendidikan</label
+            >
             <Input
               id="jenjang_pendidikan"
               v-model="form.jenjang_pendidikan"
@@ -213,33 +245,43 @@
         </div>
 
         <div class="mb-3">
-          <label class="block text-gray-500 text-sm font-bold mb-2" for="jurusan">Jurusan</label>
+          <label
+            class="mb-2 block text-sm font-bold text-gray-500"
+            for="jurusan"
+            >Jurusan</label
+          >
           <select
             id="jurusan"
             v-model="form.jurusan_id"
-            class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
+            class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           >
             <option value="-">-</option>
             <option
               v-for="jurusan in jurusans"
               :key="jurusan.id"
               :value="jurusan.id.toString()"
-            >{{ jurusan.nama }} - {{ jurusan.kode_jurusan }}</option>
+            >
+              {{ jurusan.nama }} - {{ jurusan.kode_jurusan }}
+            </option>
           </select>
         </div>
         <div class="mb-3">
-          <label class="block text-gray-500 text-sm font-bold mb-2" for="dosen">Dosen Wali</label>
+          <label class="mb-2 block text-sm font-bold text-gray-500" for="dosen"
+            >Dosen Wali</label
+          >
           <select
             id="dosen"
             v-model="form.dosen_id"
-            class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
+            class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           >
             <option value="-">-</option>
             <option
               v-for="dosen in dosens"
               :key="dosen.id"
               :value="dosen.id.toString()"
-            >{{ dosen.staff.user.name }}</option>
+            >
+              {{ dosen.staff.user.name }}
+            </option>
           </select>
         </div>
 
@@ -248,9 +290,10 @@
           <div class="flex space-x-2">
             <div>
               <label
-                class="block text-gray-500 text-sm font-bold mb-2"
+                class="mb-2 block text-sm font-bold text-gray-500"
                 for="tempat_lahir"
-              >Tempat Lahir</label>
+                >Tempat Lahir</label
+              >
               <Input
                 id="tempat_lahir"
                 v-model="form.tempat_lahir"
@@ -261,9 +304,10 @@
             </div>
             <div>
               <label
-                class="block text-gray-500 text-sm font-bold mb-2"
+                class="mb-2 block text-sm font-bold text-gray-500"
                 for="tanggal_lahir"
-              >Tanggal Lahir</label>
+                >Tanggal Lahir</label
+              >
               <Input
                 id="tanggal_lahir"
                 v-model="form.tanggal_lahir"
@@ -274,13 +318,14 @@
             </div>
             <div class="w-full">
               <label
-                class="block text-gray-500 text-sm font-bold mb-2"
+                class="mb-2 block text-sm font-bold text-gray-500"
                 for="jenis_kelamin"
-              >Jenis Kelamin</label>
+                >Jenis Kelamin</label
+              >
               <select
                 v-model="form.jenis_kelamin"
                 name="jenis_kelamin"
-                class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
+                class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               >
                 <option value="Laki-laki" selected>Laki-laki</option>
                 <option value="Perempuan">Perempuan</option>
@@ -292,21 +337,41 @@
         <!-- NISN, NPWP -->
         <div class="mb-3 flex space-x-2">
           <div class="w-full">
-            <label class="block text-gray-500 text-sm font-bold mb-2" for="npwp">NPWP</label>
-            <Input id="npwp" v-model="form.npwp" class="w-full" type="text" placeholder="npwp"></Input>
+            <label class="mb-2 block text-sm font-bold text-gray-500" for="npwp"
+              >NPWP</label
+            >
+            <Input
+              id="npwp"
+              v-model="form.npwp"
+              class="w-full"
+              type="text"
+              placeholder="npwp"
+            ></Input>
           </div>
         </div>
 
         <!-- alamat jalan -->
         <div class="mb-3">
-          <label class="block text-gray-500 text-sm font-bold mb-2" for="jalan">Jalan</label>
-          <Input id="jalan" v-model="form.jalan" class="w-full" type="text" placeholder="jalan"></Input>
+          <label class="mb-2 block text-sm font-bold text-gray-500" for="jalan"
+            >Jalan</label
+          >
+          <Input
+            id="jalan"
+            v-model="form.jalan"
+            class="w-full"
+            type="text"
+            placeholder="jalan"
+          ></Input>
         </div>
 
         <!-- kelurahan, kecamatan, kode pos -->
         <div class="mb-3 flex space-x-2">
           <div class="w-full">
-            <label class="block text-gray-500 text-sm font-bold mb-2" for="kelurahan">Kelurahan</label>
+            <label
+              class="mb-2 block text-sm font-bold text-gray-500"
+              for="kelurahan"
+              >Kelurahan</label
+            >
             <Input
               id="kelurahan"
               v-model="form.kelurahan"
@@ -316,7 +381,11 @@
             ></Input>
           </div>
           <div class="w-full">
-            <label class="block text-gray-500 text-sm font-bold mb-2" for="kecamatan">Kecamatan</label>
+            <label
+              class="mb-2 block text-sm font-bold text-gray-500"
+              for="kecamatan"
+              >Kecamatan</label
+            >
             <Input
               id="kecamatan"
               v-model="form.kecamatan"
@@ -326,7 +395,11 @@
             ></Input>
           </div>
           <div class="w-full">
-            <label class="block text-gray-500 text-sm font-bold mb-2" for="kode_pos">Kode Pos</label>
+            <label
+              class="mb-2 block text-sm font-bold text-gray-500"
+              for="kode_pos"
+              >Kode Pos</label
+            >
             <Input
               id="kode_pos"
               v-model="form.kode_pos"
@@ -338,7 +411,7 @@
         </div>
 
         <!-- Provinsi -->
-        <div class="flex space-x-3 mb-3">
+        <div class="mb-3 flex space-x-3">
           <div class="w-full">
             <Label for="provinsi">Provinsi</Label>
             <Select
@@ -375,7 +448,11 @@
 
         <!-- nomor hp -->
         <div class="mb-3">
-          <label class="block text-gray-500 text-sm font-bold mb-2" for="nomor_hp">Nomor HP</label>
+          <label
+            class="mb-2 block text-sm font-bold text-gray-500"
+            for="nomor_hp"
+            >Nomor HP</label
+          >
           <Input
             id="nomor_hp"
             v-model="form.nomor_hp"
@@ -389,9 +466,10 @@
         <div class="mb-3 flex space-x-2">
           <div class="w-full">
             <label
-              class="block text-gray-500 text-sm font-bold mb-2"
+              class="mb-2 block text-sm font-bold text-gray-500"
               for="jenis_tinggal"
-            >Jenis Tinggal</label>
+              >Jenis Tinggal</label
+            >
             <Input
               id="jenis_tinggal"
               v-model="form.jenis_tinggal"
@@ -402,9 +480,10 @@
           </div>
           <div class="w-full">
             <label
-              class="block text-gray-500 text-sm font-bold mb-2"
+              class="mb-2 block text-sm font-bold text-gray-500"
               for="alat_transportasi"
-            >Alat Transportasi</label>
+              >Alat Transportasi</label
+            >
             <Input
               id="alat_transportasi"
               v-model="form.alat_transportasi"
@@ -421,10 +500,18 @@
           <strong>SLTA</strong>
         </p>
         <div class="mb-4 w-full">
-          <label class="block text-gray-500 text-sm font-bold mb-2" for="nisn">NISN</label>
-          <Input id="nisn" v-model="form.nisn" class="w-full" type="text" placeholder="NISN"></Input>
+          <label class="mb-2 block text-sm font-bold text-gray-500" for="nisn"
+            >NISN</label
+          >
+          <Input
+            id="nisn"
+            v-model="form.nisn"
+            class="w-full"
+            type="text"
+            placeholder="NISN"
+          ></Input>
         </div>
-        <div class="flex space-x-3 mb-4">
+        <div class="mb-4 flex space-x-3">
           <div class="w-full">
             <Label for="asal_slta">Asal SLTA</Label>
             <Input
@@ -455,7 +542,7 @@
         </p>
 
         <div v-if="currentRouteName == 'Edit'" class="mb-4 w-full">
-          <table class="table-auto w-full">
+          <table class="w-full table-auto">
             <thead>
               <tr>
                 <th>No</th>
@@ -471,7 +558,7 @@
                 <td>
                   <select
                     v-model="ta.pivot.status"
-                    class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+                    class="w-full rounded-md border-none bg-zinc-100 focus:ring-teal-500 dark:bg-zinc-700 dark:focus:ring-teal-600"
                     name="status_semester"
                   >
                     <option value="Aktif">Aktif</option>
@@ -485,7 +572,7 @@
                   </select>
                 </td>
                 <td
-                  class="text-sm text-gray-900 font-light py-3 whitespace-nowrap flex justify-center"
+                  class="flex justify-center whitespace-nowrap py-3 text-sm font-light text-gray-900"
                 >
                   <Checkbox></Checkbox>
                 </td>
@@ -508,7 +595,11 @@
         <!-- NIK, NAMA -->
         <div class="mb-3 flex space-x-2">
           <div class="w-full">
-            <label class="block text-gray-500 text-sm font-bold mb-2" for="nik_ibu">NIK Ibu Kandung</label>
+            <label
+              class="mb-2 block text-sm font-bold text-gray-500"
+              for="nik_ibu"
+              >NIK Ibu Kandung</label
+            >
             <Input
               id="nik_ibu"
               v-model="form.nik_ibu"
@@ -519,9 +610,10 @@
           </div>
           <div class="w-full">
             <label
-              class="block text-gray-500 text-sm font-bold mb-2"
+              class="mb-2 block text-sm font-bold text-gray-500"
               for="nama_ibu"
-            >Nama Ibu Kandung</label>
+              >Nama Ibu Kandung</label
+            >
             <Input
               id="nama_ibu"
               v-model="form.nama_ibu"
@@ -536,9 +628,10 @@
         <div class="mb-3 flex space-x-2">
           <div class="w-full">
             <label
-              class="block text-gray-500 text-sm font-bold mb-2"
+              class="mb-2 block text-sm font-bold text-gray-500"
               for="tempat_lahir_ibu"
-            >Tempat Lahir Ibu Kandung</label>
+              >Tempat Lahir Ibu Kandung</label
+            >
             <Input
               id="tempat_lahir_ibu"
               v-model="form.tempat_lahir_ibu"
@@ -549,9 +642,10 @@
           </div>
           <div class="w-full">
             <label
-              class="block text-gray-500 text-sm font-bold mb-2"
+              class="mb-2 block text-sm font-bold text-gray-500"
               for="tanggal_lahir_ibu"
-            >Tanggal Lahir Ibu Kandung</label>
+              >Tanggal Lahir Ibu Kandung</label
+            >
             <Input
               id="tanggal_lahir_ibu"
               v-model="form.tanggal_lahir_ibu"
@@ -562,9 +656,10 @@
           </div>
           <div class="w-full">
             <label
-              class="block text-gray-500 text-sm font-bold mb-2"
+              class="mb-2 block text-sm font-bold text-gray-500"
               for="pendidikan_ibu"
-            >Pendidikan Ibu Kandung</label>
+              >Pendidikan Ibu Kandung</label
+            >
             <Input
               id="pendidikan_ibu"
               v-model="form.pendidikan_ibu"
@@ -579,9 +674,10 @@
         <div class="mb-3 flex space-x-2">
           <div class="w-full">
             <label
-              class="block text-gray-500 text-sm font-bold mb-2"
+              class="mb-2 block text-sm font-bold text-gray-500"
               for="pekerjaan_ibu"
-            >Pekerjaan Ibu Kandung</label>
+              >Pekerjaan Ibu Kandung</label
+            >
             <Input
               id="pekerjaan_ibu"
               v-model="form.pekerjaan_ibu"
@@ -592,9 +688,10 @@
           </div>
           <div class="w-full">
             <label
-              class="block text-gray-500 text-sm font-bold mb-2"
+              class="mb-2 block text-sm font-bold text-gray-500"
               for="penghasilan_ibu"
-            >Penghasilan Ibu</label>
+              >Penghasilan Ibu</label
+            >
             <Input
               id="penghasilan_ibu"
               v-model="form.penghasilan_ibu"
@@ -613,7 +710,11 @@
         <!-- NIK, NAMA -->
         <div class="mb-3 flex space-x-2">
           <div class="w-full">
-            <label class="block text-gray-500 text-sm font-bold mb-2" for="nik_ayah">NIK Ayah</label>
+            <label
+              class="mb-2 block text-sm font-bold text-gray-500"
+              for="nik_ayah"
+              >NIK Ayah</label
+            >
             <Input
               id="nik_ayah"
               v-model="form.nik_ayah"
@@ -623,7 +724,11 @@
             ></Input>
           </div>
           <div class="w-full">
-            <label class="block text-gray-500 text-sm font-bold mb-2" for="nama_ayah">Nama Ayah</label>
+            <label
+              class="mb-2 block text-sm font-bold text-gray-500"
+              for="nama_ayah"
+              >Nama Ayah</label
+            >
             <Input
               id="nama_ayah"
               v-model="form.nama_ayah"
@@ -638,9 +743,10 @@
         <div class="mb-3 flex space-x-2">
           <div class="w-full">
             <label
-              class="block text-gray-500 text-sm font-bold mb-2"
+              class="mb-2 block text-sm font-bold text-gray-500"
               for="tempat_lahir_ayah"
-            >Tempat Lahir Ayah</label>
+              >Tempat Lahir Ayah</label
+            >
             <Input
               id="tempat_lahir_ayah"
               v-model="form.tempat_lahir_ayah"
@@ -651,9 +757,10 @@
           </div>
           <div class="w-full">
             <label
-              class="block text-gray-500 text-sm font-bold mb-2"
+              class="mb-2 block text-sm font-bold text-gray-500"
               for="tanggal_lahir_ayah"
-            >Tanggal Lahir Ayah</label>
+              >Tanggal Lahir Ayah</label
+            >
             <Input
               id="tanggal_lahir_ayah"
               v-model="form.tanggal_lahir_ayah"
@@ -664,9 +771,10 @@
           </div>
           <div class="w-full">
             <label
-              class="block text-gray-500 text-sm font-bold mb-2"
+              class="mb-2 block text-sm font-bold text-gray-500"
               for="pendidikan_ayah"
-            >Pendidikan Ayah</label>
+              >Pendidikan Ayah</label
+            >
             <Input
               id="pendidikan_ayah"
               v-model="form.pendidikan_ayah"
@@ -681,9 +789,10 @@
         <div class="mb-3 flex space-x-2">
           <div class="w-full">
             <label
-              class="block text-gray-500 text-sm font-bold mb-2"
+              class="mb-2 block text-sm font-bold text-gray-500"
               for="pekerjaan_ayah"
-            >Pekerjaan Ayah</label>
+              >Pekerjaan Ayah</label
+            >
             <Input
               id="pekerjaan_ayah"
               v-model="form.pekerjaan_ayah"
@@ -694,9 +803,10 @@
           </div>
           <div class="w-full">
             <label
-              class="block text-gray-500 text-sm font-bold mb-2"
+              class="mb-2 block text-sm font-bold text-gray-500"
               for="penghasilan_ayah"
-            >Penghasilan Ayah</label>
+              >Penghasilan Ayah</label
+            >
             <Input
               id="penghasilan_ayah"
               v-model="form.penghasilan_ayah"
@@ -713,15 +823,21 @@
 
             <LinkButton
               v-if="!route().current('master.mahasiswa-konversi.create')"
-              :href="'/master/mahasiswa-konversi/' + mahasiswa.npm + '/matakuliah-konversi'"
-              class="bg-gray-800 hover:bg-gray-700 active:bg-gray-900 focus:border-gray-900 focus:shadow-outline-gray ml-4"
-            >Matakuliah Diakui</LinkButton>
+              :href="
+                '/master/mahasiswa-konversi/' +
+                mahasiswa.npm +
+                '/matakuliah-konversi'
+              "
+              class="focus:shadow-outline-gray ml-4 bg-gray-800 hover:bg-gray-700 focus:border-gray-900 active:bg-gray-900"
+              >Matakuliah Diakui</LinkButton
+            >
           </div>
           <Link
             v-if="!route().current('master.mahasiswa-konversi.create')"
             class="text-red-500"
             @click="remove()"
-          >Hapus Data Mahasiswa Konversi</Link>
+            >Hapus Data Mahasiswa Konversi</Link
+          >
         </div>
       </form>
     </div>
@@ -746,7 +862,7 @@ import Label from "@components/Label"
 
 import {
   ChevronDoubleDownIcon,
-  ChevronDoubleUpIcon
+  ChevronDoubleUpIcon,
 } from "@heroicons/vue/outline"
 
 export default {
@@ -761,7 +877,7 @@ export default {
     Label,
     ChevronDoubleDownIcon,
     ChevronDoubleUpIcon,
-    LinkButton
+    LinkButton,
   },
   props: {
     dosens: {
@@ -779,11 +895,9 @@ export default {
     matakuliahs: {
       type: Object,
       default: null,
-    }
-
+    },
   },
   setup(props) {
-
     const showModalMatakuliah = ref(true)
 
     const form = reactive({
@@ -800,25 +914,33 @@ export default {
       kelurahan: props.mahasiswa?.user.kelurahan || null,
       kecamatan: props.mahasiswa?.user.kecamatan || null,
       kode_pos: props.mahasiswa?.user.kode_pos || null,
-      kewarganegaraan: props.mahasiswa?.user.kewarganegaraan || 'WNI',
+      kewarganegaraan: props.mahasiswa?.user.kewarganegaraan || "WNI",
       provinsi: props.mahasiswa?.user.provinsi || null,
       kota: props.mahasiswa?.user.kota || null,
 
       // mahasiswa data
       npm: props.mahasiswa == null ? null : props.mahasiswa.npm,
       tanggal_masuk: props.mahasiswa?.tanggal_masuk,
-      dosen_id: props.mahasiswa == null ? '-' : (props.mahasiswa.dosen == null ? '-' : props.mahasiswa.dosen.id),
-      jurusan_id: props.mahasiswa == null ? '-' : (props.mahasiswa.jurusan == null ? '-' : props.mahasiswa.jurusan.id),
+      dosen_id:
+        props.mahasiswa == null
+          ? "-"
+          : props.mahasiswa.dosen == null
+          ? "-"
+          : props.mahasiswa.dosen.id,
+      jurusan_id:
+        props.mahasiswa == null
+          ? "-"
+          : props.mahasiswa.jurusan == null
+          ? "-"
+          : props.mahasiswa.jurusan.id,
       nisn: props.mahasiswa?.nisn || null,
       jenis_tinggal: props.mahasiswa?.jenis_tinggal || null,
       alat_transportasi: props.mahasiswa?.alat_transportasi || null,
       npwp: props.mahasiswa?.npwp || null,
       kps: props.mahasiswa?.kps || 0,
 
-
       // data riwayat tahun ajaran
       tahun_ajaran: props.mahasiswa?.tahun_ajaran || null,
-
 
       // data ortu
       // ayah
@@ -839,14 +961,15 @@ export default {
       penghasilan_ibu: props.mahasiswa?.penghasilan_ibu || null,
 
       uang_semester: props.mahasiswa?.uang_semester || null,
-      status_mahasiswa: props.mahasiswa?.status_mahasiswa || 'Aktif',
+      status_mahasiswa: props.mahasiswa?.status_mahasiswa || "Aktif",
 
       // data konversi
       npm_asal: props.mahasiswa?.mahasiswa_konversi.npm_asal || null,
-      perguruan_tinggi_asal: props.mahasiswa?.mahasiswa_konversi.perguruan_tinggi_asal || null,
+      perguruan_tinggi_asal:
+        props.mahasiswa?.mahasiswa_konversi.perguruan_tinggi_asal || null,
       jurusan_asal: props.mahasiswa?.mahasiswa_konversi.jurusan_asal || null,
-      jenjang_pendidikan: props.mahasiswa?.mahasiswa_konversi.jenjang_pendidikan || null,
-
+      jenjang_pendidikan:
+        props.mahasiswa?.mahasiswa_konversi.jenjang_pendidikan || null,
     })
 
     const showMatakuliah = ref(false)
@@ -858,24 +981,27 @@ export default {
         Inertia.post(route("master.mahasiswa-konversi.store"), form)
       } else {
         form.id = props.mahasiswa.user.id
-        Inertia.put(route("master.mahasiswa-konversi.update", props.mahasiswa.npm), form)
+        Inertia.put(
+          route("master.mahasiswa-konversi.update", props.mahasiswa.npm),
+          form
+        )
       }
     }
 
     function remove() {
       // alert(props.staff.nip);
-      Inertia.delete(route("master.mahasiswa-konversi.destroy", props.mahasiswa.npm))
+      Inertia.delete(
+        route("master.mahasiswa-konversi.destroy", props.mahasiswa.npm)
+      )
     }
 
     const currentRouteName = computed(() =>
-      route().current('master.mahasiswa-konversi.create') ? 'Tambah' : 'Edit'
+      route().current("master.mahasiswa-konversi.create") ? "Tambah" : "Edit"
     )
 
+    const kotas = ["Tarakan"]
 
-    const kotas = ['Tarakan']
-
-    const provinsis = ['Kalimantan Utara']
-
+    const provinsis = ["Kalimantan Utara"]
 
     return {
       kotas,

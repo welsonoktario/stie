@@ -1,29 +1,29 @@
 <template>
   <AppLayout>
     <div
-      class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
+      class="overflow-hidden bg-white p-6 shadow-sm dark:bg-zinc-800 sm:rounded-lg"
     >
       <!-- <div class="p-6">Mahasiswa / Mahasiswa Reguler</div> -->
       <p class="text-xs md:text-sm">Transaksi / KRS</p>
 
       <!-- Belum bisa ubah id dosen dan staff -->
 
-      <div class="flex justify-between my-3 item-center">
+      <div class="item-center my-3 flex justify-between">
         <span class="align-middle">
           <strong
-            class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
+            class="content-middle whitespace-nowrap text-sm capitalize md:text-lg"
             >Rencana Studi Mahasiswa</strong
           >
         </span>
       </div>
 
-      <div class="inline-flex items-center text-sm mb-1">
+      <div class="mb-1 inline-flex items-center text-sm">
         <label for="tahun_ajarans">Tahun Akademik</label>
         <select
           id="tahun_ajaran"
           v-model="selectedTahunAjaran"
           name="tahun_ajarans"
-          class="ml-2 pl-2 pr-6 text-sm bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+          class="ml-2 rounded-md border-none bg-zinc-100 pl-2 pr-6 text-sm focus:ring-teal-500 dark:bg-zinc-700 dark:focus:ring-teal-600"
           @change="loadTahunAjaran(selectedTahunAjaran)"
         >
           <option

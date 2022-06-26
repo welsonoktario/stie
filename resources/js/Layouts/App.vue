@@ -1,12 +1,12 @@
 <template>
   <Head :title="title ? title : 'SIAKAD'" />
 
-  <div class="flex flex-col h-screen">
+  <div class="flex h-screen flex-col">
     <NavBar />
-    <div class="h-screen flex flex-row flex-wrap">
+    <div class="flex h-screen flex-row flex-wrap">
       <SideBar />
       <main
-        class="bg-zinc-100 dark:bg-zinc-900 dark:text-zinc-100 flex-1 h-full p-6 overflow-auto"
+        class="h-full flex-1 overflow-auto bg-zinc-100 p-6 dark:bg-zinc-900 dark:text-zinc-100"
       >
         <slot />
       </main>

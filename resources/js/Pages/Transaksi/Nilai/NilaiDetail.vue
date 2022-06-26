@@ -1,11 +1,11 @@
 <template>
   <AppLayout>
     <div
-      class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
+      class="overflow-hidden bg-white p-6 shadow-sm dark:bg-zinc-800 sm:rounded-lg"
     >
       <p class="text-xs md:text-sm">Nilai / Detail Nilai</p>
 
-      <p class="my-3 text-sm md:text-lg font-bold">Detail Nilai</p>
+      <p class="my-3 text-sm font-bold md:text-lg">Detail Nilai</p>
 
       <table>
         <tr>
@@ -26,16 +26,16 @@
         </tr>
       </table>
 
-      <div class="inline-flex justify-between mb-3 mt-6 w-full items-center">
+      <div class="mb-3 mt-6 inline-flex w-full items-center justify-between">
         <div class="inline-flex">
           <p
-            class="whitespace-nowrap align-middle text-sm md:text-lg content-middle font-bold my-auto"
+            class="content-middle my-auto whitespace-nowrap align-middle text-sm font-bold md:text-lg"
           >
             Detail Nilai
           </p>
           <select
             v-model="selectedTA"
-            class="ml-2 text-sm pl-3 py-2 pr-8 bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+            class="ml-2 rounded-md border-none bg-zinc-100 py-2 pl-3 pr-8 text-sm focus:ring-teal-500 dark:bg-zinc-700 dark:focus:ring-teal-600"
           >
             <option v-for="ta in tahunAkademiks" :value="ta.id">
               {{ ta.tahun_ajaran }}
@@ -44,28 +44,28 @@
         </div>
       </div>
 
-      <table class="table-auto w-full">
+      <table class="w-full table-auto">
         <thead>
           <tr>
             <th
               v-if="selectedTA == 'semua'"
-              class="font-semibold text-left py-2 px-4"
+              class="py-2 px-4 text-left font-semibold"
             >
               Tahun Akademik
             </th>
-            <th class="font-semibold text-left py-2 px-4">Kode MK</th>
-            <th class="font-semibold text-left py-2 px-4">Matakuliah</th>
-            <th class="font-semibold text-left py-2 px-4">SKS</th>
-            <th class="font-semibold text-left py-2 px-4">Nilai</th>
-            <th class="font-semibold text-left py-2 px-4">NISBI</th>
-            <th class="font-semibold text-left py-2 px-4"></th>
+            <th class="py-2 px-4 text-left font-semibold">Kode MK</th>
+            <th class="py-2 px-4 text-left font-semibold">Matakuliah</th>
+            <th class="py-2 px-4 text-left font-semibold">SKS</th>
+            <th class="py-2 px-4 text-left font-semibold">Nilai</th>
+            <th class="py-2 px-4 text-left font-semibold">NISBI</th>
+            <th class="py-2 px-4 text-left font-semibold"></th>
           </tr>
         </thead>
         <tbody>
           <tr
             v-for="jadwal in mahasiswa.jadwals"
             :key="jadwal.id"
-            class="border-y dark:border-zinc-600 text-sm dark:text-zinc-200 font-normal"
+            class="border-y text-sm font-normal dark:border-zinc-600 dark:text-zinc-200"
           >
             <td v-if="selectedTA == 'semua'" class="px-4 py-2">
               {{ namaTA(jadwal) }}

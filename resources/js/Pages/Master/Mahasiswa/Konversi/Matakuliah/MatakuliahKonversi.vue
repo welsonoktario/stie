@@ -1,16 +1,20 @@
 <template>
   <AppLayout>
-    <div class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
-      <p class="text-xs md:text-sm text-slate-500">
+    <div
+      class="overflow-hidden bg-white p-6 shadow-sm dark:bg-zinc-800 sm:rounded-lg"
+    >
+      <p class="text-xs text-slate-500 md:text-sm">
         Mahasiswa / Mahasiswa Konversi / Matakuliah Diakui
         <!-- <span v-if="route().current('master.mahasiswa-konversi.create')">Tambah</span>
         <span v-else>Ubah</span>-->
       </p>
 
       <!-- <p>{{route().current()}}</p> -->
-      <div class="flex justify-between my-3 item-center">
+      <div class="item-center my-3 flex justify-between">
         <span class="align-middle">
-          <strong class="whitespace-nowrap capitalize text-sm md:text-lg content-middle">
+          <strong
+            class="content-middle whitespace-nowrap text-sm capitalize md:text-lg"
+          >
             <!-- <span v-if="route().current('master.mahasiswa-konversi.create')">Tambah</span>
             <span v-else>Ubah</span>-->
             Data Mahasiswa
@@ -19,9 +23,11 @@
       </div>
 
       <form @submit.prevent="submit(route().current())">
-        <div class="flex sm:space-x-3 sm:flex-row flex-col">
+        <div class="flex flex-col sm:flex-row sm:space-x-3">
           <div class="mb-3 w-full">
-            <label class="block text-gray-500 text-sm font-bold mb-2" for="npm">NPM / NIM</label>
+            <label class="mb-2 block text-sm font-bold text-gray-500" for="npm"
+              >NPM / NIM</label
+            >
             <Input
               id="npm"
               v-model="form.npm"
@@ -33,7 +39,9 @@
           </div>
 
           <div class="mb-3 w-full">
-            <label class="block text-gray-500 text-sm font-bold mb-2" for="nik">NIK</label>
+            <label class="mb-2 block text-sm font-bold text-gray-500" for="nik"
+              >NIK</label
+            >
             <Input
               id="nik"
               v-model="form.nik"
@@ -45,9 +53,11 @@
           </div>
         </div>
 
-        <div class="flex sm:space-x-3 sm:flex-row flex-col">
+        <div class="flex flex-col sm:flex-row sm:space-x-3">
           <div class="mb-3 w-full">
-            <label class="block text-gray-500 text-sm font-bold mb-2" for="nama">Nama</label>
+            <label class="mb-2 block text-sm font-bold text-gray-500" for="nama"
+              >Nama</label
+            >
             <Input
               id="nama"
               v-model="form.name"
@@ -67,62 +77,103 @@
         <ChevronDoubleUpIcon v-if="showMatakuliah" class="h-5 w-5 text-slate-500"></ChevronDoubleUpIcon>
       </div>-->
       <div v-show="showMatakuliah">
-        <div class="flex justify-between my-3 sm:gap-2 md:gap-0 items-center">
+        <div class="my-3 flex items-center justify-between sm:gap-2 md:gap-0">
           <span>
-            <strong class="whitespace-nowrap capitalize text-xs md:text-lg">Matakuliah Diakui</strong>
+            <strong class="whitespace-nowrap text-xs capitalize md:text-lg"
+              >Matakuliah Diakui</strong
+            >
           </span>
 
           <LinkButton
             v-if="!route().current('master.mahasiswa-konversi.create')"
             :href="`/master/mahasiswa-konversi/${mahasiswa.npm}/matakuliah-konversi/create`"
-          >Tambah Matakuliah Diakui</LinkButton>
+            >Tambah Matakuliah Diakui</LinkButton
+          >
         </div>
-        <div class="w-full rounded-md shadow-md mt-2 dark:bg-zinc-700 dark:text-zinc-100">
-          <table class="table-auto w-full">
+        <div
+          class="mt-2 w-full rounded-md shadow-md dark:bg-zinc-700 dark:text-zinc-100"
+        >
+          <table class="w-full table-auto">
             <thead>
               <tr>
-                <th scope="col" class="font-semibold text-left py-2 px-4">Kode MK Lama</th>
-                <th scope="col" class="font-semibold text-left py-2 px-4">Nama MK Lama</th>
-                <th scope="col" class="font-semibold text-left py-2 px-4">SKS</th>
-                <th scope="col" class="font-semibold text-left py-2 px-4">Kode MK Baru</th>
-                <th scope="col" class="font-semibold text-left py-2 px-4">Nama MK Baru</th>
-                <th scope="col" class="font-semibold text-left py-2 px-4">SKS</th>
-                <th scope="col" class="font-semibold text-left py-2 px-4">Nilai</th>
-                <th scope="col" class="font-semibold text-left py-2 px-4">
+                <th scope="col" class="py-2 px-4 text-left font-semibold">
+                  Kode MK Lama
+                </th>
+                <th scope="col" class="py-2 px-4 text-left font-semibold">
+                  Nama MK Lama
+                </th>
+                <th scope="col" class="py-2 px-4 text-left font-semibold">
+                  SKS
+                </th>
+                <th scope="col" class="py-2 px-4 text-left font-semibold">
+                  Kode MK Baru
+                </th>
+                <th scope="col" class="py-2 px-4 text-left font-semibold">
+                  Nama MK Baru
+                </th>
+                <th scope="col" class="py-2 px-4 text-left font-semibold">
+                  SKS
+                </th>
+                <th scope="col" class="py-2 px-4 text-left font-semibold">
+                  Nilai
+                </th>
+                <th scope="col" class="py-2 px-4 text-left font-semibold">
                   <!-- <span class="sr-only">Edit</span>
                   --+-->
                 </th>
               </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
+            <tbody class="divide-y divide-gray-200 bg-white">
               <tr v-for="matakuliah in matakuliahs" :key="matakuliah.id">
                 <td
-                  class="border-y dark:border-zinc-600 text-sm dark:text-zinc-200 font-normal"
-                >{{ matakuliah.kode_matakuliah }}</td>
+                  class="border-y text-sm font-normal dark:border-zinc-600 dark:text-zinc-200"
+                >
+                  {{ matakuliah.kode_matakuliah }}
+                </td>
 
                 <td
-                  class="border-y dark:border-zinc-600 text-sm dark:text-zinc-200 font-normal"
-                >{{ matakuliah.nama_matakuliah }}</td>
+                  class="border-y text-sm font-normal dark:border-zinc-600 dark:text-zinc-200"
+                >
+                  {{ matakuliah.nama_matakuliah }}
+                </td>
                 <td
-                  class="border-y dark:border-zinc-600 text-sm dark:text-zinc-200 font-normal"
-                >{{ matakuliah.sks_matakuliah }}</td>
+                  class="border-y text-sm font-normal dark:border-zinc-600 dark:text-zinc-200"
+                >
+                  {{ matakuliah.sks_matakuliah }}
+                </td>
                 <td
-                  class="border-y dark:border-zinc-600 text-sm dark:text-zinc-200 font-normal"
-                >{{ matakuliah.matakuliah.kode_matakuliah }}</td>
+                  class="border-y text-sm font-normal dark:border-zinc-600 dark:text-zinc-200"
+                >
+                  {{ matakuliah.matakuliah.kode_matakuliah }}
+                </td>
                 <td
-                  class="border-y dark:border-zinc-600 text-sm dark:text-zinc-200 font-normal"
-                >{{ matakuliah.matakuliah.nama_matakuliah }}</td>
+                  class="border-y text-sm font-normal dark:border-zinc-600 dark:text-zinc-200"
+                >
+                  {{ matakuliah.matakuliah.nama_matakuliah }}
+                </td>
                 <td
-                  class="border-y dark:border-zinc-600 text-sm dark:text-zinc-200 font-normal"
-                >{{ matakuliah.matakuliah.sks }}</td>
+                  class="border-y text-sm font-normal dark:border-zinc-600 dark:text-zinc-200"
+                >
+                  {{ matakuliah.matakuliah.sks }}
+                </td>
                 <td
-                  class="border-y dark:border-zinc-600 text-sm dark:text-zinc-200 font-normal"
-                >{{ matakuliah.nilai_matakuliah }}</td>
-                <td class="border-y dark:border-zinc-600 text-sm dark:text-zinc-200 font-normal">
+                  class="border-y text-sm font-normal dark:border-zinc-600 dark:text-zinc-200"
+                >
+                  {{ matakuliah.nilai_matakuliah }}
+                </td>
+                <td
+                  class="border-y text-sm font-normal dark:border-zinc-600 dark:text-zinc-200"
+                >
                   <Link
-                    :href="'/master/mahasiswa-konversi/' + mahasiswa.npm + '/matakuliah-konversi/' + matakuliah.id"
+                    :href="
+                      '/master/mahasiswa-konversi/' +
+                      mahasiswa.npm +
+                      '/matakuliah-konversi/' +
+                      matakuliah.id
+                    "
                     class="text-indigo-600 hover:text-indigo-900"
-                  >Edit</Link>
+                    >Edit</Link
+                  >
                 </td>
               </tr>
             </tbody>
@@ -139,7 +190,7 @@ import { Inertia } from "@inertiajs/inertia"
 import { Link } from "@inertiajs/inertia-vue3"
 import {
   ChevronDoubleDownIcon,
-  ChevronDoubleUpIcon
+  ChevronDoubleUpIcon,
 } from "@heroicons/vue/outline"
 import AppLayout from "@layouts/App"
 import Input from "@components/Input"
@@ -154,7 +205,7 @@ export default {
     ModalInput,
     ChevronDoubleDownIcon,
     ChevronDoubleUpIcon,
-    LinkButton
+    LinkButton,
   },
   props: {
     dosens: {
@@ -172,11 +223,9 @@ export default {
     matakuliahs: {
       type: Object,
       default: null,
-    }
-
+    },
   },
   setup(props) {
-
     const showModalMatakuliah = ref(true)
 
     const form = reactive({
@@ -187,9 +236,18 @@ export default {
 
       // mahasiswa data
       npm: props.mahasiswa == null ? null : props.mahasiswa.npm,
-      dosen: props.mahasiswa == null ? '-' : (props.mahasiswa.dosen == null ? '-' : props.mahasiswa.dosen.id),
-      jurusan: props.mahasiswa == null ? '-' : (props.mahasiswa.jurusan == null ? '-' : props.mahasiswa.jurusan.id),
-
+      dosen:
+        props.mahasiswa == null
+          ? "-"
+          : props.mahasiswa.dosen == null
+          ? "-"
+          : props.mahasiswa.dosen.id,
+      jurusan:
+        props.mahasiswa == null
+          ? "-"
+          : props.mahasiswa.jurusan == null
+          ? "-"
+          : props.mahasiswa.jurusan.id,
     })
 
     const showMatakuliah = ref(true)
@@ -200,13 +258,18 @@ export default {
         // alert(props.staff == null ? 'null bro' : 'ada bro')
         Inertia.post(route("master.mahasiswa-konversi.store"), form)
       } else {
-        Inertia.put(route("master.mahasiswa-konversi.update", props.mahasiswa.npm), form)
+        Inertia.put(
+          route("master.mahasiswa-konversi.update", props.mahasiswa.npm),
+          form
+        )
       }
     }
 
     function remove() {
       // alert(props.staff.nip);
-      Inertia.delete(route("master.mahasiswa-konversi.destroy", props.mahasiswa.npm))
+      Inertia.delete(
+        route("master.mahasiswa-konversi.destroy", props.mahasiswa.npm)
+      )
     }
 
     return {
@@ -214,7 +277,7 @@ export default {
       form,
       submit,
       remove,
-      showMatakuliah
+      showMatakuliah,
     }
   },
 }
