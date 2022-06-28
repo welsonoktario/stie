@@ -1,11 +1,11 @@
 <template>
   <div class="grid grid-cols-2 justify-items-end font-serif">
-    <h1 class="underline italic underline-offset-4 font-bold w-full">
+    <h1 class="w-full font-bold italic underline underline-offset-4">
       STIE BULUNGAN <br />
       TARAKAN
     </h1>
 
-    <div class="border border-black rounded-md p-4 text-xs">
+    <div class="rounded-md border border-black p-4 text-xs">
       <table class="table-auto">
         <tbody>
           <tr>
@@ -23,7 +23,7 @@
     </div>
 
     <h1
-      class="mt-12 w-full text-center underline underline-offset-4 font-bold text-xl uppercase col-span-2"
+      class="col-span-2 mt-12 w-full text-center text-xl font-bold uppercase underline underline-offset-4"
     >
       {{ header }}
     </h1>
@@ -53,26 +53,28 @@
       </tbody>
     </table> -->
 
-    <div class="grid grid-flow-row grid-cols-12 col-span-2 mt-8 mx-auto gap-0 text-sm">
-      <div class="text-right mt-auto col-span-6">NPM</div>
+    <div
+      class="col-span-2 mx-auto mt-8 grid grid-flow-row grid-cols-12 gap-0 text-sm"
+    >
+      <div class="col-span-6 mt-auto text-right">NPM</div>
       <div class="pl-2 pr-4">:</div>
       <div class="col-span-5">{{ mahasiswa.npm }}</div>
 
-      <div class="text-right col-span-6">Nama Mahasiswa</div>
+      <div class="col-span-6 text-right">Nama Mahasiswa</div>
       <div class="pl-2 pr-4">:</div>
-      <div class="uppercase col-span-5">{{ mahasiswa.user.name }}</div>
+      <div class="col-span-5 uppercase">{{ mahasiswa.user.name }}</div>
 
-      <div class="text-right col-span-6">Tempat/Tgl.Lahir</div>
+      <div class="col-span-6 text-right">Tempat/Tgl.Lahir</div>
       <div class="pl-2 pr-4">:</div>
-      <div class="uppercase col-span-5">{{ ttl }}</div>
+      <div class="col-span-5 uppercase">{{ ttl }}</div>
 
-      <div class="text-right col-span-6">Program Studi/Jenjang</div>
+      <div class="col-span-6 text-right">Program Studi/Jenjang</div>
       <div class="pl-2 pr-4">:</div>
       <div class="col-span-5">{{ jenjang }}</div>
     </div>
 
     <table
-      class="table-auto border-collapse border border-black w-full mx-auto mt-8 col-span-2 font-mono text-xs"
+      class="col-span-2 mx-auto mt-8 w-full table-auto border-collapse border border-black font-mono text-xs"
     >
       <thead>
         <tr>
@@ -90,11 +92,11 @@
       </thead>
       <tbody>
         <tr v-for="(jadwal, index) in mahasiswa.jadwals" :key="index">
-          <td class="border border-black text-right pr-1">{{ index + 1 }}</td>
+          <td class="border border-black pr-1 text-right">{{ index + 1 }}</td>
           <td class="border border-black pl-1">
             {{ jadwal.matakuliah.kode_matakuliah }}
           </td>
-          <td class="border border-black uppercase pl-1">
+          <td class="border border-black pl-1 uppercase">
             {{ jadwal.matakuliah.nama_matakuliah }}
           </td>
           <td class="border border-black text-center">

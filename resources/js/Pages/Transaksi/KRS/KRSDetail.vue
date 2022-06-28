@@ -1,10 +1,10 @@
 <template>
   <AppLayout :title="`${currentRouteName} KRS Mahasiswa`">
     <div
-      class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
+      class="overflow-hidden bg-white p-6 shadow-sm dark:bg-zinc-800 sm:rounded-lg"
     >
       <!-- <div class="p-6">Karyawan / Karyawan</div> -->
-      <p class="text-xs md:text-sm text-slate-500">
+      <p class="text-xs text-slate-500 md:text-sm">
         Keuangan /
         <span class="font-semibold text-teal-500 dark:text-teal-600">{{
           currentRouteName
@@ -12,10 +12,10 @@
       </p>
 
       <!-- <p>{{route().current()}}</p> -->
-      <div class="flex justify-between my-3 item-center">
+      <div class="item-center my-3 flex justify-between">
         <span class="align-middle">
           <strong
-            class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
+            class="content-middle whitespace-nowrap text-sm capitalize md:text-lg"
           >
             <span>{{ currentRouteName }}</span>
             KRS Mahasiswa</strong
@@ -23,7 +23,7 @@
         </span>
       </div>
       <form @submit.prevent="submit">
-        <div class="mb-4 flex space-x-3 w-full">
+        <div class="mb-4 flex w-full space-x-3">
           <div class="w-full">
             <Label for="nama"> Nama Mahasiswa </Label>
             <Input
@@ -46,32 +46,32 @@
           </div>
         </div>
 
-        <div class="flex space-x-3 mb-4">
-        <div class="w-full">
+        <div class="mb-4 flex space-x-3">
           <div class="w-full">
-            <Label for="npm">IPS Sebelumnya</Label>
-            <Input
-              v-model ='ipsSebelumnya'
-              name="npm"
-              class="mt-1 block w-full"
-              type="text"
-              disabled
-            ></Input>
+            <div class="w-full">
+              <Label for="npm">IPS Sebelumnya</Label>
+              <Input
+                v-model="ipsSebelumnya"
+                name="npm"
+                class="mt-1 block w-full"
+                type="text"
+                disabled
+              ></Input>
+            </div>
           </div>
-        </div>
 
-        <div class="w-full">
           <div class="w-full">
-            <Label for="sks">SKS Diambil</Label>
-            <Input
-              v-model ='sksDiambil'
-              name="sks"
-              class="mt-1 block w-full"
-              type="text"
-              disabled
-            ></Input>
+            <div class="w-full">
+              <Label for="sks">SKS Diambil</Label>
+              <Input
+                v-model="sksDiambil"
+                name="sks"
+                class="mt-1 block w-full"
+                type="text"
+                disabled
+              ></Input>
+            </div>
           </div>
-        </div>
         </div>
 
         <div class="mb-4">
@@ -80,7 +80,7 @@
           </Label>
           <select
             v-model="selectedTahunAjaran"
-            class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+            class="w-full rounded-md border-none bg-zinc-100 focus:ring-teal-500 dark:bg-zinc-700 dark:focus:ring-teal-600"
             name="Tahun Ajaran"
             @change="loadTahunAjaran(selectedTahunAjaran)"
           >
@@ -96,10 +96,10 @@
         </div>
       </form>
 
-      <div class="flex justify-between mb-3">
-        <div class="flex justify-center content-center">
+      <div class="mb-3 flex justify-between">
+        <div class="flex content-center justify-center">
           <strong
-            class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
+            class="content-middle whitespace-nowrap text-sm capitalize md:text-lg"
           >
             Daftar Matakuliah
           </strong>
@@ -126,7 +126,7 @@
       </DataTable>
 
       <div class="">
-        <div class="w-full mt-3">
+        <div class="mt-3 w-full">
           <Label for="npm_salin">Salin Matakuliah dari NRP</Label>
           <Input
             v-model="npm_salin"
@@ -138,7 +138,7 @@
         <div class="flex justify-end">
           <Button
             type="button"
-            class="px-10 mt-2"
+            class="mt-2 px-10"
             @click="openDialogSalinMatakuliah"
           >
             Salin Matakuliah</Button
@@ -328,7 +328,7 @@ export default {
       Inertia.delete(r, {
         data: {
           jadwal_id: selectedJadwalHapus.value,
-          ta: selectedTahunAjaran.value
+          ta: selectedTahunAjaran.value,
         },
         onSuccess: (page) => {
           isOPenDialogHapusMatakuliah.value = !isOPenDialogHapusMatakuliah.value

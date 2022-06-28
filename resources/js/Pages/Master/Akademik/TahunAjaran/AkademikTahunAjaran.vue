@@ -1,26 +1,38 @@
 <template>
   <AppLayout>
-    <div class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
+    <div
+      class="overflow-hidden bg-white p-6 shadow-sm dark:bg-zinc-800 sm:rounded-lg"
+    >
       <p class="text-xs md:text-sm">Akademik / Tahun Akademik</p>
-      <div class="flex justify-between my-3 item-center">
+      <div class="item-center my-3 flex justify-between">
         <span class="align-middle">
           <strong
-            class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
-          >Daftar Tahun Akademik</strong>
+            class="content-middle whitespace-nowrap text-sm capitalize md:text-lg"
+            >Daftar Tahun Akademik</strong
+          >
         </span>
 
-        <LinkButton :href="route('master.tahun-ajaran.create')">Tambah Tahun Akademik</LinkButton>
+        <LinkButton :href="route('master.tahun-ajaran.create')"
+          >Tambah Tahun Akademik</LinkButton
+        >
       </div>
 
       <DataTable :columns="columns" :data="tahunAjarans">
         <template #actions="row">
-          <NavLink :href="route('master.tahun-ajaran.edit', row.data.id)">Edit</NavLink>
+          <NavLink :href="route('master.tahun-ajaran.edit', row.data.id)"
+            >Edit</NavLink
+          >
         </template>
         <template #row(aktif)="row">
           <span
-            :class="[row.data.aktif ? 'text-green-100 bg-green-600 ' : 'text-red-100 bg-red-600 ']"
-            class="inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none rounded-full"
-          >{{ row.data.aktif ? 'Aktif' : 'Nonaktif' }}</span>
+            :class="[
+              row.data.aktif
+                ? 'bg-green-600 text-green-100 '
+                : 'bg-red-600 text-red-100 ',
+            ]"
+            class="mr-2 inline-flex items-center justify-center rounded-full px-2 py-1 text-xs font-bold leading-none"
+            >{{ row.data.aktif ? "Aktif" : "Nonaktif" }}</span
+          >
         </template>
       </DataTable>
     </div>
@@ -38,7 +50,7 @@ export default {
     AppLayout,
     DataTable,
     NavLink,
-    LinkButton
+    LinkButton,
   },
   props: {
     tahunAjarans: Object,
@@ -69,7 +81,7 @@ export default {
         key: "aktif",
         label: "Aktif",
         sortable: true,
-      }
+      },
     ]
 
     return {

@@ -9,7 +9,7 @@
         "prod": "npm run production",
         "production": "mix --production",
         "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix resources/js",
-        "format": "prettier .  --write"
+        "format": "prettier resources/js --write"
     },
     "devDependencies": {
         "@babel/plugin-proposal-nullish-coalescing-operator": "^7.17.12",

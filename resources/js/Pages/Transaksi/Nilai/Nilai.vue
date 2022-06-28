@@ -1,21 +1,21 @@
 <template>
   <AppLayout>
     <div
-      class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
+      class="overflow-hidden bg-white p-6 shadow-sm dark:bg-zinc-800 sm:rounded-lg"
     >
       <p class="text-xs md:text-sm">Nilai / Daftar Nilai</p>
 
-      <div class="inline-flex justify-between my-3 w-full items-center">
+      <div class="my-3 inline-flex w-full items-center justify-between">
         <div>
           <strong
-            class="whitespace-nowrap align-middle text-sm md:text-lg content-middle"
+            class="content-middle whitespace-nowrap align-middle text-sm md:text-lg"
             >Daftar Nilai</strong
           >
           <select
             id="tahun_ajaran"
             v-model="selectedTA"
             name="tahun_ajarans"
-            class="ml-2 pl-2 pr-8 text-sm bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+            class="ml-2 rounded-md border-none bg-zinc-100 pl-2 pr-8 text-sm focus:ring-teal-500 dark:bg-zinc-700 dark:focus:ring-teal-600"
             @change="onTahunAjaranChange(selectedTA)"
           >
             <option value="-" selected>Pilih tahun akademik</option>

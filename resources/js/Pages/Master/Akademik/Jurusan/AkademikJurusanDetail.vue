@@ -1,18 +1,18 @@
 <template>
   <AppLayout title="Tambah Jurusan">
-    <div class="bg-white dark:bg-zinc-800 shadow-lg rounded-lg p-6">
-      <p class="text-xs md:text-sm dark:text-zinc-300">
+    <div class="rounded-lg bg-white p-6 shadow-lg dark:bg-zinc-800">
+      <p class="text-xs dark:text-zinc-300 md:text-sm">
         Akademik / Prodi /
         <span class="font-semibold text-teal-500 dark:text-teal-600">
-          {{
-            currentRouteName
-          }}
+          {{ currentRouteName }}
         </span>
       </p>
 
-      <div class="flex justify-between my-3 item-center">
+      <div class="item-center my-3 flex justify-between">
         <span class="align-middle">
-          <strong class="whitespace-nowrap capitalize text-sm md:text-lg content-middle">
+          <strong
+            class="content-middle whitespace-nowrap text-sm capitalize md:text-lg"
+          >
             <span>{{ currentRouteName }}</span>
             Prodi/Departemen
           </strong>
@@ -41,14 +41,16 @@
             autocomplete="off"
           ></Input>
         </div>
-        <div class="flex justify-between items-center w-full">
+        <div class="flex w-full items-center justify-between">
           <Button class="px-10" :disabled="form.processing">Simpan</Button>
           <button
             v-if="currentRouteName != 'Tambah'"
             type="button"
             class="text-red-500"
             @click="isOpen = !isOpen"
-          >Hapus Data Jurusan</button>
+          >
+            Hapus Data Jurusan
+          </button>
         </div>
       </form>
     </div>

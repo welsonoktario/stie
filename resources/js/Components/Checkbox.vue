@@ -3,7 +3,7 @@
     v-model="proxyChecked"
     type="checkbox"
     :value="value"
-    class="rounded border-zinc-300 dark:border-zinc-600 text-teal-500 dark:text-teal-600 shadow-sm focus:border-teal-300 focus:ring focus:ring-teal-200 focus:ring-opacity-50"
+    class="rounded border-zinc-300 text-teal-500 shadow-sm focus:border-teal-300 focus:ring focus:ring-teal-200 focus:ring-opacity-50 dark:border-zinc-600 dark:text-teal-600"
   />
 </template>
 

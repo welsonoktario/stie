@@ -3,7 +3,7 @@
     :id="id"
     ref="select"
     :name="name"
-    class="pl-3 py-2 pr-8 bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
+    class="rounded-md border-none bg-zinc-100 py-2 pl-3 pr-8 focus:ring-teal-500 dark:bg-zinc-700 dark:focus:ring-teal-600"
     :value="modelValue"
     @change="$emit('update:modelValue', $event.target.value)"
   >

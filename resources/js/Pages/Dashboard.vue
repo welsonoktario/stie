@@ -1,7 +1,7 @@
 <template>
   <AppLayout>
     <div
-      class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg"
+      class="overflow-hidden bg-white shadow-sm dark:bg-zinc-800 sm:rounded-lg"
     >
       <div class="p-6">You're logged in!</div>
     </div>

@@ -1,7 +1,7 @@
 <template>
   <button
     :type="type"
-    class="px-4 py-2 bg-teal-600 dark:bg-teal-500 text-center rounded-md font-semibold text-white dark:text-teal-100 hover:bg-teal-700 hover:dark:bg-teal-600 focus:outline-none transition ease-in-out duration-150 text-xs md:text-sm"
+    class="rounded-md bg-teal-600 px-4 py-2 text-center text-xs font-semibold text-white transition duration-150 ease-in-out hover:bg-teal-700 focus:outline-none dark:bg-teal-500 dark:text-teal-100 hover:dark:bg-teal-600 md:text-sm"
   >
     <slot />
   </button>

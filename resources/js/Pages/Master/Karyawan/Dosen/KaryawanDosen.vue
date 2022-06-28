@@ -1,21 +1,28 @@
 <template>
   <AppLayout title="Dosen">
-    <div class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
+    <div
+      class="overflow-hidden bg-white p-6 shadow-sm dark:bg-zinc-800 sm:rounded-lg"
+    >
       <p class="text-xs md:text-sm">Karyawan / Dosen</p>
 
-      <div class="flex justify-between my-3 item-center">
+      <div class="item-center my-3 flex justify-between">
         <span class="align-middle">
           <strong
-            class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
-          >Daftar Dosen</strong>
+            class="content-middle whitespace-nowrap text-sm capitalize md:text-lg"
+            >Daftar Dosen</strong
+          >
         </span>
 
-        <LinkButton :href="route('master.dosen.create')">Tambah Dosen</LinkButton>
+        <LinkButton :href="route('master.dosen.create')"
+          >Tambah Dosen</LinkButton
+        >
       </div>
 
       <DataTable :columns="columns" :data="dosens">
         <template #actions="row">
-          <NavLink :href="route('master.dosen.edit', row.data.id)">Edit</NavLink>
+          <NavLink :href="route('master.dosen.edit', row.data.id)"
+            >Edit</NavLink
+          >
         </template>
       </DataTable>
     </div>
@@ -33,7 +40,7 @@ export default {
     AppLayout,
     DataTable,
     NavLink,
-    LinkButton
+    LinkButton,
   },
   props: {
     dosens: Object,
