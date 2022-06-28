@@ -65,15 +65,20 @@ class JadwalController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
+    *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
         $tahunAkademik = TahunAjaran::find(Request::get('ta'));
+        $kurikulumAktif = Kurikulum::where('aktif', 1)->get();
+        $kurikulumAktifId = array();
+        foreach ($kurikulumAktif as $kurikulum) {
+            $kurikulumAktifId[] = $kurikulum->id;
+        }
         $ruangans = Ruangan::all();
-        $matakuliahs = Matakuliah::all()->sortBy('semester');
-        // dd($matakuliahs->toArray());
+        $matakuliahs = Matakuliah::whereIn('kurikulum_id', $kurikulumAktifId)->orderBy('semester')->get();
+
         return Inertia::render(
             'Transaksi/Jadwal/JadwalDetail',
             [
@@ -113,9 +118,14 @@ class JadwalController extends Controller
     public function edit(Jadwal $jadwal)
     {
         $tahunAkademik = TahunAjaran::find($jadwal->tahun_ajaran_id);
+        $kurikulumAktif = Kurikulum::where('aktif', 1)->get();
+        $kurikulumAktifId = array();
+        foreach ($kurikulumAktif as $kurikulum) {
+            $kurikulumAktifId[] = $kurikulum->id;
+        }
         $ruangans = Ruangan::all();
-        $matakuliahs = Matakuliah::all()->sortBy('semester');
-        // dd($matakuliahs);
+        $matakuliahs = Matakuliah::whereIn('kurikulum_id', $kurikulumAktifId)->orderBy('semester')->get();
+
         return Inertia::render(
             'Transaksi/Jadwal/JadwalDetail',
             [

@@ -80,12 +80,20 @@ class JadwalMahasiswaController extends Controller
     public function update(UpdateJadwalRequest $request, Jadwal $jadwal)
     {
         // dd(Request::all());
+        // dd('disini');
+        // belum ada aktifnya
         Log::debug(json_encode(Request::all()));
         try {
             $data = $request->validated();
             $mahasiswa = Mahasiswa::find(Request::input('mahasiswa_npm'));
             $mahasiswa->jadwals()->attach([Request::input('jadwal_id')]);
+            $jadwal = Jadwal::find(Request::input('jadwal_id'));
+
+            // update mahasiswa
+            $mahasiswa->tahun_ajaran()->sync([$jadwal->tahun_ajaran_id => ['status' => 'Aktif']], false);
+
         } catch (Throwable $e) {
+            dd($e);
             return redirect()
                 ->route(
                     'transaksi.jadwal.mahasiswa.index',
@@ -130,6 +138,14 @@ class JadwalMahasiswaController extends Controller
         try {
             $jadwal = Jadwal::find(Request::get('jadwal_id'));
             $jadwal->mahasiswas()->detach(Request::get('mahasiswa_npm'));
+            $mahasiswa = Mahasiswa::firstWhere('npm',Request::get('mahasiswa_npm'));
+            // dd(count($mahasiswa->jadwals()->where('tahun_ajaran_id', $jadwal->tahun_ajaran_id)->get()), $mahasiswa, $jadwal);
+
+            if (count($mahasiswa->jadwals()->where('tahun_ajaran_id', $jadwal->tahun_ajaran_id)->get()) <= 0) {
+                $mahasiswa->tahun_ajaran()->sync([$jadwal->tahun_ajaran_id => ['status' => 'Tidak Aktif']], false);
+            }
+
+
         } catch (Throwable $e) {
             return redirect()
                 ->route(

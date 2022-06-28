@@ -198,10 +198,10 @@ class TestingController extends Controller
         $this->createSheet(compact('ta', 'data'));
     }
 
-    public function export (TahunAjaran $ta) {
+    public function export4 (TahunAjaran $ta) {
 
         // jangan lupa ini wherenya dihapus, ini cuma untuk cindy karolin
-        $mhss = $ta->mahasiswas;//->where('npm', '=','20.113023.61201.008');
+        $mhss = $ta->mahasiswas()->with('tahun_ajaran')->get();//->where('npm', '=','20.113023.61201.008');
         foreach($mhss as $mhs) {
             $tas_mahasiswa = $mhs->tahun_ajaran()->where('tanggal_mulai', '<=', $ta->tanggal_mulai)->orderBy('tanggal_mulai', 'desc')->get();
 
@@ -235,13 +235,12 @@ class TestingController extends Controller
 
 
                 // START HITUNG IPK
-                // ambil smua matkul
-                // $jadwal_all = $jadwal_all->get();
                 $total_nilai_kali_sks = 0;
                 $total_sks = 0;
 
                 // group by jadwal by id, ambil max angka mutu di jadwal (karena kemungkinan mengulang matkul)
-                $jadwal_all = $jadwal_all->groupBy('matakuliah_id')->get(); // belum ambil max nilainya
+                $jadwal_all = $jadwal_all->groupBy('matakuliah_id')->select("*","max(pivot_angka_mutu)")->get();//->toSql(); // belum ambil max nilainya
+                // dd($jadwal_all);
                 // hitung
                 foreach ($jadwal_all as $j) {
                     $am = $j->pivot->angka_mutu;
@@ -263,6 +262,106 @@ class TestingController extends Controller
             }
 
             dump($mhs->npm. ' IPS: '. round($ips, 3). ' IPK: '. round($ipk, 3));
+        }
+
+
+
+    }
+
+    public function export (TahunAjaran $ta) {
+
+        // jangan lupa ini wherenya dihapus, ini cuma untuk cindy karolin
+        $mhss = $ta->mahasiswas()->with(['tahun_ajaran' => function($query) use ($ta) {
+            return $query->where('tanggal_mulai', '<=', $ta->tanggal_mulai)
+                ->orderBy('tanggal_mulai', 'desc');
+            }, 'jadwals.matakuliah'])
+            // ->whereHas('jadwals.tahun_ajaran', function ($query) use ($ta) {
+            //     return $query->where('tahun_ajarans.tanggal_mulai', '=', $ta->tanggal_mulai);
+            // })
+            ->get();
+
+        // // ->where('npm', '=','20.113023.61201.008')->toSql();
+        // dd($mhss = $ta->mahasiswas[0]);
+        // dd($mhss[0]);
+        $c = 0;
+        dump('Jumlah Mahasiswa Semester '. $ta->tahun_ajaran. ": ". count($mhss));
+        foreach($mhss as $mhs) {
+            $tas_mahasiswa = $mhs->tahun_ajaran;
+            $ips = 0;
+            $ipk = 0;
+            $jadwal_all = $mhs->jadwals;
+
+            // dump($jadwal_all, $mhs->npm);
+            // if (count($jadwal_all)) {
+            //     die();
+            // }
+            // continue;
+
+            // if(jadwa/)
+            // dd($tas);
+            foreach($tas_mahasiswa as $ta_mahasiswa) {
+
+                // dd($ta->tanggal_mulai, $mhs->npm, $mhs);
+                // START HITUNG IPS DI SMT TERTENTU
+                $jadwal_smt = $mhs->jadwals->where('tahun_ajaran_id', '=', $ta_mahasiswa->id)->all();
+                // dump("smt: ",$jadwal_smt);
+                // dd($jadwal_all->get());
+                // dd();
+
+                $total_nilai_kali_sks = 0;
+                $total_sks = 0;
+                foreach ($jadwal_smt as $j) {
+                    $am = $j->pivot->angka_mutu;
+                    $sks = $j->matakuliah->sks;
+                    $total_nilai_kali_sks = $total_nilai_kali_sks + ($sks * $am);
+                    $total_sks = $total_sks + $sks;
+                    // dump($sks);
+                }
+
+                if ($total_sks == 0) {
+                    $ips = 0;
+                } else {
+                    $ips = $total_nilai_kali_sks / $total_sks;
+                }
+                // dump($ips);
+                break;
+
+                // END HITUNG IPS
+
+            }
+
+            // START HITUNG IPK ALL HINGGA SEMESTER YANG DIPILIH SEKARANG
+            $total_nilai_kali_sks = 0;
+            $total_sks = 0;
+
+            // ta yang telah diambil hingga sekarang
+            $tas = $tas_mahasiswa->keyBy('id')->keys()->all();
+            // dd($tas);
+
+            // group by jadwal by id, ambil max angka mutu di jadwal (karena kemungkinan mengulang matkul)
+            $jadwal_all = $jadwal_all->whereIn('tahun_ajaran_id', $tas)->groupBy('matakuliah_id')->all();//->toSql(); // belum ambil max nilainya
+
+            // hitung
+            foreach ($jadwal_all as $j) {
+                // $am = $j->pivot->angka_mutu;
+                $am = $j->max('pivot.angka_mutu'); // max angka mutu
+                $sks = ($j->max('matakuliah.sks')); // hanya select sksnya (karena sks sama)
+                // $sks = $j->matakuliah->sks;
+                $total_nilai_kali_sks = $total_nilai_kali_sks + ($sks * $am);
+                $total_sks = $total_sks + $sks;
+            }
+
+            if ($total_sks == 0) {
+                $ipk = 0;
+            } else {
+                $ipk = $total_nilai_kali_sks / $total_sks;
+            }
+
+            dump($mhs->npm. " Status: ". $mhs->tahun_ajaran[0]->pivot->status. ' IPS: '. round($ips, 3). ' IPK: '. round($ipk, 3));
+            $c++;
+            if ($c == 10) {
+                dd();
+            }
         }
 
 
