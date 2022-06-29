@@ -21,7 +21,7 @@ class NilaiController extends Controller
     public function index()
     {
         $selectedTahunAkademik = (int) Request::get('ta') ?: TahunAjaran::firstWhere('aktif', true)->id;
-        $tahunAkademiks = TahunAjaran::orderBy('id', 'DESC')->get();
+        $tahunAkademiks = TahunAjaran::orderBy('tanggal_mulai', 'DESC')->get();
         $mahasiswas = Mahasiswa::select(['mahasiswas.npm', 'mahasiswas.status_mahasiswa', 'users.name as nama', 'jurusans.nama as jurusan'])
             // ->doesntHave('mahasiswa_konversi')
             ->join('users', 'users.id', '=', 'mahasiswas.user_id')
@@ -71,7 +71,6 @@ class NilaiController extends Controller
     public function edit(Mahasiswa $mahasiswa)
     {
         $selectedTahunAkademik = (int) Request::get('ta') ?: 0;
-        $tahunAkademiks = TahunAjaran::orderBy('id', 'DESC')->get();
         $mahasiswa->load([
             'jadwals' => function ($q) use ($selectedTahunAkademik) {
                 return $q->with('matakuliah')->when($selectedTahunAkademik, function ($query, $selectedTahunAkademik) {
@@ -82,17 +81,68 @@ class NilaiController extends Controller
                     }
                 });
             },
+            'tahun_ajaran' => function ($q) use ($selectedTahunAkademik) {
+                return $q->when($selectedTahunAkademik, function ($query, $selectedTahunAkademik) {
+                    if ($selectedTahunAkademik == 'semua' || $selectedTahunAkademik == 0) {
+                        return $query->orderBy('tanggal_mulai', 'DESC');
+                    } else {
+                        $ta = TahunAjaran::find($selectedTahunAkademik);
+                        return $query->where('tanggal_mulai', '<=', $ta->tanggal_mulai)
+                            ->orderBy('tanggal_mulai','DESC');
+                    }
+                });
+            },
             'user',
             'jurusan',
             'status_mahasiswa'
         ]);
 
+        $ips = 0;
+        $ipk = 0;
+
+        // hitung ipk dari smt sekarang ke bawah
+        $tas = $mahasiswa->tahun_ajaran->keyBy('id')->keys()->all();
+        // dd(sort($tas));
+        rsort($tas);
+        // dd($tas);
+        if ($selectedTahunAkademik) {
+            // dump('ips');
+            // hitung ip dari semester yang dipilih
+            $ips = $mahasiswa->hitungIP([$selectedTahunAkademik]);
+            $ipk = $mahasiswa->hitungIP($tas);
+
+        } else {
+            // dump('ipk');
+            $ips = $mahasiswa->hitungIP([array_shift($tas)]);
+            // kalau ips nol, hitung ip ke belakang tanpa yang skrg
+            if ($ips === 0) {
+                // kalau tasnya gak ada, berarti mhs baru di smt itu
+                if ($tas === 0) {
+                    // dump('disini gak');
+                    $ipk = 'Baru';
+                }
+                else {
+                    $ipk = $mahasiswa->hitungIP($tas);
+                }
+            }
+            else {
+                $ipk = $mahasiswa->hitungIP([]);
+            }
+            $ips = $ipk;
+        }
+
+        $tahunAkademiks = $mahasiswa->tahun_ajaran()->orderBy('tanggal_mulai','DESC')->get();
+        // dd($tahunAkademiks);
+        // $tahunAkademiks = TahunAjaran::whereIn('id', $mahasiswa->tahun_ajaran->keyBy('id')->keys()->toArray())->orderBy('tanggal_mulai', 'DESC')->get();
         $tahunAkademiks->prepend(['id' => 0, 'tahun_ajaran' => 'Semua']);
 
+        // dump($ips, $ipk);
         return Inertia::render('Transaksi/Nilai/NilaiDetail', [
             'tahunAkademiks' => fn () => $tahunAkademiks,
             'selectedTahunAkademik' => fn () => $selectedTahunAkademik,
-            'mahasiswa' => $mahasiswa
+            'mahasiswa' => $mahasiswa,
+            'ips' => $ips,
+            'ipk' => $ipk
         ]);
     }
 

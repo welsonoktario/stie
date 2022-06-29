@@ -274,43 +274,40 @@ class TestingController extends Controller
         $mhss = $ta->mahasiswas()->with(['tahun_ajaran' => function($query) use ($ta) {
             return $query->where('tanggal_mulai', '<=', $ta->tanggal_mulai)
                 ->orderBy('tanggal_mulai', 'desc');
-            }, 'jadwals.matakuliah'])
-            // ->whereHas('jadwals.tahun_ajaran', function ($query) use ($ta) {
-            //     return $query->where('tahun_ajarans.tanggal_mulai', '=', $ta->tanggal_mulai);
-            // })
+            }, 'jadwals.matakuliah','user','jurusan'])
             ->get();
 
         // // ->where('npm', '=','20.113023.61201.008')->toSql();
         // dd($mhss = $ta->mahasiswas[0]);
         // dd($mhss[0]);
         $c = 0;
-        dump('Jumlah Mahasiswa Semester '. $ta->tahun_ajaran. ": ". count($mhss));
+        // dump('Jumlah Mahasiswa Semester '. $ta->tahun_ajaran. ": ". count($mhss));
+
+        $data = array();
+        $data['ta']['tahun_ajaran'] = $ta->tahun_ajaran;
+
         foreach($mhss as $mhs) {
             $tas_mahasiswa = $mhs->tahun_ajaran;
             $ips = 0;
             $ipk = 0;
+            $sks_per = 0;
+            $keterangan = array();
             $jadwal_all = $mhs->jadwals;
 
-            // dump($jadwal_all, $mhs->npm);
-            // if (count($jadwal_all)) {
-            //     die();
-            // }
-            // continue;
-
-            // if(jadwa/)
-            // dd($tas);
             foreach($tas_mahasiswa as $ta_mahasiswa) {
-
-                // dd($ta->tanggal_mulai, $mhs->npm, $mhs);
                 // START HITUNG IPS DI SMT TERTENTU
                 $jadwal_smt = $mhs->jadwals->where('tahun_ajaran_id', '=', $ta_mahasiswa->id)->all();
-                // dump("smt: ",$jadwal_smt);
-                // dd($jadwal_all->get());
-                // dd();
 
                 $total_nilai_kali_sks = 0;
                 $total_sks = 0;
+                $nilai_null = false;
                 foreach ($jadwal_smt as $j) {
+                    if ($j->pivot->angka_mutu === null) {
+
+                        // print($j->matakuliah->nama_matakuliah);
+                        // print();
+                        $nilai_null = true;
+                    }
                     $am = $j->pivot->angka_mutu;
                     $sks = $j->matakuliah->sks;
                     $total_nilai_kali_sks = $total_nilai_kali_sks + ($sks * $am);
@@ -319,10 +316,13 @@ class TestingController extends Controller
                 }
 
                 if ($total_sks == 0) {
-                    $ips = 0;
+                    $ips = '-';
+                    $keterangan[] = 'Tidak ikut KRS';
+                    // dump($ips);
                 } else {
                     $ips = $total_nilai_kali_sks / $total_sks;
                 }
+                $sks_per = $total_sks;
                 // dump($ips);
                 break;
 
@@ -330,13 +330,23 @@ class TestingController extends Controller
 
             }
 
+
+            // JIKA TAHUN INI BELUM DIISI NILAINYA, RETURN 0
+            $ips = $nilai_null ? '0' : $ips;
+            $keterangan[] = $nilai_null ? 'Nilai belum ada / tidak lengkap semester ini' : "";
+
+
             // START HITUNG IPK ALL HINGGA SEMESTER YANG DIPILIH SEKARANG
             $total_nilai_kali_sks = 0;
             $total_sks = 0;
 
             // ta yang telah diambil hingga sekarang
             $tas = $tas_mahasiswa->keyBy('id')->keys()->all();
-            // dd($tas);
+
+            // JIKA TAHUN INI BELUM DIISI NILAINYA, IPK TAHUN INI TIDAK DIIKUTKAN
+            if ($nilai_null) {
+                array_shift($tas);
+            }
 
             // group by jadwal by id, ambil max angka mutu di jadwal (karena kemungkinan mengulang matkul)
             $jadwal_all = $jadwal_all->whereIn('tahun_ajaran_id', $tas)->groupBy('matakuliah_id')->all();//->toSql(); // belum ambil max nilainya
@@ -346,26 +356,45 @@ class TestingController extends Controller
                 // $am = $j->pivot->angka_mutu;
                 $am = $j->max('pivot.angka_mutu'); // max angka mutu
                 $sks = ($j->max('matakuliah.sks')); // hanya select sksnya (karena sks sama)
-                // $sks = $j->matakuliah->sks;
                 $total_nilai_kali_sks = $total_nilai_kali_sks + ($sks * $am);
                 $total_sks = $total_sks + $sks;
             }
 
             if ($total_sks == 0) {
-                $ipk = 0;
+                $ipk = '0';
             } else {
                 $ipk = $total_nilai_kali_sks / $total_sks;
             }
 
-            dump($mhs->npm. " Status: ". $mhs->tahun_ajaran[0]->pivot->status. ' IPS: '. round($ips, 3). ' IPK: '. round($ipk, 3));
+            if ($nilai_null) {
+                array_shift($tas);
+                $total_sks += $sks_per;
+            }
+
+            $keterangan[] = !$total_sks ? 'Tidak ditemukan data matakuliah yang diambil' : "";
+            $ipk = !$total_sks ? '-' : $ipk;
+            $total_sks = !$total_sks ? '-' : $total_sks;
+            $sks_per = !$sks_per ? '-' : $sks_per;
+
+            // $data['data']
+            $tmp['npm'] = $mhs->npm;
+            $tmp['nama'] = $mhs->user->name;
+            $tmp['departmen'] = $mhs->jurusan->nama;
+            $tmp['status'] = $mhs->tahun_ajaran[0]->pivot->status;
+            $tmp['ips'] = $ips;
+            $tmp['ipk'] = $ipk;
+            $tmp['sks_per'] = $sks_per;
+            $tmp['sks_total'] = $total_sks;
+            $tmp['keterangan'] = join("; ", $keterangan);
+            $data['data'][] = $tmp;
+
+            // print($mhs->jurusan->nama." ".$mhs->npm. " - ". $mhs->user->name. " Status: ". $mhs->tahun_ajaran[0]->pivot->status. ' IPS: '. round($ips, 3). ' IPK: '. round($ipk, 3). "<br>");
             $c++;
-            if ($c == 10) {
-                dd();
+            if ($c == 1000) {
+                die();
             }
         }
-
-
-
+        $this->createSheet($data);
     }
 
 
@@ -436,7 +465,120 @@ class TestingController extends Controller
         $this->createSheet(compact('ta', 'data'));
     }
 
+
     public function createSheet($data)
+    {
+        $ta = $data['ta'];
+        $fileName = "Laporan_{$ta['tahun_ajaran']}.xlsx";
+        $mhs = collect($data['data'])->map(function ($m, $key) {
+            $tmp = [
+                $key+1,
+                $m['npm'],
+                $m['nama'],
+                $m['departmen'],
+                $m['status'],
+                $m['ips'],
+                $m['sks_per'],
+                $m['ipk'],
+                $m['sks_total'],
+                $m['keterangan']
+            ];
+
+            Log::debug($tmp);
+
+            return $tmp;
+        });
+
+        $cellValue = [
+            ["Semester {$ta['tahun_ajaran']}"],
+            ['NO', 'NPM', 'NAMA', 'DEPARTMEN', 'STATUS MAHASISWA', 'IPS', 'JUMLAH SKS SEMESTER', 'IPK', 'JUMLAH SKS TOTAL', 'KETERANGAN'],
+            ...$mhs
+        ];
+
+        $spreadsheet = new Spreadsheet();
+        $spreadsheet->getActiveSheet()
+            ->fromArray(
+                $cellValue,  // The data to set
+                null,        // Array values with this value will not be set
+                'A1'         // Top left coordinate of the worksheet range where
+            );
+        $spreadsheet->getActiveSheet()->mergeCells('A1:J1');
+        $styleArray = [
+            'font' => [
+                'bold' => true,
+            ],
+        ];
+        $styleData = [
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+        ];
+        $styleHeader = [
+            'font' => [
+                'bold' => true,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER
+            ],
+        ];
+        $styleNilai = [
+            'numberFormat' => [
+                'formatCode' => \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_00
+            ],
+        ];
+        $styleCenter = [
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER
+            ],
+        ];
+        $highestRow = $spreadsheet->getActiveSheet()->getHighestRowAndColumn();
+
+        $spreadsheet->getActiveSheet()
+            ->getStyle('A1')
+            ->applyFromArray($styleArray);
+        $spreadsheet->getActiveSheet()
+            ->getStyle("A2:{$highestRow['column']}{$highestRow['row']}")
+            ->applyFromArray($styleData);
+        $spreadsheet->getActiveSheet()
+            ->getStyle("A2:J2")
+            ->applyFromArray($styleHeader);
+        $spreadsheet->getActiveSheet()
+            ->getStyle("F3:F{$highestRow['row']}")
+            ->applyFromArray($styleNilai);
+        $spreadsheet->getActiveSheet()
+            ->getStyle("H3:H{$highestRow['row']}")
+            ->applyFromArray($styleNilai);
+
+        $spreadsheet->getActiveSheet()
+            ->getStyle("J3:J{$highestRow['row']}")
+            ->applyFromArray($styleCenter);
+
+        $spreadsheet->getActiveSheet()
+            ->getStyle("D3:I{$highestRow['row']}")
+            ->applyFromArray($styleCenter);
+        $spreadsheet->getActiveSheet()
+            ->getStyle("A3:A{$highestRow['row']}")
+            ->applyFromArray($styleCenter);
+
+        foreach (range('A', 'J') as $col) {
+            $spreadsheet->getActiveSheet()
+                ->getColumnDimension($col)
+                ->setAutoSize(true);
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        // $writer->save('php://output');
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="'.$fileName.'"');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+        die;
+    }
+
+    public function createSheet2($data)
     {
         $ta = $data['ta'];
         $fileName = "Laporan_{$ta['tahun_ajaran']}.xlsx";

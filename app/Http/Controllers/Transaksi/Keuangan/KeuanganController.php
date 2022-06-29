@@ -19,7 +19,7 @@ class KeuanganController extends Controller
      */
     public function index(Request $request)
     {
-        $tahun_ajarans = TahunAjaran::all();
+        $tahun_ajarans = TahunAjaran::orderBy('tanggal_mulai','desc')->get();
         $ta = in_array($request->ta, [null, ''])
             ? strval(($tahun_ajarans->firstWhere('aktif', '=', true))->id) : $request->ta;
 
@@ -41,10 +41,10 @@ class KeuanganController extends Controller
             })
             ->paginate($request->get('perPage') ?: 10)
             ->withQueryString();
-
+        // dd($tahun_ajarans->sortByDesc('tanggal_mulai')->all());
         return Inertia::render('Transaksi/Keuangan/Keuangan.vue',[
             'mahasiswas' => $mahasiswas,
-            'tahun_ajarans' => $tahun_ajarans,
+            'tahun_ajarans' => $tahun_ajarans//->sortBy('tanggal_mulai')->all(),
         ]);
     }
 

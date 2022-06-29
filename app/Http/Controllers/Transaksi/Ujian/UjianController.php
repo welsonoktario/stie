@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Transaksi\Ujian;
 
 use App\Http\Controllers\Controller;
+use App\Models\JabatanStruktural;
 use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -17,7 +18,7 @@ class UjianController extends Controller
      */
     public function index(Request $request)
     {
-        $tahunAkademiks = TahunAjaran::orderBy('id', 'DESC')->get();
+        $tahunAkademiks = TahunAjaran::orderBy('tanggal_mulai', 'DESC')->get();
         $selectedTahunAkademik = $request->ta ? $tahunAkademiks->firstWhere('id', $request->ta) : $tahunAkademiks->firstWhere('aktif','=',1);
         $mahasiswas = Mahasiswa::indexUjian($request->tipe)
             ->whereHas('tahun_ajaran', function ($q) use ($selectedTahunAkademik) {
@@ -64,14 +65,16 @@ class UjianController extends Controller
             }
         ])->find($id);
 
-
-
+        $wakil_ketua_1 = JabatanStruktural::with('staff.user')->find(2);
+        // dd($wakil_ketua_1);
+        // $wakil_ketua_1 =
         // dd($mahasiswa);
 
         return Inertia::render('Transaksi/Ujian/UjianDetail', [
             'mahasiswa' => $mahasiswa,
             'tipe' => $request->tipe,
-            'ta' => $tahunAjaran
+            'ta' => $tahunAjaran,
+            'wakil_ketua_1' => $wakil_ketua_1,
         ]);
     }
 

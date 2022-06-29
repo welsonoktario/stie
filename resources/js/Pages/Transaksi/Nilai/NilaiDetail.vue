@@ -21,7 +21,11 @@
           <td class="pl-2">{{ mahasiswa.jurusan?.nama ?? "-" }}</td>
         </tr>
         <tr>
-          <td>IP:</td>
+          <td>IPS:</td>
+          <td class="pl-2">{{ ip == "NaN" ? "-" : ip }}</td>
+        </tr>
+        <tr>
+          <td>IPK:</td>
           <td class="pl-2">{{ ip == "NaN" ? "-" : ip }}</td>
         </tr>
       </table>

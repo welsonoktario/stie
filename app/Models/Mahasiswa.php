@@ -141,11 +141,41 @@ class Mahasiswa extends Model
             ->withPivot(['nilai_uts', 'nilai_nas', 'nilai_akhir', 'nisbi', 'angka_mutu']);
     }
 
-    public function hitungIPS($semester) {
-        // $jadwal = $this->jadwals();
-        $result = $this->with(['jadwals.matakuliah'])->get();
-        return $result;
+    public function hitungIP($tas = []) {
+        // $ip = 0;
+        // dd($tas);
+        if (count($tas) > 0) {
+            // dd('tas>0');
+            $jadwals = $this->jadwals()->whereIn('tahun_ajaran_id', $tas)->get();
+            // dd($jadwals, $tas);
+        }
+        else {
+            $jadwals = $this->jadwals;
+        }
+
+        $totalNilaiKaliSks = 0;
+        $totalSks = 0;
+
+        foreach ($jadwals as $jadwal) {
+
+            if ($jadwal->pivot->angka_mutu === 0) {
+                return 0;
+            }
+            $totalNilaiKaliSks += $jadwal->pivot->angka_mutu * $jadwal->matakuliah->sks;
+            $totalSks += $jadwal->matakuliah->sks;
+        }
+
+        if ($totalSks == 0) {
+            return 0;
+        } else {
+            return $totalNilaiKaliSks / $totalSks;
+        }
+        return $this->jadwals;
     }
+
+    // public function hitungIP($ta) {
+    //     return 0;
+    // }
 
     public function scopeIndexJadwal($query)
     {
@@ -191,12 +221,18 @@ class Mahasiswa extends Model
         });
     }
 
-    /* public function getIpkAttribute()
+    public function getIpkAllAttribute()
     {
         $jadwals = $this->jadwals()
             ->with(['matakuliah' => fn ($q) => $q->groupBy('id')])
             ->get();
 
         return $jadwals;
-    } */
+
+
+    }
+
+    public function hitungIPKSebelum() {
+        // return 'wow';
+    }
 }

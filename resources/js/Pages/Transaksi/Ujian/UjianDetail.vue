@@ -123,7 +123,7 @@
       <br />
       <br />
       <br />
-      <p class="uppercase">Welson</p>
+      <p class="uppercase">{{wakil_ketua_1.staff.gelar_depan}} {{wakil_ketua_1.staff.user.name}} {{wakil_ketua_1.staff.gelar_belakang}}</p>
     </div>
   </div>
 </template>
@@ -136,7 +136,7 @@ const props = defineProps({
   ta: Object,
   tipe: String,
   mahasiswa: Object,
-  wakil_ketua_2: Object,
+  wakil_ketua_1: Object,
 })
 
 onMounted(() => {

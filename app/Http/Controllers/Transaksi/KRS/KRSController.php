@@ -21,7 +21,7 @@ class KRSController extends Controller
      */
     public function index(Request $request)
     {
-        $tahun_ajarans = TahunAjaran::all();
+        $tahun_ajarans = TahunAjaran::orderBy('tanggal_mulai','desc')->get();
         $ta = in_array($request->ta, [null, ''])
             ? strval(($tahun_ajarans->firstWhere('aktif', '=', true))->id) : $request->ta;
 
@@ -149,14 +149,7 @@ class KRSController extends Controller
             ->with(['matakuliah'])
             // ->orderBy('matakuliahs.semester','asc')
             ->get();
-        // $jadwals = $jadwals->sortByDesc(function ($jadwals) {
-        //     return $jadwals->matakuliah->semester;
-        // });
 
-        // $jadwals = Jadwal::where('tahun_ajaran_id','=',$request['ta'])
-        //     ->where('')->get();
-
-        // dd($mahasiswa);
         $tahunAjaran = TahunAjaran::find($request['ta']);
         // $ipsSebelumnya = TahunAjaran::firstWhere('tanggal_mulai', '<', $tahunAjaran->tanggal_mulai);
 
@@ -293,6 +286,11 @@ class KRSController extends Controller
         // dd($jadwal_ids, $jadwal_names);
         // sync matakuliah
         $mahasiswa->jadwals()->sync($jadwal_ids, false);
+
+        // jadikan status aktif jika ada matkulnya
+        if ((count($mahasiswa->jadwals))) {
+            $mahasiswa->tahun_ajaran()->sync([$request->tahun_ajaran => ['status' => 'Aktif']], false);
+        }
 
         return redirect()
             ->route('transaksi.krs.edit', ['kr' => $mahasiswa->npm, 'ta' => $request->tahun_ajaran])
