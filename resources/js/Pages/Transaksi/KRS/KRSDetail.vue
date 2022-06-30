@@ -186,7 +186,7 @@
       @cancel="isDialogTambahMatakuliahOpen = !isDialogTambahMatakuliahOpen"
     >
       <template #content>
-        <Select v-model="selectedJadwal" class="w-full" :options="jadwals">
+        <Select name="matakuliahs" v-model="selectedJadwal" class="w-full" :options="jadwals">
           <template #option="option">
             <option :value="option.data.id">
               {{

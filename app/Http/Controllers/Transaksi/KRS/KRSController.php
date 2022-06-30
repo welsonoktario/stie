@@ -107,7 +107,7 @@ class KRSController extends Controller
             return redirect()->route('transaksi.keuangan.index');
         }
 
-        $mahasiswa = Mahasiswa::with(['user', 'tahun_ajaran'])
+        $mahasiswa = Mahasiswa::with(['user', 'tahun_ajaran', 'jurusan'])
             ->find($id);
         $jadwal_mhs = Mahasiswa::where('npm', '=', $id)
             ->select(
@@ -139,16 +139,20 @@ class KRSController extends Controller
         $sksDiambil = $jadwal_mhs->sum("matakuliahs.sks");
         // dd($sksDiambil);
         $jadwal_mhs = $jadwal_mhs
-            // ->get()
             ->paginate($request->get('perPage') ?: 20);
-        // dd($jadwal_mhs);
-        // dd($sksSebelumnya = );
 
         $jadwals = Jadwal::where('tahun_ajaran_id', '=', $request['ta'])
             // ->join('matakuliahs', 'matakuliahs.id', 'jadwals.id')
-            ->with(['matakuliah'])
+            ->whereHas('matakuliah.matakuliah_jurusan', function($q) use ($mahasiswa){
+                $q->where('matakuliah_jurusans.jurusan_id', $mahasiswa->jurusan->id);
+            })
+            ->with(['matakuliah.matakuliah_jurusan'])
+            // ->where
+
             // ->orderBy('matakuliahs.semester','asc')
             ->get();
+
+        // dd($jadwals->toSql());
 
         $tahunAjaran = TahunAjaran::find($request['ta']);
         // $ipsSebelumnya = TahunAjaran::firstWhere('tanggal_mulai', '<', $tahunAjaran->tanggal_mulai);
