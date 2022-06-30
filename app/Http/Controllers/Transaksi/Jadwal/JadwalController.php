@@ -24,7 +24,7 @@ class JadwalController extends Controller
     {
         $selectedTahunAkademik = (int) Request::get('ta');
         $tahunAkademiks = TahunAjaran::orderBy('tanggal_mulai', 'DESC')->get();
-        $kurikulums = Kurikulum::where('aktif',1)->orderBy('nama', 'DESC')->get();
+        $kurikulums = Kurikulum::where('aktif', 1)->orderBy('nama', 'DESC')->get();
         // dd($kurikulums);
 
 
@@ -186,5 +186,29 @@ class JadwalController extends Controller
                     'msg' => "Jadwal berhasil dihapus"
                 ]
             );
+    }
+
+    public function print($jadwal)
+    {
+        $jadwal = Jadwal::query()
+            ->with([
+                'matakuliah.matakuliah_jurusan.jurusan',
+                'tahun_ajaran',
+                'ruanganUts',
+                'ruanganUas',
+                'dosens.staff.user',
+                'mahasiswas.user',
+                'mahasiswas.jadwals' => function ($q) use ($jadwal) {
+                    return $q->where('jadwal_id', $jadwal);
+                }
+            ])
+            ->find($jadwal);
+
+        // return ($jadwal->mahasiswas->toJson());
+
+        return Inertia::render('Transaksi/Jadwal/JadwalPrint', [
+            'jadwal' => $jadwal,
+            'tipe' => Request::input('tipe')
+        ]);
     }
 }

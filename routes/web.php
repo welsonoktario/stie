@@ -109,6 +109,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('ujian/{mahasiswa}/print/{ta}', [UjianController::class, 'show'])
             ->name('ujian.print');
 
+        Route::get('jadwal/{jadwal}/print', [JadwalController::class, 'print'])
+            ->name('jadwal.print');
+
         Route::resources([
             'jadwal' => JadwalController::class,
             'keuangan' => KeuanganController::class,

@@ -63,22 +63,87 @@
         </template>
 
         <template #actions="row">
-          <NavLink
-            :href="route('transaksi.jadwal.edit', { jadwal: row.data.id })"
-          >
-            <PencilIcon class="h-4" />
-          </NavLink>
+          <div class="inline-flex items-center gap-4">
+            <NavLink
+              :href="route('transaksi.jadwal.edit', { jadwal: row.data.id })"
+            >
+              <PencilIcon class="h-4" />
+            </NavLink>
 
-          <NavLink
-            :href="
-              route('transaksi.jadwal.mahasiswa.index', {
-                jadwal: row.data.id,
-                ta: selectedTA,
-              })
-            "
-          >
-            <UserAddIcon class="ml-2 h-4" />
-          </NavLink>
+            <NavLink
+              :href="
+                route('transaksi.jadwal.mahasiswa.index', {
+                  jadwal: row.data.id,
+                  ta: selectedTA,
+                })
+              "
+            >
+              <UserAddIcon class="h-4" />
+            </NavLink>
+
+            <Popover class="relative">
+              <PopoverButton>
+                <PrinterIcon class="h-4" aria-hidden="true" />
+              </PopoverButton>
+
+              <PopoverPanel
+                class="absolute"
+                :class="{
+                  '-right-2 top-6 z-10': row.index <= 6,
+                  '-right-2 bottom-6 z-10': row.index > 6,
+                }"
+              >
+                <div
+                  class="grid justify-center gap-2 rounded-md bg-zinc-50 p-2 dark:bg-zinc-600"
+                >
+                  <NavLink
+                    class="w-full whitespace-nowrap"
+                    :href="
+                      route('transaksi.jadwal.print', {
+                        jadwal: row.data.id,
+                        tipe: 'A-UTS',
+                      })
+                    "
+                  >
+                    Absensi UTS
+                  </NavLink>
+                  <NavLink
+                    class="w-full whitespace-nowrap"
+                    :href="
+                      route('transaksi.jadwal.print', {
+                        jadwal: row.data.id,
+                        tipe: 'A-UAS',
+                      })
+                    "
+                  >
+                    Absensi UAS
+                  </NavLink>
+                  <NavLink
+                    class="w-full whitespace-nowrap"
+                    :href="
+                      route('transaksi.jadwal.print', {
+                        jadwal: row.data.id,
+                        tipe: 'N-UTS',
+                      })
+                    "
+                  >
+                    Nilai UTS
+                  </NavLink>
+                  <NavLink
+                    class="w-full whitespace-nowrap"
+                    :href="
+                      route('transaksi.jadwal.print', {
+                        jadwal: row.data.id,
+                        tipe: 'N-UAS',
+                      })
+                    "
+                  >
+                    Nilai UAS
+                  </NavLink>
+                </div>
+              </PopoverPanel>
+            </Popover>
+          </div>
         </template>
       </DataTable>
     </div>
@@ -92,11 +157,18 @@ import NavLink from "@components/NavLink"
 import LinkButton from "@components/LinkButton"
 import { Inertia } from "@inertiajs/inertia"
 import { ref } from "vue"
-import { PencilIcon, UserAddIcon } from "@heroicons/vue/outline"
+import { PencilIcon, UserAddIcon, PrinterIcon } from "@heroicons/vue/outline"
+import { Popover, PopoverPanel, PopoverButton } from "@headlessui/vue"
 
 const props = defineProps({
-  jadwals: Object,
-  tahunAkademiks: Array,
+  jadwals: {
+    type: Object,
+    default: null,
+  },
+  tahunAkademiks: {
+    type: Array,
+    default: null,
+  },
   selectedTahunAkademik: {
     type: Number,
     default: null,

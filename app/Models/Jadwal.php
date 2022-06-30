@@ -60,6 +60,21 @@ class Jadwal extends Model
         return $this->belongsTo(Ruangan::class);
     }
 
+    public function ruanganUts()
+    {
+        return $this->belongsTo(Ruangan::class, 'uts_ruangan', 'id');
+    }
+
+    public function ruanganUas()
+    {
+        return $this->belongsTo(Ruangan::class, 'uas_ruangan', 'id');
+    }
+
+    public function dosens()
+    {
+        return $this->belongsToMany(Dosen::class, 'jadwal_dosen');
+    }
+
     public function mahasiswas()
     {
         return $this->belongsToMany(Mahasiswa::class, 'jadwal_mahasiswa', 'jadwal_id', 'mahasiswa_npm', 'id', 'npm')
@@ -81,7 +96,7 @@ class Jadwal extends Model
             ->join('matakuliahs', 'matakuliahs.id', '=', 'jadwals.matakuliah_id')
             ->join('kurikulums', 'kurikulums.id', '=', 'matakuliahs.kurikulum_id')
             ->join('ruangans', 'ruangans.id', '=', 'jadwals.ruangan_id');
-            // ->where('kurikulums.aktif','=',1);
+        // ->where('kurikulums.aktif','=',1);
     }
 
     /**

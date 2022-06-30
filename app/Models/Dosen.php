@@ -42,6 +42,12 @@ class Dosen extends Model
         return $this->hasMany(Mahasiswa::class);
     }
 
+    public function jadwals()
+    {
+        return $this->belongsToMany(Jadwal::class, 'jadwal_dosen');
+    }
+
+
     public function scopeIndex($query)
     {
         $query->select(['dosens.*', 'users.name as user_name', 'jurusans.nama as jurusan_nama', 'staffs.status_karyawan as staff_status'])
