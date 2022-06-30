@@ -20,13 +20,15 @@
           <td>Jurusan:</td>
           <td class="pl-2">{{ mahasiswa.jurusan?.nama ?? "-" }}</td>
         </tr>
-        <tr>
+        <tr v-if="ips != ''">
           <td>IPS:</td>
-          <td class="pl-2">{{ ip == "NaN" ? "-" : ip }}</td>
+          <!-- <td class="pl-2">{{ ip == "NaN" ? "-" : ip }}</td> -->
+          <td class="pl-2">{{ ips }}</td>
         </tr>
         <tr>
           <td>IPK:</td>
-          <td class="pl-2">{{ ip == "NaN" ? "-" : ip }}</td>
+          <!-- <td class="pl-2">{{ ip == "NaN" ? "-" : ip }}</td> -->
+          <td class="pl-2">{{ ipk }}</td>
         </tr>
       </table>
 
@@ -59,6 +61,7 @@
             </th>
             <th class="py-2 px-4 text-left font-semibold">Kode MK</th>
             <th class="py-2 px-4 text-left font-semibold">Matakuliah</th>
+            <th v-if="selectedTA == 0" class="py-2 px-4 text-left font-semibold">Semester</th>
             <th class="py-2 px-4 text-left font-semibold">SKS</th>
             <th class="py-2 px-4 text-left font-semibold">Nilai</th>
             <th class="py-2 px-4 text-left font-semibold">NISBI</th>
@@ -76,6 +79,7 @@
             </td>
             <td class="px-4 py-2">{{ jadwal.matakuliah.kode_matakuliah }}</td>
             <td class="px-4 py-2">{{ jadwal.matakuliah.nama_matakuliah }}</td>
+            <td v-if="selectedTA == 0" class="px-4 py-2">{{ jadwal.tahun_ajaran.tahun_ajaran }}</td>
             <td class="px-4 py-2">{{ jadwal.matakuliah.sks }}</td>
             <td class="px-4 py-2">{{ jadwal.pivot.nilai_akhir | 0 ?? "-" }}</td>
             <td class="px-4 py-2">{{ nilaiHuruf(jadwal) }}</td>
@@ -88,6 +92,49 @@
           </tr>
         </tbody>
       </table>
+
+
+      <div v-if="(mahasiswa.mahasiswa_konversi != null) && (selectedTA == 0)">
+        <p  class="my-3 text-sm font-bold md:text-lg">Detail Nilai Konversi</p>
+
+
+        <table class="w-full table-auto">
+          <thead>
+            <tr>
+              <th
+                v-if="selectedTA == 'semua'"
+                class="py-2 px-4 text-left font-semibold"
+              >
+                Tahun Akademik
+              </th>
+              <th class="py-2 px-4 text-left font-semibold">Kode MK</th>
+              <th class="py-2 px-4 text-left font-semibold">Matakuliah</th>
+              <th v-if="selectedTA == 0" class="py-2 px-4 text-left font-semibold">Semester</th>
+              <th class="py-2 px-4 text-left font-semibold">SKS (S)</th>
+              <th class="py-2 px-4 text-left font-semibold">Bobot (B)</th>
+              <th class="py-2 px-4 text-left font-semibold">(B) x (S)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="mkk in mahasiswa.mahasiswa_konversi.matakuliah_konversis"
+              :key="mkk.id"
+              class="border-y text-sm font-normal dark:border-zinc-600 dark:text-zinc-200"
+            >
+              <!-- <td>wow</td> -->
+              <td class="px-4 py-2">{{ mkk.matakuliah.kode_matakuliah }}</td>
+              <td class="px-4 py-2">{{ mkk.matakuliah.nama_matakuliah }}</td>
+
+              <td>-</td>
+              <td class="px-4 py-2">{{ mkk.matakuliah.sks }}</td>
+              <td class="px-4 py-2">{{ mkk.nilai_matakuliah | 0 ?? "-" }}</td>
+              <td class="px-4 py-2">{{ mkk.nilai_matakuliah * mkk.matakuliah.sks }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+
     </div>
 
     <Dialog
@@ -154,6 +201,9 @@ const props = defineProps({
     default: 0,
   },
   mahasiswa: Object,
+  ips: String,
+  ipk: String,
+  isKonversi: Boolean,
 })
 
 const selectedTA = ref(props.selectedTahunAkademik)

@@ -274,7 +274,7 @@ class TestingController extends Controller
         $mhss = $ta->mahasiswas()->with(['tahun_ajaran' => function($query) use ($ta) {
             return $query->where('tanggal_mulai', '<=', $ta->tanggal_mulai)
                 ->orderBy('tanggal_mulai', 'desc');
-            }, 'jadwals.matakuliah','user','jurusan'])
+            }, 'jadwals.matakuliah','user','jurusan', 'mahasiswa_konversi.matakuliah_konversis.matakuliah'])
             ->get();
 
         // // ->where('npm', '=','20.113023.61201.008')->toSql();
@@ -287,6 +287,8 @@ class TestingController extends Controller
         $data['ta']['tahun_ajaran'] = $ta->tahun_ajaran;
 
         foreach($mhss as $mhs) {
+            // dump(isset(($mhs->mahasiswa_konversi)));
+            // continue;
             $tas_mahasiswa = $mhs->tahun_ajaran;
             $ips = 0;
             $ipk = 0;
@@ -329,7 +331,8 @@ class TestingController extends Controller
                 // END HITUNG IPS
 
             }
-
+            // break;
+            // return 0;
 
             // JIKA TAHUN INI BELUM DIISI NILAINYA, RETURN 0
             $ips = $nilai_null ? '0' : $ips;
@@ -351,11 +354,18 @@ class TestingController extends Controller
             // group by jadwal by id, ambil max angka mutu di jadwal (karena kemungkinan mengulang matkul)
             $jadwal_all = $jadwal_all->whereIn('tahun_ajaran_id', $tas)->groupBy('matakuliah_id')->all();//->toSql(); // belum ambil max nilainya
 
+            $sks_tidak_lulus = 0;
             // hitung
             foreach ($jadwal_all as $j) {
                 // $am = $j->pivot->angka_mutu;
                 $am = $j->max('pivot.angka_mutu'); // max angka mutu
                 $sks = ($j->max('matakuliah.sks')); // hanya select sksnya (karena sks sama)
+
+                // SKS GA LULUS JIKA
+                if ($am === 0) {
+                    $sks_tidak_lulus += $sks;
+                }
+
                 $total_nilai_kali_sks = $total_nilai_kali_sks + ($sks * $am);
                 $total_sks = $total_sks + $sks;
             }
@@ -369,6 +379,23 @@ class TestingController extends Controller
             if ($nilai_null) {
                 array_shift($tas);
                 $total_sks += $sks_per;
+            }
+
+            // MAHASISWA KONVERSI
+
+            if($mhs->mahasiswa_konversi) {
+                // AMBIL MK KONVERSI
+                $matakuliah_konversis = $mhs->mahasiswa_konversi->matakuliah_konversis;
+                $total_nilai_kali_sks_konversi = 0;
+                $total_sks_konversi = 0;
+                // HITUNG TOTAL SKS DAN SKS*BOBOT
+                foreach ($matakuliah_konversis as $mkk) {
+                    $total_nilai_kali_sks += $mkk->nilai_matakuliah * $mkk->matakuliah->sks;
+                    $total_sks += $mkk->matakuliah->sks;
+                }
+                // HITUNG IPK AKHIR
+                $keterangan[] = 'Mahasiswa Konversi';
+                $ipk = ($total_nilai_kali_sks + $total_nilai_kali_sks_konversi) / ($total_sks + $total_sks_konversi);
             }
 
             $keterangan[] = !$total_sks ? 'Tidak ditemukan data matakuliah yang diambil' : "";
@@ -394,6 +421,7 @@ class TestingController extends Controller
                 die();
             }
         }
+        // return 0;
         $this->createSheet($data);
     }
 

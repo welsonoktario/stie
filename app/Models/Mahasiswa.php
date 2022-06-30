@@ -141,7 +141,27 @@ class Mahasiswa extends Model
             ->withPivot(['nilai_uts', 'nilai_nas', 'nilai_akhir', 'nisbi', 'angka_mutu']);
     }
 
-    public function hitungIP($tas = []) {
+    public function hitungIPKonversi(){
+
+        $totalNilaiKaliSksKonversi = 0;
+        $totalSksKonversi = 0;
+        $mahasiswa_konversi = $this->mahasiswa_konversi;
+        if ($mahasiswa_konversi) {
+            // dd($mkk);
+            $matakuliah_konversis = $mahasiswa_konversi->matakuliah_konversis;
+
+            // HITUNG TOTAL SKS DAN SKS*BOBOT
+            foreach ($matakuliah_konversis as $mkk) {
+                $totalNilaiKaliSksKonversi += $mkk->nilai_matakuliah * $mkk->matakuliah->sks;
+                $totalSksKonversi += $mkk->matakuliah->sks;
+            }
+            $totalSksKonversi;
+            $totalNilaiKaliSksKonversi;
+            // dd($mkk);
+        }
+    }
+
+    public function hitungIP($tas = [], $hitungIpAwalKonversi = false) {
         // $ip = 0;
         // dd($tas);
         if (count($tas) > 0) {
@@ -155,15 +175,32 @@ class Mahasiswa extends Model
 
         $totalNilaiKaliSks = 0;
         $totalSks = 0;
-
+        // dd("disini");
         foreach ($jadwals as $jadwal) {
-
-            if ($jadwal->pivot->angka_mutu === 0) {
+            if ((count($tas) === 1) && $jadwal->pivot->angka_mutu === null) {
                 return 0;
             }
             $totalNilaiKaliSks += $jadwal->pivot->angka_mutu * $jadwal->matakuliah->sks;
             $totalSks += $jadwal->matakuliah->sks;
         }
+        // dd($totalSks);
+        $totalNilaiKaliSksKonversi = 0;
+        $totalSksKonversi = 0;
+        $mahasiswa_konversi = $this->mahasiswa_konversi;
+        if ($mahasiswa_konversi && (count($tas) != 1 || $hitungIpAwalKonversi)) {
+            // dd($mkk);
+            $matakuliah_konversis = $mahasiswa_konversi->matakuliah_konversis;
+
+            // HITUNG TOTAL SKS DAN SKS*BOBOT
+            foreach ($matakuliah_konversis as $mkk) {
+                $totalNilaiKaliSksKonversi += $mkk->nilai_matakuliah * $mkk->matakuliah->sks;
+                $totalSksKonversi += $mkk->matakuliah->sks;
+            }
+            $totalSks += $totalSksKonversi;
+            $totalNilaiKaliSks += $totalNilaiKaliSksKonversi;
+            // dd($mkk);
+        }
+        // dd("sks".$totalSks);
 
         if ($totalSks == 0) {
             return 0;

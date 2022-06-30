@@ -828,7 +828,7 @@
                 mahasiswa.npm +
                 '/matakuliah-konversi'
               "
-              class="focus:shadow-outline-gray ml-4 bg-gray-800 hover:bg-gray-700 focus:border-gray-900 active:bg-gray-900"
+              class="focus:shadow-outline-gray text-white ml-4 bg-gray-800 hover:bg-gray-700 focus:border-gray-900 active:bg-gray-900"
               >Matakuliah Diakui</LinkButton
             >
           </div>

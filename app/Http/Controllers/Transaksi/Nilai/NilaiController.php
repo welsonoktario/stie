@@ -73,7 +73,7 @@ class NilaiController extends Controller
         $selectedTahunAkademik = (int) Request::get('ta') ?: 0;
         $mahasiswa->load([
             'jadwals' => function ($q) use ($selectedTahunAkademik) {
-                return $q->with('matakuliah')->when($selectedTahunAkademik, function ($query, $selectedTahunAkademik) {
+                return $q->with(['matakuliah', 'tahun_ajaran'])->when($selectedTahunAkademik, function ($query, $selectedTahunAkademik) {
                     if ($selectedTahunAkademik == 'semua') {
                         return $query;
                     } else {
@@ -94,7 +94,8 @@ class NilaiController extends Controller
             },
             'user',
             'jurusan',
-            'status_mahasiswa'
+            'status_mahasiswa',
+            'mahasiswa_konversi.matakuliah_konversis'
         ]);
 
         $ips = 0;
@@ -106,30 +107,42 @@ class NilaiController extends Controller
         rsort($tas);
         // dd($tas);
         if ($selectedTahunAkademik) {
-            // dump('ips');
             // hitung ip dari semester yang dipilih
+
+            // HItung IPS
+            // dump('hitung ips');
+
             $ips = $mahasiswa->hitungIP([$selectedTahunAkademik]);
-            $ipk = $mahasiswa->hitungIP($tas);
+
+            // Hitung IPK
+            // dd($tas);
+            $hitungIpKonversi = count($tas) == 1 ? true : false;
+            $ipk = $mahasiswa->hitungIP($tas, $hitungIpKonversi);
+            // dd($ipk);
 
         } else {
             // dump('ipk');
-            $ips = $mahasiswa->hitungIP([array_shift($tas)]);
+            // hitung ipk
+            // dump('ipk');
+            // $ips = $mahasiswa->hitungIP([array_shift($tas)]);
             // kalau ips nol, hitung ip ke belakang tanpa yang skrg
-            if ($ips === 0) {
-                // kalau tasnya gak ada, berarti mhs baru di smt itu
-                if ($tas === 0) {
-                    // dump('disini gak');
-                    $ipk = 'Baru';
-                }
-                else {
-                    $ipk = $mahasiswa->hitungIP($tas);
-                }
-            }
-            else {
-                $ipk = $mahasiswa->hitungIP([]);
-            }
-            $ips = $ipk;
+            // if ($ips === 0) {
+            //     // kalau tasnya gak ada, berarti mhs baru di smt itu
+            //     if ($tas === 0) {
+            //         // dump('disini gak');
+            //         $ipk = 'Baru';
+            //     }
+            //     else {
+            //         $ipk = $mahasiswa->hitungIP($tas);
+            //     }
+            // }
+            // else {
+            // }
+            $ipk = $mahasiswa->hitungIP([]);
+            $ips = "";
         }
+
+        // dump($ipk, $ips);
 
         $tahunAkademiks = $mahasiswa->tahun_ajaran()->orderBy('tanggal_mulai','DESC')->get();
         // dd($tahunAkademiks);
@@ -141,8 +154,8 @@ class NilaiController extends Controller
             'tahunAkademiks' => fn () => $tahunAkademiks,
             'selectedTahunAkademik' => fn () => $selectedTahunAkademik,
             'mahasiswa' => $mahasiswa,
-            'ips' => $ips,
-            'ipk' => $ipk
+            'ips' => round($ips, 3),
+            'ipk' => round($ipk, 3)
         ]);
     }
 

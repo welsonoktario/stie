@@ -30,6 +30,7 @@ use App\Http\Controllers\Transaksi\Keuangan\KeuanganController;
 use App\Http\Controllers\Transaksi\KRS\KRSController;
 use App\Http\Controllers\Transaksi\Nilai\NilaiController;
 use App\Http\Controllers\Transaksi\Ujian\UjianController;
+use App\Http\Controllers\TranskripController;
 
 // use App\Models\TahunAjaran;
 
@@ -98,6 +99,7 @@ Route::group(['middleware' => ['auth']], function () {
             ->name('kurikulum.prasyarat');
 
         Route::get('testing', [TestingController::class, 'index'])->name('testing');
+        Route::get('transkrip/{mahasiswa}', [TranskripController::class, 'show'])->name('transkrip');
         Route::post('krs/{mahasiswa}/copy', [KRSController::class, 'copy'])->name('krs.copy');
 
         Route::group(['prefix' => 'jadwal', 'as' => 'jadwal.'], function () {
