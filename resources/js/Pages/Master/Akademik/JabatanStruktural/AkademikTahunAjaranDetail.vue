@@ -153,7 +153,7 @@
 
 <script>
 import { computed, ref } from "vue"
-import { Link, useForm } from "@inertiajs/inertia-vue3"
+import { useForm } from "@inertiajs/inertia-vue3"
 import { Switch, SwitchGroup, SwitchLabel } from "@headlessui/vue"
 import AppLayout from "@layouts/App"
 import Button from "@components/Button"
@@ -170,7 +170,6 @@ export default {
     Input,
     InputError,
     Label,
-    Link,
     Switch,
     SwitchGroup,
     SwitchLabel,

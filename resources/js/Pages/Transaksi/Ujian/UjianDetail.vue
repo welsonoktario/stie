@@ -123,7 +123,11 @@
       <br />
       <br />
       <br />
-      <p class="uppercase">{{wakil_ketua_1.staff.gelar_depan}} {{wakil_ketua_1.staff.user.name}} {{wakil_ketua_1.staff.gelar_belakang}}</p>
+      <p class="uppercase">
+        {{ wakil_ketua_1.staff.gelar_depan }}
+        {{ wakil_ketua_1.staff.user.name }}
+        {{ wakil_ketua_1.staff.gelar_belakang }}
+      </p>
     </div>
   </div>
 </template>
