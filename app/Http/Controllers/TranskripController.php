@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Mahasiswa;
 use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
+use League\CommonMark\Parser\Block\SkipLinesStartingWithLettersParser;
 
 class TranskripController extends Controller
 {
@@ -66,7 +67,7 @@ class TranskripController extends Controller
             // 'matakuliah_konversis.matakuliah'
         ]);
 
-        echo('Transkrip Mahasiswa <br><br>');
+        echo('Transkrip Mahasiswa (versi preview) <br><br>');
         print("Nama: ".$mahasiswa->user->name. " <br> NPM: ". $mahasiswa->npm."<br><br>");
 
         // apakah mhs adalah mhs konversi?
@@ -94,18 +95,25 @@ class TranskripController extends Controller
         $total_sks = 0;
         $total_nilai_kali_sks = 0;
         foreach ($jadwals as $kode_matakuliah => $jadwal) {
-            $nilai = $jadwal->max("angka_mutu");
+            // dd($jadwals);
+            // dd($jadwal);
+            $nilai = $jadwal->max("pivot.angka_mutu");
+            // dd($nilai);
             $sks = $jadwal->max("matakuliah.sks");
 
             echo ($kode_matakuliah."<br>");
+            // dd($jadwal);
             foreach ($jadwal as $j) {
-                echo ($j->matakuliah->nama_matakuliah. " - SKS: " . $j->matakuliah->sks. " - Nilai: " . $j->angka_mutu."<br>");
+                echo ($j->matakuliah->nama_matakuliah. " - SKS: " . $j->matakuliah->sks. " - Nilai: " . $j->pivot->angka_mutu."<br>");
             }
-            $total_nilai_kali_sks += $nilai;
+            $total_nilai_kali_sks += $nilai * $sks;
             $total_sks += $sks;
-        }
 
-        echo('<br>IPK'. ($total_nilai_kali_sks +$total_nilai_kali_sks_konversi)/($total_sks + $total_sks_konversi));
+        }
+        // dd(($total_nilai_kali_sks + $total_nilai_kali_sks_konversi) / ($total_sks + $total_sks_konversi));
+
+        // dd($total_nilai_kali_sks);
+        echo('<br>IPK '. ($total_nilai_kali_sks +$total_nilai_kali_sks_konversi)/($total_sks + $total_sks_konversi));
 
 
 

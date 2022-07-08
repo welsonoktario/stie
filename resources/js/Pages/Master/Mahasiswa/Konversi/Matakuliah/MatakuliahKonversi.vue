@@ -67,6 +67,20 @@
               disabled
             ></Input>
           </div>
+
+          <div class="mb-3 w-full">
+            <label class="mb-2 block text-sm font-bold text-gray-500" for="ip"
+              >IP Konversi</label
+            >
+            <Input
+              id="ip"
+              v-model="ip"
+              class="w-full"
+              type="text"
+              placeholder="IP"
+              disabled
+            ></Input>
+          </div>
         </div>
       </form>
 
@@ -126,43 +140,43 @@
             <tbody class="divide-y divide-gray-200 bg-white">
               <tr v-for="matakuliah in matakuliahs" :key="matakuliah.id">
                 <td
-                  class="border-y text-sm font-normal dark:border-zinc-600 dark:text-zinc-200"
+                  class="border-y py-2 px-4 text-sm font-normal dark:border-zinc-600 dark:text-zinc-200"
                 >
                   {{ matakuliah.kode_matakuliah }}
                 </td>
 
                 <td
-                  class="border-y text-sm font-normal dark:border-zinc-600 dark:text-zinc-200"
+                  class="border-y py-2 px-4 text-sm font-normal dark:border-zinc-600 dark:text-zinc-200"
                 >
                   {{ matakuliah.nama_matakuliah }}
                 </td>
                 <td
-                  class="border-y text-sm font-normal dark:border-zinc-600 dark:text-zinc-200"
+                  class="border-y py-2 px-4 text-sm font-normal dark:border-zinc-600 dark:text-zinc-200"
                 >
                   {{ matakuliah.sks_matakuliah }}
                 </td>
                 <td
-                  class="border-y text-sm font-normal dark:border-zinc-600 dark:text-zinc-200"
+                  class="border-y py-2 px-4 text-sm font-normal dark:border-zinc-600 dark:text-zinc-200"
                 >
                   {{ matakuliah.matakuliah.kode_matakuliah }}
                 </td>
                 <td
-                  class="border-y text-sm font-normal dark:border-zinc-600 dark:text-zinc-200"
+                  class="border-y py-2 px-4 text-sm font-normal dark:border-zinc-600 dark:text-zinc-200"
                 >
                   {{ matakuliah.matakuliah.nama_matakuliah }}
                 </td>
                 <td
-                  class="border-y text-sm font-normal dark:border-zinc-600 dark:text-zinc-200"
+                  class="border-y py-2 px-4 text-sm font-normal dark:border-zinc-600 dark:text-zinc-200"
                 >
                   {{ matakuliah.matakuliah.sks }}
                 </td>
                 <td
-                  class="border-y text-sm font-normal dark:border-zinc-600 dark:text-zinc-200"
+                  class="border-y py-2 px-4 text-sm font-normal dark:border-zinc-600 dark:text-zinc-200"
                 >
                   {{ matakuliah.nilai_matakuliah }}
                 </td>
                 <td
-                  class="border-y text-sm font-normal dark:border-zinc-600 dark:text-zinc-200"
+                  class="border-y py-2 px-4 text-sm font-normal dark:border-zinc-600 dark:text-zinc-200"
                 >
                   <Link
                     :href="
@@ -224,6 +238,7 @@ export default {
       type: Object,
       default: null,
     },
+    ip: String,
   },
   setup(props) {
     const showModalMatakuliah = ref(true)

@@ -32,7 +32,16 @@
         </tr>
       </table>
 
-      <div class="mb-3 mt-6 inline-flex w-full items-center justify-between">
+      <div class="flex space-x-2 mt-3">
+        <Button
+          class=""
+          @click="cetakTranskrip"
+          >
+          Cetak Transkrip
+        </Button>
+      </div>
+
+      <div class="mb-3 mt-3 inline-flex w-full items-center justify-between">
         <div class="inline-flex">
           <p
             class="content-middle my-auto whitespace-nowrap align-middle text-sm font-bold md:text-lg"
@@ -150,6 +159,8 @@
           <Label>Nilai Akhir</Label>
           <Input
             v-model="nilai"
+
+            @focus="isDialogNilaiOpen"
             class="w-full"
             type="number"
             min="0"
@@ -189,6 +200,7 @@ import Input from "@/Components/Input"
 import Label from "@/Components/Label"
 import Select from "@/Components/Select"
 import { Link } from "@inertiajs/inertia-vue3"
+import LinkButton from "@components/LinkButton"
 import { PencilIcon } from "@heroicons/vue/outline"
 import { onMounted, ref, watch } from "vue"
 import { inRange } from "@/util"
@@ -209,7 +221,7 @@ const props = defineProps({
 const selectedTA = ref(props.selectedTahunAkademik)
 const selectedJadwal = ref(0)
 const isDialogNilaiOpen = ref(false)
-const nilai = ref(0)
+const nilai = ref()
 const nisbi = ref("")
 const angkaMutu = ref(0)
 const ip = ref(0)
@@ -332,6 +344,12 @@ const edit = () =>
 const namaTA = (jadwal) =>
   props.tahunAkademiks.find((ta) => ta.id == jadwal.tahun_ajaran_id)
     .tahun_ajaran
+
+const cetakTranskrip = () => {
+  const r = route("transaksi.transkrip", {mahasiswa: props.mahasiswa.npm})
+  console.log(r);
+  Inertia.visit(r);
+}
 
 const openDialogNilai = (jadwal) => {
   selectedJadwal.value = jadwal.id

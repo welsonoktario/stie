@@ -19,7 +19,7 @@ class MatakuliahKonversiController extends Controller
     public function index($mahasiswa_konversi_id)
     {
         //
-        
+
         // dd($mahasiswa_konversi_id);
 
         $mahasiswa = Mahasiswa::where('npm','=' ,$mahasiswa_konversi_id)
@@ -27,10 +27,27 @@ class MatakuliahKonversiController extends Controller
             ->with(['user','jurusan','dosen','mahasiswa_konversi.matakuliah_konversis.matakuliah'])
             ->first();
 
-        // dd($mahasiswa);  
+        $ip = 0;
+        $matakuliah_konversis = $mahasiswa->mahasiswa_konversi->matakuliah_konversis;
+
+        // dd($matakuliah_konversis);
+        if ($matakuliah_konversis) {
+            $totalNilaiKaliSks = 0;
+            $totalSks = 0;
+            foreach ($matakuliah_konversis as $mk_konversi) {
+                $nilai = $mk_konversi->nilai_matakuliah;
+                $sks = $mk_konversi->matakuliah->sks;
+                $totalNilaiKaliSks += $nilai * $sks;
+                $totalSks += $sks;
+            }
+            $ip = $totalNilaiKaliSks/$totalSks;
+        }
+
+        // dd($mahasiswa);
         return Inertia::render('Master/Mahasiswa/Konversi/Matakuliah/MatakuliahKonversi',[
             'mahasiswa' => $mahasiswa,
             'matakuliahs' => $mahasiswa->mahasiswa_konversi->matakuliah_konversis,
+            'ip' => $ip,
         ]);
     }
 
@@ -53,7 +70,7 @@ class MatakuliahKonversiController extends Controller
         return Inertia::render('Master/Mahasiswa/Konversi/Matakuliah/MatakuliahKonversiDetail',[
             'matakuliahs' => $matakuliahs,
             'mahasiswa' => $mahasiswa,
-            
+
         ]);
     }
 
@@ -76,7 +93,7 @@ class MatakuliahKonversiController extends Controller
         // dd($matakuliah_id);
         $mahasiswa = Mahasiswa::where('npm','=',$mahasiswa_konversi_id)->first();
 
-        // $mk_konversi = $mahasiswa->mahasiswa_konversi->matakuliah_konversis= 
+        // $mk_konversi = $mahasiswa->mahasiswa_konversi->matakuliah_konversis=
         $mk_konversi = new MatakuliahKonversi();
         $mk_konversi->create([
             'kode_matakuliah' => $kode_matakuliah,
@@ -88,8 +105,8 @@ class MatakuliahKonversiController extends Controller
         ]);
 
         // return redirect(route('master.mahasiswa-konversi.matakuliah.index', {mahasiswa_konversi_id: $mahasiswa->mahasiswa_konversi->id}));
-        
-        return redirect()->route('master.mahasiswa-konversi.matakuliah.index', 
+
+        return redirect()->route('master.mahasiswa-konversi.matakuliah.index',
             ['mahasiswa_konversi_id' => $mahasiswa->npm]
         );
 
@@ -148,7 +165,7 @@ class MatakuliahKonversiController extends Controller
         // dd($matakuliah_id);
         $mahasiswa = Mahasiswa::where('npm', '=', $mahasiswa_konversi_id)->first();
         // dd($mahasiswa, $mahasiswa_konversi_id);
-        // $mk_konversi = $mahasiswa->mahasiswa_konversi->matakuliah_konversis= 
+        // $mk_konversi = $mahasiswa->mahasiswa_konversi->matakuliah_konversis=
         $mk_konversi = MatakuliahKonversi::findOrFail($matakuliah_konversi_id);
         // dd($mk_konversi, $mahasiswa_konversi_id, $matakuliah_konversi_id);
         $mk_konversi->update([
@@ -161,8 +178,8 @@ class MatakuliahKonversiController extends Controller
         ]);
 
         // return redirect(route('master.mahasiswa-konversi.matakuliah.index', {mahasiswa_konversi_id: $mahasiswa->mahasiswa_konversi->id}));
-        
-        return redirect()->route('master.mahasiswa-konversi.matakuliah.index', 
+
+        return redirect()->route('master.mahasiswa-konversi.matakuliah.index',
             ['mahasiswa_konversi_id' => $mahasiswa->npm]
         );
     }
@@ -182,7 +199,7 @@ class MatakuliahKonversiController extends Controller
         $matakuliah->delete();
 
         $mahasiswa = Mahasiswa::where('npm','=',$mahasiswa_konversi_id)->first();
-        return redirect()->route('master.mahasiswa-konversi.matakuliah.index', 
+        return redirect()->route('master.mahasiswa-konversi.matakuliah.index',
             ['mahasiswa_konversi_id' => $mahasiswa->npm]
         );
 
