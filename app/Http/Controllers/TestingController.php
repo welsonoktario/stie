@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -16,6 +17,7 @@ class TestingController extends Controller
 {
     public function index()
     {
+        return Inertia::render('Transaksi/PrintView/PrintTranscript');
         $tas = TahunAjaran::all();
 
         foreach ($tas as $ta) {
@@ -35,6 +37,12 @@ class TestingController extends Controller
                     // dump($status);
                     $status->sync([$ta->id => [
                         'status' => 'Tidak Aktif'
+                    ]], false);
+                } else {
+                    $status = $mhs->status_mahasiswa();
+                    // dump($status);
+                    $status->sync([$ta->id => [
+                        'status' => 'Aktif'
                     ]], false);
                 }
             }
@@ -353,7 +361,7 @@ class TestingController extends Controller
 
             // group by jadwal by id, ambil max angka mutu di jadwal (karena kemungkinan mengulang matkul)
             $jadwal_all = $jadwal_all->whereIn('tahun_ajaran_id', $tas)->groupBy('matakuliah_id')->all();//->toSql(); // belum ambil max nilainya
-
+            // dd($jadwal_all);
             $sks_tidak_lulus = 0;
             // hitung
             foreach ($jadwal_all as $j) {
@@ -395,8 +403,12 @@ class TestingController extends Controller
                 }
                 // HITUNG IPK AKHIR
                 $keterangan[] = 'Mahasiswa Konversi';
-                $ipk = ($total_nilai_kali_sks + $total_nilai_kali_sks_konversi) / ($total_sks + $total_sks_konversi);
+                if ($total_sks != 0 && $total_sks_konversi != 0) {
+                    $ipk = ($total_nilai_kali_sks + $total_nilai_kali_sks_konversi) / ($total_sks + $total_sks_konversi);
+                }
             }
+
+            // dd($mhs);
 
             $keterangan[] = !$total_sks ? 'Tidak ditemukan data matakuliah yang diambil' : "";
             $ipk = !$total_sks ? '-' : $ipk;

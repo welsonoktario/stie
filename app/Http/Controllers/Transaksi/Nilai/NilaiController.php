@@ -22,7 +22,7 @@ class NilaiController extends Controller
     {
         $selectedTahunAkademik = (int) Request::get('ta') ?: TahunAjaran::firstWhere('aktif', true)->id;
         $tahunAkademiks = TahunAjaran::orderBy('tanggal_mulai', 'DESC')->get();
-        $mahasiswas = Mahasiswa::select(['mahasiswas.npm', 'mahasiswas.status_mahasiswa', 'users.name as nama', 'jurusans.nama as jurusan'])
+        $mahasiswas = Mahasiswa::select(['mahasiswas.npm', 'mahasiswas.status_mahasiswa', 'status_mahasiswa.status', 'users.name as nama', 'jurusans.nama as jurusan'])
             // ->doesntHave('mahasiswa_konversi')
             ->join('users', 'users.id', '=', 'mahasiswas.user_id')
             ->leftJoin('jurusans', 'jurusans.id', '=', 'mahasiswas.jurusan_id')
@@ -31,9 +31,13 @@ class NilaiController extends Controller
             }, function ($query) use ($tahunAkademiks) {
                 return $query->whereHas('status_mahasiswa', fn ($q) => $q->whereIn('status_mahasiswa.tahun_ajaran', [$tahunAkademiks[0]->id]));
             })
+            ->join('status_mahasiswa', 'status_mahasiswa.mahasiswa_npm', '=','mahasiswas.npm')
+            ->where('status_mahasiswa.tahun_ajaran', $selectedTahunAkademik)
             ->filter(Request::only(['query', 'orderBy', 'orderType']))
             ->paginate(Request::get('perPage') ?: 10)
             ->withQueryString();
+
+        // dd($mahasiswas);
 
         return Inertia::render('Transaksi/Nilai/Nilai', [
             'tahunAkademiks' => fn () => $tahunAkademiks,

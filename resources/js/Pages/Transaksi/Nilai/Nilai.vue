@@ -50,6 +50,18 @@
           </Link>
         </template>
       </DataTable>
+      <div>
+        <Link
+          as="link"
+          :href= "
+              route('print.aktivitas', {
+                ta: selectedTA
+              })
+          "
+          class="mt-3">
+          <PrinterIcon class="h-4"/> Cetak Laporan Aktivitas Mahasiswa
+        </Link>
+      </div>
     </div>
   </AppLayout>
 </template>
@@ -57,7 +69,7 @@
 <script setup>
 import { ref } from "vue"
 import { Inertia } from "@inertiajs/inertia"
-import { PencilIcon } from "@heroicons/vue/outline"
+import { PencilIcon, PrinterIcon } from "@heroicons/vue/outline"
 import AppLayout from "@layouts/App"
 import DataTable from "@components/DataTable"
 import Link from "@/Components/Link"
@@ -85,7 +97,7 @@ const columns = [
     label: "Jurusan",
   },
   {
-    key: "status_mahasiswa",
+    key: "status",
     label: "Status Mahasiswa",
   },
 ]

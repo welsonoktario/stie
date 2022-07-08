@@ -54,7 +54,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/print/{ta}', [TestingController::class, 'export']);
+Route::get('/print/{ta}', [TestingController::class, 'export'])->name("print.aktivitas");
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('dashboard', function () {
