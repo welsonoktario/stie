@@ -40,7 +40,9 @@ class MatakuliahKonversiController extends Controller
                 $totalNilaiKaliSks += $nilai * $sks;
                 $totalSks += $sks;
             }
-            $ip = $totalNilaiKaliSks/$totalSks;
+            if ($totalSks != 0) {
+                $ip = $totalNilaiKaliSks/$totalSks;
+            }
         }
 
         // dd($mahasiswa);

@@ -356,6 +356,7 @@ const editNilai = () => {
       nisbi: nisbi.value,
       angkaMutu: angkaMutu.value,
       ta: props.tahunAkademik.id,
+      page: route().params.page,
     },
     {
       preserveState: true,

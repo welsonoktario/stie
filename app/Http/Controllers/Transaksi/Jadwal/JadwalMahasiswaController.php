@@ -206,7 +206,8 @@ class JadwalMahasiswaController extends Controller
                     'transaksi.jadwal.mahasiswa.index',
                     [
                         'jadwal' => $jadwal->id,
-                        'ta' => Request::get('ta')
+                        'ta' => Request::get('ta'),
+                        'page' => Request::get('page')
                     ]
                 )
                 ->with(
