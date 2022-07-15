@@ -141,8 +141,10 @@ const tanggal = () => {
   const hariUas = dateUas.toLocaleDateString("id-ID", { weekday: "long" })
 
   if (props.tipe.includes("UTS")) {
+    if (!props.jadwal.ruangan_uts) return "-"
     return `${jadwal.uts_tanggal}/${hariUts}/${jadwal.uts_pukul_mulai} - ${jadwal.uts_pukul_selesai}/${props.jadwal.ruangan_uts.nama_ruangan}`
   } else if (props.tipe.includes("UAS")) {
+    if (!props.jadwal.ruangan_uas) return "-"
     return `${jadwal.uas_tanggal}/${hariUas}/${jadwal.uas_pukul_mulai} - ${jadwal.uas_pukul_selesai}/${props.jadwal.ruangan_uas.nama_ruangan}`
   } else if (props.tipe == "H") {
     return `${props.jadwal.hari}/${props.jadwal.jam}/${props.jadwal.ruangan.nama_ruangan}`
