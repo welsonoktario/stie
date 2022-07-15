@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="tipe === 'H' ? 'landscape' : null"
+    :class="{ landscape: tipe === 'H' }"
     class="A4 sheet padding-10mm justify-items-end font-serif"
   >
     <div class="grid grid-cols-2">
@@ -53,7 +53,7 @@
         <tr>
           <td class="text-right">Tanggal/Hari/Jam/Ruangan</td>
           <td class="pl-2 pr-4">:</td>
-          <td>{{ tanggal }}</td>
+          <td>{{ tanggal() }}</td>
         </tr>
         <tr>
           <td class="text-right">Jumlah Peserta</td>
@@ -66,114 +66,19 @@
     <template v-if="tipe === 'H'">
       <component :is="TableAbsensiHarian" :jadwal="jadwal" />
     </template>
-
-    <!-- <table
-      class="relative col-span-2 mx-auto mt-8 w-full table-auto border-collapse border border-black font-mono text-xs"
-    >
-      <thead>
-        <tr>
-          <th class="border border-black" :rowspan="tipe === 'H' ? 3 : 2">
-            No.
-          </th>
-          <th class="border border-black" :rowspan="tipe === 'H' ? 3 : 2">
-            N I M
-          </th>
-          <th class="border border-black" :rowspan="tipe === 'H' ? 3 : 2">
-            N A M A
-          </th>
-          <th
-            v-if="tipe.includes('A')"
-            class="whitespace-pre-line border border-black"
-            rowspan="2"
-          >
-            Tanda Tangan
-          </th>
-          <th v-if="tipe.includes('N')" colspan="3" class="border border-black">
-            Nilai Akhir
-          </th>
-          <th v-if="tipe === 'H'" colspan="14">Pertemuan ke-</th>
-        </tr>
-        <tr v-if="tipe !== 'H'">
-          <th class="border border-black">ANGKA</th>
-          <th class="border border-black">BOBOT</th>
-          <th class="border border-black">HURUF</th>
-        </tr>
-        <tr v-if="tipe === 'H'">
-          <th
-            v-for="pertemuan in 14"
-            :key="pertemuan"
-            class="border border-black"
-          >
-            {{ pertemuan }}
-          </th>
-        </tr>
-        <tr v-if="tipe === 'H'">
-          <th
-            v-for="pertemuan in 14"
-            :key="pertemuan"
-            class="h-8 border border-black"
-          ></th>
-        </tr>
-      </thead>
-      <tbody>
-        <template v-if="tipe.includes('A')">
-          <tr class="tbl" v-for="(mhs, index) in jadwal.mahasiswas" :key="index">
-            <td class="border border-black pr-1 text-right">{{ index + 1 }}</td>
-            <td class="border border-black pl-1">
-              {{ nim(mhs.npm) }}
-            </td>
-            <td class="border border-black pl-1 uppercase">
-              {{ mhs.user.name }}
-            </td>
-            <td class="border border-black text-center"></td>
-            <td class="border border-black text-center"></td>
-            <td class="border border-black text-center"></td>
-            <td class="border border-black text-center"></td>
-          </tr>
-        </template>
-        <template v-else-if="tipe.includes('N')">
-          <tr class="tbl" v-for="(mhs, index) in jadwal.mahasiswas" :key="index">
-            <td class="border border-black pr-1 text-right">{{ index + 1 }}</td>
-            <td class="border border-black pl-1">
-              {{ nim(mhs.npm) }}
-            </td>
-            <td class="border border-black pl-1 uppercase">
-              {{ mhs.user.name }}
-            </td>
-            <td class="border border-black text-center">
-              {{ Number(mhs.jadwals[0].pivot.nilai_akhir) }}
-            </td>
-            <td class="border border-black text-center">
-              {{ Number(mhs.jadwals[0].pivot.angka_mutu).toFixed(2) }}
-            </td>
-            <td class="border border-black text-center">
-              {{ mhs.jadwals[0].pivot.nisbi }}
-            </td>
-          </tr>
-        </template>
-        <template v-else>
-          <tr class="tbl" v-for="(mhs, index) in jadwal.mahasiswas" :key="index">
-            <td class="border border-black pr-1 text-right">{{ index + 1 }}</td>
-            <td class="border border-black pl-1">
-              {{ nim(mhs.npm) }}
-            </td>
-            <td class="border border-black pl-1 uppercase">
-              {{ mhs.user.name }}
-            </td>
-            <td
-              v-for="pertemuan in 14"
-              :key="`pertemuan-${pertemuan}`"
-              class="w-10 border border-black"
-            ></td>
-          </tr>
-        </template>
-      </tbody>
-    </table> -->
+    <template v-if="tipe.includes('A-')">
+      <component :is="TableAbsensiUjian" :jadwal="jadwal" />
+    </template>
+    <template v-if="tipe.includes('N-')">
+      <component :is="TableNilaiUjian" :jadwal="jadwal" />
+    </template>
   </div>
 </template>
 
 <script setup>
 import TableAbsensiHarian from "@/Components/Jadwal/TableAbsensiHarian"
+import TableAbsensiUjian from "@/Components/Jadwal/TableAbsensiUjian"
+import TableNilaiUjian from "@/Components/Jadwal/TableNilaiUjian"
 import { computed, onMounted } from "vue"
 
 const props = defineProps({
@@ -184,6 +89,7 @@ const props = defineProps({
 onMounted(() => {
   document.title = pdfName.value
   // window.print()
+  console.log(props.tipe.includes("N"))
 })
 
 const periode = computed(() =>
@@ -227,7 +133,7 @@ const prodi = computed(
   () => `${props.jadwal.matakuliah.matakuliah_jurusan.jurusan.nama} / S-1`
 )
 
-const tanggal = computed(() => {
+const tanggal = () => {
   const jadwal = props.jadwal
   const dateUts = new Date(jadwal.uts_tanggal)
   const hariUts = dateUts.toLocaleDateString("id-ID", { weekday: "long" })
@@ -236,18 +142,14 @@ const tanggal = computed(() => {
 
   if (props.tipe.includes("UTS")) {
     return `${jadwal.uts_tanggal}/${hariUts}/${jadwal.uts_pukul_mulai} - ${jadwal.uts_pukul_selesai}/${props.jadwal.ruangan_uts.nama_ruangan}`
-  } else {
+  } else if (props.tipe.includes("UAS")) {
     return `${jadwal.uas_tanggal}/${hariUas}/${jadwal.uas_pukul_mulai} - ${jadwal.uas_pukul_selesai}/${props.jadwal.ruangan_uas.nama_ruangan}`
+  } else if (props.tipe == "H") {
+    return `${props.jadwal.hari}/${props.jadwal.jam}/${props.jadwal.ruangan.nama_ruangan}`
   }
-})
+}
 </script>
 
 <style scoped>
 @import "../../../../css/paper.css";
-
-@media print {
-  @page {
-    padding-bottom: 16px !important;
-  }
-}
 </style>
