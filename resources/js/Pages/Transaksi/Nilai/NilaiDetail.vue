@@ -33,12 +33,19 @@
       </table>
 
       <div class="flex space-x-2 mt-3">
-        <Button
+        <!-- <Button
           class=""
           @click="cetakTranskrip"
           >
           Cetak Transkrip
-        </Button>
+        </Button> -->
+
+        <Link
+          as="link"
+          @click="cetakTranskrip"
+          class="mb-3">
+          <PrinterIcon class="h-4"/> Cetak Transkrip Mahasiswa
+        </Link>
       </div>
 
       <div class="mb-3 mt-3 inline-flex w-full items-center justify-between">
@@ -199,9 +206,9 @@ import Dialog from "@/Components/Dialog"
 import Input from "@/Components/Input"
 import Label from "@/Components/Label"
 import Select from "@/Components/Select"
-import { Link } from "@inertiajs/inertia-vue3"
+import Link from "@/Components/Link"
 import LinkButton from "@components/LinkButton"
-import { PencilIcon } from "@heroicons/vue/outline"
+import { PencilIcon, PrinterIcon } from "@heroicons/vue/outline"
 import { onMounted, ref, watch } from "vue"
 import { inRange } from "@/util"
 import { Inertia } from "@inertiajs/inertia"

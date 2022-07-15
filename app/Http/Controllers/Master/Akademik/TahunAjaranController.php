@@ -50,6 +50,7 @@ class TahunAjaranController extends Controller
     {
         $msg = '';
         try {
+            DB::beginTransaction();
             $tahunAjaran = TahunAjaran::create($request->validated());
 
             // jika aktif, ubah kolom lainnya jadi tidak aktif
@@ -78,16 +79,17 @@ class TahunAjaranController extends Controller
                     $id_mhs = [];
                     foreach ($mahasiswas as $mhs) {
                         if(in_array($mhs->pivot->status, ['Aktif','Tidak Aktif','Cuti'])){
-                            $id_mhs[$mhs->pivot->mahasiswa_npm] = ['status' => 'Aktif'];
+                            $id_mhs[$mhs->pivot->mahasiswa_npm] = ['status' => 'Tidak Aktif'];
                         }
                     }
                     $tahunAjaran->mahasiswas()->sync($id_mhs, false);
                     $msg = `Tahun ajaran {$tahunAjaran->tahun_ajaran} berhasil ditambahkan`;
                 }
-
             }
+            DB::commit();
         } catch (\Throwable $th) {
             //throw $th;
+            DB::rollBack();
             dd($th);
         }
 
