@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-cols-2 justify-items-end font-serif">
+  <div class="A4 grid grid-cols-2 justify-items-end font-serif">
     <h1 class="w-full font-bold italic underline underline-offset-4">
       STIE BULUNGAN <br />
       TARAKAN
@@ -181,33 +181,5 @@ const tanggal = computed(() => {
 </script>
 
 <style>
-@import "../../../../css/sheets-of-paper.css";
-
-.page {
-  /* Styles for better appearance on screens only -- are reset to defaults in print styles later */
-
-  /* Reflect the paper width in the screen rendering (must match size from @page rule) */
-  width: 21cm;
-  /* Reflect the paper height in the screen rendering (must match size from @page rule) */
-  min-height: 29.7cm;
-
-  /* Reflect the actual page margin/padding on paper in the screen rendering (must match margin from @page rule) */
-  padding-left: 1cm;
-  padding-top: 1cm;
-  padding-right: 1cm;
-  padding-bottom: 1cm;
-}
-/* Use CSS Paged Media to switch from continuous documents to sheet-like documents with separate pages */
-@page {
-  /* You can only change the size, margins, orphans, widows and page breaks here */
-
-  /* Paper size and page orientation */
-  size: A4 portrait;
-
-  /* Margin per single side of the page */
-  margin-left: 1cm;
-  margin-top: 1cm;
-  margin-right: 1cm;
-  margin-bottom: 1cm;
-}
+@import "../../../../css/paper.css";
 </style>

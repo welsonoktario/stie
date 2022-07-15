@@ -101,6 +101,17 @@
                     :href="
                       route('transaksi.jadwal.print', {
                         jadwal: row.data.id,
+                        tipe: 'H',
+                      })
+                    "
+                  >
+                    Absensi Harian
+                  </NavLink>
+                  <NavLink
+                    class="w-full whitespace-nowrap"
+                    :href="
+                      route('transaksi.jadwal.print', {
+                        jadwal: row.data.id,
                         tipe: 'A-UTS',
                       })
                     "

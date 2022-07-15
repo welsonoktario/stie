@@ -1,25 +1,30 @@
 <template>
-  <div class="page grid grid-cols-2 justify-items-end font-serif">
-    <h1 class="w-full font-bold italic underline underline-offset-4">
-      STIE BULUNGAN <br />
-      TARAKAN
-    </h1>
+  <div
+    :class="tipe === 'H' ? 'landscape' : null"
+    class="A4 sheet padding-10mm justify-items-end font-serif"
+  >
+    <div class="grid grid-cols-2">
+      <h1 class="w-full font-bold italic underline underline-offset-4">
+        STIE BULUNGAN <br />
+        TARAKAN
+      </h1>
 
-    <div class="rounded-md border border-black p-4 text-xs">
-      <table>
-        <tbody>
-          <tr>
-            <td>Thn.Akademik</td>
-            <td class="pl-1 pr-2">:</td>
-            <td>{{ jadwal.tahun_ajaran.tahun_ajaran }}</td>
-          </tr>
-          <tr>
-            <td>Semester</td>
-            <td class="pl-1 pr-2">:</td>
-            <td>{{ periode }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="rounded-md border border-black p-4 text-xs">
+        <table>
+          <tbody>
+            <tr>
+              <td>Thn.Akademik</td>
+              <td class="pl-1 pr-2">:</td>
+              <td>{{ jadwal.tahun_ajaran.tahun_ajaran }}</td>
+            </tr>
+            <tr>
+              <td>Semester</td>
+              <td class="pl-1 pr-2">:</td>
+              <td>{{ periode }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <h1 class="col-span-2 mt-12 w-full text-center text-xl font-bold uppercase">
@@ -58,32 +63,61 @@
       </tbody>
     </table>
 
-    <table
-      class="col-span-2 mx-auto mt-8 w-full table-auto border-collapse border border-black font-mono text-xs"
+    <template v-if="tipe === 'H'">
+      <component :is="TableAbsensiHarian" :jadwal="jadwal" />
+    </template>
+
+    <!-- <table
+      class="relative col-span-2 mx-auto mt-8 w-full table-auto border-collapse border border-black font-mono text-xs"
     >
       <thead>
         <tr>
-          <th class="border border-black" rowspan="2">No.</th>
-          <th class="border border-black" rowspan="2">N I M</th>
-          <th class="border border-black" rowspan="2">N A M A</th>
+          <th class="border border-black" :rowspan="tipe === 'H' ? 3 : 2">
+            No.
+          </th>
+          <th class="border border-black" :rowspan="tipe === 'H' ? 3 : 2">
+            N I M
+          </th>
+          <th class="border border-black" :rowspan="tipe === 'H' ? 3 : 2">
+            N A M A
+          </th>
           <th
-            v-if="!tipe.includes('N')"
+            v-if="tipe.includes('A')"
             class="whitespace-pre-line border border-black"
             rowspan="2"
           >
             Tanda Tangan
           </th>
-          <th colspan="3" class="border border-black">Nilai Akhir</th>
+          <th v-if="tipe.includes('N')" colspan="3" class="border border-black">
+            Nilai Akhir
+          </th>
+          <th v-if="tipe === 'H'" colspan="14">Pertemuan ke-</th>
         </tr>
-        <tr>
+        <tr v-if="tipe !== 'H'">
           <th class="border border-black">ANGKA</th>
           <th class="border border-black">BOBOT</th>
           <th class="border border-black">HURUF</th>
         </tr>
+        <tr v-if="tipe === 'H'">
+          <th
+            v-for="pertemuan in 14"
+            :key="pertemuan"
+            class="border border-black"
+          >
+            {{ pertemuan }}
+          </th>
+        </tr>
+        <tr v-if="tipe === 'H'">
+          <th
+            v-for="pertemuan in 14"
+            :key="pertemuan"
+            class="h-8 border border-black"
+          ></th>
+        </tr>
       </thead>
       <tbody>
-        <template v-if="!tipe.includes('N')">
-          <tr v-for="(mhs, index) in jadwal.mahasiswas" :key="index">
+        <template v-if="tipe.includes('A')">
+          <tr class="tbl" v-for="(mhs, index) in jadwal.mahasiswas" :key="index">
             <td class="border border-black pr-1 text-right">{{ index + 1 }}</td>
             <td class="border border-black pl-1">
               {{ nim(mhs.npm) }}
@@ -97,8 +131,8 @@
             <td class="border border-black text-center"></td>
           </tr>
         </template>
-        <template v-else>
-          <tr v-for="(mhs, index) in jadwal.mahasiswas" :key="index">
+        <template v-else-if="tipe.includes('N')">
+          <tr class="tbl" v-for="(mhs, index) in jadwal.mahasiswas" :key="index">
             <td class="border border-black pr-1 text-right">{{ index + 1 }}</td>
             <td class="border border-black pl-1">
               {{ nim(mhs.npm) }}
@@ -117,14 +151,30 @@
             </td>
           </tr>
         </template>
+        <template v-else>
+          <tr class="tbl" v-for="(mhs, index) in jadwal.mahasiswas" :key="index">
+            <td class="border border-black pr-1 text-right">{{ index + 1 }}</td>
+            <td class="border border-black pl-1">
+              {{ nim(mhs.npm) }}
+            </td>
+            <td class="border border-black pl-1 uppercase">
+              {{ mhs.user.name }}
+            </td>
+            <td
+              v-for="pertemuan in 14"
+              :key="`pertemuan-${pertemuan}`"
+              class="w-10 border border-black"
+            ></td>
+          </tr>
+        </template>
       </tbody>
-    </table>
+    </table> -->
   </div>
 </template>
 
 <script setup>
-import { computed } from "vue"
-import { onMounted } from "vue"
+import TableAbsensiHarian from "@/Components/Jadwal/TableAbsensiHarian"
+import { computed, onMounted } from "vue"
 
 const props = defineProps({
   jadwal: Object,
@@ -147,8 +197,10 @@ const header = computed(() => {
     return `Daftar Hadir Ujian Akhir Semester`
   } else if (props.tipe === "N-UTS") {
     return `Daftar Nilai Ujian Tengah Semester`
-  } else {
+  } else if (props.tipe === "N-UAS") {
     return `Daftar Nilai Ujian Akhir Semester`
+  } else {
+    return "Daftar Hadir Harian"
   }
 })
 
@@ -188,42 +240,14 @@ const tanggal = computed(() => {
     return `${jadwal.uas_tanggal}/${hariUas}/${jadwal.uas_pukul_mulai} - ${jadwal.uas_pukul_selesai}/${props.jadwal.ruangan_uas.nama_ruangan}`
   }
 })
-
-const nim = (npm) => {
-  const splitted = npm.split(".")
-
-  return `${splitted[0]}${splitted[2]}${splitted[3]}`
-}
 </script>
 
-<style>
-@import "../../../../css/sheets-of-paper.css";
+<style scoped>
+@import "../../../../css/paper.css";
 
-.page {
-  /* Styles for better appearance on screens only -- are reset to defaults in print styles later */
-
-  /* Reflect the paper width in the screen rendering (must match size from @page rule) */
-  width: 21cm;
-  /* Reflect the paper height in the screen rendering (must match size from @page rule) */
-  min-height: 29.7cm;
-
-  /* Reflect the actual page margin/padding on paper in the screen rendering (must match margin from @page rule) */
-  padding-left: 1cm;
-  padding-top: 1cm;
-  padding-right: 1cm;
-  padding-bottom: 1cm;
-}
-/* Use CSS Paged Media to switch from continuous documents to sheet-like documents with separate pages */
-@page {
-  /* You can only change the size, margins, orphans, widows and page breaks here */
-
-  /* Paper size and page orientation */
-  size: A4 portrait;
-
-  /* Margin per single side of the page */
-  margin-left: 1cm;
-  margin-top: 1cm;
-  margin-right: 1cm;
-  margin-bottom: 1cm;
+@media print {
+  @page {
+    padding-bottom: 16px !important;
+  }
 }
 </style>
