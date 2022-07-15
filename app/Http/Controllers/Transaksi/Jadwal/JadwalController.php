@@ -194,6 +194,7 @@ class JadwalController extends Controller
             ->with([
                 'matakuliah.matakuliah_jurusan.jurusan',
                 'tahun_ajaran',
+                'ruangan',
                 'ruanganUts',
                 'ruanganUas',
                 'dosens.staff.user',
@@ -203,8 +204,6 @@ class JadwalController extends Controller
                 }
             ])
             ->find($jadwal);
-
-        // return ($jadwal->mahasiswas->toJson());
 
         return Inertia::render('Transaksi/Jadwal/JadwalPrint', [
             'jadwal' => $jadwal,

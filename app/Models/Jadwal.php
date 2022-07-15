@@ -57,7 +57,7 @@ class Jadwal extends Model
      */
     public function ruangan()
     {
-        return $this->belongsTo(Ruangan::class);
+        return $this->belongsTo(Ruangan::class, 'ruangan_id', 'id');
     }
 
     public function ruanganUts()
