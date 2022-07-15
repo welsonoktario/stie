@@ -33,7 +33,7 @@
     </label>
   </div>
   <div
-    class="mt-2 w-full rounded-md shadow-md dark:bg-zinc-700 dark:text-zinc-100"
+    class="mt-2 w-full rounded-md shadow-md dark:bg-zinc-700 dark:text-zinc-100 overflow-auto"
   >
     <template v-if="data.data.length">
       <table class="w-full table-auto">
