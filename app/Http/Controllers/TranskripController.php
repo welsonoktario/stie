@@ -81,7 +81,7 @@ class TranskripController extends Controller
             // echo("Daftar Konversi: <br>");
             // dd($matakuliah_konversis);
             foreach ($matakuliah_konversis[0]->matakuliah_konversis as $m) {
-                echo($m->matakuliah->kode_matakuliah. " - ".$m->matakuliah->nama_matakuliah. " - SKS: ". $m->matakuliah->sks. " - Nilai: ". $m->nilai_matakuliah ." <br>");
+                // echo($m->matakuliah->kode_matakuliah. " - ".$m->matakuliah->nama_matakuliah. " - SKS: ". $m->matakuliah->sks. " - Nilai: ". $m->nilai_matakuliah ." <br>");
                 $total_nilai_kali_sks_konversi += $m->nilai_matakuliah * $m->matakuliah->sks;
                 $total_sks_konversi += $m->matakuliah->sks;
             }
