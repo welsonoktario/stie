@@ -17,7 +17,7 @@ class TestingController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Transaksi/PrintView/PrintTranscript');
+        // return Inertia::render('Transaksi/PrintView/PrintTranscript');
         $tas = TahunAjaran::all();
 
         foreach ($tas as $ta) {
