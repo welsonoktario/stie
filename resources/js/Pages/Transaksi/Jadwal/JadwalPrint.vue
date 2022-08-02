@@ -1,15 +1,15 @@
 <template>
   <div
     :class="{ landscape: tipe === 'H' }"
-    class="A4 sheet padding-10mm justify-items-end font-serif"
+    class="font-serif A4 sheet padding-10mm justify-items-end"
   >
     <div class="grid grid-cols-2">
-      <h1 class="w-full font-bold italic underline underline-offset-4">
+      <h1 class="w-full italic font-bold underline underline-offset-4">
         STIE BULUNGAN <br />
         TARAKAN
       </h1>
 
-      <div class="rounded-md border border-black p-4 text-xs">
+      <div class="p-4 text-xs border border-black rounded-md">
         <table>
           <tbody>
             <tr>
@@ -27,7 +27,7 @@
       </div>
     </div>
 
-    <h1 class="col-span-2 mt-12 w-full text-center text-xl font-bold uppercase">
+    <h1 class="w-full col-span-2 mt-12 text-xl font-bold text-center uppercase">
       {{ header }}
     </h1>
 
