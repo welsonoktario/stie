@@ -310,30 +310,30 @@ class TestingController extends Controller
 
                 $total_nilai_kali_sks = 0;
                 $total_sks = 0;
+                $total_sks_tidak_lulus_semester = 0;
                 $nilai_null = false;
                 foreach ($jadwal_smt as $j) {
                     if ($j->pivot->angka_mutu === null) {
-
-                        // print($j->matakuliah->nama_matakuliah);
-                        // print();
                         $nilai_null = true;
                     }
                     $am = $j->pivot->angka_mutu;
                     $sks = $j->matakuliah->sks;
+                    if ($am === 0) {
+                        $total_sks_tidak_lulus_semester += $sks;
+                    }
                     $total_nilai_kali_sks = $total_nilai_kali_sks + ($sks * $am);
                     $total_sks = $total_sks + $sks;
                     // dump($sks);
                 }
 
-                if ($total_sks == 0) {
+                if (($total_sks - $total_sks_tidak_lulus_semester) == 0) {
                     $ips = '-';
                     $keterangan[] = 'Tidak ikut KRS';
                     // dump($ips);
                 } else {
-                    $ips = $total_nilai_kali_sks / $total_sks;
+                    $ips = $total_nilai_kali_sks / ($total_sks - $total_sks_tidak_lulus_semester);
                 }
                 $sks_per = $total_sks;
-                // dump($ips);
                 break;
 
                 // END HITUNG IPS
@@ -362,7 +362,7 @@ class TestingController extends Controller
             // group by jadwal by id, ambil max angka mutu di jadwal (karena kemungkinan mengulang matkul)
             $jadwal_all = $jadwal_all->whereIn('tahun_ajaran_id', $tas)->groupBy('matakuliah_id')->all();//->toSql(); // belum ambil max nilainya
             // dd($jadwal_all);
-            $sks_tidak_lulus = 0;
+            $total_sks_tidak_lulus = 0;
             // hitung
             foreach ($jadwal_all as $j) {
                 // $am = $j->pivot->angka_mutu;
@@ -371,17 +371,17 @@ class TestingController extends Controller
 
                 // SKS GA LULUS JIKA
                 if ($am === 0) {
-                    $sks_tidak_lulus += $sks;
+                    $total_sks_tidak_lulus += $sks;
                 }
 
                 $total_nilai_kali_sks = $total_nilai_kali_sks + ($sks * $am);
                 $total_sks = $total_sks + $sks;
             }
 
-            if ($total_sks == 0) {
+            if (($total_sks - $total_sks_tidak_lulus) == 0) {
                 $ipk = '0';
             } else {
-                $ipk = $total_nilai_kali_sks / $total_sks;
+                $ipk = $total_nilai_kali_sks / ($total_sks - $total_sks_tidak_lulus);
             }
 
             if ($nilai_null) {
@@ -403,8 +403,8 @@ class TestingController extends Controller
                 }
                 // HITUNG IPK AKHIR
                 $keterangan[] = 'Mahasiswa Konversi';
-                if ($total_sks != 0 && $total_sks_konversi != 0) {
-                    $ipk = ($total_nilai_kali_sks + $total_nilai_kali_sks_konversi) / ($total_sks + $total_sks_konversi);
+                if (($total_sks - $total_sks_tidak_lulus) != 0 && $total_sks_konversi != 0) {
+                    $ipk = ($total_nilai_kali_sks + $total_nilai_kali_sks_konversi) / ($total_sks + $total_sks_konversi - $total_sks_tidak_lulus);
                 }
             }
 
