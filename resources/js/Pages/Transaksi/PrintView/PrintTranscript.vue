@@ -143,12 +143,33 @@
       </tr>
 
       <tr class="w-full">
-        <td colspan="3" class="px-2 text-end">Indeks Prestasi Kumulatif :</td>
+        <td colspan="2" class="px-2 text-start">SKS Nilai E : {{total_sks_tidak_lulus}}</td>
+        <td colspan="2" class="px-2 text-end">Indeks Prestasi Kumulatif :</td>
         <td colspan="" class="px-2 text-start">{{ipk}}</td>
       </tr>
     </tbody>
-  </table>
-
+  </table> <br><br>
+  <div class="w-full px-2 flex">
+    <div class="w-full">
+      Ekivalen Nilai <br>
+      A: Sangat Baik <br>
+      B: Baik <br>
+      C: Cukup <br>
+      D: Cukup <br>
+      E: Tidak Lulus <br>
+    </div>
+    <div class="w-full">
+      Tarakan, {{tanggal}} <br>
+      Wakil Ketua I
+      <br><br>
+      <br><br>
+      <p class="uppercase">
+        {{ wakil_ketua_1.staff.gelar_depan }}
+        {{ wakil_ketua_1.staff.user.name }}
+        {{ wakil_ketua_1.staff.gelar_belakang }}
+      </p>
+    </div>
+  </div>
 
 </div>
 
@@ -159,6 +180,7 @@
 </style>
 
 <script setup>
+import { computed } from "vue"
 
 const props= defineProps({
   mahasiswa: Object,
@@ -169,8 +191,17 @@ const props= defineProps({
   ipk_konversi: Number,
   total_nilai_kali_sks: Number,
   total_sks: Number,
+  total_sks_tidak_lulus: Number,
   ipk: Number,
+  wakil_ketua_1: String,
 });
+
+const tanggal = computed(() => {
+  const now = new Date()
+  const options = { year: "numeric", month: "long", day: "numeric" }
+
+  return now.toLocaleDateString("id-ID", options)
+})
 
 
 

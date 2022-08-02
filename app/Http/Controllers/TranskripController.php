@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Mahasiswa;
 use App\Models\TahunAjaran;
+use App\Models\JabatanStruktural;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use League\CommonMark\Parser\Block\SkipLinesStartingWithLettersParser;
@@ -97,6 +98,7 @@ class TranskripController extends Controller
         // dd($jadwals);
 
         $total_sks = 0;
+        $total_sks_tidak_lulus = 0;
         $total_nilai_kali_sks = 0;
         $ipk = 0;
         foreach ($jadwals as $kode_matakuliah => $jadwal) {
@@ -108,19 +110,19 @@ class TranskripController extends Controller
 
             // echo ($kode_matakuliah."<br>");
             // dd($jadwal);
-            foreach ($jadwal as $j) {
-                // echo ($j->matakuliah->nama_matakuliah. " - SKS: " . $j->matakuliah->sks. " - Nilai: " . $j->pivot->angka_mutu."<br>");
+            // foreach ($jadwal as $j) {
+            //     // echo ($j->matakuliah->nama_matakuliah. " - SKS: " . $j->matakuliah->sks. " - Nilai: " . $j->pivot->angka_mutu."<br>");
+            // }
+            if ($nilai === 0) {
+                $total_sks_tidak_lulus += $sks;
             }
             $total_nilai_kali_sks += $nilai * $sks;
             $total_sks += $sks;
 
         }
-        // dd(($total_nilai_kali_sks + $total_nilai_kali_sks_konversi) / ($total_sks + $total_sks_konversi));
 
-        // dd($total_nilai_kali_sks);
-        // echo('<br>IPK '. ($total_nilai_kali_sks +$total_nilai_kali_sks_konversi)/($total_sks + $total_sks_konversi));
         if (($total_sks + $total_sks_konversi) != 0) {
-            $ipk = ($total_nilai_kali_sks +$total_nilai_kali_sks_konversi)/($total_sks + $total_sks_konversi);
+            $ipk = ($total_nilai_kali_sks +$total_nilai_kali_sks_konversi)/($total_sks + $total_sks_konversi - $total_sks_tidak_lulus);
         }
 
 
@@ -146,6 +148,8 @@ class TranskripController extends Controller
 
         */
 
+
+        $wakil_ketua_1 = JabatanStruktural::with('staff.user')->find(2);
         // return Inertia::render('Master/Akademik/JabatanStruktural/JabatanStruktural',[]);
         return Inertia::render('Transaksi/PrintView/PrintTranscript', compact(
             "mahasiswa",
@@ -156,6 +160,8 @@ class TranskripController extends Controller
             "ipk_konversi",
             "total_nilai_kali_sks",
             "total_sks",
+            "total_sks_tidak_lulus",
+            "wakil_ketua_1",
             "ipk"));
 
 

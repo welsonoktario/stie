@@ -175,15 +175,23 @@ class Mahasiswa extends Model
 
         $totalNilaiKaliSks = 0;
         $totalSks = 0;
+        $totalSksTidakLulus = 0;
         // dd("disini");
         foreach ($jadwals as $jadwal) {
             if ((count($tas) === 1) && $jadwal->pivot->angka_mutu === null) {
                 return 0;
             }
+
+            // cek nilai tidak lulus
+            if($jadwal->pivot->angka_mutu === 0) {
+                $totalSksTidakLulus += $jadwal->matakuliah->sks;
+            }
+
             $totalNilaiKaliSks += $jadwal->pivot->angka_mutu * $jadwal->matakuliah->sks;
             $totalSks += $jadwal->matakuliah->sks;
         }
-        // dd($totalSks);
+
+        // Hitung IP dengan matakuliah konversi
         $totalNilaiKaliSksKonversi = 0;
         $totalSksKonversi = 0;
         $mahasiswa_konversi = $this->mahasiswa_konversi;
@@ -205,7 +213,7 @@ class Mahasiswa extends Model
         if ($totalSks == 0) {
             return 0;
         } else {
-            return $totalNilaiKaliSks / $totalSks;
+            return $totalNilaiKaliSks / ($totalSks - $totalSksTidakLulus);
         }
         return $this->jadwals;
     }
