@@ -1,63 +1,64 @@
 <template>
   <AppLayout title="Tambah Jurusan">
-    <div class="bg-white dark:bg-zinc-800 shadow-lg rounded-lg p-6">
-      <p class="text-xs md:text-sm dark:text-zinc-300">
-        Akademik / Jurusan /
-        <span class="font-semibold text-teal-500 dark:text-teal-600">{{
-          currentRouteName
-        }}</span>
+    <div class="rounded-lg bg-white p-6 shadow-lg dark:bg-zinc-800">
+      <p class="text-xs dark:text-zinc-300 md:text-sm">
+        Akademik / Prodi /
+        <span class="font-semibold text-teal-500 dark:text-teal-600">
+          {{ currentRouteName }}
+        </span>
       </p>
 
-      <div class="flex justify-between my-3 item-center">
+      <div class="item-center my-3 flex justify-between">
         <span class="align-middle">
           <strong
-            class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
+            class="content-middle whitespace-nowrap text-sm capitalize md:text-lg"
           >
             <span>{{ currentRouteName }}</span>
-            Jurusan
+            Prodi/Departemen
           </strong>
         </span>
       </div>
       <form @submit.prevent="submit">
         <div class="mb-4">
-          <Label for="kode">Kode Jurusan</Label>
+          <Label for="kode">Kode Prodi/Departemen</Label>
           <Input
             v-model="form.kode_jurusan"
             name="kode"
             class="mt-1 block w-full"
             type="text"
-            placeholder="Kode Jurusan"
+            placeholder="Kode Prodi/Departemen"
             autocomplete="off"
           ></Input>
         </div>
         <div class="mb-4">
-          <Label for="nama">Nama Jurusan</Label>
+          <Label for="nama">Nama Prodi/Departemen</Label>
           <Input
             v-model="form.nama"
             name="nama"
             class="mt-1 block w-full"
             type="text"
-            placeholder="Nama jurusan"
+            placeholder="Nama Prodi/Departemen"
             autocomplete="off"
           ></Input>
         </div>
-        <div class="flex justify-between items-center w-full">
+        <div class="flex w-full items-center justify-between">
           <Button class="px-10" :disabled="form.processing">Simpan</Button>
           <button
             v-if="currentRouteName != 'Tambah'"
-            @click="isOpen = !isOpen"
             type="button"
             class="text-red-500"
-            >Hapus Data Jurusan</button
+            @click="isOpen = !isOpen"
           >
+            Hapus Data Jurusan
+          </button>
         </div>
       </form>
     </div>
 
     <Dialog
-      :isOpen="isOpen"
+      :is-open="isOpen"
       title="Hapus jurusan"
-      confirmText="Hapus"
+      confirm-text="Hapus"
       classes="text-red-900 bg-red-100 dark:bg-red-300 hover:bg-red-200 dark:hover:bg-red-400 focus-visible:ring-red-500"
       @confirm="remove"
       @cancel="isOpen = !isOpen"

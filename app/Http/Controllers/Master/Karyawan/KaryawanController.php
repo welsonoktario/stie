@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use App\Models\Staff;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\JabatanStruktural;
 use Illuminate\Support\Facades\Hash;
 use Throwable;
 
@@ -86,42 +87,15 @@ class KaryawanController extends Controller
             $status = 'FAIL';
             $msg = 'Gagal menambahkan data user. Error '.$th->getMessage();
             dd($msg, $th);
-            
+
         }
 
-        
+
         $header = ['status' => $status, 'msg' => $msg];
         if ($status != 'FAIL'){
             return redirect('master/karyawan')->with($header);
         }
         return redirect()->back()->with($header);
-
-        
-        // $name = $request->name;
-        // $email = $request->email;
-        // $nik = $request->nik;
-        // $id = $request->id;
-        
-
-        // $user = new User();
-        // $user->name = $name;
-        // $user->email = $email;
-        // $user->nik = $nik;
-        // $user->password = Hash::make('12345678');
-        // $user_completed = $user->save();
-
-        // if ($user_completed) {
-        //     $karyawan = new Staff;
-        //     $karyawan->id = $id;
-        //     $karyawan->user()->associate($user);
-        //     $karyawan_completed = $karyawan->save();
-        //     if ($karyawan_completed) {
-        //         return redirect()->route('master.karyawan.index');
-        //     }
-        // }
-        // $user->delete();
-        // dd($name,$email,$nik,$status);
-
     }
 
     /**
@@ -132,6 +106,8 @@ class KaryawanController extends Controller
      */
     public function edit($id)
     {
+        // $jabatan = JabatanStruktural::all();
+        // dd($jabatan->first()->staff);/
         $staff = Staff::where('id', '=', $id)->with(['user','tenaga_kependidikan'])->get()->first();
         // dd($staff, $id);
         // dd($staff->tenaga_kependidikan->id);
@@ -162,7 +138,7 @@ class KaryawanController extends Controller
                 $key = array_keys($user->staff->toArray());
                 $staff_old = $user->staff->toArray();
                 $user->staff()->update($request->only(($key)));
-                
+
                 if($staff_old['id'] != $request['id'])
                     $user = User::findOrFail($staff_old['user_id']);
 
@@ -179,7 +155,7 @@ class KaryawanController extends Controller
                     } catch (\Throwable $th) {
                         $msg = 'Gagal menambahkan id tenaga kependidikan. Error: '.$th->getMessage();
                         $status = 'FAIL';
-                        
+
                         // dd('disini', $msg);
                         $user->update($user_old);
                         $user->staff()->update($staff_old);

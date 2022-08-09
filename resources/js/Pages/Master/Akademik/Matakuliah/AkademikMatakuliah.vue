@@ -1,19 +1,20 @@
 <template>
   <AppLayout title="Matakuliah">
-    <div class="container mx-auto p-6 rounded-md bg-white dark:bg-zinc-800 overflow-auto">
+    <div
+      class="container mx-auto overflow-auto rounded-md bg-white p-6 dark:bg-zinc-800"
+    >
       <p class="text-xs md:text-sm">Akademik / Matakuliah</p>
-      <div class="flex justify-between my-3 item-center">
+      <div class="item-center my-3 flex justify-between">
         <span class="align-middle">
-          <strong class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
+          <strong
+            class="content-middle whitespace-nowrap text-sm capitalize md:text-lg"
             >Daftar Matakuliah</strong
           >
         </span>
 
-        <Button type="button">
-          <Link :href="route('master.matakuliah.create')" preserve-state
-            >Tambah Matakuliah</Link
-          >
-        </Button>
+        <LinkButton :href="route('master.matakuliah.create')"
+          >Tambah Matakuliah</LinkButton
+        >
       </div>
 
       <DataTable :columns="columns" :data="matakuliahs">
@@ -26,7 +27,7 @@
         </template>
 
         <template #actions="row">
-          <NavLink as="button" :href="route('master.matakuliah.edit', row.data.id)"
+          <NavLink :href="route('master.matakuliah.edit', row.data.id)"
             >Edit</NavLink
           >
         </template>
@@ -36,19 +37,17 @@
 </template>
 
 <script>
-import AppLayout from "@layouts/App";
-import Button from "@components/Button";
-import DataTable from "@components/DataTable";
-import NavLink from "@components/NavLink";
-import { Link } from "@inertiajs/inertia-vue3";
+import AppLayout from "@layouts/App"
+import DataTable from "@components/DataTable"
+import NavLink from "@components/NavLink"
+import LinkButton from "@/Components/LinkButton"
 
 export default {
   components: {
     AppLayout,
-    Button,
     DataTable,
     NavLink,
-    Link,
+    LinkButton,
   },
   props: {
     matakuliahs: Object,
@@ -81,6 +80,11 @@ export default {
         sortable: true,
       },
       {
+        key: "semester",
+        label: "SMT",
+        sortable: true,
+      },
+      {
         key: "sks",
         label: "SKS",
         sortable: true,
@@ -90,9 +94,9 @@ export default {
         label: "Tipe",
         sortable: true,
       },
-    ];
+    ]
 
-    return { columns };
+    return { columns }
   },
-};
+}
 </script>

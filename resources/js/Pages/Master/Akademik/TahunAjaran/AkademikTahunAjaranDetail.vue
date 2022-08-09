@@ -1,30 +1,30 @@
 <template>
-  <AppLayout :title="`${currentRouteName} Tahun Ajaran`">
+  <AppLayout :title="`${currentRouteName} Tahun Akademik`">
     <div
-      class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
+      class="overflow-hidden bg-white p-6 shadow-sm dark:bg-zinc-800 sm:rounded-lg"
     >
       <!-- <div class="p-6">Karyawan / Karyawan</div> -->
-      <p class="text-xs md:text-sm text-slate-500">
-        Akademik / Tahun Ajaran /
-        <span class="font-semibold text-teal-500 dark:text-teal-600">{{
-          currentRouteName
-        }}</span>
+      <p class="text-xs text-slate-500 md:text-sm">
+        Akademik / Tahun Akademik /
+        <span class="font-semibold text-teal-500 dark:text-teal-600">
+          {{ currentRouteName }}
+        </span>
       </p>
 
       <!-- <p>{{route().current()}}</p> -->
-      <div class="flex justify-between my-3 item-center">
+      <div class="item-center my-3 flex justify-between">
         <span class="align-middle">
           <strong
-            class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
+            class="content-middle whitespace-nowrap text-sm capitalize md:text-lg"
           >
             <span>{{ currentRouteName }}</span>
-            Tahun Ajaran</strong
-          >
+            Tahun Akademik
+          </strong>
         </span>
       </div>
       <form @submit.prevent="submit">
         <div class="mb-4">
-          <Label for="tahun_ajaran"> Tahun Ajaran </Label>
+          <Label for="tahun_ajaran">Tahun Akademik</Label>
           <Input
             v-model="form.tahun_ajaran"
             name="tahun_ajaran"
@@ -35,69 +35,98 @@
           ></Input>
           <InputError class="mt-2" :message="form.errors.tahun_ajaran" />
         </div>
-        <div class="mb-4">
-          <Label for="tahun_mulai"> Tahun Mulai </Label>
-          <Input
-            v-model="form.tahun_mulai"
-            name="tahun_mulai"
-            class="mt-1 block w-full"
-            type="number"
-            min="2000"
-            max="3000"
-            placeholder="Tahun mulai"
-          ></Input>
-          <InputError class="mt-2" :message="form.errors.tahun_mulai" />
+        <div class="mb-4 flex space-x-2">
+          <div class="w-full">
+            <Label for="tanggal_mulai">Tanggal Mulai</Label>
+            <Input
+              id="tanggal_mulai"
+              v-model="form.tanggal_mulai"
+              name="tanggal_mulai"
+              class="mt-1 block w-full"
+              type="date"
+              min="2000"
+              max="3000"
+              placeholder="Tahun mulai"
+            ></Input>
+            <InputError class="mt-2" :message="form.errors.tanggal_mulai" />
+          </div>
+          <div class="w-full">
+            <Label for="tanggal_selesai">Tanggal Selesai</Label>
+            <Input
+              id="tanggal_selesai"
+              v-model="form.tanggal_selesai"
+              name="tanggal_selesai"
+              class="mt-1 block w-full"
+              type="date"
+              min="2000"
+              max="3000"
+              placeholder="tanggal selesai"
+            ></Input>
+            <InputError class="mt-2" :message="form.errors.tanggal_selesai" />
+          </div>
         </div>
+        <div class="mb-4"></div>
         <div class="mb-4">
-          <Label for="tahun_selesai"> Tahun Selesai </Label>
-          <Input
-            v-model="form.tahun_selesai"
-            name="tahun_selesai"
-            class="mt-1 block w-full"
-            type="number"
-            min="2000"
-            max="3000"
-            placeholder="Tahun selesai"
-          ></Input>
-          <InputError class="mt-2" :message="form.errors.tahun_selesai" />
-        </div>
-        <div class="mb-4">
-          <Label for="periode"> Periode </Label>
+          <Label for="periode">Periode</Label>
           <select
-            class="w-full bg-zinc-100 dark:bg-zinc-700 rounded-md border-none focus:ring-teal-500 dark:focus:ring-teal-600"
-            name="periode"
             v-model="form.periode"
+            class="w-full rounded-md border-none bg-zinc-100 focus:ring-teal-500 dark:bg-zinc-700 dark:focus:ring-teal-600"
+            name="periode"
           >
             <option value="null" selected disabled>Pilih periode</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
+            <option value="1">1 - Ganjil</option>
+            <option value="2">2 - Genap</option>
           </select>
           <InputError class="mt-2" :message="form.errors.periode" />
         </div>
-        <div class="mb-4">
-          <SwitchGroup>
-            <SwitchLabel class="block text-gray-500 text-sm font-bold mb-2"
-              >Aktif</SwitchLabel
-            >
-            <Switch
-              v-model="form.aktif"
-              :class="form.aktif ? 'bg-teal-600' : 'bg-gray-200'"
-              class="relative inline-flex items-center h-6 transition-colors rounded-full w-11 ring-0"
-            >
-              <span
-                :class="form.aktif ? 'translate-x-6' : 'translate-x-1'"
-                class="inline-block w-4 h-4 transition-transform transform bg-white rounded-full"
-              />
-            </Switch>
-          </SwitchGroup>
+
+        <div class="mb-4 flex space-x-5">
+          <div class>
+            <SwitchGroup>
+              <SwitchLabel class="mb-2 block text-sm font-bold text-gray-500"
+                >Aktif</SwitchLabel
+              >
+              <Switch
+                v-model="form.aktif"
+                :class="form.aktif ? 'bg-teal-600' : 'bg-gray-200'"
+                class="relative inline-flex h-6 w-11 items-center rounded-full ring-0 transition-colors"
+              >
+                <span
+                  :class="form.aktif ? 'translate-x-6' : 'translate-x-1'"
+                  class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
+                />
+              </Switch>
+            </SwitchGroup>
+          </div>
+
+          <div v-if="currentRouteName == 'Tambah'" class>
+            <SwitchGroup>
+              <SwitchLabel class="mb-2 block text-sm font-bold text-gray-500"
+                >Tambah Mahasiswa</SwitchLabel
+              >
+              <Switch
+                v-model="form.tambahMahasiswa"
+                :class="form.tambahMahasiswa ? 'bg-teal-600' : 'bg-gray-200'"
+                class="relative inline-flex h-6 w-11 items-center rounded-full ring-0 transition-colors"
+              >
+                <span
+                  :class="
+                    form.tambahMahasiswa ? 'translate-x-6' : 'translate-x-1'
+                  "
+                  class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
+                />
+              </Switch>
+            </SwitchGroup>
+          </div>
         </div>
+
         <div class="flex justify-between">
           <Button class="px-10" :disabled="form.processing">Simpan</Button>
           <button
-            type="button"
             v-if="currentRouteName != 'Tambah'"
+            type="button"
+            class="bg-transparent text-red-500 hover:bg-transparent focus:bg-transparent"
             @click="isOpen = !isOpen"
-            class="text-red-500 bg-transparent hover:bg-transparent focus:bg-transparent"
           >
             Hapus Data Tahun Ajaran
           </button>
@@ -106,10 +135,10 @@
     </div>
 
     <Dialog
-      :isOpen="isOpen"
+      :is-open="isOpen"
       classes="text-red-900 bg-red-100 dark:bg-red-300 hover:bg-red-200 dark:hover:bg-red-400 focus-visible:ring-red-500"
       title="Hapus tahun ajaran"
-      confirmText="Hapus"
+      confirm-text="Hapus"
       @confirm="remove"
       @cancel="isOpen = !isOpen"
     >
@@ -152,11 +181,14 @@ export default {
   setup(props) {
     const form = useForm({
       tahun_ajaran: props.tahunAjaran?.tahun_ajaran || null,
-      tahun_mulai: props.tahunAjaran?.tahun_mulai || null,
-      tahun_selesai: props.tahunAjaran?.tahun_selesai || null,
+      tanggal_mulai: props.tahunAjaran?.tanggal_mulai || null,
+      tanggal_selesai: props.tahunAjaran?.tanggal_selesai || null,
       periode: props.tahunAjaran?.periode || null,
-      aktif: props.tahunAjaran?.aktif || true,
+      aktif: props.tahunAjaran == null ? false : props.tahunAjaran.aktif,
+      tambahMahasiswa: false,
     })
+
+    // const tambahMahasiswa = ref(false)
 
     const isOpen = ref(false)
 
@@ -176,6 +208,7 @@ export default {
       currentRouteName,
       form,
       isOpen,
+      // tambahMahasiswa,
       submit,
       remove,
     }

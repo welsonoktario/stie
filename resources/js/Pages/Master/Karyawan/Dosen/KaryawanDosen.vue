@@ -1,22 +1,21 @@
 <template>
   <AppLayout title="Dosen">
     <div
-      class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
+      class="overflow-hidden bg-white p-6 shadow-sm dark:bg-zinc-800 sm:rounded-lg"
     >
       <p class="text-xs md:text-sm">Karyawan / Dosen</p>
 
-      <div class="flex justify-between my-3 item-center">
+      <div class="item-center my-3 flex justify-between">
         <span class="align-middle">
           <strong
-            class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
+            class="content-middle whitespace-nowrap text-sm capitalize md:text-lg"
             >Daftar Dosen</strong
           >
         </span>
-        <Button type="button">
-          <Link :href="route('master.dosen.create')" class="h-full w-full">
-            Tambah Dosen
-          </Link>
-        </Button>
+
+        <LinkButton :href="route('master.dosen.create')"
+          >Tambah Dosen</LinkButton
+        >
       </div>
 
       <DataTable :columns="columns" :data="dosens">
@@ -31,19 +30,17 @@
 </template>
 
 <script>
-import { Link } from "@inertiajs/inertia-vue3"
 import AppLayout from "@layouts/App"
-import Button from "@components/Button"
 import DataTable from "@/Components/DataTable"
 import NavLink from "@/Components/NavLink"
+import LinkButton from "@/Components/LinkButton"
 
 export default {
   components: {
     AppLayout,
-    Button,
     DataTable,
-    Link,
     NavLink,
+    LinkButton,
   },
   props: {
     dosens: Object,

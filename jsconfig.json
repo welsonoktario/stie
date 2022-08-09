@@ -1,12 +1,25 @@
 {
     "compilerOptions": {
         "baseUrl": ".",
+        "jsx": "preserve",
         "paths": {
-            "@/*": ["resources/js/*"],
-            "@layouts/*": ["resources/js/Layouts/*"],
-            "@components/*": ["resources/js/Components/*"],
-            "@pages/*": ["resources/js/Pages/*"]
+            "@/*": [
+                "resources/js/*"
+            ],
+            "@layouts/*": [
+                "resources/js/Layouts/*"
+            ],
+            "@components/*": [
+                "resources/js/Components/*"
+            ],
+            "@pages/*": [
+                "resources/js/Pages/*"
+            ]
         }
     },
-    "exclude": ["node_modules", "public"]
+    "exclude": [
+        "node_modules",
+        "public",
+        "vendor"
+    ]
 }

@@ -22,6 +22,7 @@ class Matakuliah extends Model
         'nama_matakuliah',
         'sks',
         'tipe',
+        'semester',
     ];
 
     protected $casts = ['sks' => 'integer'];
@@ -79,7 +80,8 @@ class Matakuliah extends Model
         $query->when($filters['query'] ?? null, function ($query, $search) {
             $query->where(function ($query) use ($search) {
                 $query->where('kode_matakuliah', 'LIKE', "%$search%")
-                    ->orWhere('nama_matakuliah', 'LIKE', "%$search%");
+                    ->orWhere('nama_matakuliah', 'LIKE', "%$search%")
+                    ->orWhere('kurikulums.nama', 'LIKE', "%$search%");
             });
         })->when($filters['orderBy'] ?? null, function ($query, $orderBy) use (&$filters) {
             $query->orderBy($orderBy, $filters['orderType']);

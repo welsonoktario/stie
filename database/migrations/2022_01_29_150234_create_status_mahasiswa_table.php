@@ -21,9 +21,53 @@ class CreateStatusMahasiswaTable extends Migration
             $table->foreignId('tahun_ajaran')->constrained();
 
             $table->string('mahasiswa_npm', 25);
-            $table->foreign('mahasiswa_npm')->references('npm')->on('mahasiswas');
+            $table->foreign('mahasiswa_npm')->references('npm')->on('mahasiswas')->onUpdate('cascade');
 
-            $table->enum('status', ['Aktif', 'Tidak Aktif', 'Lulus', 'Hilang', 'Cuti'])->nullable();
+            $table->enum('status', [
+                'Aktif',
+                'Tidak Aktif',
+                'Lulus',
+                'Mutasi',
+                'Dikeluarkan',
+                'Mengundurkan Diri',
+                'Hilang',
+                'Cuti',
+                'Wafat'
+            ])->nullable();
+
+            $table->integer('jumlah_cicilan_1')->nullable();
+            $table->dateTime('tanggal_cicilan_1')->nullable();
+            $table->string('keterangan_ciilan_1')->nullable();
+
+            $table->integer('jumlah_cicilan_2')->nullable();
+            $table->dateTime('tanggal_cicilan_2')->nullable();
+            $table->string('keterangan_ciilan_2')->nullable();
+
+            $table->integer('jumlah_cicilan_3')->nullable();
+            $table->dateTime('tanggal_cicilan_3')->nullable();
+            $table->string('keterangan_ciilan_3')->nullable();
+
+            $table->integer('total_cicilan')->nullable();
+            $table->integer('uang_semester')->nullable();
+
+            // cicilan lain lain
+            $table->integer('jumlah_cicilan_dpp')->nullable();
+            $table->dateTime('tanggal_cicilan_dpp')->nullable();
+            $table->string('keterangan_cicilan_dpp')->nullable();
+
+            $table->integer('jumlah_cicilan_praktikum')->nullable();
+            $table->dateTime('tanggal_cicilan_praktikum')->nullable();
+            $table->string('keterangan_cicilan_praktikum')->nullable();
+
+            $table->integer('jumlah_cicilan_almamater')->nullable();
+            $table->dateTime('tanggal_cicilan_almamater')->nullable();
+            $table->string('keterangan_cicilan_almamater')->nullable();
+
+            $table->integer('jumlah_cicilan_biaya_konversi')->nullable();
+            $table->dateTime('tanggal_cicilan_biaya_konversi')->nullable();
+            $table->string('keterangan_cicilan_biaya_konversi')->nullable();
+
+
             $table->timestamps();
         });
     }

@@ -1,60 +1,53 @@
 <template>
   <AppLayout>
     <div
-      class="bg-white dark:bg-zinc-800 overflow-hidden shadow-sm sm:rounded-lg p-6"
+      class="overflow-hidden bg-white p-6 shadow-sm dark:bg-zinc-800 sm:rounded-lg"
     >
       <!-- <div class="p-6">Mahasiswa / Mahasiswa Reguler</div> -->
       <p class="text-xs md:text-sm">Mahasiswa / Mahasiswa Konversi</p>
 
       <!-- Belum bisa ubah id dosen dan staff -->
 
-      <div class="flex justify-between my-3 item-center">
+      <div class="item-center my-3 flex justify-between">
         <span class="align-middle">
           <strong
-            class="whitespace-nowrap capitalize text-sm md:text-lg content-middle"
-            >Daftar Mahasiswa</strong
+            class="content-middle whitespace-nowrap text-sm capitalize md:text-lg"
+            >Daftar Mahasiswa Konversi</strong
           >
         </span>
-        <Link
-          :href="route('master.mahasiswa-konversi.create')"
-          method="get"
-          as="button"
-          type="link"
-          class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150"
+
+        <LinkButton :href="route('master.mahasiswa-konversi.create')"
+          >Tambah Mahasiswa</LinkButton
         >
-          Tambah Mahasiswa
-        </Link>
       </div>
 
-      <DataTable :data="mahasiswas" :columns="columns"> 
-        
+      <DataTable :data="mahasiswas" :columns="columns">
         <template #row(jurusan)="row">
-          <span class="capitalize">{{ row.data.jurusan ?? '-' }}</span>
+          <span class="capitalize">{{ row.data.jurusan ?? "-" }}</span>
         </template>
 
         <template #actions="row">
-          <Link
-            as="button"
-            :href="route('master.mahasiswa-konversi.edit', row.data.npm)"
-            >Edit</Link>
+          <NavLink :href="route('master.mahasiswa-konversi.edit', row.data.npm)"
+            >Edit</NavLink
+          >
         </template>
       </DataTable>
-      
     </div>
   </AppLayout>
 </template>
 
 <script>
-import AppLayout from "@layouts/App.vue"
-import DataTable from "@components/DataTable.vue"
-
-import { Link } from "@inertiajs/inertia-vue3"
+import AppLayout from "@layouts/App"
+import DataTable from "@components/DataTable"
+import NavLink from "@components/NavLink"
+import LinkButton from "@/Components/LinkButton"
 
 export default {
   components: {
     AppLayout,
-    Link,
+    NavLink,
     DataTable,
+    LinkButton,
   },
   props: {
     mahasiswas: {

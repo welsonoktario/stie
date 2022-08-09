@@ -1,4 +1,4 @@
-const defaultTheme = require("tailwindcss/defaultTheme");
+const defaultTheme = require("tailwindcss/defaultTheme")
 
 module.exports = {
   content: [
@@ -13,8 +13,14 @@ module.exports = {
       fontFamily: {
         sans: ["Ubuntu", ...defaultTheme.fontFamily.sans],
       },
+      gridTemplateColumns: {
+        17: "repeat(17, minmax(0, 1fr))",
+      },
     },
   },
 
-  plugins: [require("@tailwindcss/forms")],
-};
+  plugins: [
+    require("@tailwindcss/forms"),
+    require("prettier-plugin-tailwindcss"),
+  ],
+}

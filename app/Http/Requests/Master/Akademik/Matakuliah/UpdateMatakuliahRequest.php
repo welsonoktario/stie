@@ -29,6 +29,7 @@ class UpdateMatakuliahRequest extends FormRequest
             'nama_matakuliah' => ['required', 'string', 'max:45'],
             'sks' => ['required', 'digits_between:1,10'],
             'tipe' => ['required', 'in:wajib,pilihan,pilihan wajib', 'string'],
+            'semester' => ['nullable', 'string'],
         ];
     }
 

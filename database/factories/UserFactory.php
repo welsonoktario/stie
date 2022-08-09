@@ -15,11 +15,22 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
+            'nik' => $this->faker->nik(),
             'name' => $this->faker->name(),
+            'nama_panggilan' => $this->faker->firstName(),
+            'jenis_kelamin' => $this->faker->randomElement(['Perempuan', 'Laki-laki']),
+            'agama' => $this->faker->randomElement(['Islam', 'Kristen', 'Katolik', 'Budha', 'Hindu', 'Konghucu']),
+            'nomor_hp' => $this->faker->e164PhoneNumber(),
             'email' => $this->faker->unique()->safeEmail(),
+            'tempat_lahir' => 'Tarakan',
+            'tanggal_lahir' => $this->faker->date(),
+            'jalan' => $this->faker->streetAddress(),
+            'kelurahan' => $this->faker->state(),
+            'kecamatan' => $this->faker->state(),
+            'kode_pos' => $this->faker->postcode(),
+            'kewarganegaraan' => 'WNI',
             'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'remember_token' => Str::random(10),
+            'password' => '$2y$10$npg8.sMJKyIACzvRUg/.oedQSkclhd8HLmjvOjB3GBxYtRi0S4tI2', // 123
         ];
     }
 

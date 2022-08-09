@@ -24,10 +24,13 @@ class CreateUsersTable extends Migration
             $table->string('email')->nullable();
             $table->string('tempat_lahir', 45)->nullable();
             $table->date('tanggal_lahir')->nullable();
-            $table->string('jalan', 50)->nullable();
+            $table->string('jalan', 80)->nullable();
             $table->string('kelurahan', 50)->nullable();
             $table->string('kecamatan', 50)->nullable();
+            $table->string('kota', 50)->nullable();
+            $table->string('provinsi', 50)->nullable();
             $table->string('kode_pos', 10)->nullable();
+            $table->string('golongan', 50)->nullable();
             $table->boolean('login')->default(0);
             $table->boolean('status_aktif')->default(1);
             $table->enum('kewarganegaraan', ['WNI','WNA'])->default('WNI');

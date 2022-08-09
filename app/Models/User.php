@@ -34,6 +34,8 @@ class User extends Authenticatable
         'jalan',
         'kelurahan',
         'kecamatan',
+        'kota',
+        'provinsi',
         'kode_pos',
         'login',
         'status_aktif',

@@ -1,7 +1,7 @@
 <template>
   <input
     ref="input"
-    class="bg-zinc-100 dark:bg-zinc-700 border-none dark:text-zinc-200 focus:outline-none focus:ring-teal-500 dark:focus:ring-teal-600 rounded-md shadow-sm"
+    class="rounded-md border-none bg-zinc-100 shadow-sm focus:outline-none focus:ring-teal-500 dark:bg-zinc-700 dark:text-zinc-200 dark:focus:ring-teal-600"
     :value="modelValue"
     @input="$emit('update:modelValue', $event.target.value)"
   />
@@ -15,8 +15,8 @@ export default {
 
   methods: {
     focus() {
-      this.$refs.input.focus();
+      this.$refs.input.focus()
     },
   },
-};
+}
 </script>

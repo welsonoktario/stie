@@ -59,6 +59,7 @@ class MatakuliahController extends Controller
     public function store(StoreMatakuliahRequest $request)
     {
         $jurusan = $request->matakuliah_jurusan;
+        $jurusan['jurusan_id'] = $jurusan['jurusan_id'] != '-' ? $jurusan['jurusan_id'] : null;
         $prasyarat = collect($request->prasyarats)->mapWithKeys(fn ($item, $key) => [
             $item['id'] => ['nilai_minimum' => $item['nilai_minimum']]
         ]);
@@ -114,9 +115,11 @@ class MatakuliahController extends Controller
     public function update(UpdateMatakuliahRequest $request, Matakuliah $matakuliah)
     {
         $jurusan = $request->matakuliah_jurusan;
+        // dd($request->validated());
+        // dd($jurusan['jurusan_id']);
         $jurusan['jurusan_id'] = $jurusan['jurusan_id'] != '-' ? $jurusan['jurusan_id'] : null;
         $prasyarat = collect($request->prasyarats)->mapWithKeys(fn ($item, $key) => [
-            $item['id'] => ['nilai_minimum' => $item['pivot']['nilai_minimum']]
+            $item['id'] => ['nilai_minimum' => isset($item['pivot']) ? $item['pivot']['nilai_minimum'] : $item['nilai_minimum']]
         ]);
 
         $matakuliah->update($request->validated());

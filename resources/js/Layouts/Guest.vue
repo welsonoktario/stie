@@ -1,15 +1,15 @@
 <template>
   <div
-    class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-zinc-100 dark:bg-zinc-900"
+    class="flex min-h-screen flex-col items-center bg-zinc-100 pt-6 dark:bg-zinc-900 sm:justify-center sm:pt-0"
   >
     <div>
       <Link href="/">
-        <BreezeApplicationLogo class="w-20 h-20 fill-current text-gray-500" />
+        <BreezeApplicationLogo class="h-20 w-20 fill-current text-gray-500" />
       </Link>
     </div>
 
     <div
-      class="w-full sm:max-w-md mt-6 px-6 py-4 bg-zinc-50 dark:bg-zinc-800 shadow-md overflow-hidden sm:rounded-lg"
+      class="mt-6 w-full overflow-hidden bg-zinc-50 px-6 py-4 shadow-md dark:bg-zinc-800 sm:max-w-md sm:rounded-lg"
     >
       <slot />
     </div>
@@ -17,13 +17,13 @@
 </template>
 
 <script>
-import BreezeApplicationLogo from "@/Components/ApplicationLogo.vue";
-import { Link } from "@inertiajs/inertia-vue3";
+import BreezeApplicationLogo from "@/Components/ApplicationLogo.vue"
+import { Link } from "@inertiajs/inertia-vue3"
 
 export default {
   components: {
     BreezeApplicationLogo,
     Link,
   },
-};
+}
 </script>

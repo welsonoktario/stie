@@ -33,3 +33,5 @@ export const get = (obj, path, defaultValue = undefined) => {
 
   return result === undefined || result === obj ? defaultValue : result
 }
+
+export const inRange = (num, min, max) => num >= min && num <= max

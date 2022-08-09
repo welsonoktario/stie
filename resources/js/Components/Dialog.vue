@@ -29,7 +29,7 @@
             leave-to="opacity-0 scale-95"
           >
             <div
-              class="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-zinc-800 shadow-xl rounded-2xl"
+              class="my-8 inline-block w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all dark:bg-zinc-800"
             >
               <DialogTitle
                 as="h3"
@@ -45,7 +45,7 @@
                 <slot name="footer">
                   <button
                     type="button"
-                    class="inline-flex justify-center px-4 py-2 mr-4 text-sm font-medium border border-transparent rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 transition-all ease-out duration-150 dark:bg-opacity-85"
+                    class="dark:bg-opacity-85 mr-4 inline-flex justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium transition-all duration-150 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
                     :class="classes"
                     @click="confirm"
                   >
@@ -53,7 +53,7 @@
                   </button>
                   <button
                     type="button"
-                    class="inline-flex justify-center px-4 py-2 text-sm font-medium text-zinc-900 dark:text-zinc-50 bg-zinc-100 dark:bg-zinc-600 border border-transparent rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-zinc-500 dark:focus-visible:ring-zinc-600 dark:bg-opacity-85 transition-all ease-out duration-150"
+                    class="dark:bg-opacity-85 inline-flex justify-center rounded-md border border-transparent bg-zinc-100 px-4 py-2 text-sm font-medium text-zinc-900 transition-all duration-150 ease-out hover:bg-zinc-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 focus-visible:ring-offset-2 dark:bg-zinc-600 dark:text-zinc-50 dark:hover:bg-zinc-700 dark:focus-visible:ring-zinc-600"
                     @click="cancel"
                   >
                     Batal

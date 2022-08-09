@@ -3,7 +3,7 @@
 
   <BreezeValidationErrors class="mb-4" />
 
-  <div v-if="status" class="mb-4 font-medium text-sm text-teal-600">
+  <div v-if="status" class="mb-4 text-sm font-medium text-teal-600">
     {{ status }}
   </div>
 
@@ -33,18 +33,20 @@
       />
     </div>
 
-    <div class="block mt-4">
+    <div class="mt-4 block">
       <label class="flex items-center">
         <BreezeCheckbox v-model:checked="form.remember" name="remember" />
-        <span class="ml-2 text-sm text-zinc-600 dark:text-zinc-300">Remember me</span>
+        <span class="ml-2 text-sm text-zinc-600 dark:text-zinc-300"
+          >Remember me</span
+        >
       </label>
     </div>
 
-    <div class="flex items-center justify-end mt-4">
+    <div class="mt-4 flex items-center justify-end">
       <Link
         v-if="canResetPassword"
         :href="route('password.request')"
-        class="underline text-sm text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-500"
+        class="text-sm text-zinc-600 underline hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-500"
       >
         Forgot your password?
       </Link>
@@ -61,13 +63,13 @@
 </template>
 
 <script>
-import BreezeButton from "@/Components/Button";
-import BreezeCheckbox from "@/Components/Checkbox";
-import BreezeGuestLayout from "@/Layouts/Guest";
-import BreezeInput from "@/Components/Input";
-import BreezeLabel from "@/Components/Label";
-import BreezeValidationErrors from "@/Components/ValidationErrors";
-import { Head, Link } from "@inertiajs/inertia-vue3";
+import BreezeButton from "@/Components/Button"
+import BreezeCheckbox from "@/Components/Checkbox"
+import BreezeGuestLayout from "@/Layouts/Guest"
+import BreezeInput from "@/Components/Input"
+import BreezeLabel from "@/Components/Label"
+import BreezeValidationErrors from "@/Components/ValidationErrors"
+import { Head, Link } from "@inertiajs/inertia-vue3"
 
 export default {
   components: {
@@ -93,15 +95,15 @@ export default {
         password: "",
         remember: false,
       }),
-    };
+    }
   },
 
   methods: {
     submit() {
       this.form.post(this.route("login"), {
         onFinish: () => this.form.reset("password"),
-      });
+      })
     },
   },
-};
+}
 </script>
