@@ -142,7 +142,7 @@ class NilaiController extends Controller
             // else {
             // }
             $ipk = $mahasiswa->hitungIP([]);
-            $ips = "";
+            $ips = 0;
         }
 
         // dump($ipk, $ips);
