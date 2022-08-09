@@ -40,7 +40,15 @@
     </div>
 
 
-    <!-- Nama -->
+    <!-- Program Studi -->
+    <div class="col-start-2">
+      Tempat, Tanggal Lahir
+    </div>
+    <div class="class col-span-2">
+      : {{mahasiswa.user.tempat_lahir}}, {{tanggal_lahir}}
+    </div>
+
+    <!-- Program Studi -->
     <div class="col-start-2">
       Program Studi/Jenjang
     </div>
@@ -212,6 +220,18 @@ const props= defineProps({
   ipk: Number,
   wakil_ketua_1: String,
 });
+
+const tanggal_lahir = computed(() => {
+  try {
+    const tgl = new Date(props.mahasiswa.user.tanggal_lahir)
+    const tgl_formated = `${tgl.getDate()}-${tgl.getMonth()}-${tgl.getFullYear()}`
+
+    return tgl_formated
+  }
+  catch (e) {
+    return ""
+  }
+})
 
 const tanggal = computed(() => {
   const now = new Date()
