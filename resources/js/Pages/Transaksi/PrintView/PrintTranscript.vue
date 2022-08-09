@@ -1,9 +1,9 @@
 <template>
 <div class="font-mono ml-3 mr-3 text-xs">
 
-  <div class="grid grid-cols-2">
+  <div id='logo' class="grid grid-cols-2">
 
-    <div class="flex p-3">
+    <div class="flex items-center p-3">
       <div class="p-2">
         <img
           src="https://stiebulungantarakan.ac.id/wp-content/uploads/2022/03/Logo-STIE-Bulungan-Tarakan_New.png"
@@ -245,10 +245,16 @@ const tanggal = computed(() => {
 </script>
 
 <style>
+#logo {
+  /* display: none; */
+}
 
 @media print {
     /* td {font-family:georgia, times, serif;} */
     /* h1 {page-break-after: always;} */
+    #logo {
+      /* display:inline-block; */
+    }
 }
 
 @page {
