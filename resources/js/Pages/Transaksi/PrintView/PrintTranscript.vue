@@ -1,7 +1,24 @@
 <template>
 <div class="font-mono ml-3 mr-3 text-xs">
 
-  <div class="mt-5 grid grid-cols-4 mb-5">
+  <div class="grid grid-cols-2">
+
+    <div class="flex p-3">
+      <div class="p-2">
+        <img
+          src="https://stiebulungantarakan.ac.id/wp-content/uploads/2022/03/Logo-STIE-Bulungan-Tarakan_New.png"
+          class="w-20"
+        />
+      </div>
+      <div class="p-2">
+        <span class="h-full inline-block align-middle text-left">
+          <span class="font-semibold">STIE BULUNGAN TARAKAN</span> <br/>
+          <span class="" >Jl. Gunung Amal RT. 14, Kampung Enam, Tarakan, Kalimantan Timur 77123</span>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="grid grid-cols-4 mb-5">
     <div class="col-span-4 text-center w-full font-bold text-s">
       TRANSKRIP
     </div>
@@ -145,7 +162,7 @@
       <tr class="w-full">
         <td colspan="2" class="px-2 text-start">SKS Nilai E : {{total_sks_tidak_lulus}}</td>
         <td colspan="2" class="px-2 text-end">Indeks Prestasi Kumulatif :</td>
-        <td colspan="" class="px-2 text-start">{{ipk}}</td>
+        <td colspan="" class="px-2 text-start">{{+(Math.round(ipk + "e+3") + "e-3") }}</td>
       </tr>
     </tbody>
   </table> <br><br>
@@ -155,7 +172,7 @@
       A: Sangat Baik <br>
       B: Baik <br>
       C: Cukup <br>
-      D: Cukup <br>
+      D: Kurang <br>
       E: Tidak Lulus <br>
     </div>
     <div class="w-full">
