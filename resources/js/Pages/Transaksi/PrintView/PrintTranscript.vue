@@ -56,25 +56,6 @@
       : {{mahasiswa.jurusan.nama}}/S1
     </div>
   </div>
-  <!-- <div v-if="matakuliah_konversis">
-    <table class="w-full">
-      <thead>
-        <tr>
-          <th>Kode</th>
-          <th>Nama Matakuliah</th>
-          <th>Semester</th>
-          <th>SKS</th>
-          <th>NH</th>
-          <th>Bobot</th>
-          <th>SKS x Bobot</th>
-        </tr>
-      </thead>
-      <tbody>
-
-      </tbody>
-    </table>
-  </div> -->
-  <!-- <h1>Wow</h1> -->
   <table class="w-full border-slate-900">
     <thead>
       <tr class="border border-dashed border-slate-900">
