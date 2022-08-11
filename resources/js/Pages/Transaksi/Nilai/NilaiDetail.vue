@@ -44,7 +44,14 @@
           as="link"
           @click="cetakTranskrip"
           class="mb-3">
-          <PrinterIcon class="h-4"/> Cetak Transkrip Mahasiswa
+          <PrinterIcon class="h-4"/> Cetak Transkrip
+        </Link>
+        <Link
+          v-if="selectedTA != 0"
+          as="link"
+          @click="cetakKHS"
+          class="mb-3">
+          <PrinterIcon class="h-4"/> Cetak KHS
         </Link>
       </div>
 
@@ -354,6 +361,11 @@ const namaTA = (jadwal) =>
 
 const cetakTranskrip = () => {
   const r = route("transaksi.transkrip", {mahasiswa: props.mahasiswa.npm})
+  console.log(r);
+  Inertia.visit(r);
+}
+const cetakKHS = () => {
+  const r = route("transaksi.khs", {mahasiswa: props.mahasiswa.npm, ta: selectedTA.value})
   console.log(r);
   Inertia.visit(r);
 }

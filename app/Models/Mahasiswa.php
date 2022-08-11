@@ -162,12 +162,10 @@ class Mahasiswa extends Model
     }
 
     public function hitungIP($tas = [], $hitungIpAwalKonversi = false) {
-        // $ip = 0;
-        // dd($tas);
+
+        // ambil tahun ajaran yang dipilih
         if (count($tas) > 0) {
-            // dd('tas>0');
             $jadwals = $this->jadwals()->whereIn('tahun_ajaran_id', $tas)->get();
-            // dd($jadwals, $tas);
         }
         else {
             $jadwals = $this->jadwals;
@@ -176,7 +174,7 @@ class Mahasiswa extends Model
         $totalNilaiKaliSks = 0;
         $totalSks = 0;
         $totalSksTidakLulus = 0;
-        // dd("disini");
+
         foreach ($jadwals as $jadwal) {
             if ((count($tas) === 1) && $jadwal->pivot->angka_mutu === null) {
                 return 0;
@@ -196,7 +194,6 @@ class Mahasiswa extends Model
         $totalSksKonversi = 0;
         $mahasiswa_konversi = $this->mahasiswa_konversi;
         if ($mahasiswa_konversi && (count($tas) != 1 || $hitungIpAwalKonversi)) {
-            // dd($mkk);
             $matakuliah_konversis = $mahasiswa_konversi->matakuliah_konversis;
 
             // HITUNG TOTAL SKS DAN SKS*BOBOT
@@ -206,9 +203,7 @@ class Mahasiswa extends Model
             }
             $totalSks += $totalSksKonversi;
             $totalNilaiKaliSks += $totalNilaiKaliSksKonversi;
-            // dd($mkk);
         }
-        // dd("sks".$totalSks);
 
         if ($totalSks == 0) {
             return 0;

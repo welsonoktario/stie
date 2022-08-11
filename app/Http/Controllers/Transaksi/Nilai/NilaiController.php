@@ -121,7 +121,7 @@ class NilaiController extends Controller
             // Hitung IPK
             $hitungIpKonversi = count($tas) == 1 ? true : false;
             $ipk = $mahasiswa->hitungIP($tas, $hitungIpKonversi);
-            // dd($ipk);
+            // dd($ipk, $tas);
 
         } else {
             // dump('ipk');
@@ -141,7 +141,7 @@ class NilaiController extends Controller
             // }
             // else {
             // }
-            $ipk = $mahasiswa->hitungIP([]);
+            $ipk = $mahasiswa->hitungIP([], true);
             $ips = 0;
         }
 

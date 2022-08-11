@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Mahasiswa;
 use App\Models\TahunAjaran;
 use App\Models\JabatanStruktural;
+use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use League\CommonMark\Parser\Block\SkipLinesStartingWithLettersParser;
+use Throwable;
 
 class TranskripController extends Controller
 {
@@ -165,6 +167,48 @@ class TranskripController extends Controller
             "ipk"));
 
 
+    }
+
+    public function khs(Mahasiswa $mahasiswa, TahunAjaran $ta) {
+
+        $mahasiswa = $mahasiswa->load([
+            'jadwals' => function ($q) use ($ta) {
+                return $q->where('tahun_ajaran_id', $ta->id)->with('matakuliah');
+            },
+            'user',
+            'jurusan',
+            'tahun_ajaran' => function ($q) use ($ta) {
+                return $q->where('tanggal_mulai', "<=", $ta->tanggal_mulai);
+            }
+        ]);
+
+
+        // hitung ipk dari smt sekarang ke bawah
+        $tas = $mahasiswa->tahun_ajaran->keyBy('id')->keys()->all();
+        rsort($tas);
+
+        $ips = 0;
+        $ipk = 0;
+
+        $ips = round($mahasiswa->hitungIP([$ta->id]), 3);
+        $ipk = round($mahasiswa->hitungIP($tas, true), 3);
+
+        $wakil_ketua_1 = JabatanStruktural::with('staff.user')->find(2);
+        // dd($mahasiswa->jadwals);
+        return Inertia::render('Transaksi/PrintView/PrintKHS', compact(
+            "mahasiswa",
+            "ta",
+            "ips",
+            "ipk",
+            "wakil_ketua_1"
+        ));
+
+        // dump($ips, $ipk, $tas, $mahasiswa->user->name, $ta->tahun_ajaran);
+        // die();
+
+
+
+        // dd($mahasiswa);
     }
 
     /**
