@@ -98,6 +98,7 @@ class KRSController extends Controller
         }
 
         $filters = $request->only(['query', 'orderBy', 'orderType']);
+
         // cari mahasiswa ada atau engga
         $taken = DB::table('status_mahasiswa')
             ->where('mahasiswa_npm', '=', $id)
@@ -135,46 +136,39 @@ class KRSController extends Controller
             })->when($filters['orderBy'] ?? null, function ($query, $orderBy) use (&$filters) {
                 $query->orderBy($orderBy, $filters['orderType']);
             });
-        // $sksDiambil = 0;
+
         $sksDiambil = $jadwal_mhs->sum("matakuliahs.sks");
-        // dd($sksDiambil);
         $jadwal_mhs = $jadwal_mhs
             ->paginate($request->get('perPage') ?: 20);
 
+        // Ambil jadwal di semester ini dan urutkan jadwalnya berdasarkan kodemk
         $jadwals = Jadwal::where('tahun_ajaran_id', '=', $request['ta'])
             // ->join('matakuliahs', 'matakuliahs.id', 'jadwals.id')
             ->whereHas('matakuliah.matakuliah_jurusan', function($q) use ($mahasiswa){
                 $q->where('matakuliah_jurusans.jurusan_id', $mahasiswa->jurusan->id);
             })
             ->with(['matakuliah.matakuliah_jurusan'])
-            // ->where
-
-            // ->orderBy('matakuliahs.semester','asc')
             ->get();
 
-        // dd($jadwals->toSql());
+        $sorted_jadwals = ($jadwals->sortBy(function ($jadwal, $key) {
+            return $jadwal->matakuliah->kode_matakuliah;
+        })->toArray());
+        $sorted_jadwals = array_values($sorted_jadwals);
+        // dd(array_values($sorted_jadwals));
 
         $tahunAjaran = TahunAjaran::find($request['ta']);
-        // $ipsSebelumnya = TahunAjaran::firstWhere('tanggal_mulai', '<', $tahunAjaran->tanggal_mulai);
 
         $ipsSebelumnya = $mahasiswa->tahun_ajaran->firstWhere('tanggal_mulai', '<', $tahunAjaran->tanggal_mulai);
-        // dd($ipsSebelumnya);
-        // $res = array();
         if ($ipsSebelumnya) {
             $ipsSebelumnya = $this->calcIP($mahasiswa->npm, $ipsSebelumnya->id);
-            // $ipsSebelumnya = $res[0];
-            // $sksDiambil
         }
         else {
             $ipsSebelumnya = "Baru";
         }
 
-
-        // if ()
-
         return Inertia::render('Transaksi/KRS/KRSDetail.vue', [
             'mahasiswa' => $mahasiswa,
-            'jadwals' => $jadwals,
+            'jadwals' => $sorted_jadwals,
             'jadwalMahasiswa' => $jadwal_mhs,
             'ipsSebelumnya' => $ipsSebelumnya,
             'sksDiambil' => $sksDiambil,
@@ -242,19 +236,13 @@ class KRSController extends Controller
         }])->findOrFail($id);
         $jadwal = Jadwal::find($request['jadwal_id']);
 
-        // dd($mahasiswa, $jadwal, $request['jadwal_id']);
-
-        // $route = route('transaksi.krs.edit', ['kr' => $mahasiswa->npm, 'ta' =>$jadwal->tahun_ajaran_id]);
-        // dd($route);
-
         try {
             $mahasiswa->jadwals()->detach($jadwal->id);
         } catch (\Throwable $th) {
-            //throw $th;
             dd($th->getMessage());
         }
 
-        // dd(count($mahasiswa->jadwals) - 1);
+
         if (!(count($mahasiswa->jadwals) - 1)) {
             $mahasiswa->tahun_ajaran()->sync([$ta => ['status' => 'Tidak Aktif']], false);
         }
@@ -266,16 +254,7 @@ class KRSController extends Controller
 
     public function copy(Request $request, Mahasiswa $mahasiswa)
     {
-        // dd($request->npm_salin, $request->tahun_ajaran, $mahasiswa);
-
-        // $mahasiswa_salin = Mahasiswa::where("npm","=",$request->npm_salin)->first();
         $mahasiswa_salin = Mahasiswa::findOrFail($request->npm_salin);
-
-        // $jadwals = $mahasiswa_salin->inner("jadwals")->get();
-
-        // $jadwals = Jadwal::where("tahun_ajaran_id", "=", $request->tahun_ajaran)->get();
-        // dd($mahasiswa_salin->jadwals);
-
         $jadwals = $mahasiswa_salin->jadwals;
 
         $jadwal_ids = array();
