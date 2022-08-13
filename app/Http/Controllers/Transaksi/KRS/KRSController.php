@@ -133,9 +133,11 @@ class KRSController extends Controller
                     $query->where('kode_matakuliah', 'LIKE', "%$search%")
                         ->orWhere('nama_matakuliah', 'LIKE', "%$search%");
                 });
-            })->when($filters['orderBy'] ?? null, function ($query, $orderBy) use (&$filters) {
-                $query->orderBy($orderBy, $filters['orderType']);
-            });
+            })
+            ->orderBy("kode_matakuliah", 'asc');
+            // ->when($filters['orderBy'] ?? null, function ($query, $orderBy) use (&$filters) {
+            //     $query->orderBy($orderBy, $filters['orderType']);
+            // });
 
         $sksDiambil = $jadwal_mhs->sum("matakuliahs.sks");
         $jadwal_mhs = $jadwal_mhs

@@ -93,7 +93,7 @@
         </thead>
         <tbody>
           <tr
-            v-for="jadwal in mahasiswa.jadwals"
+            v-for="jadwal in jadwals"
             :key="jadwal.id"
             class="border-y text-sm font-normal dark:border-zinc-600 dark:text-zinc-200"
           >
@@ -226,6 +226,7 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
+  jadwals: Object,
   mahasiswa: Object,
   ips: String,
   ipk: String,
