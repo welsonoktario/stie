@@ -64,6 +64,8 @@
       : {{ta.tahun_ajaran}}
     </div>
   </div>
+
+
   <table class="w-full border-slate-900 table-auto">
     <thead>
       <tr class="border border-dashed border-slate-900">
@@ -114,7 +116,7 @@
         <td colspan="" class="px-2 text-start">{{ips}}</td>
       </tr>
       <tr class="w-full">
-        <td colspan="2" class="px-2 text-start">Maks. SKS y.a.d :</td>
+        <td colspan="2" class="px-2 text-start">Maks. SKS y.a.d : {{sks_yad}}</td>
         <td colspan="2" class="px-2 text-end">IPK :</td>
         <td colspan="" class="px-2 text-start">{{ipk}}</td>
       </tr>
@@ -160,6 +162,8 @@ const props= defineProps({
   mahasiswa: Object,
   ips: Number,
   ipk: Number,
+  ips_sebelumnya: Number,
+  sks_yad: Number,
   wakil_ketua_1: Object,
   ta: Object
 });
@@ -210,9 +214,19 @@ const totalSksNilaiE = computed (()=> {
   return i
 })
 
-// const totalSksLulus = computed(() => {
-//   const totalSks() - totalSksNilaiE();
-// })
+const totalSksYAD = computed (() => {
+  let sks = 24
+  // const mahasiswa = props.mahasiswa;
+  const tahun_ajarans = props.mahasiswa.tahun_ajaran;
+  if (tahun_ajarans > 2) {
+    if (props.ips > 0) {
+      sks = 0
+    }
+  }
+
+  return sks
+})
+
 
 
 

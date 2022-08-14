@@ -161,6 +161,25 @@ class Mahasiswa extends Model
         }
     }
 
+    public function hitungSksYAD($ips_sebelumnya) {
+        $sks = 24;
+
+        if ($ips_sebelumnya >= 3.00) {
+            $sks = 24;
+        } else if ($ips_sebelumnya >= 2.50 && $ips_sebelumnya < 3.00) {
+            $sks = 21;
+        } else if ($ips_sebelumnya >= 2.00 && $ips_sebelumnya < 2.50) {
+            $sks = 18;
+        } else if ($ips_sebelumnya >= 1.50 && $ips_sebelumnya < 2.00) {
+            $sks = 15;
+        } else {
+            $sks = 12;
+        }
+
+        return $sks;
+
+    }
+
     public function hitungIP($tas = [], $hitungIpAwalKonversi = false) {
 
         // ambil tahun ajaran yang dipilih
@@ -188,6 +207,7 @@ class Mahasiswa extends Model
             $totalNilaiKaliSks += $jadwal->pivot->angka_mutu * $jadwal->matakuliah->sks;
             $totalSks += $jadwal->matakuliah->sks;
         }
+        // dd($totalSks);
 
         // Hitung IP dengan matakuliah konversi
         $totalNilaiKaliSksKonversi = 0;

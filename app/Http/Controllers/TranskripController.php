@@ -193,22 +193,31 @@ class TranskripController extends Controller
         $ips = round($mahasiswa->hitungIP([$ta->id]), 3);
         $ipk = round($mahasiswa->hitungIP($tas, true), 3);
 
+        // hitung ip sebelumnya
+        $ips_sebelumnya = 24;
+        $sks_yad = 24;
+
+        // hitung mulai dari smt 2 aja untuk ambil sks smt 3
+        // karena semester 1 dan 2 paket
+        if (count($tas) > 1) {
+            $semester_sebelumnya = $tas[1];
+            $ips_sebelumnya = round($mahasiswa->hitungIp([$semester_sebelumnya]), 3);
+            $sks_yad = $mahasiswa->hitungSksYAD($ips_sebelumnya);
+
+        }
+
         $wakil_ketua_1 = JabatanStruktural::with('staff.user')->find(2);
-        // dd($mahasiswa->jadwals);
+
         return Inertia::render('Transaksi/PrintView/PrintKHS', compact(
             "mahasiswa",
             "ta",
             "ips",
             "ipk",
+            "ips_sebelumnya",
+            "sks_yad",
             "wakil_ketua_1"
         ));
 
-        // dump($ips, $ipk, $tas, $mahasiswa->user->name, $ta->tahun_ajaran);
-        // die();
-
-
-
-        // dd($mahasiswa);
     }
 
     /**
