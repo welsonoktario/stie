@@ -99,7 +99,11 @@ Route::group(['middleware' => ['auth']], function () {
             ->name('kurikulum.prasyarat');
 
         Route::get('testing', [TestingController::class, 'index'])->name('testing');
+
+        // transkrip dan KRS
         Route::get('transkrip/{mahasiswa}', [TranskripController::class, 'show'])->name('transkrip');
+        Route::get('transkrip/{mahasiswa}/{ta}', [TranskripController::class, 'khs'])->name('khs');
+
         Route::post('krs/{mahasiswa}/copy', [KRSController::class, 'copy'])->name('krs.copy');
 
         Route::group(['prefix' => 'jadwal', 'as' => 'jadwal.'], function () {

@@ -161,13 +161,30 @@ class Mahasiswa extends Model
         }
     }
 
+    public function hitungSksYAD($ips_sebelumnya) {
+        $sks = 24;
+
+        if ($ips_sebelumnya >= 3.00) {
+            $sks = 24;
+        } else if ($ips_sebelumnya >= 2.50 && $ips_sebelumnya < 3.00) {
+            $sks = 21;
+        } else if ($ips_sebelumnya >= 2.00 && $ips_sebelumnya < 2.50) {
+            $sks = 18;
+        } else if ($ips_sebelumnya >= 1.50 && $ips_sebelumnya < 2.00) {
+            $sks = 15;
+        } else {
+            $sks = 12;
+        }
+
+        return $sks;
+
+    }
+
     public function hitungIP($tas = [], $hitungIpAwalKonversi = false) {
-        // $ip = 0;
-        // dd($tas);
+
+        // ambil tahun ajaran yang dipilih
         if (count($tas) > 0) {
-            // dd('tas>0');
             $jadwals = $this->jadwals()->whereIn('tahun_ajaran_id', $tas)->get();
-            // dd($jadwals, $tas);
         }
         else {
             $jadwals = $this->jadwals;
@@ -176,7 +193,7 @@ class Mahasiswa extends Model
         $totalNilaiKaliSks = 0;
         $totalSks = 0;
         $totalSksTidakLulus = 0;
-        // dd("disini");
+
         foreach ($jadwals as $jadwal) {
             if ((count($tas) === 1) && $jadwal->pivot->angka_mutu === null) {
                 return 0;
@@ -190,13 +207,13 @@ class Mahasiswa extends Model
             $totalNilaiKaliSks += $jadwal->pivot->angka_mutu * $jadwal->matakuliah->sks;
             $totalSks += $jadwal->matakuliah->sks;
         }
+        // dd($totalSks);
 
         // Hitung IP dengan matakuliah konversi
         $totalNilaiKaliSksKonversi = 0;
         $totalSksKonversi = 0;
         $mahasiswa_konversi = $this->mahasiswa_konversi;
         if ($mahasiswa_konversi && (count($tas) != 1 || $hitungIpAwalKonversi)) {
-            // dd($mkk);
             $matakuliah_konversis = $mahasiswa_konversi->matakuliah_konversis;
 
             // HITUNG TOTAL SKS DAN SKS*BOBOT
@@ -206,9 +223,7 @@ class Mahasiswa extends Model
             }
             $totalSks += $totalSksKonversi;
             $totalNilaiKaliSks += $totalNilaiKaliSksKonversi;
-            // dd($mkk);
         }
-        // dd("sks".$totalSks);
 
         if ($totalSks == 0) {
             return 0;

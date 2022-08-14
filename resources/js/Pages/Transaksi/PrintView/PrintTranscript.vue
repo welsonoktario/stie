@@ -56,6 +56,28 @@
       : {{mahasiswa.jurusan.nama}}/S1
     </div>
   </div>
+
+<!--
+  <div class="header grid grid-cols-4 mb-5">
+    <div class="col-span-4 w-full font-bold text-s">
+      Lanjutan keterangan transkrip untuk mahasiswa.
+    </div>
+
+    <div class="col-start-2">
+      NPM
+    </div>
+    <div class="class col-span-2">
+      : {{mahasiswa.npm}}
+    </div>
+
+    <div class="col-start-2">
+      Nama
+    </div>
+    <div class="class col-span-2">
+      : {{mahasiswa.user.name}}
+    </div>
+  </div> -->
+
   <table class="w-full border-slate-900">
     <thead>
       <tr class="border border-dashed border-slate-900">
@@ -76,7 +98,7 @@
         </td>
       </tr>
       <tr class="w-full border-x border-slate-900 border-dashed" v-if="matakuliah_konversis.length > 0" v-for="(matakuliah_konversi, index) in matakuliah_konversis[0].matakuliah_konversis" :key="index">
-        <td class="px-2">
+        <td class="px-2 text-center">
           {{matakuliah_konversi.matakuliah.kode_matakuliah}}
         </td>
         <td class="px-2">
@@ -85,16 +107,16 @@
         <td class="px-2">
           <!-- {{matakuliah_konversi.matakuliah}} --> -
         </td>
-        <td class="px-2">
+        <td class="px-2 ">
           {{matakuliah_konversi.matakuliah.sks}}
         </td>
         <td class="px-2">
           <!-- {{matakuliah_konversi.nilai}} - --> NH
         </td>
-        <td class="px-2">
+        <td class="px-2 ">
           {{matakuliah_konversi.nilai_matakuliah}}
         </td>
-        <td class="px-2">
+        <td class="px-2 ">
           {{matakuliah_konversi.matakuliah.sks * matakuliah_konversi.nilai_matakuliah}}
         </td>
       </tr>
@@ -113,7 +135,7 @@
         </td>
       </tr>
       <tr class="w-full border-x border-slate-900 border-dashed" v-for="(jadwal, index) in jadwals" :key="index">
-        <td class="px-2">{{index}}</td>
+        <td class="px-2 text-center">{{index}}</td>
         <td class="px-2">
           <!-- <tr v-for="(mk) in jadwal"> -->
           {{jadwal[0].matakuliah.nama_matakuliah}}
@@ -122,21 +144,21 @@
           <tr v-for="(mk) in jadwal">
           <td>{{mk.tahun_ajaran.tahun_ajaran}}</td></tr>
         </td>
-        <td class="px-2">
+        <td class="px-2 text-center">
           <tr v-for="(mk) in jadwal">
-          <td>{{mk.matakuliah.sks}}</td></tr>
+          <td class="text-center">{{mk.matakuliah.sks}}</td></tr>
         </td>
         <td class="px-2">
           <tr v-for="(mk) in jadwal">
-          <td>{{mk.pivot.nisbi ? mk.pivot.nisbi : "-"}}</td></tr>
+          <td class="text-center">{{mk.pivot.nisbi ? mk.pivot.nisbi : "-"}}</td></tr>
         </td>
         <td class="px-2">
           <tr v-for="(mk) in jadwal">
-          <td>{{mk.pivot.angka_mutu ? mk.pivot.angka_mutu : "-"}}</td></tr>
+          <td class="text-center">{{mk.pivot.angka_mutu ? mk.pivot.angka_mutu : "-"}}</td></tr>
         </td>
         <td class="px-2">
           <tr v-for="(mk) in jadwal">
-          <td>{{mk.matakuliah.sks * mk.pivot.angka_mutu}}</td></tr>
+          <td class="text-center">{{mk.matakuliah.sks * mk.pivot.angka_mutu}}</td></tr>
         </td>
       </tr>
 
@@ -235,6 +257,13 @@ const tanggal = computed(() => {
     /* h1 {page-break-after: always;} */
     #logo {
       /* display:inline-block; */
+    }
+
+    .header {
+
+    position: absolute;
+    top: 0;
+      /* display: table-header-group; */
     }
 }
 
