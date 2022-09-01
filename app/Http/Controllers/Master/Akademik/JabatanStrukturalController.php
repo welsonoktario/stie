@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Master\Akademik;
 
 use App\Http\Controllers\Controller;
 use App\Models\JabatanStruktural;
+use App\Models\Staff;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class JabatanStrukturalController extends Controller
@@ -22,8 +25,10 @@ class JabatanStrukturalController extends Controller
             ->leftJoin('staffs', 'jabatan_strukturals.staff_id', '=', 'staffs.id')
             ->leftJoin('users', 'staffs.user_id', '=', 'users.id')
             ->paginate(100);
+        $karyawans = Staff::with('user')->get();
         return Inertia::render('Master/Akademik/JabatanStruktural/JabatanStruktural.vue',[
             'jabatans' => $jabatans,
+            'karyawans' => $karyawans
         ]);
 
         dd($jabatans);
@@ -82,6 +87,31 @@ class JabatanStrukturalController extends Controller
     public function update(Request $request, $id)
     {
         //
+        try {
+            DB::beginTransaction();
+
+            $jabatan = JabatanStruktural::find($id);
+            $staff = Staff::find($request->staff_id);
+
+
+
+            // $staff->jabatan_struktural()->associate($jabatan);
+
+            $jabatan->staff()->associate($staff)->save();
+            // dd($jabatan);
+
+
+            DB::commit();
+            // dd($jabatan, $staff);
+
+
+            return redirect()->back();
+        }
+        catch (Exception $e) {
+            DB::rollBack();
+            return $e;
+        }
+        // dd($id, $request->staff_id);
     }
 
     /**

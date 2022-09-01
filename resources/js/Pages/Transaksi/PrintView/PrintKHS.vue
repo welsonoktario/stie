@@ -1,7 +1,7 @@
 <template>
 <div class="font-mono ml-3 mr-3 text-xs">
 
-  <div id='logo' class="grid grid-cols-2">
+  <!-- <div id='logo' class="grid grid-cols-2">
 
     <div class="flex items-center p-3">
       <div class="p-2">
@@ -10,16 +10,37 @@
           class="w-20"
         />
       </div>
+    </div>
+
+    <div class="flex items-center p-3">
       <div class="p-2">
         <span class="h-full inline-block align-middle text-left">
           <span class="font-semibold">STIE BULUNGAN TARAKAN</span> <br/>
-          <span class="" >Jl. Gunung Amal RT. 14, Kampung Enam, Tarakan, Kalimantan Timur 77123</span>
+          <span class="" >Jl. Gunung Amal RT. 1s4, Kampung Enam, Tarakan, Kalimantan Timur 77123</span>
         </span>
       </div>
     </div>
+  </div> -->
+
+
+  <div class="flex items-center p-3 border-double border-slate-800 border-b-4 mb-3">
+    <div class="p-2">
+      <img
+        src="https://stiebulungantarakan.ac.id/wp-content/uploads/2022/03/Logo-STIE-Bulungan-Tarakan_New.png"
+        class="w-20"
+      />
+    </div>
+    <div class="p-2 w-full">
+      <span class="h-full inline-block align-middle text-center">
+        <span class="font-semibold text-xl">SEKOLAH TINGGI ILMU EKONOMI BULUNGAN TARAKAN</span> <br/>
+        <span class="" >Jl. Gunung Amal No. 01 Tarakan, Kalimantan Timur 77123</span>
+        <span class="" >Telp. +6255125996, +6255125997 Fax. +6255124004</span>
+        <span class="" >Website: www.stiebulungantarakan.ac.id Email: info@stiebulungantarakan.ac.id</span>
+      </span>
+    </div>
   </div>
   <div class="grid grid-cols-4 mb-5">
-    <div class="col-span-4 text-center w-full font-bold text-s underline underline-offset-2">
+    <div class="col-span-4 text-center w-full font-bold text-lg underline underline-offset-2">
       KARTU HASIL STUDI
     </div>
 
@@ -132,7 +153,7 @@
       B: Baik <br>
       C: Cukup <br>
       D: Kurang <br>
-      E: Tidak Lulus <br>
+      E: Sangat Kurang <br>
     </div>
     <div class="w-full">
       Tarakan, {{tanggal}} <br>
@@ -143,6 +164,10 @@
         {{ wakil_ketua_1.staff.gelar_depan }}
         {{ wakil_ketua_1.staff.user.name }}
         {{ wakil_ketua_1.staff.gelar_belakang }}
+      </p>
+      <p class="uppercase">
+        {{ wakil_ketua_1.staff.dosen.tipe_id }}:
+        {{ wakil_ketua_1.staff.dosen.id }}
       </p>
     </div>
   </div>
