@@ -151,7 +151,7 @@ class TranskripController extends Controller
         */
 
 
-        $wakil_ketua_1 = JabatanStruktural::with('staff.user')->find(2);
+        $wakil_ketua_1 = JabatanStruktural::with(['staff.user', 'staff.dosen'])->find(2);
         // return Inertia::render('Master/Akademik/JabatanStruktural/JabatanStruktural',[]);
         return Inertia::render('Transaksi/PrintView/PrintTranscript', compact(
             "mahasiswa",
@@ -206,7 +206,7 @@ class TranskripController extends Controller
 
         }
 
-        $wakil_ketua_1 = JabatanStruktural::with('staff.user')->find(2);
+        $wakil_ketua_1 = JabatanStruktural::with(['staff.user','staff.dosen'])->find(2);
 
         return Inertia::render('Transaksi/PrintView/PrintKHS', compact(
             "mahasiswa",
