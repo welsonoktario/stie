@@ -21,6 +21,8 @@ class CreateJabatansTable extends Migration
             $table->string('staff_id', 45)->nullable();
             $table->foreign('staff_id')->references('id')->on('staffs')->onDelete('set null')->cascadeOnUpdate();
 
+            $table->timestamps();
+
         });
     }
 
