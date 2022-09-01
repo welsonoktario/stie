@@ -65,7 +65,7 @@ class UjianController extends Controller
             }
         ])->find($id);
 
-        $wakil_ketua_1 = JabatanStruktural::with('staff.user')->find(2);
+        $wakil_ketua_1 = JabatanStruktural::with(['staff.user', 'staff.dosen'])->find(2);
         // dd($wakil_ketua_1);
         // $wakil_ketua_1 =
         // dd($mahasiswa);

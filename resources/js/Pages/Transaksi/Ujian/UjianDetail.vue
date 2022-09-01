@@ -128,6 +128,10 @@
         {{ wakil_ketua_1.staff.user.name }}
         {{ wakil_ketua_1.staff.gelar_belakang }}
       </p>
+      <p class="uppercase">
+        {{ wakil_ketua_1.staff.dosen.tipe_id }}:
+        {{ wakil_ketua_1.staff.dosen.id }}
+      </p>
     </div>
   </div>
 </template>
