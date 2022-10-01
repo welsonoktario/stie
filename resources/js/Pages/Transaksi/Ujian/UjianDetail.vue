@@ -11,7 +11,8 @@
           <tr>
             <td>Thn.Akademik</td>
             <td class="pl-1 pr-2">:</td>
-            <td>{{ ta.tahun_ajaran }}</td>
+            <!-- just return the Year at index 0 -->
+            <td>{{ ta.tahun_ajaran.split(" ")[0] }}</td>
           </tr>
           <tr>
             <td>Semester</td>
