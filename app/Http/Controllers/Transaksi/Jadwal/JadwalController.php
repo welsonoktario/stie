@@ -5,13 +5,17 @@ namespace App\Http\Controllers\Transaksi\Jadwal;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Transaksi\Jadwal\StoreJadwalRequest;
 use App\Http\Requests\Transaksi\Jadwal\UpdateJadwalRequest;
+use App\Models\Dosen;
 use App\Models\Jadwal;
 use App\Models\Kurikulum;
 use App\Models\Matakuliah;
 use App\Models\Ruangan;
 use App\Models\TahunAjaran;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
+use Throwable;
 
 class JadwalController extends Controller
 {
@@ -72,11 +76,14 @@ class JadwalController extends Controller
     {
         $tahunAkademik = TahunAjaran::find(Request::get('ta'));
         $kurikulumAktif = Kurikulum::where('aktif', 1)->get();
-        $kurikulumAktifId = array();
+        $kurikulumAktifId = [];
         foreach ($kurikulumAktif as $kurikulum) {
             $kurikulumAktifId[] = $kurikulum->id;
         }
         $ruangans = Ruangan::all();
+        $dosens = Dosen::query()
+            ->with(['staff.user'])
+            ->get();
         $matakuliahs = Matakuliah::whereIn('kurikulum_id', $kurikulumAktifId)->orderBy('semester')->get();
 
         return Inertia::render(
@@ -84,6 +91,7 @@ class JadwalController extends Controller
             [
                 'tahunAkademik' => $tahunAkademik,
                 'ruangans' => $ruangans,
+                'dosens' => $dosens,
                 'matakuliahs' => $matakuliahs->sortBy('semester')->toArray()
             ]
         );
@@ -97,7 +105,26 @@ class JadwalController extends Controller
      */
     public function store(StoreJadwalRequest $request)
     {
-        Jadwal::create($request->validated());
+        DB::beginTransaction();
+
+        try {
+            $dosens = collect($request->dosens)->map(fn ($dosen) => $dosen['id']);
+            $jadwal = Jadwal::create($request->validated());
+            $jadwal->dosens()->sync($dosens, false);
+
+            DB::commit();
+        } catch (Throwable $e) {
+            DB::rollBack();
+
+            return redirect()
+                ->route('transaksi.jadwal.index')
+                ->with(
+                    [
+                        'status' => 'FAIL',
+                        'msg' => "Terjadi kesalahan menambah jadwal"
+                    ]
+                );
+        }
 
         return redirect()
             ->route('transaksi.jadwal.index')
@@ -125,6 +152,7 @@ class JadwalController extends Controller
         }
         $ruangans = Ruangan::all();
         $matakuliahs = Matakuliah::whereIn('kurikulum_id', $kurikulumAktifId)->orderBy('semester')->get();
+        $jadwal->load(['dosens.staff.user']);
 
         return Inertia::render(
             'Transaksi/Jadwal/JadwalDetail',
