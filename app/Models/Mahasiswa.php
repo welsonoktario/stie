@@ -164,6 +164,10 @@ class Mahasiswa extends Model
     public function hitungSksYAD($ips_sebelumnya) {
         $sks = 24;
 
+        if ($ips_sebelumnya === 'Baru') {
+            return 24;
+        }
+
         if ($ips_sebelumnya >= 3.00) {
             $sks = 24;
         } else if ($ips_sebelumnya >= 2.50 && $ips_sebelumnya < 3.00) {
@@ -174,9 +178,8 @@ class Mahasiswa extends Model
             $sks = 15;
         } else if ($ips_sebelumnya < 1.50){
             $sks = 12;
-        } else if ($ips_sebelumnya == "Baru") {
-            dd('disini');
         }
+        // dd($ips_sebelumnya, $sks);
 
         return $sks;
 
