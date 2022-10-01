@@ -15,7 +15,7 @@
             <tr>
               <td>Thn.Akademik</td>
               <td class="pl-1 pr-2">:</td>
-              <td>{{ jadwal.tahun_ajaran.tahun_ajaran }}</td>
+              <td>{{ jadwal.tahun_ajaran.tahun_ajaran.split(" ")[0] }}</td>
             </tr>
             <tr>
               <td>Semester</td>
@@ -64,7 +64,28 @@
     </table>
 
     <template v-if="tipe === 'H'">
-      <component :is="TableAbsensiHarian" :jadwal="jadwal" />
+      <component class="mb-10" :is="TableAbsensiHarian" :jadwal="jadwal" />
+      <div class="w-full">
+        <div class="text-xs font-mono grid grid-cols-3 text-mono">
+          <div class="">
+            <br/>
+            <p>Ketua Departemen {{prodi.split(" ")[0]}},</p>
+            <p>__________________________________</p>
+            <p>NIDN: </p>
+          </div>
+          <div class="">
+            <br/>
+            <p>Ketua Kelas,</p>
+            <p>__________________________________</p>
+            <p>NPM: </p>
+          </div>
+          <div class="">
+            <p>Tarakan,</p>
+            <p>Dosen Penanggung Jawab,</p>
+            <p>__________________________________</p>
+          </div>
+        </div>
+      </div>
     </template>
     <template v-if="tipe.includes('A-')">
       <component :is="TableAbsensiUjian" :jadwal="jadwal" />

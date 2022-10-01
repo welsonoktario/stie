@@ -222,6 +222,11 @@
   </AppLayout>
 </template>
 
+<style scoped>
+  /* somehow ini gabisa */
+  /* @media print{@page {size: landscape}} */
+</style>
+
 <script>
 import { computed, ref } from "vue"
 import { Link, useForm } from "@inertiajs/inertia-vue3"
