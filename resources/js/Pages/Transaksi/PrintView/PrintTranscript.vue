@@ -10,11 +10,11 @@
       />
     </div>
     <div class="p-2 w-full">
-      <span class="h-full inline-block align-middle text-center">
-        <span class="font-semibold text-xl">SEKOLAH TINGGI ILMU EKONOMI BULUNGAN TARAKAN</span> <br/>
-        <span class="" >Jl. Gunung Amal No. 01 Tarakan, Kalimantan Timur 77123</span>
-        <span class="" >Telp. +6255125996, +6255125997 Fax. +6255124004</span>
-        <span class="" >Website: www.stiebulungantarakan.ac.id Email: info@stiebulungantarakan.ac.id</span>
+      <span class="h-full w-full inline-block align-middle text-center">
+        <p class="font-semibold text-xl">SEKOLAH TINGGI ILMU EKONOMI BULUNGAN TARAKAN</p>
+        <p class="" >Jl. Gunung Amal No. 01 Tarakan, Kalimantan Timur 77123</p>
+        <p class="" >Telp. +6255125996, +6255125997 Fax. +6255124004</p>
+        <p class="" >Website: www.stiebulungantarakan.ac.id Email: info@stiebulungantarakan.ac.id</p>
       </span>
     </div>
   </div>
