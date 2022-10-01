@@ -158,15 +158,17 @@ class KRSController extends Controller
         $sorted_jadwals = array_values($sorted_jadwals);
         // dd(array_values($sorted_jadwals));
 
-        $tahunAjaran = TahunAjaran::find($request['ta']);
+        $tahunAjaran = TahunAjaran::find((int)$request['ta']);
 
-        $ipsSebelumnya = $mahasiswa->tahun_ajaran->firstWhere('tanggal_mulai', '<', $tahunAjaran->tanggal_mulai);
+        $ipsSebelumnya = $mahasiswa->tahun_ajaran->where('tanggal_mulai', '<', $tahunAjaran->tanggal_mulai)->sortByDesc('tanggal_mulai')->first();
         if ($ipsSebelumnya) {
-            $ipsSebelumnya = $this->calcIP($mahasiswa->npm, $ipsSebelumnya->id);
+            $ipsSebelumnya = round($mahasiswa->hitungIP([$ipsSebelumnya->id]), 3);
         }
         else {
             $ipsSebelumnya = "Baru";
         }
+
+        $sksYAD = $mahasiswa->HitungSksYAD($ipsSebelumnya);
 
         return Inertia::render('Transaksi/KRS/KRSDetail.vue', [
             'mahasiswa' => $mahasiswa,
@@ -174,6 +176,7 @@ class KRSController extends Controller
             'jadwalMahasiswa' => $jadwal_mhs,
             'ipsSebelumnya' => $ipsSebelumnya,
             'sksDiambil' => $sksDiambil,
+            'sksYAD' => $sksYAD,
         ]);
     }
 
