@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Transaksi\Jadwal;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Transaksi\Jadwal\StoreJadwalRequest;
 use App\Http\Requests\Transaksi\Jadwal\UpdateJadwalRequest;
+use App\Models\JabatanStruktural;
 use App\Models\Jadwal;
 use App\Models\Kurikulum;
 use App\Models\Matakuliah;
@@ -205,9 +206,19 @@ class JadwalController extends Controller
             ])
             ->find($jadwal);
 
+        // Hardcode hubungan jurusan dengan jabatan struktural
+        $jurusan = strtolower($jadwal->matakuliah->matakuliah_jurusan->jurusan->nama);
+        // 6 adalah id jabatan untuk kepala departemen manajemen
+        // 7 untuk departemen ekonomi pembangunan (sesuaikan dgn db)
+        $jabatanId = str_contains($jurusan, "manajemen") ? 6 : 7;
+
+        $kepala_departemen = JabatanStruktural::with(['staff.user','staff.dosen'])->findOrFail($jabatanId)->staff;
+        // $kepala_departemen =
+        // dd($kepala_departemen);
         return Inertia::render('Transaksi/Jadwal/JadwalPrint', [
             'jadwal' => $jadwal,
-            'tipe' => Request::input('tipe')
+            'tipe' => Request::input('tipe'),
+            'kepalaDepartemen' => $kepala_departemen,
         ]);
     }
 }

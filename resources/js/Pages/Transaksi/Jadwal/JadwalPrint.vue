@@ -62,27 +62,26 @@
         </tr>
       </tbody>
     </table>
-
     <template v-if="tipe === 'H'">
       <component class="mb-10" :is="TableAbsensiHarian" :jadwal="jadwal" />
-      <div class="w-full">
-        <div class="text-xs font-mono grid grid-cols-3 text-mono">
+      <div class="w-full break-inside-avoid">
+        <div class="text-xs font-mono grid gap-x-9 grid-cols-3 text-mono">
           <div class="">
             <br/>
-            <p>Ketua Departemen {{prodi.split(" ")[0]}},</p>
-            <p>__________________________________</p>
-            <p>NIDN: </p>
+            <p class="mb-24">Ketua Departemen {{departemen}},</p>
+            <p class="h-4 border-b-2 border-black">{{namaKepalaDepartemen}}</p>
+            <p>NIDN: {{idKepalaDepartemen}}</p>
           </div>
           <div class="">
             <br/>
-            <p>Ketua Kelas,</p>
-            <p>__________________________________</p>
+            <p class="mb-24">Ketua Kelas,</p>
+            <p class="h-4 border-b-2 border-black"></p>
             <p>NPM: </p>
           </div>
           <div class="">
-            <p>Tarakan,</p>
-            <p>Dosen Penanggung Jawab,</p>
-            <p>__________________________________</p>
+            <p>Tarakan,_______________________</p>
+            <p class="mb-24">Dosen Penanggung Jawab,</p>
+            <p class="h-4 border-b-2 border-black"></p>
           </div>
         </div>
       </div>
@@ -105,6 +104,7 @@ import { computed, onMounted } from "vue"
 const props = defineProps({
   jadwal: Object,
   tipe: String,
+  kepalaDepartemen: String,
 })
 
 onMounted(() => {
@@ -150,8 +150,25 @@ const dosen = computed(() =>
     .slice(0, -2)
 )
 
+const namaKepalaDepartemen = computed(() => {
+
+  const gelarDepan = props.kepalaDepartemen?.gelar_depan ? props.kepalaDepartemen.gelar_depan + ". " : ""
+  const gelarBelakang = props.kepalaDepartemen?.gelar_belakang ? props.kepalaDepartemen.gelar_belakang : ""
+  const namaLengkap = props.kepalaDepartemen?.user.name ?? "";
+
+  return [gelarDepan + namaLengkap, gelarBelakang].join(" ")
+})
+
+const idKepalaDepartemen = computed (
+  () => props.kepalaDepartemen?.dosen?.id ?? props.kepalaDepartemen?.id
+)
+
 const prodi = computed(
   () => `${props.jadwal.matakuliah.matakuliah_jurusan.jurusan.nama} / S-1`
+)
+
+const departemen = computed(
+  () => props.jadwal.matakuliah.matakuliah_jurusan.jurusan.nama
 )
 
 const tanggal = () => {
