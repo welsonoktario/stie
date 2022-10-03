@@ -60,31 +60,15 @@
           <td class="pl-2 pr-4">:</td>
           <td>{{ jadwal.mahasiswas.length }} Orang</td>
         </tr>
+        <tr>
+
+        </tr>
       </tbody>
     </table>
+
+    <!-- TABEL NAMA MAHASISWA -->
     <template v-if="tipe === 'H'">
-      <component class="mb-10" :is="TableAbsensiHarian" :jadwal="jadwal" />
-      <div class="w-full break-inside-avoid">
-        <div class="text-xs font-mono grid gap-x-9 grid-cols-3 text-mono">
-          <div class="">
-            <br/>
-            <p class="mb-24">Ketua Departemen {{departemen}},</p>
-            <p class="h-4 border-b-2 border-black">{{namaKepalaDepartemen}}</p>
-            <p>NIDN: {{idKepalaDepartemen}}</p>
-          </div>
-          <div class="">
-            <br/>
-            <p class="mb-24">Ketua Kelas,</p>
-            <p class="h-4 border-b-2 border-black"></p>
-            <p>NPM: </p>
-          </div>
-          <div class="">
-            <p>Tarakan,_______________________</p>
-            <p class="mb-24">Dosen Penanggung Jawab,</p>
-            <p class="h-4 border-b-2 border-black"></p>
-          </div>
-        </div>
-      </div>
+      <component class="" :is="TableAbsensiHarian" :jadwal="jadwal" />
     </template>
     <template v-if="tipe.includes('A-')">
       <component :is="TableAbsensiUjian" :jadwal="jadwal" />
@@ -92,6 +76,30 @@
     <template v-if="tipe.includes('N-')">
       <component :is="TableNilaiUjian" :jadwal="jadwal" />
     </template>
+
+
+    <!-- TANDA TANGAN SESUAI DENGAN JENIS DOKUMEN-->
+    <div class="w-full mt-10 break-inside-avoid">
+      <div class="text-xs font-mono grid gap-x-9 grid-cols-3 text-mono">
+        <div v-if="tipe === 'H'" class="">
+          <br/>
+          <p class="mb-24">Ketua Departemen {{departemen}},</p>
+          <p class="h-4 border-b-2 border-black">{{namaKepalaDepartemen}}</p>
+          <p>NIDN: {{idKepalaDepartemen}}</p>
+        </div>
+        <div v-if="tipe === 'H'" class="">
+          <br/>
+          <p class="mb-24">Ketua Kelas,</p>
+          <p class="h-4 border-b-2 border-black"></p>
+          <p>NPM: </p>
+        </div>
+        <div class="col-end-4">
+          <p>Tarakan,.............................</p>
+          <p class="mb-24">Dosen Penanggung Jawab/Tim,</p>
+          <p class="h-4 border-b-2 border-black"></p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
