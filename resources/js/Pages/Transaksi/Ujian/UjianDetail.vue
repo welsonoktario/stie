@@ -172,9 +172,11 @@ const ttl = computed(
 )
 
 const jenjang = computed(() => {
-  const smt = props.mahasiswa.status_mahasiswa.length
+  // const smt = props.mahasiswa.status_mahasiswa.length
 
-  return `${props.mahasiswa.jurusan?.nama ?? "-"} / ${smt}-${props.ta.periode}`
+  // return `${props.mahasiswa.jurusan?.nama ?? "-"} / ${smt}-${props.ta.periode}`
+
+  return `${props.mahasiswa.jurusan?.nama ?? "-"}/S-1`
 })
 
 const tanggal = computed(() => {

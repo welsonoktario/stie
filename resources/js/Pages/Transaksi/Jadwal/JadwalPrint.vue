@@ -154,17 +154,17 @@ const mk = computed(() => {
 
 const dosen = computed(() =>
   props.jadwal.dosens
-    .reduce((prev, next) => (prev += `${next.staff.user.name}, `), "")
+    .reduce((prev, next) => (prev += `${next.staff.gelar_depan?? ""} ${next.staff.user.name} ${next.staff.gelar_belakang?? ""}; `), "")
     .slice(0, -2)
 )
 
 const namaKepalaDepartemen = computed(() => {
 
-  const gelarDepan = props.kepalaDepartemen?.gelar_depan ? props.kepalaDepartemen.gelar_depan + ". " : ""
-  const gelarBelakang = props.kepalaDepartemen?.gelar_belakang ? props.kepalaDepartemen.gelar_belakang : ""
+  const gelarDepan = props.kepalaDepartemen?.gelar_depan ?? ""
+  const gelarBelakang = props.kepalaDepartemen?.gelar_belakang ?? ""
   const namaLengkap = props.kepalaDepartemen?.user.name ?? "";
 
-  return [gelarDepan + namaLengkap, gelarBelakang].join(" ")
+  return [gelarDepan, namaLengkap, gelarBelakang].join(" ")
 })
 
 const idKepalaDepartemen = computed (
