@@ -113,6 +113,45 @@
           />
           <InputError class="mt-2" :message="form.errors.jam" />
         </div>
+        <div class="mt-4">
+          <Label for="dosens">Dosen Pengajar</Label>
+          <div
+            class="mb-4 flex w-full flex-row items-center rounded-md bg-zinc-100 py-2 px-3 dark:bg-zinc-700 dark:text-zinc-500"
+          >
+            <div class="flex-1">
+              <div
+                v-for="(dosen, index) in selectedDosens"
+                :key="`dosen-${index}`"
+                class="mx-1 inline-flex items-center rounded-lg bg-teal-500 py-1 px-2 text-sm text-zinc-50 first:ml-0 last:mr-0 hover:bg-teal-600"
+              >
+                <span>
+                  {{ `${dosen.id} - ${dosen.staff.user.name}` }}
+                </span>
+                <XIcon
+                  class="ml-2 h-4 w-4 cursor-pointer hover:text-red-400"
+                  @click="removeDosen(index)"
+                />
+              </div>
+            </div>
+            <ChevronDownIcon
+              class="h-5 w-5 cursor-pointer text-zinc-500"
+              @click="isDosenOpen = !isDosenOpen"
+            />
+          </div>
+          <ul
+            v-show="isDosenOpen"
+            class="w-full rounded-md bg-zinc-100 p-2 shadow-inner dark:bg-zinc-700"
+          >
+            <li
+              v-for="dosen in props.dosens"
+              :key="`selected-${dosen.id}`"
+              class="w-full cursor-pointer focus:bg-teal-400 focus:text-white"
+              @click="addDosen(dosen)"
+            >
+              {{ `${dosen.id} - ${dosen.staff.user.name}` }}
+            </li>
+          </ul>
+        </div>
 
         <!-- uts -->
 
@@ -278,21 +317,23 @@
 </template>
 
 <script setup>
-import AppLayout from "@layouts/App"
 import Button from "@components/Button"
 import Dialog from "@components/Dialog"
 import Input from "@components/Input"
 import InputError from "@components/InputError"
 import Label from "@components/Label"
 import Select from "@components/Select"
+import { ChevronDownIcon, XIcon } from "@heroicons/vue/solid"
 import { useForm } from "@inertiajs/inertia-vue3"
-import { computed, ref } from "vue"
+import AppLayout from "@layouts/App"
+import { computed, onMounted, ref } from "vue"
 
 const props = defineProps({
   jadwal: Object,
   tahunAkademik: Object,
   ruangans: Array,
   matakuliahs: Array,
+  dosens: Array,
 })
 
 const form = useForm({
@@ -303,6 +344,7 @@ const form = useForm({
   matakuliah_id: props.jadwal?.matakuliah_id || "-",
   ruangan_id: props.jadwal?.ruangan_id || "-",
   tahun_ajaran_id: props.tahunAkademik?.id || "-",
+  dosens: props.jadwal?.dosens || [],
 
   // uts
   uts_tanggal: props.jadwal?.uts_tanggal || null,
@@ -320,6 +362,14 @@ const form = useForm({
 const hari = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat"]
 
 const isDialogHapusOpen = ref(false)
+const selectedDosens = ref([])
+const isDosenOpen = ref(false)
+
+onMounted(() => {
+  if (props.jadwal.dosens) {
+    selectedDosens.value = props.jadwal.dosens
+  }
+})
 
 const currentRouteName = computed(() =>
   route().current("transaksi.jadwal.create") ? "Tambah" : "Ubah"
@@ -334,6 +384,16 @@ const submit = (curRoute) => {
 }
 const remove = () =>
   form.delete(route("transaksi.jadwal.destroy", props.jadwal.id))
+
+const addDosen = (dosen) => {
+  const index = selectedDosens.value.findIndex((d) => d.id === dosen.id)
+
+  if (index === -1) {
+    selectedDosens.value.push(dosen)
+  }
+}
+
+const removeDosen = (index) => selectedDosens.value.splice(index, 1)
 </script>
 
 <style>
