@@ -83,7 +83,7 @@
           <th class="border border-black">Kode</th>
           <th class="border border-black">Mata Kuliah</th>
           <th class="border border-black">SKS</th>
-          <th class="border border-black">KLS</th>
+          <!-- <th class="border border-black">KLS</th> -->
           <th class="border border-black">Hari</th>
           <th class="border border-black">Tanggal</th>
           <th class="border border-black">Jam</th>
@@ -103,7 +103,7 @@
           <td class="border border-black text-center">
             {{ jadwal.matakuliah.sks }}
           </td>
-          <td class="border border-black text-center">&#45;</td>
+          <!-- <td class="border border-black text-center">&#45;</td> -->
           <td class="border border-black text-center">{{ jadwal.hari }}</td>
           <td class="border border-black text-center">
             {{ jadwal.created_at.split("T")[0] }}
