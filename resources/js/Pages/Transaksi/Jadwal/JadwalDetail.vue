@@ -366,7 +366,7 @@ const selectedDosens = ref([])
 const isDosenOpen = ref(false)
 
 onMounted(() => {
-  if (props.jadwal.dosens) {
+  if (props.jadwal?.dosens) {
     selectedDosens.value = props.jadwal.dosens
   }
 })
@@ -390,10 +390,16 @@ const addDosen = (dosen) => {
 
   if (index === -1) {
     selectedDosens.value.push(dosen)
+    // tambahan untuk tambah dosen ke form
+    form.dosens = selectedDosens.value
   }
 }
 
-const removeDosen = (index) => selectedDosens.value.splice(index, 1)
+const removeDosen = (index) => {
+  selectedDosens.value.splice(index, 1)
+  // tambahan untuk tambah dosen ke form
+  form.dosens = selectedDosens.value
+}
 </script>
 
 <style>

@@ -106,9 +106,11 @@ class JadwalController extends Controller
      */
     public function store(StoreJadwalRequest $request)
     {
+        // dd($request->all());
         DB::beginTransaction();
 
         try {
+            // dd()
             $dosens = collect($request->dosens)->map(fn ($dosen) => $dosen['id']);
             $jadwal = Jadwal::create($request->validated());
             $jadwal->dosens()->sync($dosens, false);
@@ -155,13 +157,18 @@ class JadwalController extends Controller
         $matakuliahs = Matakuliah::whereIn('kurikulum_id', $kurikulumAktifId)->orderBy('semester')->get();
         $jadwal->load(['dosens.staff.user']);
 
+        $dosens = Dosen::query()
+            ->with(['staff.user'])
+            ->get();
+
         return Inertia::render(
             'Transaksi/Jadwal/JadwalDetail',
             [
                 'jadwal' => $jadwal,
                 'tahunAkademik' => $tahunAkademik,
                 'ruangans' => $ruangans,
-                'matakuliahs' => $matakuliahs
+                'matakuliahs' => $matakuliahs,
+                'dosens' => $dosens
             ]
         );
     }
@@ -175,8 +182,29 @@ class JadwalController extends Controller
      */
     public function update(UpdateJadwalRequest $request, Jadwal $jadwal)
     {
-        // dd($request->all());
-        $jadwal->update($request->validated());
+        // dd($request->dosens);
+        DB::beginTransaction();
+
+        try {
+            $jadwal->update($request->validated());
+            $dosens = collect($request->dosens)->map(fn ($dosen) => $dosen['id']);
+            $jadwal->dosens()->sync($dosens);
+
+            DB::commit();
+        }
+        catch (Throwable $e) {
+            DB::rollBack();
+
+            dd($e);
+            return redirect()
+            ->route('transaksi.jadwal.index')
+            ->with(
+                [
+                    'status' => 'FAIL',
+                    'msg' => "Jadwal gagal diubah"
+                ]
+            );
+        }
 
         return redirect()
             ->route('transaksi.jadwal.index')
