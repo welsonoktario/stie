@@ -191,19 +191,17 @@ class JadwalController extends Controller
             $jadwal->dosens()->sync($dosens);
 
             DB::commit();
-        }
-        catch (Throwable $e) {
+        } catch (Throwable $e) {
             DB::rollBack();
 
-            dd($e);
             return redirect()
-            ->route('transaksi.jadwal.index')
-            ->with(
-                [
-                    'status' => 'FAIL',
-                    'msg' => "Jadwal gagal diubah"
-                ]
-            );
+                ->route('transaksi.jadwal.index')
+                ->with(
+                    [
+                        'status' => 'FAIL',
+                        'msg' => "Jadwal gagal diubah"
+                    ]
+                );
         }
 
         return redirect()
@@ -224,7 +222,14 @@ class JadwalController extends Controller
      */
     public function destroy(Jadwal $jadwal)
     {
-        if (!$jadwal->delete()) {
+        DB::beginTransaction();
+
+        try {
+            $jadwal->dosens()->sync([]);
+            $jadwal->delete();
+
+            DB::commit();
+
             return redirect()
                 ->route('transaksi.jadwal.index')
                 ->with(
@@ -233,16 +238,18 @@ class JadwalController extends Controller
                         'msg' => "Terjadi kesalahan menghapus jadwal"
                     ]
                 );
-        }
+        } catch (Throwable $e) {
+            DB::rollBack();
 
-        return redirect()
-            ->route('transaksi.jadwal.index')
-            ->with(
-                [
-                    'status' => 'OK',
-                    'msg' => "Jadwal berhasil dihapus"
-                ]
-            );
+            return redirect()
+                ->route('transaksi.jadwal.index')
+                ->with(
+                    [
+                        'status' => 'OK',
+                        'msg' => "Jadwal berhasil dihapus"
+                    ]
+                );
+        }
     }
 
     public function print($jadwal)
