@@ -164,6 +164,10 @@ class Mahasiswa extends Model
     public function hitungSksYAD($ips_sebelumnya) {
         $sks = 24;
 
+        if ($ips_sebelumnya === 'Baru') {
+            return 24;
+        }
+
         if ($ips_sebelumnya >= 3.00) {
             $sks = 24;
         } else if ($ips_sebelumnya >= 2.50 && $ips_sebelumnya < 3.00) {
@@ -172,9 +176,10 @@ class Mahasiswa extends Model
             $sks = 18;
         } else if ($ips_sebelumnya >= 1.50 && $ips_sebelumnya < 2.00) {
             $sks = 15;
-        } else {
+        } else if ($ips_sebelumnya < 1.50){
             $sks = 12;
         }
+        // dd($ips_sebelumnya, $sks);
 
         return $sks;
 
@@ -193,7 +198,7 @@ class Mahasiswa extends Model
         $totalNilaiKaliSks = 0;
         $totalSks = 0;
         $totalSksTidakLulus = 0;
-
+        // dd($this, $jadwals, $tas);
         foreach ($jadwals as $jadwal) {
             if ((count($tas) === 1) && $jadwal->pivot->angka_mutu === null) {
                 return 0;
@@ -228,7 +233,15 @@ class Mahasiswa extends Model
         if ($totalSks == 0) {
             return 0;
         } else {
-            return $totalNilaiKaliSks / ($totalSks - $totalSksTidakLulus);
+            // jika tas hanya 1, maka hitung IPS dengan dibagi dengan total sks
+            if (count($tas) == 1) {
+                // return $totalNilaiKaliSks / ($totalSks - $totalSksTidakLulus);
+                return $totalNilaiKaliSks / $totalSks;
+            }
+            // jika tas lebih dari 1, hitung dengan total sks - total sks tidak lulus
+            else {
+                return $totalNilaiKaliSks / ($totalSks - $totalSksTidakLulus);
+            }
         }
         return $this->jadwals;
     }

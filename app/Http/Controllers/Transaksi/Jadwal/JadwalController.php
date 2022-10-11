@@ -5,13 +5,18 @@ namespace App\Http\Controllers\Transaksi\Jadwal;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Transaksi\Jadwal\StoreJadwalRequest;
 use App\Http\Requests\Transaksi\Jadwal\UpdateJadwalRequest;
+use App\Models\JabatanStruktural;
+use App\Models\Dosen;
 use App\Models\Jadwal;
 use App\Models\Kurikulum;
 use App\Models\Matakuliah;
 use App\Models\Ruangan;
 use App\Models\TahunAjaran;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
+use Throwable;
 
 class JadwalController extends Controller
 {
@@ -72,11 +77,14 @@ class JadwalController extends Controller
     {
         $tahunAkademik = TahunAjaran::find(Request::get('ta'));
         $kurikulumAktif = Kurikulum::where('aktif', 1)->get();
-        $kurikulumAktifId = array();
+        $kurikulumAktifId = [];
         foreach ($kurikulumAktif as $kurikulum) {
             $kurikulumAktifId[] = $kurikulum->id;
         }
         $ruangans = Ruangan::all();
+        $dosens = Dosen::query()
+            ->with(['staff.user'])
+            ->get();
         $matakuliahs = Matakuliah::whereIn('kurikulum_id', $kurikulumAktifId)->orderBy('semester')->get();
 
         return Inertia::render(
@@ -84,6 +92,7 @@ class JadwalController extends Controller
             [
                 'tahunAkademik' => $tahunAkademik,
                 'ruangans' => $ruangans,
+                'dosens' => $dosens,
                 'matakuliahs' => $matakuliahs->sortBy('semester')->toArray()
             ]
         );
@@ -97,7 +106,28 @@ class JadwalController extends Controller
      */
     public function store(StoreJadwalRequest $request)
     {
-        Jadwal::create($request->validated());
+        // dd($request->all());
+        DB::beginTransaction();
+
+        try {
+            // dd()
+            $dosens = collect($request->dosens)->map(fn ($dosen) => $dosen['id']);
+            $jadwal = Jadwal::create($request->validated());
+            $jadwal->dosens()->sync($dosens, false);
+
+            DB::commit();
+        } catch (Throwable $e) {
+            DB::rollBack();
+
+            return redirect()
+                ->route('transaksi.jadwal.index')
+                ->with(
+                    [
+                        'status' => 'FAIL',
+                        'msg' => "Terjadi kesalahan menambah jadwal"
+                    ]
+                );
+        }
 
         return redirect()
             ->route('transaksi.jadwal.index')
@@ -125,6 +155,11 @@ class JadwalController extends Controller
         }
         $ruangans = Ruangan::all();
         $matakuliahs = Matakuliah::whereIn('kurikulum_id', $kurikulumAktifId)->orderBy('semester')->get();
+        $jadwal->load(['dosens.staff.user']);
+
+        $dosens = Dosen::query()
+            ->with(['staff.user'])
+            ->get();
 
         return Inertia::render(
             'Transaksi/Jadwal/JadwalDetail',
@@ -132,7 +167,8 @@ class JadwalController extends Controller
                 'jadwal' => $jadwal,
                 'tahunAkademik' => $tahunAkademik,
                 'ruangans' => $ruangans,
-                'matakuliahs' => $matakuliahs
+                'matakuliahs' => $matakuliahs,
+                'dosens' => $dosens
             ]
         );
     }
@@ -146,8 +182,27 @@ class JadwalController extends Controller
      */
     public function update(UpdateJadwalRequest $request, Jadwal $jadwal)
     {
-        // dd($request->all());
-        $jadwal->update($request->validated());
+        // dd($request->dosens);
+        DB::beginTransaction();
+
+        try {
+            $jadwal->update($request->validated());
+            $dosens = collect($request->dosens)->map(fn ($dosen) => $dosen['id']);
+            $jadwal->dosens()->sync($dosens);
+
+            DB::commit();
+        } catch (Throwable $e) {
+            DB::rollBack();
+
+            return redirect()
+                ->route('transaksi.jadwal.index')
+                ->with(
+                    [
+                        'status' => 'FAIL',
+                        'msg' => "Jadwal gagal diubah"
+                    ]
+                );
+        }
 
         return redirect()
             ->route('transaksi.jadwal.index')
@@ -167,7 +222,14 @@ class JadwalController extends Controller
      */
     public function destroy(Jadwal $jadwal)
     {
-        if (!$jadwal->delete()) {
+        DB::beginTransaction();
+
+        try {
+            $jadwal->dosens()->sync([]);
+            $jadwal->delete();
+
+            DB::commit();
+
             return redirect()
                 ->route('transaksi.jadwal.index')
                 ->with(
@@ -176,16 +238,18 @@ class JadwalController extends Controller
                         'msg' => "Terjadi kesalahan menghapus jadwal"
                     ]
                 );
-        }
+        } catch (Throwable $e) {
+            DB::rollBack();
 
-        return redirect()
-            ->route('transaksi.jadwal.index')
-            ->with(
-                [
-                    'status' => 'OK',
-                    'msg' => "Jadwal berhasil dihapus"
-                ]
-            );
+            return redirect()
+                ->route('transaksi.jadwal.index')
+                ->with(
+                    [
+                        'status' => 'OK',
+                        'msg' => "Jadwal berhasil dihapus"
+                    ]
+                );
+        }
     }
 
     public function print($jadwal)
@@ -205,9 +269,19 @@ class JadwalController extends Controller
             ])
             ->find($jadwal);
 
+        // Hardcode hubungan jurusan dengan jabatan struktural
+        $jurusan = strtolower($jadwal->matakuliah->matakuliah_jurusan->jurusan->nama);
+        // 6 adalah id jabatan untuk kepala departemen manajemen
+        // 7 untuk departemen ekonomi pembangunan (sesuaikan dgn db)
+        $jabatanId = str_contains($jurusan, "manajemen") ? 6 : 7;
+
+        $kepala_departemen = JabatanStruktural::with(['staff.user','staff.dosen'])->findOrFail($jabatanId)->staff;
+        // $kepala_departemen =
+        // dd($kepala_departemen);
         return Inertia::render('Transaksi/Jadwal/JadwalPrint', [
             'jadwal' => $jadwal,
-            'tipe' => Request::input('tipe')
+            'tipe' => Request::input('tipe'),
+            'kepalaDepartemen' => $kepala_departemen,
         ]);
     }
 }

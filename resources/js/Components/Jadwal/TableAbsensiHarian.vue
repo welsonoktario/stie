@@ -7,20 +7,20 @@
         <th rowspan="3" class="border border-zinc-900 p-2">NO</th>
         <th rowspan="3" class="border border-zinc-900 p-2">NIM</th>
         <th rowspan="3" class="border border-zinc-900 p-2">N A M A</th>
-        <th colspan="14" class="border border-zinc-900 p-2">Pertemuan ke-</th>
+        <th colspan="16" class="border border-zinc-900 p-2">Pertemuan ke-</th>
       </tr>
       <tr>
         <th
-          v-for="pertemuan in 14"
+          v-for="pertemuan in 16"
           :key="`pertemuan-${pertemuan}`"
-          class="border border-zinc-900 p-2"
+          class="border border-zinc-900 w-10 pt-2 pb-2"
         >
           {{ pertemuan }}
         </th>
       </tr>
       <tr>
         <th
-          v-for="pertemuan in 14"
+          v-for="pertemuan in 16"
           :key="`pertemuan-tanggal-${pertemuan}`"
           class="h-10 border border-zinc-900 p-2"
         ></th>
@@ -39,7 +39,7 @@
           {{ mhs.user.name }}
         </td>
         <td
-          v-for="pertemuan in 14"
+          v-for="pertemuan in 16"
           :key="`pertemuan-mhs-${pertemuan}`"
           class="border border-zinc-900 p-2"
         ></td>

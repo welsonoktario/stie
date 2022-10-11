@@ -15,7 +15,7 @@
             <tr>
               <td>Thn.Akademik</td>
               <td class="pl-1 pr-2">:</td>
-              <td>{{ jadwal.tahun_ajaran.tahun_ajaran }}</td>
+              <td>{{ jadwal.tahun_ajaran.tahun_ajaran.split(" ")[0] }}</td>
             </tr>
             <tr>
               <td>Semester</td>
@@ -60,11 +60,15 @@
           <td class="pl-2 pr-4">:</td>
           <td>{{ jadwal.mahasiswas.length }} Orang</td>
         </tr>
+        <tr>
+
+        </tr>
       </tbody>
     </table>
 
+    <!-- TABEL NAMA MAHASISWA -->
     <template v-if="tipe === 'H'">
-      <component :is="TableAbsensiHarian" :jadwal="jadwal" />
+      <component class="" :is="TableAbsensiHarian" :jadwal="jadwal" />
     </template>
     <template v-if="tipe.includes('A-')">
       <component :is="TableAbsensiUjian" :jadwal="jadwal" />
@@ -72,6 +76,30 @@
     <template v-if="tipe.includes('N-')">
       <component :is="TableNilaiUjian" :jadwal="jadwal" />
     </template>
+
+
+    <!-- TANDA TANGAN SESUAI DENGAN JENIS DOKUMEN-->
+    <div class="w-full mt-10 break-inside-avoid">
+      <div class="text-xs font-mono grid gap-x-9 grid-cols-3 text-mono">
+        <div v-if="tipe === 'H'" class="">
+          <br/>
+          <p class="mb-24">Ketua Departemen {{departemen}},</p>
+          <p class="h-4 border-b-2 border-black">{{namaKepalaDepartemen}}</p>
+          <p>NIDN: {{idKepalaDepartemen}}</p>
+        </div>
+        <div v-if="tipe === 'H'" class="">
+          <br/>
+          <p class="mb-24">Ketua Kelas,</p>
+          <p class="h-4 border-b-2 border-black"></p>
+          <p>NPM: </p>
+        </div>
+        <div class="col-end-4">
+          <p>Tarakan,.............................</p>
+          <p class="mb-24">Dosen Penanggung Jawab/Tim,</p>
+          <p class="h-4 border-b-2 border-black"></p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -84,6 +112,7 @@ import { computed, onMounted } from "vue"
 const props = defineProps({
   jadwal: Object,
   tipe: String,
+  kepalaDepartemen: String,
 })
 
 onMounted(() => {
@@ -125,12 +154,29 @@ const mk = computed(() => {
 
 const dosen = computed(() =>
   props.jadwal.dosens
-    .reduce((prev, next) => (prev += `${next.staff.user.name}, `), "")
+    .reduce((prev, next) => (prev += `${next.staff.gelar_depan?? ""} ${next.staff.user.name} ${next.staff.gelar_belakang?? ""}; `), "")
     .slice(0, -2)
+)
+
+const namaKepalaDepartemen = computed(() => {
+
+  const gelarDepan = props.kepalaDepartemen?.gelar_depan ?? ""
+  const gelarBelakang = props.kepalaDepartemen?.gelar_belakang ?? ""
+  const namaLengkap = props.kepalaDepartemen?.user.name ?? "";
+
+  return [gelarDepan, namaLengkap, gelarBelakang].join(" ")
+})
+
+const idKepalaDepartemen = computed (
+  () => props.kepalaDepartemen?.dosen?.id ?? props.kepalaDepartemen?.id
 )
 
 const prodi = computed(
   () => `${props.jadwal.matakuliah.matakuliah_jurusan.jurusan.nama} / S-1`
+)
+
+const departemen = computed(
+  () => props.jadwal.matakuliah.matakuliah_jurusan.jurusan.nama
 )
 
 const tanggal = () => {

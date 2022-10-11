@@ -62,6 +62,19 @@
 
           <div class="w-full">
             <div class="w-full">
+              <Label for="sks">SKS Y.A.D.</Label>
+              <Input
+                v-model="sksYAD"
+                name="sks"
+                class="mt-1 block w-full"
+                type="text"
+                disabled
+              ></Input>
+            </div>
+          </div>
+
+          <div class="w-full">
+            <div class="w-full">
               <Label for="sks">SKS Diambil</Label>
               <Input
                 v-model="sksDiambil"
@@ -108,6 +121,10 @@
         <Button type="button" class="px-10" @click="openDialogTambahMatakuliah">
           Tambah Matakuliah</Button
         >
+      </div>
+
+      <div v-if="sksDiambil > sksYAD" class="w-full p-3 mb-3 bg-red-100">
+        <span class="font-medium rounded rounded-lg">Peringatan!</span> Jumlah SKS diambil melebihi jumlah maksimum yang dapat diambil!
       </div>
 
       <DataTable :data="jadwalMahasiswa" :columns="columns">
@@ -205,6 +222,11 @@
   </AppLayout>
 </template>
 
+<style scoped>
+  /* somehow ini gabisa */
+  /* @media print{@page {size: landscape}} */
+</style>
+
 <script>
 import { computed, ref } from "vue"
 import { Link, useForm } from "@inertiajs/inertia-vue3"
@@ -248,6 +270,7 @@ export default {
     jadwalMahasiswa: Object,
     ipsSebelumnya: String,
     sksDiambil: String,
+    sksYAD: String,
   },
   setup(props) {
     const form = useForm({

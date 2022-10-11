@@ -10,5 +10,6 @@ module.exports = {
     semi: [1, "never"],
     "no-unused-vars": 1,
     "no-undef": 1,
+    "vue/no-mutating-props": 1,
   },
 }

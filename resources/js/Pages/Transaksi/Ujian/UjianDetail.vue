@@ -11,7 +11,8 @@
           <tr>
             <td>Thn.Akademik</td>
             <td class="pl-1 pr-2">:</td>
-            <td>{{ ta.tahun_ajaran }}</td>
+            <!-- just return the Year at index 0 -->
+            <td>{{ ta.tahun_ajaran.split(" ")[0] }}</td>
           </tr>
           <tr>
             <td>Semester</td>
@@ -82,7 +83,7 @@
           <th class="border border-black">Kode</th>
           <th class="border border-black">Mata Kuliah</th>
           <th class="border border-black">SKS</th>
-          <th class="border border-black">KLS</th>
+          <!-- <th class="border border-black">KLS</th> -->
           <th class="border border-black">Hari</th>
           <th class="border border-black">Tanggal</th>
           <th class="border border-black">Jam</th>
@@ -102,7 +103,7 @@
           <td class="border border-black text-center">
             {{ jadwal.matakuliah.sks }}
           </td>
-          <td class="border border-black text-center">&#45;</td>
+          <!-- <td class="border border-black text-center">&#45;</td> -->
           <td class="border border-black text-center">{{ jadwal.hari }}</td>
           <td class="border border-black text-center">
             {{ jadwal.created_at.split("T")[0] }}
@@ -171,9 +172,11 @@ const ttl = computed(
 )
 
 const jenjang = computed(() => {
-  const smt = props.mahasiswa.status_mahasiswa.length
+  // const smt = props.mahasiswa.status_mahasiswa.length
 
-  return `${props.mahasiswa.jurusan?.nama ?? "-"} / ${smt}-${props.ta.periode}`
+  // return `${props.mahasiswa.jurusan?.nama ?? "-"} / ${smt}-${props.ta.periode}`
+
+  return `${props.mahasiswa.jurusan?.nama ?? "-"}/S-1`
 })
 
 const tanggal = computed(() => {

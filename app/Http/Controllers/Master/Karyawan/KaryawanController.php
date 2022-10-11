@@ -87,12 +87,11 @@ class KaryawanController extends Controller
             $status = 'FAIL';
             $msg = 'Gagal menambahkan data user. Error '.$th->getMessage();
             dd($msg, $th);
-
         }
 
 
         $header = ['status' => $status, 'msg' => $msg];
-        if ($status != 'FAIL'){
+        if ($status != 'FAIL') {
             return redirect('master/karyawan')->with($header);
         }
         return redirect()->back()->with($header);
@@ -139,12 +138,13 @@ class KaryawanController extends Controller
                 $staff_old = $user->staff->toArray();
                 $user->staff()->update($request->only(($key)));
 
-                if($staff_old['id'] != $request['id'])
+                if ($staff_old['id'] != $request['id']) {
                     $user = User::findOrFail($staff_old['user_id']);
+                }
 
-                if(!in_array($nitk, [null, ""])){
+                if (!in_array($nitk, [null, ""])) {
                     try {
-                        if($user->staff->tenaga_kependidikan == null){
+                        if ($user->staff->tenaga_kependidikan == null) {
                             $user->staff->tenaga_kependidikan()->create(
                                 ['id' => $nitk]
                             );
@@ -176,7 +176,7 @@ class KaryawanController extends Controller
         // if ($status != 'FAIL'){
         //     return redirect('master/karyawan')->with($header);
         // }
-        return redirect()->route('master.karyawan.edit',$request->id)->with($header);
+        return redirect()->route('master.karyawan.edit', $request->id)->with($header);
     }
 
     /**
