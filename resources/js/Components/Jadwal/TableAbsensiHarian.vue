@@ -13,7 +13,7 @@
         <th
           v-for="pertemuan in 16"
           :key="`pertemuan-${pertemuan}`"
-          class="border border-zinc-900 p-2"
+          class="border border-zinc-900 w-10 pt-2 pb-2"
         >
           {{ pertemuan }}
         </th>
