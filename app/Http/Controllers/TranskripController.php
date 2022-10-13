@@ -186,6 +186,7 @@ class TranskripController extends Controller
         // hitung ipk dari smt sekarang ke bawah
         $tas = $mahasiswa->tahun_ajaran->keyBy('id')->keys()->all();
         rsort($tas);
+        // dd($tas);
 
         $ips = 0;
         $ipk = 0;
@@ -197,15 +198,15 @@ class TranskripController extends Controller
         $ips_sebelumnya = 24;
         $sks_yad = 24;
 
-        // hitung mulai dari smt 2 aja untuk ambil sks smt 3
-        // karena semester 1 dan 2 paket
+        // revisi disini
+        // hitung sks yang dapat diambil untuk semester depan
+        // berdasarkan ips sekarang
         if (count($tas) > 1) {
-            $semester_sebelumnya = $tas[1];
-            $ips_sebelumnya = round($mahasiswa->hitungIp([$semester_sebelumnya]), 3);
-            $sks_yad = $mahasiswa->hitungSksYAD($ips_sebelumnya);
-
+            $sks_yad = $mahasiswa->hitungSksYAD($ips);
         }
 
+
+        // 2 adalah id wakil ketua, sementara jangan dibalik
         $wakil_ketua_1 = JabatanStruktural::with(['staff.user','staff.dosen'])->find(2);
 
         return Inertia::render('Transaksi/PrintView/PrintKHS', compact(
