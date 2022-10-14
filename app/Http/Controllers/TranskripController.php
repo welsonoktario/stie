@@ -127,6 +127,7 @@ class TranskripController extends Controller
             $ipk = ($total_nilai_kali_sks +$total_nilai_kali_sks_konversi)/($total_sks + $total_sks_konversi - $total_sks_tidak_lulus);
         }
 
+        $total_sks_lulus = $total_sks + $total_sks_konversi - $total_sks_tidak_lulus;
 
 
         /*
@@ -163,6 +164,7 @@ class TranskripController extends Controller
             "total_nilai_kali_sks",
             "total_sks",
             "total_sks_tidak_lulus",
+            "total_sks_lulus",
             "wakil_ketua_1",
             "ipk"));
 
