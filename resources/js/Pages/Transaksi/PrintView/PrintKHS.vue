@@ -57,7 +57,7 @@
       Nama
     </div>
     <div class="class col-span-2">
-      : {{mahasiswa.user.name}}
+      : {{mahasiswa.user.name}} {{dosenWali}}
     </div>
 
 
@@ -83,6 +83,14 @@
     </div>
     <div class="class col-span-2">
       : {{ta.tahun_ajaran}}
+    </div>
+
+    <!-- Dosen Wali -->
+    <div class="col-start-2">
+      Dosen Wali
+    </div>
+    <div class="class col-span-2">
+      : {{dosenWali}}
     </div>
   </div>
 
@@ -210,6 +218,10 @@ const tanggal = computed(() => {
   const options = { year: "numeric", month: "long", day: "numeric" }
 
   return now.toLocaleDateString("id-ID", options)
+})
+
+const dosenWali = computed(()=> {
+  return [props.mahasiswa.dosen?.staff?.gelar_depan, props.mahasiswa.dosen?.staff?.user.name, props.mahasiswa.dosen?.staff?.gelar_belakang].join(" ")
 })
 
 const totalSks = computed (()=> {
