@@ -36,7 +36,7 @@
             <label
               class="mb-2 block text-sm font-bold text-gray-500"
               for="kode_matakuliah"
-              >Kode Matakuliah</label
+              >Kode Matakuliah Asal <span class="text-sm text-red-500 font-medium">*</span></label
             >
             <Input
               id="kode_matakuliah"
@@ -45,13 +45,14 @@
               type="text"
               placeholder="Kode Matakuliah"
             ></Input>
+            <p class="mt-1 text-sm text-red-500 font-medium" v-if="errors.kode_matakuliah"> {{errors.kode_matakuliah}}</p>
           </div>
 
           <div class="mb-3 w-full">
             <label
               class="mb-2 block text-sm font-bold text-gray-500"
               for="nama_matakuliah"
-              >Nama Matakuliah</label
+              >Nama Matakuliah Asal <span class="text-sm text-red-500 font-medium">*</span></label
             >
             <Input
               id="nama_matakuliah"
@@ -60,28 +61,55 @@
               type="text"
               placeholder="Nama Matakuliah"
             ></Input>
+            <p class="mt-1 text-sm text-red-500 font-medium" v-if="errors.nama_matakuliah"> {{errors.nama_matakuliah}}</p>
           </div>
         </div>
 
         <div class="flex flex-col sm:flex-row sm:space-x-3">
           <div class="mb-3 w-full">
             <label class="mb-2 block text-sm font-bold text-gray-500" for="sks"
-              >SKS</label
+              >SKS MK Asal <span class="text-sm text-red-500 font-medium">*</span></label
             >
             <Input
               id="sks"
               v-model="form.sks"
               class="w-full"
-              type="text"
+              type="number"
               placeholder="SKS"
             ></Input>
+            <p class="mt-1 text-sm text-red-500 font-medium" v-if="errors.sks"> {{errors.sks}}</p>
+
+          </div>
+
+
+          <div class="mb-3 w-full">
+            <label
+              class="mb-2 block text-sm font-bold text-gray-500"
+              for="nilai"
+              >Nilai Huruf Diakui <span class="text-sm text-red-500 font-medium">*</span></label
+            >
+
+            <select
+              id="nilai"
+              v-model="form.nilai"
+              name="nilai"
+              class="w-full rounded-md border-none bg-zinc-100 pl-2 pr-8 text-sm focus:ring-teal-500 dark:bg-zinc-700 dark:focus:ring-teal-600"
+            >
+              <option value="4" selected>A</option>
+              <option value="3">B</option>
+              <option value="2">C</option>
+              <option value="1">D</option>
+              <option value="0">E</option>
+            </select>
+            <p class="mt-1 text-sm text-red-500 font-medium" v-if="errors.nilai"> {{errors.nilai}}</p>
+
           </div>
 
           <div class="mb-3 w-full">
             <label
               class="mb-2 block text-sm font-bold text-gray-500"
               for="nilai"
-              >Nilai</label
+              >Nilai Indeks Diakui</label
             >
             <Input
               id="nilai"
@@ -89,32 +117,40 @@
               class="w-full"
               type="text"
               placeholder="Nilai"
+              disabled
             ></Input>
           </div>
+
+
         </div>
+
+
 
         <div class="mb-3">
           <label
             class="mb-2 block text-sm font-bold text-gray-500"
             for="matakuliah"
-            >Matakuliah yang Setara</label
+            >Matakuliah yang Setara <span class="text-sm text-red-500 font-medium">*</span></label
           >
           <select
             id="matakuliah"
             v-model="form.matakuliah_baru_id"
-            class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            class="w-full rounded-md border-none bg-zinc-100 pl-2 pr-8 text-sm focus:ring-teal-500 dark:bg-zinc-700 dark:focus:ring-teal-600"
           >
             <option
               v-for="matakuliah in matakuliahs"
               :key="matakuliah.id"
               :value="matakuliah.id.toString()"
             >
-              {{ matakuliah.nama_matakuliah }} -
-              {{ matakuliah.kode_matakuliah }} - {{ matakuliah.kurikulum.nama }}
+              {{ matakuliah.kurikulum.nama }} -
+              {{ matakuliah.kode_matakuliah }} -
+              {{ matakuliah.nama_matakuliah }}
             </option>
           </select>
+          <p class="mt-1 text-sm text-red-500 font-medium" v-if="errors.matakuliah_baru_id"> {{errors.matakuliah_baru_id}}</p>
+
         </div>
-      </form>
+
 
       <div class="flex justify-between">
         <div>
@@ -129,6 +165,8 @@
           >Hapus Data Matakuliah Konversi</Link
         >
       </div>
+      </form>
+
     </div>
   </AppLayout>
 </template>
@@ -138,6 +176,7 @@ import AppLayout from "@layouts/App.vue"
 
 import Input from "@components/Input.vue"
 import Button from "@components/Button.vue"
+// import Select from "@components/Select.vue"
 
 import { Link } from "@inertiajs/inertia-vue3"
 
@@ -149,6 +188,7 @@ import {
   ChevronDoubleDownIcon,
   ChevronDoubleUpIcon,
 } from "@heroicons/vue/outline"
+import Select from "@/Components/Select.vue"
 
 export default {
   components: {
@@ -159,8 +199,10 @@ export default {
     ModalInput,
     ChevronDoubleDownIcon,
     ChevronDoubleUpIcon,
-  },
+    Select
+},
   props: {
+    errors: Object,
     mahasiswa: {
       type: Object,
       default: null,

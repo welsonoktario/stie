@@ -29,7 +29,7 @@
             name="tahun_akademik"
             type="text"
             class="w-full"
-            placeholder="Nama Matakuliah"
+            placeholder="Tahun Akademik"
             readonly
           />
         </div>
