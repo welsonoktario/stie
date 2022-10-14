@@ -10,6 +10,7 @@ use App\Models\Mahasiswa;
 use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class MahasiswaRegulerController extends Controller
@@ -149,6 +150,7 @@ class MahasiswaRegulerController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // DB::beginTransaction();
         // dd($request['tahun_ajaran']);
         $request['password'] = Hash::make('12345678');
         $msg = 'Berhasil menambahkan data';
@@ -166,6 +168,7 @@ class MahasiswaRegulerController extends Controller
                 $mahasiswa_old = $user->mahasiswa->getOriginal();
 
                 $user->mahasiswa()->update($request->only($key));
+                // dd($request->only($key));
 
                 // dd('masih disini');
                 if ($mahasiswa_old['npm'] != $request['npm'])

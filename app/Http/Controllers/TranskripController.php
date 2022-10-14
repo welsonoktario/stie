@@ -181,7 +181,8 @@ class TranskripController extends Controller
             'jurusan',
             'tahun_ajaran' => function ($q) use ($ta) {
                 return $q->where('tanggal_mulai', "<=", $ta->tanggal_mulai);
-            }
+            },
+            'dosen'
         ]);
 
 

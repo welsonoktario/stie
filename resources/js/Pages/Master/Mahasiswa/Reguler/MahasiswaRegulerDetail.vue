@@ -181,7 +181,7 @@
         <div class="mb-4">
           <Label for="dosen">Dosen Wali</Label>
           <select
-            v-model="form.dosen_name"
+            v-model="form.dosen_id"
             class="w-full rounded-md border-none bg-zinc-100 focus:ring-teal-500 dark:bg-zinc-700 dark:focus:ring-teal-600"
             name="dosen"
           >
@@ -189,7 +189,7 @@
             <option
               v-for="dosen in dosens"
               :key="dosen.name"
-              :value="dosen.name"
+              :value="dosen.id"
             >
               {{ dosen.staff.user.name }}
             </option>
@@ -752,12 +752,12 @@ export default {
       npm: props.mahasiswa == null ? null : props.mahasiswa.npm,
       tanggal_masuk: props.mahasiswa?.tanggal_masuk,
       tanggal_selesai: props.mahasiswa?.tanggal_selesai,
-      dosen_name:
+      dosen_id:
         props.mahasiswa == null
           ? "-"
           : props.mahasiswa.dosen == null
           ? "-"
-          : props.mahasiswa.dosen.name,
+          : props.mahasiswa.dosen.id,
       jurusan_id:
         props.mahasiswa == null
           ? "-"
