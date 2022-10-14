@@ -5,7 +5,7 @@
     <thead>
       <tr>
         <th rowspan="3" class="border border-zinc-900 p-2">NO</th>
-        <th rowspan="3" class="border border-zinc-900 p-2">NIM</th>
+        <th rowspan="3" class="border border-zinc-900 p-2">NPM</th>
         <th rowspan="3" class="border border-zinc-900 p-2">N A M A</th>
         <th colspan="16" class="border border-zinc-900 p-2">Pertemuan ke-</th>
       </tr>
