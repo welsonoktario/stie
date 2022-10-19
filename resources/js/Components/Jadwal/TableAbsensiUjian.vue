@@ -5,7 +5,7 @@
     <thead>
       <tr>
         <th rowspan="2" class="border border-zinc-900 p-2">NO</th>
-        <th rowspan="2" class="border border-zinc-900 p-2">NIM</th>
+        <th rowspan="2" class="border border-zinc-900 p-2">NPM</th>
         <th rowspan="2" class="border border-zinc-900 p-2">N A M A</th>
         <th rowspan="2" class="border border-zinc-900 p-2">TANDA TANGAN</th>
         <th colspan="3" class="border border-zinc-900 p-2">NILAI AKHIR</th>

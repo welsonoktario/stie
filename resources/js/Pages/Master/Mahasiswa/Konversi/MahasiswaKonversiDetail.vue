@@ -682,7 +682,7 @@
               id="pekerjaan_ibu"
               v-model="form.pekerjaan_ibu"
               class="w-full"
-              type="number"
+              type="text"
               placeholder="Pekerjaan Ibu Kandung"
             ></Input>
           </div>
@@ -797,7 +797,7 @@
               id="pekerjaan_ayah"
               v-model="form.pekerjaan_ayah"
               class="w-full"
-              type="number"
+              type="text"
               placeholder="Pekerjaan Ayah"
             ></Input>
           </div>

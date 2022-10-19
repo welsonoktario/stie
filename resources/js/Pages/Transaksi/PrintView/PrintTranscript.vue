@@ -188,8 +188,11 @@
       </tr>
 
       <tr class="w-full">
-        <td colspan="2" class="px-2 text-start">SKS Nilai E : {{total_sks_tidak_lulus}}</td>
-        <td colspan="2" class="px-2 text-end">Indeks Prestasi Kumulatif :</td>
+        <td colspan="2" class="px-2 text-start">
+          <div>SKS Nilai E : {{total_sks_tidak_lulus}}</div>
+          <div>Jlh. SKS Lulus : {{total_sks_tidak_lulus}}</div>
+        </td>
+        <td colspan="2" class="px-2 text-end"> Indeks Prestasi Kumulatif :</td>
         <td colspan="" class="px-2 text-start">{{+(Math.round(ipk + "e+3") + "e-3") }}</td>
       </tr>
     </tbody>
@@ -241,6 +244,7 @@ const props= defineProps({
   total_nilai_kali_sks: Number,
   total_sks: Number,
   total_sks_tidak_lulus: Number,
+  total_sks_lulus: Number,
   ipk: Number,
   wakil_ketua_1: String,
 });

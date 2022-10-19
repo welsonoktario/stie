@@ -7,6 +7,8 @@ use App\Models\Mahasiswa;
 use App\Models\Matakuliah;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Master\Mahasiswa\Konversi\StoreMatakuliahKonversiRequest;
+use App\Http\Requests\Master\Mahasiswa\Konversi\UpdateMatakuliahKonversiRequest;
 use App\Models\MatakuliahKonversi;
 
 class MatakuliahKonversiController extends Controller
@@ -60,15 +62,9 @@ class MatakuliahKonversiController extends Controller
      */
     public function create($mahasiswa_konversi_id)
     {
-        //
-
-        // $mahasiswa = Mahasiswa::find($mahasiswa_konversi_id)
-        //     ->has('mahasiswa_konversi')
-        //     ->first();
-
         $mahasiswa = Mahasiswa::where('npm','=' ,$mahasiswa_konversi_id)
             ->first();
-        $matakuliahs = Matakuliah::with('kurikulum')->get();
+        $matakuliahs = Matakuliah::with('kurikulum')->orderBy('kurikulum_id')->orderBy('kode_matakuliah')->get();
         return Inertia::render('Master/Mahasiswa/Konversi/Matakuliah/MatakuliahKonversiDetail',[
             'matakuliahs' => $matakuliahs,
             'mahasiswa' => $mahasiswa,
@@ -82,8 +78,10 @@ class MatakuliahKonversiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $mahasiswa_konversi_id)
+    public function store(StoreMatakuliahKonversiRequest $request, $mahasiswa_konversi_id)
     {
+        // $request->validate();
+
         // data mk lama
         $kode_matakuliah = $request->kode_matakuliah;
         $nama_matakuliah = $request->nama_matakuliah;
@@ -126,7 +124,7 @@ class MatakuliahKonversiController extends Controller
         $mahasiswa = Mahasiswa::where('npm', '=', $mahasiswa_konversi_id)
             ->first();
         $matakuliah_konversi = MatakuliahKonversi::findOrFail($matakuliah_konversi_id);
-        $matakuliahs = Matakuliah::with('kurikulum')->get();
+        $matakuliahs = Matakuliah::with('kurikulum')->orderBy('kurikulum_id')->orderBy('kode_matakuliah')->get();
         // dd($matakuliahs);
         return Inertia::render('Master/Mahasiswa/Konversi/Matakuliah/MatakuliahKonversiDetail',[
             'matakuliahs' => $matakuliahs,
@@ -154,7 +152,7 @@ class MatakuliahKonversiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $mahasiswa_konversi_id, $matakuliah_konversi_id)
+    public function update(UpdateMatakuliahKonversiRequest $request, $mahasiswa_konversi_id, $matakuliah_konversi_id)
     {
         // data mk lama
         $kode_matakuliah = $request->kode_matakuliah;
