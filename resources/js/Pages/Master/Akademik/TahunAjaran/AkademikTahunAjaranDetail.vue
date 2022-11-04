@@ -143,9 +143,12 @@
       @cancel="isOpen = !isOpen"
     >
       <template #content>
-        <p class="text-sm">
-          Apakah anda yakin ingin menghapus tahun ajaran ini?
-        </p>
+        <div class="text-sm">
+          <p>Apakah anda yakin ingin menghapus tahun ajaran ini?</p>
+          <p class="mt-2"><span class="font-medium text-red-800">Peringatan</span></p>
+          <p class="font-thin text-zinc-800">Tindakan ini tidak dapat dikembalikan! Anda akan menghapus <span class="underline">mahasiswa</span>, <span class="underline">jadwal mahasiswa</span> dan <span class="underline">jadwal dosen</span> dosen yang terdaftar pada tahun akademik ini!</p>
+
+        </div>
       </template>
     </Dialog>
   </AppLayout>
