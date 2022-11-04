@@ -108,22 +108,18 @@ class NilaiController extends Controller
 
         // hitung ipk dari smt sekarang ke bawah
         $tas = $mahasiswa->tahun_ajaran->keyBy('id')->keys()->all();
-        // dd(sort($tas));
         rsort($tas);
-        // dd($tas);
+
         if ($selectedTahunAkademik) {
             // hitung ip dari semester yang dipilih
             $ips = $mahasiswa->hitungIP([$selectedTahunAkademik]);
 
             // Hitung IPK
-            // $hitungIpKonversi = count($tas) == 1 ? true : false;
             $hitungIpKonversi = true;
             $ipk = $mahasiswa->hitungIP($tas, $hitungIpKonversi);
-            // dump($ipk, $tas, $hitungIpKonversi);
-            // dd($ipk, $tas);
 
         } else {
-            // hitung ipk
+            // Hitung semua IPK
             $ipk = $mahasiswa->hitungIP([], true);
             $ips = 0;
         }

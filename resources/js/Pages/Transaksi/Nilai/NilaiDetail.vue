@@ -46,9 +46,11 @@
           class="mb-3">
           <PrinterIcon class="h-4"/> Cetak Transkrip
         </Link>
+
         <Link
           v-if="selectedTA != 0"
           as="link"
+          target="_blank"
           @click="cetakKHS"
           class="mb-3">
           <PrinterIcon class="h-4"/> Cetak KHS

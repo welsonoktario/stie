@@ -187,7 +187,7 @@ class Mahasiswa extends Model
 
     public function hitungIP($tas = [], $hitungIpAwalKonversi = false) {
 
-        // ambil tahun ajaran yang dipilih
+        // Ambil jadwal berdasarkan tahun ajaran yang dipilih
         if (count($tas) > 0) {
             $jadwals = $this->jadwals()->whereIn('tahun_ajaran_id', $tas)->get();
         }
@@ -245,10 +245,6 @@ class Mahasiswa extends Model
         }
         return $this->jadwals;
     }
-
-    // public function hitungIP($ta) {
-    //     return 0;
-    // }
 
     public function scopeIndexJadwal($query)
     {
