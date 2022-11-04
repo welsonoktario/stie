@@ -190,7 +190,7 @@
       <tr class="w-full">
         <td colspan="2" class="px-2 text-start">
           <div>SKS Nilai E : {{total_sks_tidak_lulus}}</div>
-          <div>Jlh. SKS Lulus : {{total_sks_tidak_lulus}}</div>
+          <div>Jlh. SKS Lulus : {{total_sks_lulus}}</div>
         </td>
         <td colspan="2" class="px-2 text-end"> Indeks Prestasi Kumulatif :</td>
         <td colspan="" class="px-2 text-start">{{+(Math.round(ipk + "e+3") + "e-3") }}</td>
