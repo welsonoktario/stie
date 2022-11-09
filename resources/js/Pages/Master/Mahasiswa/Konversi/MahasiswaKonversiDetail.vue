@@ -820,14 +820,11 @@
         <div class="flex justify-between">
           <div>
             <Button class="px-8">Simpan</Button>
-
             <LinkButton
               v-if="!route().current('master.mahasiswa-konversi.create')"
-              :href="
-                '/master/mahasiswa-konversi/' +
-                mahasiswa.npm +
-                '/matakuliah-konversi'
-              "
+              :href="route('master.mahasiswa-konversi.matakuliah.index', {
+                mahasiswa_konversi_id: mahasiswa.npm
+              })"
               class="focus:shadow-outline-gray text-white ml-4 bg-gray-800 hover:bg-gray-700 focus:border-gray-900 active:bg-gray-900"
               >Matakuliah Diakui</LinkButton
             >
