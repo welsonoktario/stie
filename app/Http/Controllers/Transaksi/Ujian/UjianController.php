@@ -61,7 +61,7 @@ class UjianController extends Controller
             'jurusan',
             'status_mahasiswa',
             'jadwals' => function ($q) use (&$tahunAjaran) {
-                return $q->with(['matakuliah', 'ruangan'])->where('tahun_ajaran_id', $tahunAjaran->id);
+                return $q->with(['matakuliah', 'ruangan', 'ruanganUts','ruanganUas'])->where('tahun_ajaran_id', $tahunAjaran->id);
             }
         ])->find($id);
 
@@ -70,6 +70,7 @@ class UjianController extends Controller
         // $wakil_ketua_1 =
         // dd($mahasiswa);
 
+        // dd($mahasiswa->jadwals[0]->ruanganUts->nama_ruangan);
         return Inertia::render('Transaksi/Ujian/UjianDetail', [
             'mahasiswa' => $mahasiswa,
             'tipe' => $request->tipe,

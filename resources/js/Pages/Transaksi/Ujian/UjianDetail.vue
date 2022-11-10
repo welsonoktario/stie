@@ -104,13 +104,31 @@
             {{ jadwal.matakuliah.sks }}
           </td>
           <!-- <td class="border border-black text-center">&#45;</td> -->
-          <td class="border border-black text-center">{{ jadwal.hari }}</td>
           <td class="border border-black text-center">
-            {{ jadwal.created_at.split("T")[0] }}
+            {{
+            tipe == 'UTS' ?
+                jadwal.uts_tanggal && new Date(jadwal.uts_tanggal).toLocaleDateString("id-ID", {weekday: 'long'})
+              :
+                jadwal.uas_tanggal && new Date(jadwal.uas_tanggal).toLocaleDateString("id-ID", {weekday: 'long'})
+            }}
           </td>
-          <td class="border border-black text-center">{{ jadwal.jam }}</td>
           <td class="border border-black text-center">
-            {{ jadwal.ruangan.nama_ruangan }}
+            {{
+            tipe == 'UTS' ?
+                jadwal.uts_tanggal && new Date(jadwal.uts_tanggal).toLocaleDateString("id-ID")
+              :
+                jadwal.uas_tanggal && new Date(jadwal.uas_tanggal).toLocaleDateString("id-ID")
+            }}
+          </td>
+          <td class="border border-black text-center">{{
+            tipe == 'UTS' ?
+              jadwal.uts_pukul_mulai?.substring(0,5) :
+              jadwal.uas_pukul_mulai?.substring(0,5) }}</td>
+          <td class="border border-black text-center">
+            {{
+            tipe == 'UTS' ?
+              jadwal.ruangan_uts?.nama_ruangan :
+              jadwal.ruangan_uas?.nama_ruangan }}
           </td>
           <td class="border border-black"><br /></td>
         </tr>
@@ -140,6 +158,7 @@
 <script setup>
 import { computed } from "vue"
 import { onMounted } from "vue"
+import JadwalDetail from "../Jadwal/JadwalDetail.vue";
 
 const props = defineProps({
   ta: Object,
@@ -185,6 +204,10 @@ const tanggal = computed(() => {
 
   return now.toLocaleDateString("id-ID", options)
 })
+
+const format = (date) => {
+  return 0
+}
 </script>
 
 <style>
