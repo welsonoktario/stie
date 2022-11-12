@@ -417,12 +417,12 @@
             <Select
               v-model="form.provinsi"
               class="w-full"
+              @click="getKabupatenKota(form.provinsi)"
               :options="provinsis"
               :name="'provinsi'"
-              :placeholder="'Pilih provinsi'"
             >
               <template #option="option">
-                <option :value="option.data">{{ option.data }}</option>
+                <option :value="option.data.id">{{ option.data.nama }}</option>
               </template>
             </Select>
             <!-- <InputError class="mt-2" :message="form.errors.ruangan_id" /> -->
@@ -436,10 +436,9 @@
               class="w-full"
               :options="kotas"
               :name="'kota'"
-              :placeholder="'Pilih kota'"
             >
               <template #option="option">
-                <option :value="option.data">{{ option.data }}</option>
+                <option :value="option.data.id">{{ option.data.nama }}</option>
               </template>
             </Select>
             <!-- <InputError class="mt-2" :message="form.errors.ruangan_id" /> -->
@@ -853,7 +852,7 @@ import LinkButton from "@/Components/LinkButton.vue"
 
 import { Link } from "@inertiajs/inertia-vue3"
 
-import { computed, reactive, ref } from "vue"
+import { computed, reactive, ref, onMounted } from "vue"
 import { Inertia } from "@inertiajs/inertia"
 import Label from "@components/Label"
 
@@ -969,7 +968,35 @@ export default {
         props.mahasiswa?.mahasiswa_konversi.jenjang_pendidikan || null,
     })
 
+    const kotas = ref([])
+    const provinsis = ref([])
+
     const showMatakuliah = ref(false)
+
+    onMounted(() => {
+      getProvinsi()
+      getKabupatenKota(form.provinsi)
+    })
+
+
+    async function getProvinsi() {
+      return await fetch("https://dev.farizdotid.com/api/daerahindonesia/provinsi")
+        .then((res) => res.json())
+        .then((data) => {
+          provinsis.value = data.provinsi
+          console.log(data.provinsi)
+        })
+    }
+
+    async function getKabupatenKota(idProvinsi) {
+      if (!idProvinsi) return kotas.value = []
+      return await fetch(`https://dev.farizdotid.com/api/daerahindonesia/kota?id_provinsi=${idProvinsi}`)
+        .then((res) => res.json())
+        .then((data) => {
+          kotas.value = data.kota_kabupaten
+          console.log(data.kota_kabupaten)
+        })
+    }
 
     function submit(curRoute) {
       if (curRoute === "master.mahasiswa-konversi.create") {
@@ -996,13 +1023,10 @@ export default {
       route().current("master.mahasiswa-konversi.create") ? "Tambah" : "Edit"
     )
 
-    const kotas = ["Tarakan"]
-
-    const provinsis = ["Kalimantan Utara"]
-
     return {
       kotas,
       provinsis,
+      getKabupatenKota,
       showModalMatakuliah,
       form,
       submit,

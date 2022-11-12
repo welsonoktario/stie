@@ -300,12 +300,12 @@
             <Select
               v-model="form.provinsi"
               class="w-full"
+              @click="getKabupatenKota(form.provinsi)"
               :options="provinsis"
               :name="'provinsi'"
-              :placeholder="'Pilih provinsi'"
             >
               <template #option="option">
-                <option :value="option.data">{{ option.data }}</option>
+                <option :value="option.data.id">{{ option.data.nama }}</option>
               </template>
             </Select>
             <!-- <InputError class="mt-2" :message="form.errors.ruangan_id" /> -->
@@ -319,10 +319,9 @@
               class="w-full"
               :options="kotas"
               :name="'kota'"
-              :placeholder="'Pilih kota'"
             >
               <template #option="option">
-                <option :value="option.data">{{ option.data }}</option>
+                <option :value="option.data.id">{{ option.data.nama }}</option>
               </template>
             </Select>
             <!-- <InputError class="mt-2" :message="form.errors.ruangan_id" /> -->
@@ -700,7 +699,7 @@ import Select from "@/Components/Select.vue"
 
 import { Link } from "@inertiajs/inertia-vue3"
 
-import { computed, reactive } from "vue"
+import { computed, ref, reactive, onMounted } from "vue"
 import { Inertia } from "@inertiajs/inertia"
 // import route from 'vendor/tightenco/ziggy/src/js'
 export default {
@@ -728,6 +727,8 @@ export default {
       default: null,
     },
     tahun_ajaran: Object,
+    // provinsis: Array,
+    // kotas: Array
   },
   setup(props) {
     const form = reactive({
@@ -798,6 +799,34 @@ export default {
       status_mahasiswa: props.mahasiswa?.status_mahasiswa || "Aktif",
     })
 
+    const kotas = ref([])
+    const provinsis = ref([])
+
+    onMounted (() => {
+      getProvinsi()
+      getKabupatenKota(form.provinsi)
+    })
+
+
+    async function getProvinsi() {
+      return await fetch("https://dev.farizdotid.com/api/daerahindonesia/provinsi")
+        .then((res) => res.json())
+        .then((data) => {
+          provinsis.value = data.provinsi
+          console.log(data.provinsi)
+        })
+    }
+
+    async function getKabupatenKota(idProvinsi) {
+      if (!idProvinsi) return kotas.value = []
+      return await fetch(`https://dev.farizdotid.com/api/daerahindonesia/kota?id_provinsi=${idProvinsi}`)
+        .then((res) => res.json())
+        .then((data) => {
+          kotas.value = data.kota_kabupaten
+          console.log(data.kota_kabupaten)
+        })
+    }
+
     function submit(curRoute) {
       if (curRoute === "master.mahasiswa-reguler.create") {
         // alert(util.isEmptyObject(props.staff))
@@ -823,14 +852,12 @@ export default {
       route().current("master.mahasiswa-reguler.create") ? "Tambah" : "Edit"
     )
 
-    const kotas = ["Tarakan"]
-
-    const provinsis = ["Kalimantan Utara"]
 
     return {
       form,
       kotas,
       provinsis,
+      getKabupatenKota,
       submit,
       remove,
       currentRouteName,
