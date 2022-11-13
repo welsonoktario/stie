@@ -124,7 +124,7 @@
       </div>
 
       <div v-if="sksDiambil > sksYAD" class="w-full p-3 mb-3 bg-red-100">
-        <span class="font-medium rounded rounded-lg">Peringatan!</span> Jumlah SKS diambil melebihi jumlah maksimum yang dapat diambil!
+        <span class="font-medium rounded-lg">Peringatan!</span> Jumlah SKS diambil melebihi jumlah maksimum yang dapat diambil!
       </div>
 
       <DataTable :data="jadwalMahasiswa" :columns="columns">

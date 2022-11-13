@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Request;
 use App\Http\Requests\Master\Akademik\TahunAjaran\StoreTahunAjaranRequest;
 use App\Http\Requests\Master\Akademik\TahunAjaran\UpdateTahunAjaranRequest;
+use Illuminate\Database\Events\TransactionBeginning;
 
 class TahunAjaranController extends Controller
 {
@@ -78,7 +79,9 @@ class TahunAjaranController extends Controller
                     $mahasiswas = $tahunAjaranLalu->mahasiswas;//->has('mahasiswas')->get();
                     $id_mhs = [];
                     foreach ($mahasiswas as $mhs) {
-                        if(in_array($mhs->pivot->status, ['Aktif','Tidak Aktif','Cuti'])){
+                        // Tambahkan mahasiswa yang belum lulus
+                        if(in_array($mhs->pivot->status, ['Aktif','Tidak Aktif','Cuti']) &&
+                            !isset($mhs->tanggal_selesai)){
                             $id_mhs[$mhs->pivot->mahasiswa_npm] = ['status' => 'Tidak Aktif'];
                         }
                     }
@@ -155,24 +158,38 @@ class TahunAjaranController extends Controller
      */
     public function destroy(TahunAjaran $tahunAjaran)
     {
-        if (!$tahunAjaran->delete()) {
+        DB::beginTransaction();
+        try {
+            $mahasiswas = $tahunAjaran->mahasiswas;
+            if ($mahasiswas->isNotEmpty()){
+                $tahunAjaran->mahasiswas()->detach();
+            }
+
+            if (!$tahunAjaran->delete()) {
+                return redirect()
+                    ->route('master.tahun-ajaran.index')
+                    ->with(
+                        [
+                            'status' => 'FAIL',
+                            'msg' => "Terjadi kesalahan menghapus tahun ajaran {$tahunAjaran->tahun_ajaran}"
+                        ]
+                    );
+            }
+
+            DB::commit();
             return redirect()
                 ->route('master.tahun-ajaran.index')
                 ->with(
                     [
-                        'status' => 'FAIL',
-                        'msg' => "Terjadi kesalahan menghapus tahun ajaran {$tahunAjaran->tahun_ajaran}"
+                        'status' => 'OK',
+                        'msg' => "Tahun ajaran {$tahunAjaran->tahun_ajaran} berhasil dihapus"
                     ]
                 );
         }
+        catch (\Throwable $ex) {
+            DB::rollBack();
+            dd("Error, " .$ex);
+        }
 
-        return redirect()
-            ->route('master.tahun-ajaran.index')
-            ->with(
-                [
-                    'status' => 'OK',
-                    'msg' => "Tahun ajaran {$tahunAjaran->tahun_ajaran} berhasil dihapus"
-                ]
-            );
     }
 }
