@@ -115,7 +115,8 @@ class TranskripController extends Controller
             // foreach ($jadwal as $j) {
             //     // echo ($j->matakuliah->nama_matakuliah. " - SKS: " . $j->matakuliah->sks. " - Nilai: " . $j->pivot->angka_mutu."<br>");
             // }
-            if ($nilai === 0) {
+            if ($nilai === 0 || $nilai === null) {
+                // echo("wow");
                 $total_sks_tidak_lulus += $sks;
             }
             $total_nilai_kali_sks += $nilai * $sks;

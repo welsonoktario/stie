@@ -275,6 +275,7 @@ const loadNilai = async (npm) => {
       mahasiswa: npm,
     })
   )
+
   const data = await res.json()
 
   if (data) {
