@@ -22,7 +22,7 @@
         </span>
       </div>
 
-      <form @submit.prevent="submit(route().current())">
+      <form>
         <div class="flex flex-col sm:flex-row sm:space-x-3">
           <div class="mb-3 w-full">
             <label class="mb-2 block text-sm font-bold text-gray-500" for="npm"
@@ -85,11 +85,6 @@
       </form>
 
       <!-- list matakuliah konversi -->
-
-      <!-- <div class="w-full bg-slate-100 my-3 flex justify-center p-2 hover:bg-slate-200 rounded-md" @click="showMatakuliah = !showMatakuliah">
-        <ChevronDoubleDownIcon v-if="!showMatakuliah" class="h-5 w-5 text-slate-500"></ChevronDoubleDownIcon>
-        <ChevronDoubleUpIcon v-if="showMatakuliah" class="h-5 w-5 text-slate-500"></ChevronDoubleUpIcon>
-      </div>-->
       <div v-show="showMatakuliah">
         <div class="my-3 flex items-center justify-between sm:gap-2 md:gap-0">
           <span>
@@ -100,7 +95,10 @@
 
           <LinkButton
             v-if="!route().current('master.mahasiswa-konversi.create')"
-            :href="`/master/mahasiswa-konversi/${mahasiswa.npm}/matakuliah-konversi/create`"
+            :href="
+              route('master.mahasiswa-konversi.matakuliah.create', {
+                mahasiswa_konversi_id: mahasiswa.npm
+              })"
             >Tambah Matakuliah Diakui</LinkButton
           >
         </div>
@@ -180,11 +178,10 @@
                 >
                   <Link
                     :href="
-                      '/master/mahasiswa-konversi/' +
-                      mahasiswa.npm +
-                      '/matakuliah-konversi/' +
-                      matakuliah.id
-                    "
+                      route('master.mahasiswa-konversi.matakuliah.show', {
+                        mahasiswa_konversi_id: mahasiswa.npm,
+                        matakuliah_konversi_id: matakuliah.id
+                      })"
                     class="text-indigo-600 hover:text-indigo-900"
                     >Edit</Link
                   >
@@ -267,31 +264,10 @@ export default {
 
     const showMatakuliah = ref(true)
 
-    function submit(curRoute) {
-      if (curRoute === "master.mahasiswa-konversi.create") {
-        // alert(util.isEmptyObject(props.staff))
-        // alert(props.staff == null ? 'null bro' : 'ada bro')
-        Inertia.post(route("master.mahasiswa-konversi.store"), form)
-      } else {
-        Inertia.put(
-          route("master.mahasiswa-konversi.update", props.mahasiswa.npm),
-          form
-        )
-      }
-    }
-
-    function remove() {
-      // alert(props.staff.nip);
-      Inertia.delete(
-        route("master.mahasiswa-konversi.destroy", props.mahasiswa.npm)
-      )
-    }
 
     return {
       showModalMatakuliah,
       form,
-      submit,
-      remove,
       showMatakuliah,
     }
   },
