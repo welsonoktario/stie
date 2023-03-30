@@ -326,12 +326,12 @@ class TestingController extends Controller
                     // dump($sks);
                 }
 
-                if (($total_sks - $total_sks_tidak_lulus_semester) == 0) {
+                if (($total_sks) == 0) {
                     $ips = '-';
                     $keterangan[] = 'Tidak ikut KRS';
                     // dump($ips);
                 } else {
-                    $ips = $total_nilai_kali_sks / ($total_sks - $total_sks_tidak_lulus_semester);
+                    $ips = $total_nilai_kali_sks / ($total_sks);
                 }
                 $sks_per = $total_sks;
                 break;
@@ -418,7 +418,7 @@ class TestingController extends Controller
             // $data['data']
             $tmp['npm'] = $mhs->npm;
             $tmp['nama'] = $mhs->user->name;
-            $tmp['departmen'] = $mhs->jurusan->nama;
+            $tmp['departmen'] = $mhs->jurusan ? $mhs->jurusan->nama : "-";
             $tmp['status'] = $mhs->tahun_ajaran[0]->pivot->status;
             $tmp['ips'] = $ips;
             $tmp['ipk'] = $ipk;
