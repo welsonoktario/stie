@@ -277,7 +277,7 @@ class TestingController extends Controller
     }
 
     public function export (TahunAjaran $ta) {
-
+        // print)
         // jangan lupa ini wherenya dihapus, ini cuma untuk cindy karolin
         $mhss = $ta->mahasiswas()->with(['tahun_ajaran' => function($query) use ($ta) {
             return $query->where('tanggal_mulai', '<=', $ta->tanggal_mulai)
@@ -463,7 +463,6 @@ class TestingController extends Controller
         ->toSql();
 
         // dd($nilaiMahasiswas);
-
 
         $dataMahasiswas = DB::table(DB::raw("($nilaiMahasiswas) as nilai_mhs"))
             ->select([

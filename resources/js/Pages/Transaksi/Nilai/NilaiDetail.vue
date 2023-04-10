@@ -78,8 +78,9 @@
       <table class="w-full table-auto">
         <thead>
           <tr>
+            <th class="py-2 px-4 text-left font-semibold">No</th>
             <th
-              v-if="selectedTA == 'semua'"
+              v-if="selectedTA == 0"
               class="py-2 px-4 text-left font-semibold"
             >
               Tahun Akademik
@@ -95,11 +96,12 @@
         </thead>
         <tbody>
           <tr
-            v-for="jadwal in jadwals"
+            v-for="(jadwal, index) in jadwals"
             :key="jadwal.id"
             class="border-y text-sm font-normal dark:border-zinc-600 dark:text-zinc-200"
           >
-            <td v-if="selectedTA == 'semua'" class="px-4 py-2">
+            <td class="py-2 px-4 text-left font-semibold">{{index+1}}</td>
+            <td v-if="selectedTA == 0" class="px-4 py-2">
               {{ namaTA(jadwal) }}
             </td>
             <td class="px-4 py-2">{{ jadwal.matakuliah.kode_matakuliah }}</td>
@@ -127,7 +129,7 @@
           <thead>
             <tr>
               <th
-                v-if="selectedTA == 'semua'"
+                v-if="selectedTA == 0"
                 class="py-2 px-4 text-left font-semibold"
               >
                 Tahun Akademik
