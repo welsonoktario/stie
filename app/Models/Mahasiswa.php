@@ -230,7 +230,7 @@ class Mahasiswa extends Model
             $totalNilaiKaliSks += $totalNilaiKaliSksKonversi;
         }
 
-        if ($totalSks == 0) {
+        if ($totalSks == 0 || ($totalSks - $totalSksTidakLulus) == 0) {
             return 0;
         } else {
             // jika tas hanya 1, maka hitung IPS dengan dibagi dengan total sks

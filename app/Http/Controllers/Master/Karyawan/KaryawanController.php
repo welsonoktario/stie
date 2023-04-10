@@ -11,6 +11,8 @@ use App\Models\JabatanStruktural;
 use Illuminate\Support\Facades\Hash;
 use Throwable;
 
+use Illuminate\Support\Facades\DB;
+
 class KaryawanController extends Controller
 {
     /**
@@ -20,18 +22,6 @@ class KaryawanController extends Controller
      */
     public function index()
     {
-        // $karyawans = User::has('staff')->with(['staff' => function($query){
-        //     $query->doesntHave('dosen');
-        // }])->get();
-
-        // $karyawans = Staff::doesntHave('dosen')->with(['user' => function($query){
-        //     $query->select(['user.id','user.name']);
-        // }])
-        // ->select(['nip','divisi','level_pengguna','user_id','name'])
-        // ->get()
-        // ->toArray();
-        // dd($karyawans);
-
         $karyawans = Staff::index()
             ->doesntHave('dosen')
             ->with(['user'])
@@ -67,6 +57,7 @@ class KaryawanController extends Controller
         $request['password'] = Hash::make('12345678');
         $msg = 'Berhasil menambahkan data';
         $status = 'OK';
+        DB::beginTransaction();
         try {
             $user = User::create($request->except(['id']));
             try {
@@ -77,13 +68,15 @@ class KaryawanController extends Controller
                     ]);
                 }
             } catch (\Throwable $th) {
+                DB::rollBack();
                 $msg = 'Gagal menambahkan data karyawan. Error: '.$th->getMessage();
-                $user->delete();
+                // $user->delete();
                 $status = 'FAIL';
                 dd($msg, $th);
             }
         } catch (\Throwable $th) {
             // $user->delete();
+            DB::rollBack();
             $status = 'FAIL';
             $msg = 'Gagal menambahkan data user. Error '.$th->getMessage();
             dd($msg, $th);
@@ -105,11 +98,7 @@ class KaryawanController extends Controller
      */
     public function edit($id)
     {
-        // $jabatan = JabatanStruktural::all();
-        // dd($jabatan->first()->staff);/
         $staff = Staff::where('id', '=', $id)->with(['user','tenaga_kependidikan'])->get()->first();
-        // dd($staff, $id);
-        // dd($staff->tenaga_kependidikan->id);
         return Inertia::render('Master/Karyawan/Karyawan/KaryawanKaryawanDetail', [
             'staff' => $staff
         ]);
@@ -128,6 +117,8 @@ class KaryawanController extends Controller
         $msg = 'Berhasil menambahkan data';
         $status = 'OK';
         $nitk = $request->get('nitk');
+
+        DB::beginTransaction();
         try {
             $staff = Staff::findOrFail($id);
             $user = User::findOrFail($staff->user_id);
@@ -135,12 +126,12 @@ class KaryawanController extends Controller
             $user->update($request->all());
             try {
                 $key = array_keys($user->staff->toArray());
-                $staff_old = $user->staff->toArray();
+                // $staff_old = $user->staff->toArray();
                 $user->staff()->update($request->only(($key)));
 
-                if ($staff_old['id'] != $request['id']) {
-                    $user = User::findOrFail($staff_old['user_id']);
-                }
+                // if ($staff_old['id'] != $request['id']) {
+                //     $user = User::findOrFail($staff_old['user_id']);
+                // }
 
                 if (!in_array($nitk, [null, ""])) {
                     try {
@@ -153,30 +144,35 @@ class KaryawanController extends Controller
                             ['id' => $nitk]
                         );
                     } catch (\Throwable $th) {
+                        DB::rollBack();
                         $msg = 'Gagal menambahkan id tenaga kependidikan. Error: '.$th->getMessage();
                         $status = 'FAIL';
 
-                        // dd('disini', $msg);
-                        $user->update($user_old);
-                        $user->staff()->update($staff_old);
+                        // kalau ga ada hapus (script lama)
+                        // $user->update($user_old);
+                        // $user->staff()->update($staff_old);
                     }
                 } else {
                     $user->staff->tenaga_kependidikan()->delete();
                 }
+                DB::commit();
             } catch (\Throwable $th) {
+                DB::rollBack();
                 $msg = 'Gagal menambahkan staff. Error: '.$th->getMessage();
                 $status = 'FAIL';
                 $user->update($user_old);
             }
         } catch (\Throwable $th) {
+            DB::rollBack();
             $msg = 'Gagal menambahkan user. Error: '.$th->getMessage();
             $status = 'FAIL';
         }
         $header = ['status' => $status, 'msg' => $msg];
-        // if ($status != 'FAIL'){
-        //     return redirect('master/karyawan')->with($header);
-        // }
-        return redirect()->route('master.karyawan.edit', $request->id)->with($header);
+
+        // return redirect()->route('master.karyawan.edit', $request->id)->with($header);
+
+        // redirect to main menu
+        return redirect()->route('master.karyawan.index')->with($header);
     }
 
     /**
@@ -187,14 +183,21 @@ class KaryawanController extends Controller
      */
     public function destroy($id)
     {
-        // dd($id);
-        // dd('wow');
-        $staff = Staff::where('id', '=', $id)->firstOrFail();
+        try {
+            $staff = Staff::where('id', '=', $id)->firstOrFail();
+            $staff->delete();
+            $staff->user->delete();
 
-        $staff->delete();
-        $staff->user->delete();
+            $msg = "Berhasil menghapus data!";
+            $status = 'OK';
+        }
+        catch (\Throwable $th) {
+            $msg = $th->getMessage();
+            $status = 'FAIL';
+        }
 
-        return redirect()->route('master.karyawan.index');
-        // dd($staff);
+        $msg = ['status'=> $status, 'msg' => $msg];
+
+        return redirect()->route('master.karyawan.index')->with($msg);
     }
 }
