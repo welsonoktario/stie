@@ -82,6 +82,23 @@
             ></Input>
           </div>
         </div>
+
+
+        <div class="flex flex-col sm:flex-row sm:space-x-3">
+          <div class="mb-3 w-full">
+            <label class="mb-2 block text-sm font-bold text-gray-500" for="nama"
+              >SKS diakui</label
+            >
+            <Input
+              id="nama"
+              class="w-full"
+              v-model="sksDiakui"
+              type="text"
+              placeholder="Nama"
+              disabled
+            ></Input>
+          </div>
+        </div>
       </form>
 
       <!-- list matakuliah konversi -->
@@ -108,6 +125,9 @@
           <table class="w-full table-auto">
             <thead>
               <tr>
+                <th scope="col" class="py-2 px-4 text-left font-semibold">
+                  No
+                </th>
                 <th scope="col" class="py-2 px-4 text-left font-semibold">
                   Kode MK Lama
                 </th>
@@ -136,7 +156,12 @@
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-200 bg-white">
-              <tr v-for="matakuliah in matakuliahs" :key="matakuliah.id">
+              <tr v-for="(matakuliah, index) in matakuliahs" :key="matakuliah.id">
+                <td
+                  class="border-y py-2 px-4 text-sm font-semibold dark:border-zinc-600 dark:text-zinc-200"
+                >
+                  {{ index+1 }}
+                </td>
                 <td
                   class="border-y py-2 px-4 text-sm font-normal dark:border-zinc-600 dark:text-zinc-200"
                 >
@@ -191,12 +216,23 @@
           </table>
         </div>
       </div>
+      <div class="mt-5 flex justify-end w-full">
+        <LinkButton
+            class="bg-white text-slate-800 hover:bg-slate-100"
+
+              v-if="!route().current('master.mahasiswa-konversi.create')"
+              :href="
+              route('master.mahasiswa-konversi.index')"
+            >Kembali</LinkButton
+          >
+      </div>
     </div>
+
   </AppLayout>
 </template>
 
 <script>
-import { reactive, ref } from "vue"
+import { reactive, ref, computed } from "vue"
 import { Inertia } from "@inertiajs/inertia"
 import { Link } from "@inertiajs/inertia-vue3"
 import {
@@ -264,8 +300,17 @@ export default {
 
     const showMatakuliah = ref(true)
 
+    const sksDiakui = computed (()=> {
+        let sksTotal = 0
+        props.matakuliahs.forEach(mk => {
+          sksTotal += mk.matakuliah.sks
+        });
+        return sksTotal
+    })
+
 
     return {
+      sksDiakui,
       showModalMatakuliah,
       form,
       showMatakuliah,
