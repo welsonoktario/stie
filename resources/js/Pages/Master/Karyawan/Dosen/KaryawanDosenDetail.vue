@@ -307,12 +307,12 @@
             <Select
               v-model="form.provinsi"
               class="w-full"
+              @click="getKabupatenKota(form.provinsi)"
               :options="provinsis"
               :name="'provinsi'"
-              :placeholder="'Pilih provinsi'"
             >
               <template #option="option">
-                <option :value="option.data">{{ option.data }}</option>
+                <option :value="option.data.id">{{ option.data.nama }}</option>
               </template>
             </Select>
             <!-- <InputError class="mt-2" :message="form.errors.ruangan_id" /> -->
@@ -329,7 +329,7 @@
               :placeholder="'Pilih kota'"
             >
               <template #option="option">
-                <option :value="option.data">{{ option.data }}</option>
+                <option :value="option.data.id">{{ option.data.nama }}</option>
               </template>
             </Select>
             <!-- <InputError class="mt-2" :message="form.errors.ruangan_id" /> -->
@@ -487,7 +487,7 @@
 </template>
 
 <script>
-import { computed, reactive, ref } from "vue"
+import { computed, reactive, ref, onMounted } from "vue"
 import { Link, useForm } from "@inertiajs/inertia-vue3"
 import AppLayout from "@layouts/App"
 import Button from "@components/Button"
@@ -554,11 +554,37 @@ export default {
       konsentrasi: props.dosen?.konsentrasi || "-",
     })
 
-    const kotas = ["Tarakan"]
-
-    const provinsis = ["Kalimantan Utara"]
-
     const isOpen = ref(false)
+
+    // Script provinsi-kota
+    const kotas = ref([])
+    const provinsis = ref([])
+
+    onMounted (() => {
+      getProvinsi()
+      getKabupatenKota(form.provinsi)
+    })
+
+
+    async function getProvinsi() {
+      return await fetch("https://dev.farizdotid.com/api/daerahindonesia/provinsi")
+        .then((res) => res.json())
+        .then((data) => {
+          provinsis.value = data.provinsi
+          console.log(data.provinsi)
+        })
+    }
+
+    async function getKabupatenKota(idProvinsi) {
+      if (!idProvinsi) return kotas.value = []
+      return await fetch(`https://dev.farizdotid.com/api/daerahindonesia/kota?id_provinsi=${idProvinsi}`)
+        .then((res) => res.json())
+        .then((data) => {
+          kotas.value = data.kota_kabupaten
+          console.log(data.kota_kabupaten)
+        })
+    }
+    // End cript provinsi-kota
 
     const currentRouteName = reactive({
       route: computed(() =>
@@ -602,6 +628,8 @@ export default {
     })
 
     return {
+      getProvinsi,
+      getKabupatenKota,
       currentRouteName,
       calculatedMasaKerja,
       kotas,

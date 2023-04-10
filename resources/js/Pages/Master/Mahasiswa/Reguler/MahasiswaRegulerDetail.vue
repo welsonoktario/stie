@@ -799,6 +799,7 @@ export default {
       status_mahasiswa: props.mahasiswa?.status_mahasiswa || "Aktif",
     })
 
+    // Script provinsi-kota
     const kotas = ref([])
     const provinsis = ref([])
 
@@ -826,6 +827,7 @@ export default {
           console.log(data.kota_kabupaten)
         })
     }
+    // End cript provinsi-kota
 
     function submit(curRoute) {
       if (curRoute === "master.mahasiswa-reguler.create") {
