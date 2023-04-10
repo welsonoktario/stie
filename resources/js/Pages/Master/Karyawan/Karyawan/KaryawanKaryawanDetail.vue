@@ -431,7 +431,7 @@
         </div>
 
         <div class="flex justify-between">
-          <Button class="px-10">Simpan</Button>
+          <Button @click="submit()" class="px-10">Simpan</Button>
           <button
             v-if="currentRouteName.route != 'Tambah'"
             type="button"
@@ -568,7 +568,6 @@ export default {
         Math.round(num_days) +
         " Hari."
       )
-      // return now
     })
 
     return {
