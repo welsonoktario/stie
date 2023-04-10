@@ -21,6 +21,7 @@
         >
       </div>
 
+      <!-- Ini baru, belum diimplementasiin
       <div class="item-center my-3 flex justify-start gap-x-3">
         <div class="flex flex-col gap-y-2">
           <Label for="angkatan">Angkatan</Label>
@@ -67,7 +68,7 @@
           </select>
 
         </div>
-      </div>
+      </div> -->
 
       <DataTable :data="mahasiswas" :columns="columns">
         <template #row(jurusan)="row">
