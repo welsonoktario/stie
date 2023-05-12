@@ -67,6 +67,7 @@ class KaryawanController extends Controller
                         'id' => $request->get('nitk')
                     ]);
                 }
+                DB::commit();
             } catch (\Throwable $th) {
                 DB::rollBack();
                 $msg = 'Gagal menambahkan data karyawan. Error: '.$th->getMessage();
@@ -82,6 +83,7 @@ class KaryawanController extends Controller
             dd($msg, $th);
         }
 
+        // dd($user);
 
         $header = ['status' => $status, 'msg' => $msg];
         if ($status != 'FAIL') {
