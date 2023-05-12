@@ -131,6 +131,10 @@ class DosenController extends Controller
     public function update(Request $request, $id)
     {
         // $this->saveDosenHandler($request, 'update', $id);
+
+        // dd($request->all());
+
+        $dosen = Dosen::findOrFail($id);
         $user = User::findOrFail($dosen->staff->user->id);
         $request['jurusan']  = $request['jurusan'] == '-' ? null : $request['jurusan'];
         // dd($user->update());
@@ -142,6 +146,7 @@ class DosenController extends Controller
             // $key = array_keys($user->toArray());
             $user_old = $user->getOriginal();
             $user->update($request->all());
+
             try {
                 $staff_old = $user->staff->getOriginal();
                 $request['id'] = $request['id_karyawan'];
