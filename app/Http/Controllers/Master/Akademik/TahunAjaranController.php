@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Request;
 use App\Http\Requests\Master\Akademik\TahunAjaran\StoreTahunAjaranRequest;
 use App\Http\Requests\Master\Akademik\TahunAjaran\UpdateTahunAjaranRequest;
+use Exception;
 use Illuminate\Database\Events\TransactionBeginning;
 
 class TahunAjaranController extends Controller
@@ -61,15 +62,30 @@ class TahunAjaranController extends Controller
                     ->update(['aktif' => false]);
             }
             if ($request['tambahMahasiswa']) {
-                $tahunSekarang = (new Carbon($request['tanggal_mulai']))->year;
-                $periodeSekarang = $request['periode'];
+
+                // $tahunSekarang = (new Carbon($request['tanggal_mulai']))->year;
+                // $periodeSekarang = $request['periode'];
+
+                // Ambil tahun yang sblmnya
+                $tahunAjaranLalu = TahunAjaran::where('tanggal_mulai', '<', $request['tanggal_mulai'])
+                    ->orderBy('tanggal_mulai','DESC')
+                    ->with('mahasiswas')
+                    ->first();
+
+                // dd($tahunAjaranLalu);
+
+                /* OLD SCRIPT
                 $p = ['1'=>'2', '2'=>'1'];
                 $periodeTerakhir = $p[$periodeSekarang];
-                $tahunTerakhir = $periodeSekarang == '1' ? $tahunSekarang : $tahunSekarang - 1;
+                $tahunTerakhir = $periodeSekarang == '1' ? $tahunSekarang - 1 : $tahunSekarang;
 
                 $tahunAjaranLalu = TahunAjaran::whereYear('tanggal_mulai', '=', $tahunTerakhir)
                     ->where('periode','=',$periodeTerakhir)->with('mahasiswas')->first();
-                // dd($tahunAjaranLalu);
+
+                dd($tahunAjaranLalu, $tahunTerakhir, $periodeTerakhir,
+                    TahunAjaran::whereYear('tanggal_mulai', '=', $tahunTerakhir)->get()
+                );
+                 */
 
                 $msg = `Tahun ajaran {$tahunAjaran->tahun_ajaran} berhasil ditambahkan. Peringatan: Data mahasiswa tidak ditemukan pada semester sebelumnya. Gagal menambahkan data mahasiswa.`;
                 // select semua mhs di smt terakhir tersebut dengan
@@ -114,10 +130,9 @@ class TahunAjaranController extends Controller
      */
     public function edit(TahunAjaran $tahunAjaran)
     {
-        // dd($tahunAjaran);
         return Inertia::render(
             'Master/Akademik/TahunAjaran/AkademikTahunAjaranDetail',
-            ['tahunAjaran' => $tahunAjaran]
+            ['tahunAjaran' => $tahunAjaran, 'hasMahasiswas' => $tahunAjaran->mahasiswas->isNotEmpty()]
         );
     }
 
@@ -131,16 +146,40 @@ class TahunAjaranController extends Controller
     public function update(UpdateTahunAjaranRequest $request, TahunAjaran $tahunAjaran)
     {
         // dd($request->toArray());
-        $tahunAjaran->update($request->validated());
-        // dd($tahunAjaran);
 
-        if ($tahunAjaran->aktif){
-            $affected = DB::table('tahun_ajarans')
-                ->where('id', '!=', $tahunAjaran->id)
-                ->update(['aktif' => false]);
-        }
+        DB::beginTransaction();
+        try {
 
-        return redirect()
+            $tahunAjaran->update($request->validated());
+            if ($tahunAjaran->aktif){
+                $affected = DB::table('tahun_ajarans')
+                    ->where('id', '!=', $tahunAjaran->id)
+                    ->update(['aktif' => false]);
+            }
+
+            if ($request->tambahMahasiswa && $tahunAjaran->mahasiswas->isEmpty()) {
+                // Ambil tahun yang sblmnya
+                $tahunAjaranLalu = TahunAjaran::where('tanggal_mulai', '<', $request['tanggal_mulai'])
+                ->orderBy('tanggal_mulai','DESC')
+                ->with('mahasiswas')
+                ->first();
+
+                if ($tahunAjaranLalu) {
+                    $mahasiswas = $tahunAjaranLalu->mahasiswas;
+                    $id_mhs = [];
+                    foreach ($mahasiswas as $mhs) {
+                        // Tambahkan mahasiswa yang belum lulus
+                        if(in_array($mhs->pivot->status, ['Aktif','Tidak Aktif','Cuti']) &&
+                            !isset($mhs->tanggal_selesai)){
+                            $id_mhs[$mhs->pivot->mahasiswa_npm] = ['status' => 'Tidak Aktif'];
+                        }
+                    }
+                    $tahunAjaran->mahasiswas()->sync($id_mhs, false);
+                }
+            }
+            DB::commit();
+
+            return redirect()
             ->route('master.tahun-ajaran.index')
             ->with(
                 [
@@ -148,6 +187,11 @@ class TahunAjaranController extends Controller
                     'msg' => "Tahun ajaran {$tahunAjaran->tahun_ajaran} berhasil diperbarui"
                 ]
             );
+        }
+        catch (Exception $e) {
+            DB::rollBack();
+            dd('Error on updating Tahun Akademik', $e);
+        }
     }
 
     /**

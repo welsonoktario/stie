@@ -359,7 +359,7 @@ const form = useForm({
   uas_pukul_selesai: props.jadwal?.uas_pukul_selesai || null,
 })
 
-const hari = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat"]
+const hari = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]
 
 const isDialogHapusOpen = ref(false)
 const selectedDosens = ref([])

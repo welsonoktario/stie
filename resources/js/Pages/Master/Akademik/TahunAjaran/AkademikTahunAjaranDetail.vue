@@ -99,7 +99,7 @@
             </SwitchGroup>
           </div>
 
-          <div v-if="currentRouteName == 'Tambah'" class>
+          <div v-if="currentRouteName == 'Tambah'  || !hasMahasiswas" class>
             <SwitchGroup>
               <SwitchLabel class="mb-2 block text-sm font-bold text-gray-500"
                 >Tambah Mahasiswa</SwitchLabel
@@ -123,7 +123,7 @@
         <div class="flex justify-between">
           <Button class="px-10" :disabled="form.processing">Simpan</Button>
           <button
-            v-if="currentRouteName != 'Tambah'"
+            v-if="(currentRouteName != 'Tambah')"
             type="button"
             class="bg-transparent text-red-500 hover:bg-transparent focus:bg-transparent"
             @click="isOpen = !isOpen"
@@ -180,6 +180,7 @@ export default {
   },
   props: {
     tahunAjaran: Object,
+    hasMahasiswas: Boolean,
   },
   setup(props) {
     const form = useForm({
